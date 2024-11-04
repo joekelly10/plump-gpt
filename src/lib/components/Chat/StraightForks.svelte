@@ -13,7 +13,7 @@
     }
 </script>
 
-<div class='straight-forks-container' in:fly={{ y: -20, delay: 100, duration: 250, easing: quartOut }}>
+<div class='straight-forks-container' in:fly={{ y: -20, delay: 0, duration: 250, easing: quartOut }}>
     {#each message.forks as fork, i}
         {#if fork.provisional}
             <button class='straight-fork-button provisional active'>

@@ -27,7 +27,7 @@
     const clickedCancelFork = () => dispatch('cancelProvisionalFork')
 </script>
 
-<div class='provisional-fork-controls' in:fly={{ x: -32, delay: 100, duration: 250, easing: quartOut }}>
+<div class='provisional-fork-controls' in:fly={{ x: -32, delay: 0, duration: 250, easing: quartOut }}>
     <button class='provisional-fork-button add-reply' title='Add another reply' on:click={clickedAddReply} on:mouseenter={hoveredAddReply} on:mouseleave={unhoveredAddReply}>
         <div class='icon-container'>
             <svg class='icon' viewBox='0 0 7 7'><path d='m.5.5 6 6m0-6-6 6' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round'/></svg>
