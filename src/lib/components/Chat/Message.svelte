@@ -20,6 +20,11 @@
         copy_timer  = null
 
     $: streaming = message.is_last && message.role === 'assistant' && $api_status === 'streaming'
+    $: content = message.content.replace(
+        // Match < or > that's not inside `inline code` or ``` code blocks
+        /(?<!^|\n)[<>](?![^`]*`)(?![^```]*```)/g,
+        char => ({ '<': '&lt;', '>': '&gt;' }[char])
+    )
 
     const copyMessageToClipboard = async () => {
         clearTimeout(copy_timer)
@@ -92,7 +97,7 @@
     </div>
 
     <div class='content'>
-        {@html marked(message.content)}
+        {@html marked(content)}
     </div>
 </div>
 
