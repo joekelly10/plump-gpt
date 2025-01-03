@@ -97,12 +97,14 @@ export const getCost = (model_id, usage) => {
     const aliases = {
         'gpt-4o-2024-08-06':          'gpt-4o',
         'claude-3-haiku-20240307':    'claude-3-haiku',
+        'claude-3-5-haiku-20241022':  'claude-3-haiku',
         'claude-3-5-haiku-latest':    'claude-3-5-haiku',
         'claude-3-5-sonnet-20240620': 'claude-3-5-sonnet',
         'claude-3-5-sonnet-20241022': 'claude-3-5-sonnet',
         'claude-3-5-sonnet-latest':   'claude-3-5-sonnet',
         'claude-3-opus-20240229':     'claude-3-opus',
         'claude-3-opus-latest':       'claude-3-opus',
+        'gemini-2.0-flash-exp':       'gemini-2.0-flash',
         'command-r-plus-08-2024':     'command-r-plus',
         'llama3.2-11b-vision':        'llama-3-light',
         'llama3.2-90b-vision':        'llama-3-medium',
@@ -145,10 +147,10 @@ export const getCost = (model_id, usage) => {
             id: 'claude-3-5-haiku',
             price: {
                 cents: {
-                    input_token:  25/1000000, // $0.25/mTok
-                    output_token: 125/1000000,
-                    cache_write:  30/1000000,
-                    cache_read:   3/1000000
+                    input_token:  100/1000000, // $0.25/mTok
+                    output_token: 500/1000000,
+                    cache_write:  125/1000000,
+                    cache_read:   10/1000000
                 }
             }
         },
@@ -193,11 +195,29 @@ export const getCost = (model_id, usage) => {
             }
         },
         {
+            id: 'gemini-2.0-flash',
+            price: {
+                cents: {
+                    input_token:  125/1000000, // $1.25/mTok
+                    output_token: 500/1000000
+                }
+            }
+        },
+        {
             id: 'grok-beta',
             price: {
                 cents: {
                     input_token:  500/1000000, // $5.00/mTok
                     output_token: 1500/1000000
+                }
+            }
+        },
+        {
+            id: 'grok-2-1212',
+            price: {
+                cents: {
+                    input_token:  200/1000000, // $2.00/mTok
+                    output_token: 1000/1000000
                 }
             }
         },

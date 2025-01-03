@@ -26,8 +26,8 @@ function createModel() {
         },
         {
             type:           'anthropic',
-            id:             'claude-3-haiku-20240307',
-            name:           'Claude 3 Haiku',
+            id:             'claude-3-5-haiku-latest',
+            name:           'Claude 3.5 Haiku',
             short_name:     'Claude',
             icon:           'claude-3-haiku.png',
             context_window: 200000
@@ -58,15 +58,15 @@ function createModel() {
         },
         {
             type:           'google',
-            id:             'gemini-1.5-pro',
-            name:           'Gemini 1.5 Pro',
+            id:             'gemini-2.0-flash-exp',
+            name:           'Gemini 2.0 Flash',
             short_name:     'Gemini',
             icon:           'gemini-pro.png',
             context_window: 1000000
         },
         {
             type:           'x',
-            id:             'grok-beta',
+            id:             'grok-2-1212',
             name:           'Grok',
             short_name:     'Grok',
             icon:           'grok.png',
