@@ -10,7 +10,7 @@
         setTimeout(() => two_secs_elapsed = true, 2000)
     })
 
-    $: highlight = !$messages[0]?.is_default && !two_secs_elapsed
+    $: highlight = $messages[0].system_prompt_title && !$messages[0].is_default && !two_secs_elapsed
 </script>
 
 <button
