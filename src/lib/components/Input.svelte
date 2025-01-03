@@ -225,6 +225,9 @@
                                 gpt_message.usage.input_tokens       = data.message.usage.input_tokens
                             } else if (data.type === 'message_delta') {
                                 gpt_message.usage.output_tokens = data.usage.output_tokens
+                            } else if (data.type === 'error') {
+                                console.log('🤖-❌ Error: ', data)
+                                gpt_message.content += `\n\n**🚨 Error: ${data.error.message}**`
                             }
                         } else if ($model.type === 'google') {
                             gpt_message.content += data.candidates[0].content.parts[0].text ?? ''
