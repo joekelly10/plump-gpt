@@ -1,5 +1,7 @@
 <script>
-    import { usage } from '$lib/stores/chat'
+    import { usage, forks } from '$lib/stores/chat'
+    import { slide } from 'svelte/transition'
+    import { quartOut } from 'svelte/easing'
 
     $: cache_used     = $usage.cache_read_tokens > 0 || $usage.cache_write_tokens > 0
     $: cost_string    = '$' + ($usage.total_cost / 100).toFixed(5)
@@ -14,6 +16,11 @@
         <div class='total-messages'>
             {$usage.total_messages} {$usage.total_messages === 1 ? 'message' : 'messages'}
         </div>
+        {#if $forks.length > 1}
+            <div class='fork-count' transition:slide={{ axis: 'y', duration: 125, easing: quartOut }}>
+                {$forks.length} forks
+            </div>
+        {/if}
     </div>
     <div class='stat tokens'>
         <div class='label'>
