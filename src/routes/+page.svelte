@@ -38,6 +38,7 @@
         on:chatModified={chatModified}
         on:regenerateReply={regenerateReply}
         on:addReply={addReply}
+        on:save={save}
     />
     <Input
         bind:this={input}

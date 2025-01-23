@@ -2,7 +2,7 @@
     import { createEventDispatcher, tick } from 'svelte'
     import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { initialising, messages, forks, active_fork, active_messages, fork_points, usage, loader_active, prompt_editor_active, deleting, adding_reply, provisionally_forking } from '$lib/stores/chat'
+    import { initialising, messages, forks, active_fork, stars, active_messages, fork_points, usage, loader_active, prompt_editor_active, deleting, adding_reply, provisionally_forking } from '$lib/stores/chat'
     import { insert } from '$lib/utils/helpers'
     import UsageStats from '$lib/components/Chat/UsageStats.svelte'
     import Message from '$lib/components/Chat/Message.svelte'
@@ -12,13 +12,20 @@
     let chat,
         forking_from      = null,
         uparrow_limiter   = null,
-        downarrow_limiter = null
+        downarrow_limiter = null,
+        message_refs      = [] // references to the list of `Message` components
 
     export const sendingMessage = () => $provisionally_forking = false
 
     export const scrollToBottom = (delay = 0) => {
         //  HACK: account for delay on fork animations
-        setTimeout(() => chat.scroll({ top: chat.scrollHeight, behavior: 'smooth' }), delay)
+        setTimeout(() => {
+            chat.scroll({ top: chat.scrollHeight, behavior: 'smooth'})
+            if (message_refs.length) {
+                const id_of_last = $active_messages[$active_messages.length - 1].id
+                message_refs[id_of_last].scrollReasoningToBottom()
+            }
+        }, delay)
     }
 
     const keydown = (e) => {
@@ -78,8 +85,10 @@
             }
 
             $messages = $messages.filter(m => !deleted.includes(m.id))
+            $stars    = $stars.filter(id => !deleted.includes(id))
             updateForksAfterDelete()
-            dispatch('chatModified')
+            dispatch('chatModified') 
+            dispatch('save')
 
             await tick()
             $deleting = false
@@ -272,6 +281,7 @@
     <div class='messages'>
         {#each processed_messages as message (message.id)}
             <Message
+                bind:this={message_refs[message.id]}
                 message={message}
                 on:regenerateReply={regenerateReply}
                 on:deleteOne={() => deleteMessage(false)}
@@ -280,6 +290,7 @@
                 on:forkFrom={(event) => forkFrom(event.detail.message_id)}
                 on:switchToFork={(event) => switchToFork(event.detail.fork_index)}
                 on:cancelProvisionalFork={cancelProvisionalFork}
+                on:save
             />
         {/each}
     </div>

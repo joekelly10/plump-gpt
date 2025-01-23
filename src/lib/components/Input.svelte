@@ -2,7 +2,7 @@
     import hljs from 'highlight.js'
     import { onMount, tick, createEventDispatcher } from 'svelte'
     import { addCopyButtons } from '$lib/utils/helpers'
-    import { initialising, chat_id, messages, forks, active_fork, active_messages, loader_active, prompt_editor_active, config, adding_reply } from '$lib/stores/chat'
+    import { initialising, chat_id, messages, forks, active_fork, stars, active_messages, loader_active, prompt_editor_active, config, adding_reply } from '$lib/stores/chat'
     import { model, temperature, top_p, api_status } from '$lib/stores/ai'
     import { page } from '$app/stores'
     import KeyboardShortcuts from '$lib/components/Input/KeyboardShortcuts.svelte'
@@ -119,15 +119,16 @@
         console.log(`🤖-⏳ ${$model.short_name} is replying...`)
 
         let gpt_message = {
-            id:          getNextId(),
-            parent_id:   getParentId(),
-            role:        'assistant',
-            content:     '',
-            timestamp:   '',
-            model:       $model,
-            temperature: $temperature,
-            top_p:       $top_p,
-            usage:       {
+            id:                getNextId(),
+            parent_id:         getParentId(),
+            role:              'assistant',
+            reasoning_content: '',
+            content:           '',
+            timestamp:         '',
+            model:             $model,
+            temperature:       $temperature,
+            top_p:             $top_p,
+            usage:             {
                 cache_write_tokens: 0,
                 cache_read_tokens:  0,
                 input_tokens:       0,
@@ -208,7 +209,10 @@
                     const json_string = buffer.slice(start_index, end_index)
                     try {
                         const data = JSON.parse(json_string)
-                        if ($model.type === 'open-ai' || $model.type === 'x' || $model.type === 'llama') {
+                        if (['open-ai', 'x', 'llama', 'deepseek'].includes($model.type)) {
+                            if ($model.id === 'deepseek-reasoner') {
+                                gpt_message.reasoning_content += data.choices[0]?.delta.reasoning_content ?? ''
+                            }
                             gpt_message.content += data.choices[0]?.delta.content ?? ''
                             if (data.usage) {
                                 const cache_read_tokens = data.usage.prompt_tokens_details?.cached_tokens ?? 0
@@ -371,6 +375,7 @@
         $messages      = $messages.slice(0,1)
         $forks         = [{ message_ids: [0], forked_at: [], provisional: false }]
         $active_fork   = 0
+        $stars         = []
         $chat_id       = null
         $loader_active = false
         $page.url.searchParams.delete('user_message')

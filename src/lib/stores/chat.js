@@ -6,6 +6,7 @@ export const chat_id               = writable(null)
 export const messages              = writable([{ id: 0, role: 'system', content: 'You are a helpful assistant.' }])  // replaced on launch
 export const forks                 = writable([{ message_ids: [0], forked_at: [], provisional: false }])
 export const active_fork           = writable(0)
+export const stars                 = writable([])
 export const shortcuts_active      = writable(false)
 export const loader_active         = writable(false)
 export const prompt_editor_active  = writable(false)

@@ -111,6 +111,22 @@ function createModel() {
             short_name:     'Llama 3 405b',
             icon:           'llama-3-heavy.png',
             context_window: 128000
+        },
+        {
+            type:           'deepseek',
+            id:             'deepseek-chat',
+            name:           'DeepSeek Chat',
+            short_name:     'DeepSeek',
+            icon:           'deepseek-chat.png',
+            context_window: 64000
+        },
+        {
+            type:           'deepseek',
+            id:             'deepseek-reasoner',
+            name:           'DeepSeek Reasoner',
+            short_name:     'DeepSeek',
+            icon:           'deepseek-reasoner.png',
+            context_window: 64000
         }
     ]
 

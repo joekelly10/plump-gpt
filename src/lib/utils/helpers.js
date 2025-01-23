@@ -147,10 +147,10 @@ export const getCost = (model_id, usage) => {
             id: 'claude-3-5-haiku',
             price: {
                 cents: {
-                    input_token:  100/1000000, // $0.25/mTok
+                    input_token:  80/1000000, // $0.80/mTok
                     output_token: 500/1000000,
-                    cache_write:  125/1000000,
-                    cache_read:   10/1000000
+                    cache_write:  100/1000000,
+                    cache_read:   8/1000000
                 }
             }
         },
@@ -265,6 +265,26 @@ export const getCost = (model_id, usage) => {
                     output_token: 320/1000000
                 }
             }
+        },
+        {
+            id: 'deepseek-chat',
+            price: {
+                cents: {
+                    input_token:  27/1000000, // $0.27/mTok
+                    output_token: 110/1000000,
+                    cache_read:   7/1000000
+                }
+            }
+        },
+        {
+            id: 'deepseek-reasoner',
+            price: {
+                cents: {
+                    input_token:  55/1000000, // $0.55/mTok
+                    output_token: 219/1000000,
+                    cache_read:   15/1000000
+                }
+            }
         }
     ]
 
@@ -288,6 +308,11 @@ export const getCost = (model_id, usage) => {
 
         cache_savings += usage.cache_read_tokens * (model.price.cents.input_token - model.price.cents.cache_read)
         cache_savings -= usage.cache_write_tokens * (model.price.cents.cache_write - model.price.cents.input_token)
+    }
+
+    if (model_id.startsWith('deepseek')) {
+        cache_read_cost = usage.cache_read_tokens * model.price.cents.cache_read
+        cache_savings   = usage.cache_read_tokens * (model.price.cents.input_token - model.price.cents.cache_read)
     }
 
     input_cost  = usage.input_tokens * model.price.cents.input_token

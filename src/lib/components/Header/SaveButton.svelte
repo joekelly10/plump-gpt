@@ -1,11 +1,19 @@
 <script>
-    import { chat_id, messages, forks, active_fork } from '$lib/stores/chat'
+    import { chat_id, messages, forks, active_fork, stars } from '$lib/stores/chat'
 
     let timer
     let status = 'idle'
+    let queued = false
 
     export const save = async () => {
-        if ($messages.length === 1 || status !== 'idle') return
+        if ($messages.length === 1) return
+
+        // queue up save if another save is already in flight
+        if (status === 'saving') {
+            console.log('💾–⏳ Save queued (debounce)')
+            queued = true
+            return
+        }
 
         clearTimeout(timer)
 
@@ -19,7 +27,8 @@
                 id:          $chat_id,
                 messages:    $messages,
                 forks:       $forks,
-                active_fork: $active_fork
+                active_fork: $active_fork,
+                stars:       $stars
             })
         })
 
@@ -27,8 +36,18 @@
             const { record } = await response.json()
             $chat_id = record.id
             console.log(`💾–✅ Saved chat: ${record.id}`)
-            setTimeout(() => { status = 'saved' }, 500)
-            timer = setTimeout(() => { status = 'idle' }, 2500)
+            timer = setTimeout(() => {
+                status = 'saved'
+                if (queued) {
+                    queued = false
+                    console.log('💾–⚙️ Unqueuing save')
+                    save()
+                    return
+                }
+                timer = setTimeout(() => {
+                    status = 'idle'
+                }, 2000)
+            }, 500)
         } else {
             status = 'idle'
             console.log(`💾–❌ Save failed: ${response.status} ${response.statusText}`)

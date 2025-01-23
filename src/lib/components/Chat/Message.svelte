@@ -1,7 +1,8 @@
 <script>
+    import { createEventDispatcher } from 'svelte'
     import { slide, fly, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { deleting, provisionally_forking } from '$lib/stores/chat'
+    import { deleting, provisionally_forking, stars } from '$lib/stores/chat'
     import { api_status } from '$lib/stores/ai'
     import { marked } from 'marked'
 
@@ -13,18 +14,28 @@
 
     marked.use({ breaks: true, mangle: false, headerIds: false })
 
+    const dispatch = createEventDispatcher()
+
     export let message
 
-    let show_info   = false,
-        show_copied = false,
-        copy_timer  = null
+    let show_info         = false,
+        show_copied       = false,
+        copy_timer        = null,
+        reasoning_content = null
 
+    $: starred   = $stars.includes(message.id)
     $: streaming = message.is_last && message.role === 'assistant' && $api_status === 'streaming'
-    $: content = message.content.replace(
+    $: content   = message.content.replace(
         // Match < or > that's not inside `inline code` or ``` code blocks
         /(?<!^|\n)[<>](?![^`]*`)(?![^```]*```)/g,
         char => ({ '<': '&lt;', '>': '&gt;' }[char])
     )
+
+    export const scrollReasoningToBottom = () => {
+        if (streaming && reasoning_content) {
+            reasoning_content.scroll({ top: reasoning_content.scrollHeight, behavior: 'smooth' })
+        }
+    }
 
     const copyMessageToClipboard = async () => {
         clearTimeout(copy_timer)
@@ -32,11 +43,23 @@
         show_copied = true
         copy_timer = setTimeout(() => { show_copied = false }, 2000)
     }
+
+    const toggleStar = () => {
+        if (starred) {
+            $stars = $stars.filter(id => id !== message.id)
+            console.log(`⭐️ Unstarred ${message.id}...`)
+        } else {
+            $stars = [...$stars, message.id]
+            console.log(`⭐️ Starred ${message.id}...`)
+        }
+        dispatch('save')
+    }
 </script>
 
 <div
     id='message-{message.id}'
     class='message {message.role}'
+    class:starred={starred}
     class:streaming={streaming}
     class:delete-highlight={message.delete_highlight}
     class:regenerate-highlight={message.regenerate_highlight}
@@ -47,11 +70,14 @@
     {#if message.role === 'assistant' && $api_status !== 'streaming' && !$provisionally_forking}
         <MessageControls
             bind:message
+            starred={starred}
+            showing_message_info={show_info}
             on:addReply
             on:regenerateReply
             on:deleteOne
             on:deleteBoth
             on:forkFrom
+            on:toggleStar={toggleStar}
         />
     {:else if $provisionally_forking && message.is_last}
         <ProvisionalForkControls
@@ -97,6 +123,11 @@
     </div>
 
     <div class='content'>
+        {#if message.reasoning_content}
+            <div class='reasoning-content' bind:this={reasoning_content}>
+                {@html marked(message.reasoning_content)}
+            </div>
+        {/if}
         {@html marked(content)}
     </div>
 </div>
@@ -122,7 +153,7 @@
         padding:      space.$default-padding
         padding-left: space.$avatar-container-width
         border:       0px solid transparent
-        transition:   padding-bottom easing.$quart-out 0.25s, border-bottom easing.$quart-out 0.25s, background-color easing.$quart-out 0.125s
+        transition:   padding-bottom easing.$quart-out 0.25s, border-bottom easing.$quart-out 0.25s, background-color easing.$quart-out 0.125s, box-shadow easing.$quart-out 0.125s
         +shared.code_block_styles
 
         &:first-of-type
@@ -166,7 +197,13 @@
         &.streaming
             padding-bottom: 1.25 * space.$default-padding
             animation:      streaming 1.5s linear infinite
-    
+
+            .reasoning-content
+                padding-bottom: 48px
+
+        &.starred
+            background-color: color.adjust($yellow, $alpha: -0.55)
+
     .avatar-container
         display:         flex
         align-items:     center
@@ -218,6 +255,35 @@
                 border-width:   8px
                 border-style:   solid
                 border-color:   $background-darker transparent transparent
+    
+    .reasoning-content
+        margin-bottom:    32px
+        padding:          round(0.75 * space.$default-padding) space.$default-padding
+        max-height:       290px
+        overflow-y:       auto
+        border-radius:    8px
+        background-color: black(0.46)
+        font-size:        14px
+        color:            color.adjust($off-white, $alpha: -0.5)
+        transition:       padding-bottom easing.$quart-out 0.25s
+        
+        &::-webkit-scrollbar
+            width:      6px
+            height:     6px
+            background: transparent
+
+        &::-webkit-scrollbar-thumb
+            background:    color.adjust($off-white, $alpha: -0.5)
+            border-radius: 99px
+            cursor:        grab
+
+        :global(p)
+            margin-bottom: 20px
+            font-size:     14px
+            line-height:   28px
+
+            &:last-child
+                margin-bottom: 0
 
     @keyframes streaming
         0%

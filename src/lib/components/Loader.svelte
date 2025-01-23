@@ -1,6 +1,6 @@
 <script>
     import hljs from 'highlight.js'
-    import { chat_id, messages, forks, active_fork, loader_active, provisionally_forking } from '$lib/stores/chat.js'
+    import { chat_id, messages, forks, active_fork, stars, loader_active, provisionally_forking } from '$lib/stores/chat.js'
     import { onMount, onDestroy, tick, createEventDispatcher } from 'svelte'
     import { scale } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
@@ -157,6 +157,7 @@
         $messages    = chat.messages
         $forks       = chat.forks
         $active_fork = chat.active_fork
+        $stars       = chat.stars
         $chat_id     = chat.id
 
         await tick()
@@ -175,6 +176,7 @@
 
     const migrateIfNeeded = (chat) => {
         chat.messages.forEach(message => {
+            // usage is missing from old chats
             if (message.role === 'assistant' && !message.usage) {
                 if (message.model.startsWith('claude')) {
                     message.model = {
@@ -205,6 +207,7 @@
                 }
                 message.timestamp = new Date(chat.updated).toISOString()
             }
+            // cache_write_tokens and cache_read_tokens are missing from old usage objects
             if (message.role === 'assistant' && message.usage.cache_write_tokens === undefined) {
                 message.usage = {
                     ...message.usage,
@@ -213,6 +216,8 @@
                 }
             }
         })
+        // stars are missing from old chats
+        if (!chat.stars) chat.stars = []
     }
 
     const deleteChat = async (chat) => {
