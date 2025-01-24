@@ -202,7 +202,7 @@
                 padding-bottom: 48px
 
         &.starred
-            background-color: color.adjust($yellow, $alpha: -0.55)
+            background-color: color.adjust($yellow, $alpha: -0.5)
 
     .avatar-container
         display:         flex
