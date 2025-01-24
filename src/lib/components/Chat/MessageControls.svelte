@@ -171,7 +171,7 @@
                     transform:      translateY(-50px)
                     opacity:        1
                     pointer-events: all
-                    transition:     opacity 0.1s easing.$quart-out 0.5s, transform 0.1s easing.$quart-out 0.5s
+                    transition:     opacity 0.1s easing.$quart-out, transform 0.1s easing.$quart-out
 
                 //  hack/fix: when adding a 6th reply, the forks container
                 //  expands on hover, moving the button down, causing the hover
