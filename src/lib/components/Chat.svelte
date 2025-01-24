@@ -65,6 +65,7 @@
 
             const deleted = $forks[$active_fork].message_ids.splice(-1,1)
             $messages = $messages.filter(m => m.id !== deleted[0])
+            $stars    = $stars.filter(m => m.id !== deleted[0])
             dispatch('regenerateReply')
 
             await tick()
