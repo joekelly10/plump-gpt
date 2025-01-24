@@ -198,9 +198,6 @@
             padding-bottom: 1.25 * space.$default-padding
             animation:      streaming 1.5s linear infinite
 
-            .reasoning-content
-                padding-bottom: 48px
-
         &.starred
             background-color: color.adjust($yellow, $alpha: -0.5)
 
@@ -265,7 +262,6 @@
         background-color: black(0.46)
         font-size:        14px
         color:            color.adjust($off-white, $alpha: -0.5)
-        transition:       padding-bottom easing.$quart-out 0.25s
         
         &::-webkit-scrollbar
             width:      6px
