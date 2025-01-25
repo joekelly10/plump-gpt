@@ -112,7 +112,7 @@
                     transform:      translateY(-58px)
                     opacity:        1
                     pointer-events: all
-                    transition:     opacity 0.1s easing.$quart-out 0.5s, transform 0.1s easing.$quart-out 0.5s
+                    transition:     opacity 0.1s easing.$quart-out, transform 0.1s easing.$quart-out
             &:active
                 border-color:     color.adjust($blue, $lightness: -3%)
                 background-color: color.adjust($blue, $lightness: -3%)
