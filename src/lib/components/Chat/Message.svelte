@@ -150,6 +150,8 @@
     .message
         position:     relative
         margin:       1px 0
+        min-height:   space.$avatar-container-width
+        box-sizing:   border-box
         padding:      space.$default-padding
         padding-left: space.$avatar-container-width
         border:       0px solid transparent
