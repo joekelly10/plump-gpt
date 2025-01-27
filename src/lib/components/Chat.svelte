@@ -28,6 +28,13 @@
         }, delay)
     }
 
+    $: processed_messages = $active_messages.slice(1).map((message, i) => ({
+        ...message,
+        is_last:      i === $active_messages.slice(1).length - 1,
+        forks:        getForksAt(message.id),
+        has_siblings: getForksAt(message.parent_id).length > 0
+    }))
+
     const keydown = (e) => {
         if ($loader_active || $prompt_editor_active) return
 
@@ -257,13 +264,6 @@
     }
 
     const cancelProvisionalFork = () => switchToFork(forking_from)
-
-    $: processed_messages = $active_messages.slice(1).map((message, i) => ({
-        ...message,
-        is_last:      i === $active_messages.slice(1).length - 1,
-        forks:        getForksAt(message.id),
-        has_siblings: getForksAt(message.parent_id).length > 0
-    }))
 </script>
 
 <svelte:document on:keydown={keydown} />
