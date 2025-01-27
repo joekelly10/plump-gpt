@@ -21,9 +21,9 @@
         //  HACK: account for delay on fork animations
         setTimeout(() => {
             chat.scroll({ top: chat.scrollHeight, behavior: 'smooth'})
-            if (message_refs.length) {
+            if ($active_messages) {
                 const id_of_last = $active_messages[$active_messages.length - 1].id
-                message_refs[id_of_last].scrollReasoningToBottom()
+                message_refs[id_of_last]?.scrollReasoningToBottom()
             }
         }, delay)
     }
