@@ -1,6 +1,7 @@
 <script>
     import SaveButton from '$lib/components/Header/SaveButton.svelte'
     import LoadButton from '$lib/components/Header/LoadButton.svelte'
+    import Logo from '$lib/components/Header/Logo.svelte'
     import TopPControl from '$lib/components/Header/TopPControl.svelte'
     import TemperatureControl from '$lib/components/Header/TemperatureControl.svelte'
     import ModelSwitcher from '$lib/components/Header/ModelSwitcher.svelte'
@@ -16,7 +17,7 @@
         <SaveButton bind:this={save_button} />
     </div>
     <div class='title'>
-        <img class='logo' src='/img/logo.png' alt='Svelte GPT'>
+        <Logo/>
     </div>
     <div class='model'>
         <TopPControl/>
@@ -48,9 +49,6 @@
         display:     inline-flex
         align-items: center
         height:      space.$header-height
-
-        .logo
-            height: 13px
     
     .model
         display:       flex
