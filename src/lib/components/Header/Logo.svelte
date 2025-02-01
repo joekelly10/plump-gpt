@@ -13,8 +13,7 @@
         <!-- separate padding block improves animation vs. padding-left on .text -->
         <div class='padding' transition:slide={{ axis: 'x', duration: 125, easing: quartOut }} />
         <div class='text' in:slide={{ axis: 'x', duration: 250, easing: quartOut }} out:slide={{ axis: 'x', duration: 150, easing: quartOut }}>
-            <!-- Thought Fattener -->
-            Fatten your thoughts
+            Fattens your thoughts
         </div>
     {/if}
 </div>
