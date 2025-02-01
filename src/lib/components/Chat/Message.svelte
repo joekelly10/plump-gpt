@@ -21,7 +21,8 @@
     let show_info         = false,
         show_copied       = false,
         copy_timer        = null,
-        reasoning_content = null
+        reasoning_div     = null,
+        should_autoscroll = true
 
     $: starred   = $stars.includes(message.id)
     $: streaming = message.is_last && message.role === 'assistant' && $api_status === 'streaming'
@@ -32,8 +33,8 @@
     )
 
     export const scrollReasoningToBottom = () => {
-        if (streaming && reasoning_content) {
-            reasoning_content.scroll({ top: reasoning_content.scrollHeight, behavior: 'smooth' })
+        if (streaming && reasoning_div && should_autoscroll) {
+            reasoning_div.scroll({ top: reasoning_div.scrollHeight, behavior: 'smooth' })
         }
     }
 
@@ -53,6 +54,10 @@
             console.log(`⭐️ Starred ${message.id}...`)
         }
         dispatch('save')
+    }
+
+    const handleScrolledReasoning = (e) => {
+        should_autoscroll = e.target.scrollTop >= e.target.scrollHeight - e.target.clientHeight - 60
     }
 </script>
 
@@ -124,7 +129,11 @@
 
     <div class='content'>
         {#if message.reasoning_content}
-            <div class='reasoning-content' bind:this={reasoning_content}>
+            <div
+                class='reasoning-content'
+                bind:this={reasoning_div}
+                on:scroll={handleScrolledReasoning}
+            >
                 {@html marked(message.reasoning_content)}
             </div>
         {/if}
