@@ -57,7 +57,7 @@
     }
 
     const handleScrolledReasoning = (e) => {
-        should_autoscroll = e.target.scrollTop >= e.target.scrollHeight - e.target.clientHeight - 60
+        should_autoscroll = e.target.scrollTop >= e.target.scrollHeight - e.target.clientHeight - 80
     }
 </script>
 
