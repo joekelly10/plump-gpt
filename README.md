@@ -1,6 +1,8 @@
 # What?
 
-*Svelte GPT* is a Chat UI for interacting with language model APIs.
+**Plump GPT** fattens your thoughts.
+
+(It's a Chat UI for interacting with language model APIs).
 
 - Frontend: [Svelte](https://svelte.dev/)
 - Backend: [SvelteKit](https://kit.svelte.dev/)
@@ -66,6 +68,10 @@ It runs in your browser on `localhost:1337`.
 - <img alt='Llama 3.2 70b' src='./static/img/icons/models/llama-3-medium.png' width='21' height='21' valign='middle'>&nbsp; Llama 3.2 70b
 - <img alt='Llama 3.1 405b' src='./static/img/icons/models/llama-3-heavy.png' width='21' height='21' valign='middle'>&nbsp; Llama 3.1 405b
 
+**DeepSeek**
+- <img alt='DeepSeek V3' src='./static/img/icons/models/deepseek-chat.png' width='21' height='21' valign='middle'>&nbsp; DeepSeek V3 (Chat)
+- <img alt='DeepSeek R1' src='./static/img/icons/models/deepseek-reasoner.png' width='21' height='21' valign='middle'>&nbsp; DeepSeek R1 (Reasoner)
+
 
 
 # Install
@@ -84,6 +90,7 @@ GEMINI_API_KEY=...
 GROK_API_KEY=...
 COHERE_API_KEY=...
 LLAMA_API_KEY=...
+DEEPSEEK_API_KEY=...
 ```
 
 3. Install dependencies
@@ -96,11 +103,11 @@ npm install
 npm run build
 ```
 
-5. Launch both Pocketbase and Svelte GPT with the shell script:
+5. Launch both Pocketbase and Plump GPT with the shell script:
 ```
 ./start.sh
 ```
-   - (Note: You can also run Svelte GPT in dev mode, with live reloading, by running `./start.sh dev`)
+   - (Note: You can also run Plump GPT in dev mode, with live reloading, by running `./start.sh dev`)
 
 
 6. Go to `http://localhost:1336/_/` (⌘+click the link) and add an admin email + password to finish setting up Pocketbase
@@ -119,4 +126,4 @@ _(Tip: You can use `git update-index --assume-unchanged static/img/avatar.png` t
 
 # Note
 
-This isn't production ready code - it's a personal project that I originally had no intention of sharing. I use Svelte GPT a lot, and I could probably be persuaded to develop it properly, but it works for my needs and I'm currently focused on other things!
+This isn't production ready code - it's a personal project that I originally had no intention of sharing. I use Plump GPT a lot, and I could probably be persuaded to develop it properly, but it works for my needs and I'm currently focused on other things!
