@@ -1,19 +1,20 @@
 import { writable, derived } from 'svelte/store'
 import { getCost } from '$lib/utils/helpers'
 
-export const initialising          = writable(true)
-export const chat_id               = writable(null)
-export const messages              = writable([{ id: 0, role: 'system', content: 'You are a helpful assistant.' }])  // replaced on launch
-export const forks                 = writable([{ message_ids: [0], forked_at: [], provisional: false }])
-export const active_fork           = writable(0)
-export const stars                 = writable([])
-export const shortcuts_active      = writable(false)
-export const loader_active         = writable(false)
-export const prompt_editor_active  = writable(false)
-export const config                = writable({ autosave: true })
-export const deleting              = writable(false)
-export const adding_reply          = writable(false)
-export const provisionally_forking = writable(false)
+export const initialising               = writable(true)
+export const chat_id                    = writable(null)
+export const messages                   = writable([{ id: 0, role: 'system', content: 'You are a helpful assistant.' }])  // replaced on launch
+export const forks                      = writable([{ message_ids: [0], forked_at: [], provisional: false }])
+export const active_fork                = writable(0)
+export const stars                      = writable([])
+export const shortcuts_active           = writable(false)
+export const loader_active              = writable(false)
+export const prompt_editor_active       = writable(false)
+export const config                     = writable({ autosave: true })
+export const deleting                   = writable(false)
+export const adding_reply               = writable(false)
+export const provisionally_forking      = writable(false)
+export const below_autoscroll_threshold = writable(true)
 
 export const active_messages = derived([messages, forks, active_fork], ([$messages, $forks, $active_fork]) => {
     return $messages.filter(m => $forks[$active_fork ?? 0]?.message_ids.includes(m.id))

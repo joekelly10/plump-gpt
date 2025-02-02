@@ -2,7 +2,7 @@
     import { createEventDispatcher, tick } from 'svelte'
     import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { initialising, messages, forks, active_fork, stars, active_messages, fork_points, usage, loader_active, prompt_editor_active, deleting, adding_reply, provisionally_forking } from '$lib/stores/chat'
+    import { initialising, messages, forks, active_fork, stars, active_messages, fork_points, usage, loader_active, prompt_editor_active, deleting, adding_reply, provisionally_forking, below_autoscroll_threshold } from '$lib/stores/chat'
     import { insert } from '$lib/utils/helpers'
     import UsageStats from '$lib/components/Chat/UsageStats.svelte'
     import Message from '$lib/components/Chat/Message.svelte'
@@ -17,10 +17,11 @@
 
     export const sendingMessage = () => $provisionally_forking = false
 
-    export const scrollToBottom = (delay = 0) => {
-        //  HACK: account for delay on fork animations
+    export const scrollToBottom = (delay = 0, forced = false) => {
         setTimeout(() => {
-            chat.scroll({ top: chat.scrollHeight, behavior: 'smooth'})
+            if ($below_autoscroll_threshold || forced) {
+                chat.scroll({ top: chat.scrollHeight, behavior: 'smooth'})
+            }
             if ($active_messages) {
                 const id_of_last = $active_messages[$active_messages.length - 1].id
                 message_refs[id_of_last]?.scrollReasoningToBottom()
@@ -264,11 +265,15 @@
     }
 
     const cancelProvisionalFork = () => switchToFork(forking_from)
+
+    const handleScrolled = (e) => {
+        $below_autoscroll_threshold = e.target.scrollTop >= e.target.scrollHeight - e.target.clientHeight - 200
+    }
 </script>
 
 <svelte:document on:keydown={keydown} />
 
-<section class='chat' class:frozen={$loader_active || $prompt_editor_active} bind:this={chat}>
+<section class='chat' class:frozen={$loader_active || $prompt_editor_active} bind:this={chat} on:scroll={handleScrolled}>
     {#if $initialising}
         <div class='initialising' out:fade={{ delay: 250, duration: 125, easing: quartOut }}>
             Initialising...

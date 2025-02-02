@@ -15,13 +15,20 @@
 
     $: title = $messages.length > 1 ? $messages[1].content : 'Svelte GPT'
 
-    const save               = () => header.save()
-    const chatModified       = () => input.chatLoaded()
-    const sendingMessage     = () => chat.sendingMessage()
-    const scrollChatToBottom = () => chat.scrollToBottom()
-    const regenerateReply    = () => input.regenerateReply()
-    const addReply           = () => input.addReply()
-    const chatLoaded         = () => { chat.scrollToBottom(150); input.chatLoaded() }
+    const chatModified    = () => input.chatLoaded()
+    const regenerateReply = () => input.regenerateReply()
+    const addReply        = () => input.addReply()
+    const save            = () => header.save()
+    const sendingMessage  = () => chat.sendingMessage()
+
+    const scrollChatToBottom = (event) => {
+        chat.scrollToBottom(0, event.detail?.forced || false)
+    }
+
+    const chatLoaded = () => {
+        chat.scrollToBottom(150)
+        input.chatLoaded()
+    }
 </script>
 
 <svelte:head>

@@ -7,6 +7,7 @@
     import { page } from '$app/stores'
     import KeyboardShortcuts from '$lib/components/Input/KeyboardShortcuts.svelte'
     import SystemPromptButton from '$lib/components/Input/SystemPromptButton.svelte'
+    import ScrollDownButton from '$lib/components/Input/ScrollDownButton.svelte'
 
     const dispatch = createEventDispatcher()
     
@@ -102,7 +103,7 @@
 
         await tick()
         hljs.highlightAll()
-        dispatch('scrollChatToBottom')
+        dispatch('scrollChatToBottom', { forced: true })
 
         const options = {
             model:       $model.id,
@@ -403,6 +404,7 @@
     </div>
 
     <SystemPromptButton/>
+    <ScrollDownButton on:clicked={() => dispatch('scrollChatToBottom', { forced: true })} />
 </section>
 
 <style lang='sass'>
