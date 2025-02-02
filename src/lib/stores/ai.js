@@ -115,7 +115,7 @@ function createModel() {
         {
             type:           'deepseek',
             id:             'deepseek-chat',
-            name:           'DeepSeek Chat',
+            name:           'DeepSeek V3',
             short_name:     'DeepSeek',
             icon:           'deepseek-chat.png',
             context_window: 64000
@@ -123,7 +123,7 @@ function createModel() {
         {
             type:           'deepseek',
             id:             'deepseek-reasoner',
-            name:           'DeepSeek Reasoner',
+            name:           'DeepSeek R1',
             short_name:     'DeepSeek',
             icon:           'deepseek-reasoner.png',
             context_window: 64000
