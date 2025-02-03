@@ -95,20 +95,21 @@ export const getCost = (model_id, usage) => {
         output_cost      = 0
     
     const aliases = {
-        'gpt-4o-2024-08-06':          'gpt-4o',
-        'claude-3-haiku-20240307':    'claude-3-haiku',
-        'claude-3-5-haiku-20241022':  'claude-3-haiku',
-        'claude-3-5-haiku-latest':    'claude-3-5-haiku',
-        'claude-3-5-sonnet-20240620': 'claude-3-5-sonnet',
-        'claude-3-5-sonnet-20241022': 'claude-3-5-sonnet',
-        'claude-3-5-sonnet-latest':   'claude-3-5-sonnet',
-        'claude-3-opus-20240229':     'claude-3-opus',
-        'claude-3-opus-latest':       'claude-3-opus',
-        'gemini-2.0-flash-exp':       'gemini-2.0-flash',
-        'command-r-plus-08-2024':     'command-r-plus',
-        'llama3.2-11b-vision':        'llama-3-light',
-        'llama3.2-90b-vision':        'llama-3-medium',
-        'llama3.1-405b':              'llama-3-heavy'
+        'gpt-4o-2024-08-06':             'gpt-4o',
+        'claude-3-haiku-20240307':       'claude-3-haiku',
+        'claude-3-5-haiku-20241022':     'claude-3-haiku',
+        'claude-3-5-haiku-latest':       'claude-3-5-haiku',
+        'claude-3-5-sonnet-20240620':    'claude-3-5-sonnet',
+        'claude-3-5-sonnet-20241022':    'claude-3-5-sonnet',
+        'claude-3-5-sonnet-latest':      'claude-3-5-sonnet',
+        'claude-3-opus-20240229':        'claude-3-opus',
+        'claude-3-opus-latest':          'claude-3-opus',
+        'gemini-2.0-flash-exp':          'gemini-2.0-flash',
+        'gemini-2.0-flash-thinking-exp': 'gemini-2.0-flash',
+        'command-r-plus-08-2024':        'command-r-plus',
+        'llama3.2-11b-vision':           'llama-3-light',
+        'llama3.2-90b-vision':           'llama-3-medium',
+        'llama3.1-405b':                 'llama-3-heavy'
     }
 
     model_id = aliases[model_id] ?? model_id

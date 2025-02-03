@@ -65,6 +65,14 @@ function createModel() {
             context_window: 1000000
         },
         {
+            type:           'google',
+            id:             'gemini-2.0-flash-thinking-exp',
+            name:           'Gemini 2.0 Flash Thinking',
+            short_name:     'Gemini',
+            icon:           'gemini-pro.png',
+            context_window: 1000000
+        },
+        {
             type:           'x',
             id:             'grok-2-1212',
             name:           'Grok',
