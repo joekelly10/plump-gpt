@@ -13,7 +13,7 @@
         input,
         title
 
-    $: title = $messages.length > 1 ? $messages[1].content : 'Svelte GPT'
+    $: title = $messages.length > 1 ? $messages[1].content : 'Plump GPT - Fattens your thoughts'
 
     const chatModified    = () => input.chatLoaded()
     const regenerateReply = () => input.regenerateReply()
@@ -36,7 +36,7 @@
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.8.0/build/styles/github-dark.min.css'>
 </svelte:head>
 
-<main class='svelte-gpt' class:blur={$loader_active || $prompt_editor_active}>
+<main class='plump-gpt' class:blur={$loader_active || $prompt_editor_active}>
     <Header
         bind:this={header}
     />
@@ -70,7 +70,7 @@
 <style lang='sass'>
     +shared.globals
 
-    .svelte-gpt
+    .plump-gpt
         display:          flex
         flex-flow:        column nowrap
         height:           100vh
@@ -82,7 +82,7 @@
         transition:       transform easing.$quart-out 0.1s, filter easing.$quart-out 0.1s
     
     @media (min-width: breakpoint.$cover-at-width) and (min-height: breakpoint.$cover-at-height)
-        .svelte-gpt
+        .plump-gpt
             transform:  none
             filter:     none
             transition: filter easing.$quart-out 0.1s 0.05s, transform easing.$quart-out 0.1s 0.05s
