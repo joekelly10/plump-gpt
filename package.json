@@ -12,7 +12,6 @@
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
 		"@sveltejs/adapter-auto": "^3.2.5",
-		"@sveltejs/adapter-static": "^3.0.5",
 		"@sveltejs/kit": "^2.6.1",
 		"autoprefixer": "^10.4.14",
 		"sass": "^1.79.4",
@@ -24,8 +23,8 @@
 	"type": "module",
 	"dependencies": {
 		"highlight.js": "^11.8.0",
-		"marked": "^14.1.2",
-		"pocketbase": "^0.21.5",
+		"marked": "^15.0.6",
+		"pocketbase": "^0.25.1",
 		"tiktoken": "^1.0.10"
 	}
 }

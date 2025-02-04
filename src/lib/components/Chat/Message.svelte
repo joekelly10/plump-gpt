@@ -266,7 +266,7 @@
     
     .reasoning-content
         margin-bottom:    32px
-        padding:          round(0.75 * space.$default-padding) space.$default-padding
+        padding:          math.round(0.75 * space.$default-padding) space.$default-padding
         max-height:       290px
         overflow-y:       auto
         border-radius:    8px

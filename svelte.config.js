@@ -12,9 +12,9 @@ const sassPrependString = () => {
 		{ path: '_shared', namespace: 'shared' }
 	]
 
-	let prepend_string = '@use "sass:color"\n'
+	let prepend_string = '@use "sass:color"\n@use "sass:math"\n'
 	modules.forEach(module => prepend_string += `@use "src/lib/css/${module.path}" as ${module.namespace}\n`)
-	prepend_string += '@import "src/lib/css/_colors"\n'  // colours aren't namespaced, just straight $blue
+	prepend_string += '@use "src/lib/css/_colors" as *\n'  // colours aren't namespaced, just straight $blue
 
 	return prepend_string
 }
