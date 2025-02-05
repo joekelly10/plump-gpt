@@ -27,10 +27,10 @@
             tokens
         </div>
         <div class='input'>
-            {$usage.input_tokens} in
+            {$usage.input_tokens} input
         </div>
         <div class='output'>
-            {$usage.output_tokens} out
+            {$usage.output_tokens} output
         </div>
     </div>
     {#if cache_used}
