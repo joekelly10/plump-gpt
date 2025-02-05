@@ -36,13 +36,13 @@
         background-color: $background-lighter
         color:            $off-white
         font-size:        22px
-        transition:       padding-top 200ms easing.$quart-out
+        transition:       padding-top 150ms easing.$quart-out
         cursor:           pointer
 
         &:hover
             padding-top:      5px
             background-color: color.adjust($background-lighter, $lightness: 2%)
-            transition:       padding-top 100ms easing.$quart-out
+            transition:       none
         
         &:active
             background-color: color.adjust($background-lighter, $lightness: 1%)
