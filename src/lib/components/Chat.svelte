@@ -1,8 +1,9 @@
 <script>
     import { createEventDispatcher, tick } from 'svelte'
-    import { fade } from 'svelte/transition'
+    import { fade, fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { initialising, messages, forks, active_fork, stars, active_messages, fork_points, usage, loader_active, prompt_editor_active, deleting, adding_reply, provisionally_forking, below_autoscroll_threshold } from '$lib/stores/chat'
+    import { model, api_status } from '$lib/stores/ai'
     import { insert } from '$lib/utils/helpers'
     import UsageStats from '$lib/components/Chat/UsageStats.svelte'
     import Message from '$lib/components/Chat/Message.svelte'
@@ -121,6 +122,7 @@
     }
 
     const forkFrom = async (message_id) => {
+        if ($api_status !== 'idle') return
         forking_from = $active_fork
         $provisionally_forking = true
         insert(message_id, $forks[$active_fork].forked_at)
@@ -299,6 +301,14 @@
                 on:save
             />
         {/each}
+        {#if $api_status === 'sending'}
+            <div class='connecting' in:fly={{ y: -16, delay: 2500, duration: 125, easing: quartOut }}>
+                <img class='model-icon' src='/img/icons/models/{$model.icon}' alt='{$model.name}'>
+                <span class='text'>
+                    Connecting...
+                </span>
+            </div>
+        {/if}
     </div>
 </section>
 
@@ -324,4 +334,28 @@
         margin:         0 auto
         width:          space.$main-column-width
         padding-bottom: 84px
+
+    .connecting
+        display:         flex
+        align-items:     center
+        justify-content: center
+        gap:             16px
+        margin-top:      space.$default-padding
+        font-size:       14px
+        font-weight:     450
+        color:           $blue-grey
+        animation:       pulse 1.5s linear infinite
+
+        .model-icon
+            height: 21px
+    
+    @keyframes pulse
+        0%
+            opacity: 0.67
+        67%
+            opacity: 1
+        75%
+            opacity: 1
+        100%
+            opacity: 0.67
 </style>

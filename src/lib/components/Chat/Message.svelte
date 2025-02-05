@@ -128,16 +128,26 @@
     </div>
 
     <div class='content'>
-        {#if message.reasoning_content}
-            <div
-                class='reasoning-content'
-                bind:this={reasoning_div}
-                on:scroll={handleScrolledReasoning}
-            >
-                {@html marked(message.reasoning_content)}
-            </div>
+        {#if !message.content && !message.reasoning_content}
+            <p class='status-text'>
+                {#if streaming}
+                    <span class='status-text-emoji'>💤</span> Waiting for {message.model.name}...
+                {:else}
+                    <span class='status-text-emoji'>❌</span> No message received
+                {/if}
+            </p>
+        {:else}
+            {#if message.reasoning_content}
+                <div
+                    class='reasoning-content'
+                    bind:this={reasoning_div}
+                    on:scroll={handleScrolledReasoning}
+                >
+                    {@html marked(message.reasoning_content)}
+                </div>
+            {/if}
+            {@html marked(content)}
         {/if}
-        {@html marked(content)}
     </div>
 </div>
 
@@ -291,6 +301,16 @@
 
             &:last-child
                 margin-bottom: 0
+
+    .status-text
+        font-size:   14px
+        font-style:  italic
+        font-weight: 450
+        color:       $blue-grey
+
+        .status-text-emoji
+            margin-right: 8px
+            font-style:   normal
 
     @keyframes streaming
         0%
