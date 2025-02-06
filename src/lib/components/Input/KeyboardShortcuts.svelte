@@ -2,7 +2,7 @@
     import { shortcuts_active } from '$lib/stores/chat'
     import KeyboardShortcutsList from '$lib/components/Input/KeyboardShortcutsList.svelte'
 
-    const toggleShortcuts = () => $shortcuts_active = !$shortcuts_active
+    export const toggleShortcuts = () => $shortcuts_active = !$shortcuts_active
 </script>
 
 <button class='shortcuts-button' class:active={$shortcuts_active} on:click={toggleShortcuts}>

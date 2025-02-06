@@ -14,6 +14,7 @@
     let input
     let input_text
     let rate_limiter
+    let keyboard_shortcuts
 
     export const autofocus = () => input.focus()
 
@@ -362,11 +363,11 @@
         }
         if (e.metaKey && e.key === '/') {
             e.preventDefault()
-            return toggleShortcuts()
+            return keyboard_shortcuts.toggleShortcuts()
         }
         if (e.metaKey && e.shiftKey && e.key === '?') {
             e.preventDefault()
-            return toggleShortcuts()
+            return keyboard_shortcuts.toggleShortcuts()
         }
     }
 
@@ -389,7 +390,7 @@
 <svelte:document on:keydown={keydownDocument} />
 
 <section class='user-input'>
-    <KeyboardShortcuts/>
+    <KeyboardShortcuts bind:this={keyboard_shortcuts} />
 
     <div class='container'>
         <!-- svelte-ignore a11y-no-static-element-interactions -->
