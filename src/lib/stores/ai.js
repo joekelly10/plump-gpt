@@ -14,6 +14,7 @@ function createModel() {
             name:           'GPT-4o mini',
             short_name:     'GPT-4o mini',
             icon:           'gpt-4o-mini.png',
+            hosted_at:      'Open AI',
             context_window: 128000
         },
         {
@@ -22,6 +23,7 @@ function createModel() {
             name:           'GPT-4o',
             short_name:     'GPT-4o',
             icon:           'gpt-4o.png',
+            hosted_at:      'Open AI',
             context_window: 128000
         },
         {
@@ -30,6 +32,7 @@ function createModel() {
             name:           'Claude 3.5 Haiku',
             short_name:     'Claude',
             icon:           'claude-3-haiku.png',
+            hosted_at:      'Anthropic',
             context_window: 200000
         },
         {
@@ -38,6 +41,7 @@ function createModel() {
             name:           'Claude 3.5 Sonnet',
             short_name:     'Claude',
             icon:           'claude-3-sonnet.png',
+            hosted_at:      'Anthropic',
             context_window: 200000
         },
         {
@@ -46,6 +50,7 @@ function createModel() {
             name:           'Claude 3 Opus',
             short_name:     'Claude',
             icon:           'claude-3-opus.png',
+            hosted_at:      'Anthropic',
             context_window: 200000
         },
         {
@@ -62,6 +67,7 @@ function createModel() {
             name:           'Gemini 2.0 Flash',
             short_name:     'Gemini',
             icon:           'gemini-pro.png',
+            hosted_at:      'Google',
             context_window: 1000000
         },
         {
@@ -70,6 +76,7 @@ function createModel() {
             name:           'Gemini 2.0 Flash Thinking',
             short_name:     'Gemini',
             icon:           'gemini-pro.png',
+            hosted_at:      'Google',
             context_window: 1000000
         },
         {
@@ -78,6 +85,7 @@ function createModel() {
             name:           'Grok',
             short_name:     'Grok',
             icon:           'grok.png',
+            hosted_at:      'xAI',
             context_window: 131072
         },
         {
@@ -86,6 +94,7 @@ function createModel() {
             name:           'Command R',
             short_name:     'Command R',
             icon:           'command-r.png',
+            hosted_at:      'Cohere',
             context_window: 128000
         },
         {
@@ -94,6 +103,7 @@ function createModel() {
             name:           'Command R+',
             short_name:     'Command R+',
             icon:           'command-r-plus.png',
+            hosted_at:      'Cohere',
             context_window: 128000
         },
         {
@@ -102,6 +112,7 @@ function createModel() {
             name:           'Llama 3.2 11b',
             short_name:     'Llama 11b',
             icon:           'llama-3-light.png',
+            hosted_at:      'llama-api.com',
             context_window: 128000
         },
         {
@@ -110,6 +121,7 @@ function createModel() {
             name:           'Llama 3.2 90b',
             short_name:     'Llama 90b',
             icon:           'llama-3-medium.png',
+            hosted_at:      'llama-api.com',
             context_window: 128000
         },
         {
@@ -118,6 +130,7 @@ function createModel() {
             name:           'Llama 3.1 405b',
             short_name:     'Llama 405b',
             icon:           'llama-3-heavy.png',
+            hosted_at:      'llama-api.com',
             context_window: 128000
         },
         {
@@ -126,6 +139,7 @@ function createModel() {
             name:           'DeepSeek V3',
             short_name:     'V3',
             icon:           'deepseek-chat.png',
+            hosted_at:      'DeepSeek',
             context_window: 64000
         },
         {
@@ -134,6 +148,7 @@ function createModel() {
             name:           'DeepSeek R1',
             short_name:     'R1',
             icon:           'deepseek-reasoner.png',
+            hosted_at:      'DeepSeek',
             context_window: 64000
         }
     ]

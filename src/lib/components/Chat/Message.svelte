@@ -131,7 +131,7 @@
         {#if !message.content && !message.reasoning_content}
             <p class='status-text'>
                 {#if streaming}
-                    <span class='status-text-emoji'>💤</span> Waiting for {message.model.name}...
+                    <span class='status-text-emoji'>💤</span> Waiting for {message.model.short_name} to speak...
                 {:else}
                     <span class='status-text-emoji'>❌</span> No message received
                 {/if}

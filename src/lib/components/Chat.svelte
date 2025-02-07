@@ -305,7 +305,7 @@
             <div class='connecting' in:fly={{ y: -16, delay: 2500, duration: 125, easing: quartOut }}>
                 <img class='model-icon' src='/img/icons/models/{$model.icon}' alt='{$model.name}'>
                 <span class='text'>
-                    Connecting...
+                    Connecting to {$model.hosted_at} API...
                 </span>
             </div>
         {/if}
@@ -351,11 +351,9 @@
     
     @keyframes pulse
         0%
-            opacity: 0.67
-        67%
             opacity: 1
-        75%
-            opacity: 1
+        50%
+            opacity: 0.75
         100%
-            opacity: 0.67
+            opacity: 1
 </style>
