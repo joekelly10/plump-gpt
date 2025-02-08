@@ -34,10 +34,12 @@ It runs in your browser on `localhost:1337`.
 - 🔍 **Chat history**
     - Browse + search your past conversations
 - 💰 **Usage**
-    - See input + output token counts a) for each message, b) for whole conversation
-    - See total cost a) for each message, b) for whole conversation
-- 💰 **API pricing**
-    - Pay as you go means you save up to $25/mo vs. ChatGPT Plus
+    - See input + output token counts
+    - See cache read + write (where the API provides prompt caching)
+    - See total cost
+    - _^^ All of the above a) for each message, b) for whole conversation_
+- 💵 **API pricing**
+    - Pay as you go = much cheaper than all the various subscriptions
 
 
 
