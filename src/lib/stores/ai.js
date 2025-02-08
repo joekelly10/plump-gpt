@@ -117,31 +117,40 @@ function createModel() {
             context_window: 128000
         },
         {
-            type:           'llama',
-            id:             'llama3.2-11b-vision',
+            type:           'openrouter',
+            id:             'meta-llama/llama-3.2-11b-vision-instruct:free',
             name:           'Llama 3.2 11b',
             short_name:     'Llama 11b',
             icon:           'llama-3-light.png',
-            hosted_at:      'llama-api.com',
+            hosted_at:      'openrouter.ai',
             context_window: 128000
         },
         {
-            type:           'llama',
-            id:             'llama3.3-70b',
+            type:           'openrouter',
+            id:             'meta-llama/llama-3.3-70b-instruct:free',
             name:           'Llama 3.3 70b',
             short_name:     'Llama 70b',
             icon:           'llama-3-medium.png',
-            hosted_at:      'llama-api.com',
+            hosted_at:      'openrouter.ai',
             context_window: 128000
         },
         {
-            type:           'llama',
-            id:             'llama3.1-405b',
+            type:           'openrouter',
+            id:             'meta-llama/llama-3.1-405b-instruct',
             name:           'Llama 3.1 405b',
             short_name:     'Llama 405b',
             icon:           'llama-3-heavy.png',
-            hosted_at:      'llama-api.com',
-            context_window: 128000
+            hosted_at:      'openrouter.ai',
+            context_window: 33000
+        },
+        {
+            type:           'openrouter',
+            id:             'nousresearch/hermes-3-llama-3.1-405b',
+            name:           'Nous Hermes 3 405b',
+            short_name:     'Hermes',
+            icon:           'nous-hermes.png',
+            hosted_at:      'openrouter.ai',
+            context_window: 131000
         },
         {
             type:           'mistral',
@@ -160,6 +169,33 @@ function createModel() {
             icon:           'mistral-large.png',
             hosted_at:      'mistral.ai',
             context_window: 131000
+        },
+        {
+            type:           'openrouter',
+            id:             'qwen/qwen-turbo',
+            name:           'Qwen 2.5 Turbo',
+            short_name:     'Qwen',
+            icon:           'qwen-turbo.png',
+            hosted_at:      'openrouter.ai',
+            context_window: 1000000
+        },
+        {
+            type:           'openrouter',
+            id:             'qwen/qwen-plus',
+            name:           'Qwen 2.5 Plus',
+            short_name:     'Qwen',
+            icon:           'qwen-plus.png',
+            hosted_at:      'openrouter.ai',
+            context_window: 128000
+        },
+        {
+            type:           'openrouter',
+            id:             'qwen/qwen-max',
+            name:           'Qwen 2.5 Max',
+            short_name:     'Qwen',
+            icon:           'qwen-max.png',
+            hosted_at:      'openrouter.ai',
+            context_window: 32000
         },
         {
             type:           'deepseek',

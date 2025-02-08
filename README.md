@@ -14,7 +14,7 @@ It runs in your browser on `localhost:1337`.
 
 # Why?
 
-- 🤖 **Works with all models**
+- 🤖 **All models**
     - Switch freely between models + providers
     - Send the same prompt to multiple models
     - Switch models mid-chat, e.g. start with `gpt-4o-mini` then switch to `Claude 3.5 Sonnet`
@@ -67,14 +67,22 @@ It runs in your browser on `localhost:1337`.
 - <img alt='Command-R' src='./static/img/icons/models/command-r.png' width='21' height='21' valign='middle'>&nbsp; Command-R
 - <img alt='Command-R+' src='./static/img/icons/models/command-r-plus.png' width='21' height='21' valign='middle'>&nbsp; Command-R+
 
-**Meta/OS** (via llama-api.com)
+**Meta** (via openrouter.ai)
 - <img alt='Llama 3.2 11b' src='./static/img/icons/models/llama-3-light.png' width='21' height='21' valign='middle'>&nbsp; Llama 3.2 11b
 - <img alt='Llama 3.2 70b' src='./static/img/icons/models/llama-3-medium.png' width='21' height='21' valign='middle'>&nbsp; Llama 3.2 70b
 - <img alt='Llama 3.1 405b' src='./static/img/icons/models/llama-3-heavy.png' width='21' height='21' valign='middle'>&nbsp; Llama 3.1 405b
 
+**Nous** (via openrouter.ai)
+- <img alt='Nous Hermes 3 405b' src='./static/img/icons/models/nous-hermes.png' width='21' height='21' valign='middle'>&nbsp; Nous Hermes 3 405b
+
 **Mistral**
 - <img alt='Mistral Small' src='./static/img/icons/models/mistral-small.png' width='21' height='21' valign='middle'>&nbsp; Mistral Small
 - <img alt='Mistral Large' src='./static/img/icons/models/mistral-large.png' width='21' height='21' valign='middle'>&nbsp; Mistral Large
+
+**Qwen** (via openrouter.ai)
+- <img alt='Qwen 2.5 Turbo' src='./static/img/icons/models/qwen-turbo.png' width='21' height='21' valign='middle'>&nbsp; Qwen 2.5 Turbo
+- <img alt='Qwen 2.5 Plus' src='./static/img/icons/models/qwen-plus.png' width='21' height='21' valign='middle'>&nbsp; Qwen 2.5 Plus
+- <img alt='Qwen 2.5 Max' src='./static/img/icons/models/qwen-max.png' width='21' height='21' valign='middle'>&nbsp; Qwen 2.5 Max
 
 **DeepSeek**
 - <img alt='DeepSeek V3' src='./static/img/icons/models/deepseek-chat.png' width='21' height='21' valign='middle'>&nbsp; DeepSeek V3 (Chat)
@@ -97,7 +105,8 @@ ANTHROPIC_API_KEY=...
 GEMINI_API_KEY=...
 GROK_API_KEY=...
 COHERE_API_KEY=...
-LLAMA_API_KEY=...
+MISTRAL_API_KEY=...
+OPENROUTER_API_KEY=...
 DEEPSEEK_API_KEY=...
 ```
 

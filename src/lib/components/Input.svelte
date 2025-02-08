@@ -213,7 +213,7 @@
                     const json_string = buffer.slice(start_index, end_index)
                     try {
                         const data = JSON.parse(json_string)
-                        if (['open-ai', 'x', 'llama', 'mistral', 'deepseek'].includes($model.type)) {
+                        if (['open-ai', 'x', 'llama', 'mistral', 'deepseek', 'openrouter'].includes($model.type)) {
                             if ($model.id === 'deepseek-reasoner') {
                                 gpt_message.reasoning_content += data.choices[0]?.delta.reasoning_content ?? ''
                             }

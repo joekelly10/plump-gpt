@@ -95,26 +95,29 @@ export const getCost = (model_id, usage) => {
         output_cost      = 0
     
     const aliases = {
-        'gpt-4o-2024-08-06':                   'gpt-4o',
-        'claude-3-haiku-20240307':             'claude-3-haiku',
-        'claude-3-5-haiku-20241022':           'claude-3-haiku',
-        'claude-3-5-haiku-latest':             'claude-3-5-haiku',
-        'claude-3-5-sonnet-20240620':          'claude-3-5-sonnet',
-        'claude-3-5-sonnet-20241022':          'claude-3-5-sonnet',
-        'claude-3-5-sonnet-latest':            'claude-3-5-sonnet',
-        'claude-3-opus-20240229':              'claude-3-opus',
-        'claude-3-opus-latest':                'claude-3-opus',
-        'gemini-2.0-flash-lite-preview-02-05': 'gemini-2.0-flash-lite',
-        'gemini-2.0-flash-exp':                'gemini-2.0-flash',
-        'gemini-2.0-flash-thinking-exp-01-21': 'gemini-2.0-flash-thinking',
-        'gemini-2.0-pro-exp-02-05':            'gemini-2.0-pro',
-        'grok-2-1212':                         'grok-2',
-        'command-r-plus-08-2024':              'command-r-plus',
-        'llama3.2-11b-vision':                 'llama-3-light',
-        'llama3.2-90b-vision':                 'llama-3-medium',
-        'llama3.3-70b':                        'llama-3-medium',
-        'llama3.1-405b':                       'llama-3-heavy',
-        'mistral-large-latest':                'mistral-large'
+        'gpt-4o-2024-08-06':                             'gpt-4o',
+        'claude-3-haiku-20240307':                       'claude-3-haiku',
+        'claude-3-5-haiku-20241022':                     'claude-3-haiku',
+        'claude-3-5-haiku-latest':                       'claude-3-5-haiku',
+        'claude-3-5-sonnet-20240620':                    'claude-3-5-sonnet',
+        'claude-3-5-sonnet-20241022':                    'claude-3-5-sonnet',
+        'claude-3-5-sonnet-latest':                      'claude-3-5-sonnet',
+        'claude-3-opus-20240229':                        'claude-3-opus',
+        'claude-3-opus-latest':                          'claude-3-opus',
+        'gemini-2.0-flash-lite-preview-02-05':           'gemini-2.0-flash-lite',
+        'gemini-2.0-flash-exp':                          'gemini-2.0-flash',
+        'gemini-2.0-flash-thinking-exp-01-21':           'gemini-2.0-flash-thinking',
+        'gemini-2.0-pro-exp-02-05':                      'gemini-2.0-pro',
+        'grok-2-1212':                                   'grok-2',
+        'command-r-plus-08-2024':                        'command-r-plus',
+        'meta-llama/llama-3.2-11b-vision-instruct:free': 'llama-3-free',
+        'meta-llama/llama-3.3-70b-instruct:free':        'llama-3-free',
+        'meta-llama/llama-3.1-405b-instruct':            'llama-3-heavy',
+        'nousresearch/hermes-3-llama-3.1-405b':          'nous-hermes-3',
+        'mistral-large-latest':                          'mistral-large',
+        'qwen/qwen-turbo':                               'qwen-turbo',
+        'qwen/qwen-plus':                                'qwen-plus',
+        'qwen/qwen-max':                                 'qwen-max'
     }
 
     model_id = aliases[model_id] ?? model_id
@@ -246,20 +249,11 @@ export const getCost = (model_id, usage) => {
             }
         },
         {
-            id: 'llama-3-light',
+            id: 'llama-3-free',
             price: {
                 cents: {
-                    input_token:  40/1000000, // $0.40/mTok
-                    output_token: 40/1000000
-                }
-            }
-        },
-        {
-            id: 'llama-3-medium',
-            price: {
-                cents: {
-                    input_token:  280/1000000, // $2.80/mTok
-                    output_token: 280/1000000
+                    input_token:  0, // Free
+                    output_token: 0
                 }
             }
         },
@@ -267,8 +261,17 @@ export const getCost = (model_id, usage) => {
             id: 'llama-3-heavy',
             price: {
                 cents: {
-                    input_token:  320/1000000, // $3.20/mTok
-                    output_token: 320/1000000
+                    input_token:  80/1000000, // $0.80/mTok
+                    output_token: 80/1000000
+                }
+            }
+        },
+        {
+            id: 'nous-hermes-3',
+            price: {
+                cents: {
+                    input_token:  80/1000000, // $0.80/mTok
+                    output_token: 80/1000000
                 }
             }
         },
@@ -287,6 +290,33 @@ export const getCost = (model_id, usage) => {
                 cents: {
                     input_token:  0, // Free(?)
                     output_token: 0
+                }
+            }
+        },
+        {
+            id: 'qwen-turbo',
+            price: {
+                cents: {
+                    input_token:   5/1000000, // $0.05/mTok
+                    output_token: 20/1000000
+                }
+            }
+        },
+        {
+            id: 'qwen-plus',
+            price: {
+                cents: {
+                    input_token:   40/1000000, // $0.40/mTok
+                    output_token: 120/1000000
+                }
+            }
+        },
+        {
+            id: 'qwen-max',
+            price: {
+                cents: {
+                    input_token:  160/1000000, // $1.60/mTok
+                    output_token: 640/1000000
                 }
             }
         },
