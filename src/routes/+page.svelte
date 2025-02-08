@@ -26,7 +26,7 @@
     }
 
     const chatLoaded = () => {
-        chat.scrollToBottom(150)
+        chat.scrollToBottom(150, true)
         input.chatLoaded()
     }
 </script>

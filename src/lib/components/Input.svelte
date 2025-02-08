@@ -2,7 +2,7 @@
     import hljs from 'highlight.js'
     import { onMount, tick, createEventDispatcher } from 'svelte'
     import { addCopyButtons } from '$lib/utils/helpers'
-    import { initialising, chat_id, messages, forks, active_fork, stars, active_messages, loader_active, prompt_editor_active, config, adding_reply } from '$lib/stores/chat'
+    import { initialising, chat_id, messages, forks, active_fork, stars, active_messages, loader_active, prompt_editor_active, config, adding_reply, below_autoscroll_threshold } from '$lib/stores/chat'
     import { model, temperature, top_p, api_status } from '$lib/stores/ai'
     import { page } from '$app/stores'
     import KeyboardShortcuts from '$lib/components/Input/KeyboardShortcuts.svelte'
@@ -384,6 +384,8 @@
         window.history.replaceState(null, '', $page.url.toString())
         autofocus()
         await fetchAndSetActivePrompt()
+        await tick()
+        $below_autoscroll_threshold = true
     }
 </script>
 
