@@ -127,9 +127,9 @@ function createModel() {
         },
         {
             type:           'llama',
-            id:             'llama3.2-90b-vision',
-            name:           'Llama 3.2 90b',
-            short_name:     'Llama 90b',
+            id:             'llama3.3-70b',
+            name:           'Llama 3.3 70b',
+            short_name:     'Llama 70b',
             icon:           'llama-3-medium.png',
             hosted_at:      'llama-api.com',
             context_window: 128000
@@ -142,6 +142,24 @@ function createModel() {
             icon:           'llama-3-heavy.png',
             hosted_at:      'llama-api.com',
             context_window: 128000
+        },
+        {
+            type:           'mistral',
+            id:             'mistral-small',
+            name:           'Mistral Small',
+            short_name:     'Mistral',
+            icon:           'mistral-small.png',
+            hosted_at:      'mistral.ai',
+            context_window: 32000
+        },
+        {
+            type:           'mistral',
+            id:             'mistral-large-latest',
+            name:           'Mistral Large',
+            short_name:     'Mistral',
+            icon:           'mistral-large.png',
+            hosted_at:      'mistral.ai',
+            context_window: 131000
         },
         {
             type:           'deepseek',

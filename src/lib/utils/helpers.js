@@ -112,7 +112,9 @@ export const getCost = (model_id, usage) => {
         'command-r-plus-08-2024':              'command-r-plus',
         'llama3.2-11b-vision':                 'llama-3-light',
         'llama3.2-90b-vision':                 'llama-3-medium',
-        'llama3.1-405b':                       'llama-3-heavy'
+        'llama3.3-70b':                        'llama-3-medium',
+        'llama3.1-405b':                       'llama-3-heavy',
+        'mistral-large-latest':                'mistral-large'
     }
 
     model_id = aliases[model_id] ?? model_id
@@ -267,6 +269,24 @@ export const getCost = (model_id, usage) => {
                 cents: {
                     input_token:  320/1000000, // $3.20/mTok
                     output_token: 320/1000000
+                }
+            }
+        },
+        {
+            id: 'mistral-small',
+            price: {
+                cents: {
+                    input_token:  0, // Free
+                    output_token: 0
+                }
+            }
+        },
+        {
+            id: 'mistral-large',
+            price: {
+                cents: {
+                    input_token:  0, // Free(?)
+                    output_token: 0
                 }
             }
         },
