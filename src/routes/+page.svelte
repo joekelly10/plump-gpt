@@ -22,11 +22,11 @@
     const sendingMessage  = () => chat.sendingMessage()
 
     const scrollChatToBottom = (event) => {
-        chat.scrollToBottom(0, event.detail?.forced || false)
+        chat.scrollToBottom({ forced: event.detail?.forced ?? false })
     }
 
     const chatLoaded = () => {
-        chat.scrollToBottom(150, true)
+        chat.scrollToBottom({ delay: 150, forced: true })
         input.chatLoaded({ switch_model: true })
     }
 </script>

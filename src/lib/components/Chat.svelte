@@ -18,16 +18,16 @@
 
     export const sendingMessage = () => $provisionally_forking = false
 
-    export const scrollToBottom = (delay = 0, forced = false) => {
+    export const scrollToBottom = (options = { delay: 0, forced: false }) => {
         setTimeout(() => {
-            if ($below_autoscroll_threshold || forced) {
+            if ($below_autoscroll_threshold || options.forced) {
                 chat.scroll({ top: chat.scrollHeight, behavior: 'smooth'})
             }
             if ($active_messages) {
                 const id_of_last = $active_messages[$active_messages.length - 1].id
                 message_refs[id_of_last]?.scrollReasoningToBottom()
             }
-        }, delay)
+        }, options.delay)
     }
 
     $: processed_messages = $active_messages.slice(1).map((message, i) => ({
