@@ -21,13 +21,15 @@
     export const regenerateReply = async () => sendMessage(true)
     export const addReply        = async () => sendMessage(true)
 
-    export const chatLoaded = async () => {
+    export const chatLoaded = async (options = {}) => {
         autofocus()
         await tick()
         hljs.highlightAll()
         addCopyButtons()
-        const last_used_model = $active_messages[$active_messages.length - 1].model?.id
-        if (last_used_model) model.setById(last_used_model)
+        if (options.switch_model) {
+            const last_used_model = $active_messages[$active_messages.length - 1].model?.id
+            if (last_used_model) model.setById(last_used_model)
+        }
     }
 
     onMount(async () => {

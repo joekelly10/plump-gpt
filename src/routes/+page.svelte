@@ -27,7 +27,7 @@
 
     const chatLoaded = () => {
         chat.scrollToBottom(150, true)
-        input.chatLoaded()
+        input.chatLoaded({ switch_model: true })
     }
 </script>
 
