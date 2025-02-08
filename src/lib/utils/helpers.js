@@ -95,21 +95,23 @@ export const getCost = (model_id, usage) => {
         output_cost      = 0
     
     const aliases = {
-        'gpt-4o-2024-08-06':             'gpt-4o',
-        'claude-3-haiku-20240307':       'claude-3-haiku',
-        'claude-3-5-haiku-20241022':     'claude-3-haiku',
-        'claude-3-5-haiku-latest':       'claude-3-5-haiku',
-        'claude-3-5-sonnet-20240620':    'claude-3-5-sonnet',
-        'claude-3-5-sonnet-20241022':    'claude-3-5-sonnet',
-        'claude-3-5-sonnet-latest':      'claude-3-5-sonnet',
-        'claude-3-opus-20240229':        'claude-3-opus',
-        'claude-3-opus-latest':          'claude-3-opus',
-        'gemini-2.0-flash-exp':          'gemini-2.0-flash',
-        'gemini-2.0-flash-thinking-exp': 'gemini-2.0-flash',
-        'command-r-plus-08-2024':        'command-r-plus',
-        'llama3.2-11b-vision':           'llama-3-light',
-        'llama3.2-90b-vision':           'llama-3-medium',
-        'llama3.1-405b':                 'llama-3-heavy'
+        'gpt-4o-2024-08-06':                   'gpt-4o',
+        'claude-3-haiku-20240307':             'claude-3-haiku',
+        'claude-3-5-haiku-20241022':           'claude-3-haiku',
+        'claude-3-5-haiku-latest':             'claude-3-5-haiku',
+        'claude-3-5-sonnet-20240620':          'claude-3-5-sonnet',
+        'claude-3-5-sonnet-20241022':          'claude-3-5-sonnet',
+        'claude-3-5-sonnet-latest':            'claude-3-5-sonnet',
+        'claude-3-opus-20240229':              'claude-3-opus',
+        'claude-3-opus-latest':                'claude-3-opus',
+        'gemini-2.0-flash-lite-preview-02-05': 'gemini-2.0-flash-lite',
+        'gemini-2.0-flash-exp':                'gemini-2.0-flash',
+        'gemini-2.0-pro-exp-02-05':            'gemini-2.0-pro',
+        'grok-2-1212':                         'grok-2',
+        'command-r-plus-08-2024':              'command-r-plus',
+        'llama3.2-11b-vision':                 'llama-3-light',
+        'llama3.2-90b-vision':                 'llama-3-medium',
+        'llama3.1-405b':                       'llama-3-heavy'
     }
 
     model_id = aliases[model_id] ?? model_id
@@ -173,25 +175,16 @@ export const getCost = (model_id, usage) => {
                     input_token:  1500/1000000, // $15.00/mTok
                     output_token: 7500/1000000,
                     cache_write:  1875/1000000,
-                    cache_read:   150/1000000
+                    cache_read:    150/1000000
                 }
             }
         },
         {
-            id: 'gemini-1.5-flash',
+            id: 'gemini-2.0-flash-lite',
             price: {
                 cents: {
-                    input_token:  75/10000000, // $0.075/mTok
-                    output_token: 30/1000000   // $0.30/mTok
-                }
-            }
-        },
-        {
-            id: 'gemini-1.5-pro',
-            price: {
-                cents: {
-                    input_token:  125/1000000, // $1.25/mTok
-                    output_token: 500/1000000
+                    input_token:  7.5/1000000, // $0.075/mTok
+                    output_token:  15/1000000  // $0.15/mTok
                 }
             }
         },
@@ -199,22 +192,31 @@ export const getCost = (model_id, usage) => {
             id: 'gemini-2.0-flash',
             price: {
                 cents: {
-                    input_token:  125/1000000, // $1.25/mTok
-                    output_token: 500/1000000
+                    input_token:  10/1000000, // $0.10/mTok
+                    output_token: 40/1000000
                 }
             }
         },
         {
-            id: 'grok-beta',
+            id: 'gemini-2.0-flash-thinking',
             price: {
                 cents: {
-                    input_token:  500/1000000, // $5.00/mTok
-                    output_token: 1500/1000000
+                    input_token:  0, // Free (for now)
+                    output_token: 0  //
                 }
             }
         },
         {
-            id: 'grok-2-1212',
+            id: 'gemini-2.0-pro',
+            price: {
+                cents: {
+                    input_token:  0, // Free (for now)
+                    output_token: 0  //
+                }
+            }
+        },
+        {
+            id: 'grok-2',
             price: {
                 cents: {
                     input_token:  200/1000000, // $2.00/mTok

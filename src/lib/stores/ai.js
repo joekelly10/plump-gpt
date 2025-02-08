@@ -55,8 +55,17 @@ function createModel() {
         },
         {
             type:           'google',
-            id:             'gemini-1.5-flash',
-            name:           'Gemini 1.5 Flash',
+            id:             'gemini-2.0-flash-lite-preview-02-05',
+            name:           'Gemini 2.0 Flash Lite',
+            short_name:     'Gemini',
+            icon:           'gemini-flash-lite.png',
+            hosted_at:      'Google',
+            context_window: 1000000
+        },
+        {
+            type:           'google',
+            id:             'gemini-2.0-flash',
+            name:           'Gemini 2.0 Flash',
             short_name:     'Gemini',
             icon:           'gemini-flash.png',
             hosted_at:      'Google',
@@ -64,17 +73,8 @@ function createModel() {
         },
         {
             type:           'google',
-            id:             'gemini-1.5-pro',
-            name:           'Gemini 1.5 Pro',
-            short_name:     'Gemini',
-            icon:           'gemini-pro.png',
-            hosted_at:      'Google',
-            context_window: 1000000
-        },
-        {
-            type:           'google',
-            id:             'gemini-2.0-flash-001',
-            name:           'Gemini 2.0 Flash',
+            id:             'gemini-2.0-pro-exp-02-05',
+            name:           'Gemini 2.0 Pro',
             short_name:     'Gemini',
             icon:           'gemini-pro.png',
             hosted_at:      'Google',
@@ -83,7 +83,7 @@ function createModel() {
         {
             type:           'x',
             id:             'grok-2-1212',
-            name:           'Grok',
+            name:           'Grok 2',
             short_name:     'Grok',
             icon:           'grok.png',
             hosted_at:      'xAI',
