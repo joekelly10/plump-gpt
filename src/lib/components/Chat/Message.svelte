@@ -169,7 +169,6 @@
     .message
         position:     relative
         margin:       1px 0
-        min-height:   space.$avatar-container-width
         box-sizing:   border-box
         padding:      space.$default-padding
         padding-left: space.$avatar-container-width
@@ -216,6 +215,7 @@
                 transition:       none
         
         &.streaming
+            min-height:     space.$avatar-container-width
             padding-bottom: 1.25 * space.$default-padding
             animation:      streaming 1.5s linear infinite
 
