@@ -106,6 +106,7 @@ export const getCost = (model_id, usage) => {
         'claude-3-opus-latest':                'claude-3-opus',
         'gemini-2.0-flash-lite-preview-02-05': 'gemini-2.0-flash-lite',
         'gemini-2.0-flash-exp':                'gemini-2.0-flash',
+        'gemini-2.0-flash-thinking-exp-01-21': 'gemini-2.0-flash-thinking',
         'gemini-2.0-pro-exp-02-05':            'gemini-2.0-pro',
         'grok-2-1212':                         'grok-2',
         'command-r-plus-08-2024':              'command-r-plus',
