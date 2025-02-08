@@ -59,12 +59,13 @@ function createModel() {
             name:           'Gemini 1.5 Flash',
             short_name:     'Gemini',
             icon:           'gemini-flash.png',
+            hosted_at:      'Google',
             context_window: 1000000
         },
         {
             type:           'google',
-            id:             'gemini-2.0-flash-exp',
-            name:           'Gemini 2.0 Flash',
+            id:             'gemini-1.5-pro',
+            name:           'Gemini 1.5 Pro',
             short_name:     'Gemini',
             icon:           'gemini-pro.png',
             hosted_at:      'Google',
@@ -72,8 +73,8 @@ function createModel() {
         },
         {
             type:           'google',
-            id:             'gemini-2.0-flash-thinking-exp',
-            name:           'Gemini 2.0 Flash Thinking',
+            id:             'gemini-2.0-flash-001',
+            name:           'Gemini 2.0 Flash',
             short_name:     'Gemini',
             icon:           'gemini-pro.png',
             hosted_at:      'Google',
