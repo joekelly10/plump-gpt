@@ -14,14 +14,14 @@ It runs in your browser on `localhost:1337`.
 
 # Why?
 
-- 📐 **Forks** (branched conversations)
-    - No-one had done this, so I did it
-    - I use this all the time
-    - It should be fundamental to any LLM interface, imo
-- 🤖 **All models**
-    - Switch freely between models
-    - Ask the same question to multiple models
-    - Switch models mid-conversation, e.g. start with `gpt-4o-mini` then switch to `Claude 3.5 Sonnet`
+- 🤖 **Works with all models**
+    - Switch freely between models + providers
+    - Send the same prompt to multiple models
+    - Switch models mid-chat, e.g. start with `gpt-4o-mini` then switch to `Claude 3.5 Sonnet`
+- 📐 **Forks**
+    - Branched conversations
+    - No-one had done this, and I needed it, so I did it
+    - Should be a fundamental feature of any LLM interface, imo
 - 📝 **System prompt**
     - Full control of the `system_prompt`
     - Store multiple prompts in the db and switch easily
@@ -30,7 +30,7 @@ It runs in your browser on `localhost:1337`.
 - 🚀 **Quick launch**
     - Start a new chat 'from anywhere' via a keyboard launcher (e.g. [Alfred](https://www.alfredapp.com/) on MacOS)
     - Model + prompt are passed via URL query parameters, `http://localhost:1337/?model=gpt-4o&prompt=wake+up+gpt`
-    - No-one had done this either, and I use it all the time too
+    - No-one had done this either, and I needed it
 - 🔍 **Chat history**
     - Browse + search your past conversations
 - 💰 **Usage**
