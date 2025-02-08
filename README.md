@@ -53,11 +53,12 @@ It runs in your browser on `localhost:1337`.
 - <img alt='Claude Opus' src='./static/img/icons/models/claude-3-opus.png' width='21' height='21' valign='middle'>&nbsp; Claude 3 Opus
 
 **Google**
-- <img alt='Gemini Flash' src='./static/img/icons/models/gemini-flash.png' width='21' height='21' valign='middle'>&nbsp; Gemini 1.5 Flash
-- <img alt='Gemini Pro' src='./static/img/icons/models/gemini-pro.png' width='21' height='21' valign='middle'>&nbsp; Gemini 1.5 Pro
+- <img alt='Gemini Flash' src='./static/img/icons/models/gemini-flash-lite.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.0 Flash Lite
+- <img alt='Gemini Flash' src='./static/img/icons/models/gemini-flash.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.0 Flash
+- <img alt='Gemini Pro' src='./static/img/icons/models/gemini-pro.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.0 Pro
 
 **X**
-- <img alt='Grok' src='./static/img/icons/models/grok.png' width='21' height='21' valign='middle'>&nbsp; Grok
+- <img alt='Grok' src='./static/img/icons/models/grok.png' width='21' height='21' valign='middle'>&nbsp; Grok 2
 
 **Cohere**
 - <img alt='Command-R' src='./static/img/icons/models/command-r.png' width='21' height='21' valign='middle'>&nbsp; Command-R
