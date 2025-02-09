@@ -7,7 +7,7 @@
     }
 
     const keydown = (e) => {
-        if (e.ctrlKey && e.key === 'o') {
+        if ((e.ctrlKey && e.key === 'o') || (e.metaKey && e.key === 'o')) {
             e.preventDefault()
             if ($api_status === 'idle') $loader_active = !$loader_active
         }
