@@ -69,6 +69,14 @@
             <div class='author-container'>
                 <img class='avatar user' src='/img/avatar.png' alt='Joe'>
             </div>
+            {#if !chat.messages[0].is_default}
+                <div class='system-prompt'>
+                    System prompt
+                    <div class='system-prompt-title'>
+                        {chat.messages[0].system_prompt_title}
+                    </div>
+                </div>
+            {/if}
             <div class='content'>
                 {@html marked(content)}
             </div>
@@ -173,6 +181,21 @@
 
                 &.user
                     border-radius: 8px
+        
+        .system-prompt
+            margin-bottom:    space.$default-padding
+            padding:          24px
+            border-radius:    8px
+            background-color: $background-darker
+            font-size:        14px
+            color:            $blue-grey
+            text-align:       center
+
+            .system-prompt-title
+                margin-top:  6px
+                font-size:   16px
+                font-weight: 600
+                color:       $off-white
     
     .message-count
         margin-top: space.$default-padding
