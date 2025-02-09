@@ -98,9 +98,9 @@ It runs in your browser on `localhost:1337`.
         - On MacOS you may need to do `⌘+Click` -> `Open` -> `Confirm open`
     - Close the terminal window once it's done
 
-2. Create a `.env` file in the root directory, add `OPENAI_TOKEN=<your_token_goes_here>` and save:
+2. Create a `.env` file in the root directory (or rename the `.env.example` file to `.env`), add `OPENAI_API_KEY=<your_key_goes_here>` and save:
 ```
-OPENAI_TOKEN=sk-YoUrOpEnAiAcCeSsToKeNtHaTyOuGeTfRoMtHeIrWeBsItE
+OPENAI_API_KEY=sk-YoUrOpEnAiAcCeSsToKeNtHaTyOuGeTfRoMtHeIrWeBsItE
 ANTHROPIC_API_KEY=...
 GEMINI_API_KEY=...
 GROK_API_KEY=...
