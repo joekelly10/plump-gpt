@@ -7,6 +7,7 @@
     import { insert } from '$lib/utils/helpers'
     import UsageStats from '$lib/components/Chat/UsageStats.svelte'
     import Message from '$lib/components/Chat/Message.svelte'
+    import WaitingDots from '$lib/components/Chat/WaitingDots.svelte'
 
     const dispatch = createEventDispatcher()
     
@@ -305,7 +306,7 @@
             <div class='connecting' in:fly={{ y: -16, delay: 2500, duration: 125, easing: quartOut }}>
                 <img class='model-icon' src='/img/icons/models/{$model.icon}' alt='{$model.name}'>
                 <span class='text'>
-                    Connecting to {$model.hosted_at} API...
+                    Connecting to {$model.hosted_at} API<WaitingDots/>
                 </span>
             </div>
         {/if}
@@ -344,16 +345,20 @@
         font-size:       14px
         font-weight:     450
         color:           $blue-grey
-        animation:       pulse 1.5s linear infinite
+        animation:       pulse 2s linear infinite
 
         .model-icon
             height: 21px
     
     @keyframes pulse
         0%
+            opacity: 0.8
+        20%
+            opacity: 0.8
+        60%
             opacity: 1
-        50%
-            opacity: 0.75
+        90%
+            opacity: 1
         100%
-            opacity: 1
+            opacity: 0.8
 </style>

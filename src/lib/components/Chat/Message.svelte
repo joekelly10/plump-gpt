@@ -11,6 +11,7 @@
     import MessageInfo from '$lib/components/Chat/MessageInfo.svelte'
     import SiblingForks from '$lib/components/Chat/SiblingForks.svelte'
     import StraightForks from '$lib/components/Chat/StraightForks.svelte'
+    import WaitingDots from '$lib/components/Chat/WaitingDots.svelte'
 
     marked.use({ breaks: true, mangle: false, headerIds: false })
 
@@ -131,7 +132,7 @@
         {#if !message.content && !message.reasoning_content}
             <p class='status-text'>
                 {#if streaming}
-                    <span class='status-text-emoji'>💤</span> Waiting for {message.model.short_name} to speak...
+                    <span class='status-text-emoji'>💤</span> Waiting for {message.model.short_name} to speak<WaitingDots/>
                 {:else}
                     <span class='status-text-emoji'>❌</span> No message received
                 {/if}
