@@ -1,5 +1,5 @@
 import { writable, derived } from 'svelte/store'
-import { getCost } from '$lib/utils/helpers'
+import { getCost } from '$lib/utils/prices'
 
 export const initialising               = writable(true)
 export const chat_id                    = writable(null)

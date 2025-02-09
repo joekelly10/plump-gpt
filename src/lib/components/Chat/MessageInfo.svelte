@@ -1,7 +1,8 @@
 <script>
     import { fade, slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { formatDate, getCost } from '$lib/utils/helpers'
+    import { formatDate } from '$lib/utils/helpers'
+    import { getCost } from '$lib/utils/prices'
     import { onMount, onDestroy } from 'svelte'
 
     export let message
