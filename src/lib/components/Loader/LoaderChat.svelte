@@ -58,6 +58,13 @@
             {/if}
         </div>
 
+        {#if chat.stars?.length > 0}
+            <div class='star-count'>
+                <svg class='star-icon' viewBox='0 0 48 48' xml:space='preserve'><g stroke-width='0'/><g stroke-linecap='round' stroke-linejoin='round'/><path d='m26.285 2.486 5.407 10.956a2.58 2.58 0 0 0 1.944 1.412l12.091 1.757c2.118.308 2.963 2.91 1.431 4.403l-8.749 8.528a2.58 2.58 0 0 0-.742 2.285l2.065 12.042c.362 2.109-1.852 3.717-3.746 2.722l-10.814-5.685a2.59 2.59 0 0 0-2.403 0l-10.814 5.685c-1.894.996-4.108-.613-3.746-2.722l2.065-12.042a2.58 2.58 0 0 0-.742-2.285L.783 21.014c-1.532-1.494-.687-4.096 1.431-4.403l12.091-1.757a2.58 2.58 0 0 0 1.944-1.412l5.407-10.956c.946-1.919 3.682-1.919 4.629 0'/></svg>
+                {chat.stars.length}
+            </div>
+        {/if}
+
         <div class='message'>
             <div class='author-container'>
                 <img class='avatar user' src='/img/avatar.png' alt='Joe'>
@@ -204,6 +211,25 @@
     .fork-count
         .bull
             margin: 0 5px
+    
+    .star-count
+        display:          flex
+        align-items:      center
+        gap:              8px
+        position:         absolute
+        top:              space.$default-padding - 8px
+        right:            100%
+        margin-right:     space.$default-padding
+        padding:          8px 12px
+        background-color: $yellow
+        border-radius:    8px
+        white-space:      nowrap
+        font-weight:      600
+        color:            $background-darker
+
+        .star-icon
+            height: 19px
+            fill:   $background-darker
     
     .actions
         position:    absolute
