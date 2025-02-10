@@ -65,8 +65,10 @@ const model_prices = [
         id: 'gemini-2.0-flash-lite',
         price: {
             cents: {
-                input_token:  7.5/1000000, // $0.075/mTok
-                output_token:  15/1000000  // $0.15/mTok
+                // input_token:  7.5/1000000, // $0.075/mTok
+                // output_token:  15/1000000  // $0.15/mTok
+                input_token:  0, // Free (for now)
+                output_token: 0  //
             }
         }
     },
@@ -74,8 +76,10 @@ const model_prices = [
         id: 'gemini-2.0-flash',
         price: {
             cents: {
-                input_token:  10/1000000, // $0.10/mTok
-                output_token: 40/1000000
+                // input_token:  10/1000000, // $0.10/mTok
+                // output_token: 40/1000000
+                input_token:  0, // Free (for now)
+                output_token: 0  //
             }
         }
     },
@@ -287,5 +291,16 @@ export const getCost = (model_id, usage) => {
         output:        output_cost,
         total:         cache_write_cost + cache_read_cost + input_cost + output_cost,
         cache_savings: cache_savings
+    }
+}
+
+export const getPrices = (model_id) => {
+    model_id = aliases[model_id] ?? model_id
+
+    const model = model_prices.find(m => m.id === model_id)
+
+    return {
+        input:  model.price.cents.input_token,
+        output: model.price.cents.output_token
     }
 }

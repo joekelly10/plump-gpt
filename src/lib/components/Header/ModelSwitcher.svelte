@@ -1,7 +1,16 @@
 <script>
     import { page } from '$app/stores'
     import { model } from '$lib/stores/ai'
+    import { getPrices } from '$lib/utils/prices'
     import { onMount } from 'svelte'
+    import { slide } from 'svelte/transition'
+    import { quartOut } from 'svelte/easing'
+
+    let hovering = false
+
+    $: prices            = getPrices($model.id)
+    $: input_price_text  = prices.input  === 0 ? 'Free' : `$${(prices.input * 10000).toFixed(2)}`
+    $: output_price_text = prices.output === 0 ? 'Free' : `$${(prices.output * 10000).toFixed(2)}`
 
     onMount(() => getModelFromURL())
     
@@ -41,9 +50,21 @@
     title='Switch model (⌘+M)'
     on:click={clicked}
     on:contextmenu={rightClicked}
+    on:mouseenter={() => hovering = true}
+    on:mouseleave={() => hovering = false}
 >
     <img class='icon' src='img/icons/models/{$model.icon}' alt='{$model.name}'>
     {$model.name}
+    {#if hovering}
+        <div class='prices' in:slide={{ axis: 'x', duration: 250, easing: quartOut }} out:slide={{ axis: 'x', duration: 125, easing: quartOut }}>
+            <span class='input-price'>
+                {input_price_text}
+            </span>
+            <span class='output-price'>
+                {output_price_text}
+            </span>
+        </div>
+    {/if}
 </button>
 
 <style lang='sass'>
@@ -66,4 +87,14 @@
     .icon
         margin-right: 16px
         height:       21px
+    
+    .prices
+        display:        flex
+        flex-direction: column
+        margin-left:    16px
+        font-size:      10px
+        font-weight:    500
+        color:          $blue-grey
+        text-align:     left
+        line-height:    12px
 </style>
