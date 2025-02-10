@@ -3,7 +3,8 @@
 
     const dispatch = createEventDispatcher()
 
-    export let search_input,
+    export let filter,
+               search_input,
                search_value,
                searched_value,
                search_timer,
@@ -27,9 +28,39 @@
             dispatch('fetchChats')
         }, 250)
     }
+
+    const clickedAll = () => {
+        filter = 'all'
+        dispatch('fetchChats')
+    }
+
+    const clickedStarred = () => {
+        filter = 'starred'
+        dispatch('fetchChats')
+    }
+
+    const clickedNonDefault = () => {
+        filter = 'non-default'
+        dispatch('fetchChats')
+    }
 </script>
 
 <div class='search-header'>
+    <div class='search-options'>
+        <div class='search-option-buttons-container'>
+            <button class='search-option-button all-button' class:active={filter === 'all'} on:click={clickedAll}>
+                All
+            </button>
+            <div class='separator'/>
+            <button class='search-option-button starred-button' class:active={filter === 'starred'} on:click={clickedStarred}>
+                Starred
+            </button>
+            <div class='separator'/>
+            <button class='search-option-button non-default-button' class:active={filter === 'non-default'} on:click={clickedNonDefault}>
+                Non-default
+            </button>
+        </div>
+    </div>
     <div class='search-container'>
         <!-- svelte-ignore a11y-positive-tabindex -->
         <input
@@ -66,6 +97,8 @@
 </div>
 
 <style lang='sass'>
+    $width: 720px
+
     .search-header
         margin-bottom:    space.$default-padding
         padding:          space.$default-padding 0 12px
@@ -73,19 +106,56 @@
         text-align:       center
         user-select:      none
 
-        .search-container
-            margin:           0 auto
-            width:            space.$main-column-width
-            max-width:        720px
-            box-sizing:       border-box
-            padding:          16px 20px
-            border:           1px solid $blue-grey
-            border-radius:    12px
-            background-color: $background-lighter
+    .search-options
+        margin:       0 auto space.$default-padding
+        width:        $width
+        box-sizing:   border-box
+        padding-left: 12px
+        color:        $blue-grey
 
-            &:focus-within
-                border-color: $blue
-                box-shadow:   0 0 0 1px $blue
+        .search-option-buttons-container
+            display:     flex
+            align-items: center
+            gap:         20px
+
+            .separator
+                width:            1px
+                height:           12px
+                background-color: white(0.2)
+
+        .search-option-button
+            padding:       7px 12px
+            border-radius: 6px
+            cursor:        pointer
+
+            &:hover
+                color: $off-white
+
+            &.active
+                font-weight: 600
+                color:       $background-darkest
+
+                &.all-button
+                    background-color: $off-white
+
+                &.starred-button
+                    background-color: $yellow
+
+                &.non-default-button
+                    background-color: $blue
+
+    .search-container
+        margin:           0 auto
+        width:            $width
+        box-sizing:       border-box
+        padding:          16px 20px
+        border:           1px solid $blue-grey
+        border-radius:    12px
+        background-color: $background-lighter
+
+        &:focus-within
+            border-color: $blue
+            box-shadow:   0 0 0 1px $blue
 
         .search-input
             width:            100%
@@ -114,18 +184,19 @@
         justify-content: space-between
         align-items:     center
         margin:          0 auto
-        width:           space.$main-column-width
-        max-width:       720px
+        width:           $width
+        box-sizing:      border-box
         padding-top:     12px
-        padding-left:    24px
+        padding-left:    12px
         line-height:     64px
 
         .total-chats
             font-weight: 600
 
         .page-controls
-            text-align:  center
-            font-weight: 600
+            margin-right: -12px
+            text-align:   center
+            font-weight:  600
         
         .prev-page-button,
         .next-page-button

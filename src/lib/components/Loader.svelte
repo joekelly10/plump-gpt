@@ -9,7 +9,8 @@
     
     const dispatch = createEventDispatcher()
     
-    let chats          = [],
+    let filter         = 'all',
+        chats          = [],
         keyboard_index = null,
         total_chats    = 0,
         total_pages    = 0,
@@ -47,10 +48,10 @@
         let url
         if (search_value) {
             console.log('\n📂 + 🔍 Fetching chats w/ search term:', search_value)
-            url = `/api/chats/search?query=${encodeURIComponent(search_value)}&page=${active_page}&per_page=10`
+            url = `/api/chats/search?query=${encodeURIComponent(search_value)}&filter=${filter}&page=${active_page}&per_page=10`
         } else {
             console.log('\n📂 Fetching chats...')
-            url = `/api/chats?page=${active_page}&per_page=10`
+            url = `/api/chats?filter=${filter}&page=${active_page}&per_page=10`
         }
 
         chats = []
@@ -307,6 +308,7 @@
             bind:this={search}
             bind:search_value={search_value}
             bind:searched_value={searched_value}
+            bind:filter={filter}
             total_chats={total_chats}
             total_pages={total_pages}
             active_page={active_page}
