@@ -57,7 +57,7 @@
     }
 
     const keydown = (e) => {
-        if (e.ctrlKey && e.key === 's') {
+        if ((e.ctrlKey && e.key === 's') || (e.metaKey && e.key === 's')) {
             e.preventDefault()
             save()
         }
