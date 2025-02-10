@@ -307,7 +307,7 @@
         font-size:   14px
         font-style:  italic
         font-weight: 450
-        color:       $blue-grey
+        color:       $pale-blue
 
         .status-text-emoji
             margin-right: 8px
