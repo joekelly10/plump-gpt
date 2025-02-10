@@ -238,9 +238,14 @@
                                 gpt_message.content += `\n\n**🚨 Error: ${data.error.message}**`
                             }
                         } else if ($model.type === 'google') {
-                            gpt_message.content += data.candidates[0].content.parts[0].text ?? ''
-                            gpt_message.usage.input_tokens = data.usageMetadata.promptTokenCount
-                            gpt_message.usage.output_tokens = data.usageMetadata.candidatesTokenCount
+                            if (data.error) {
+                                console.log('🤖-❌ Error:', data.error)
+                                gpt_message.content += `\n\n**🚨 Error: ${data.error.message}**`
+                            } else {
+                                gpt_message.content += data.candidates[0].content.parts[0].text ?? ''
+                                gpt_message.usage.input_tokens = data.usageMetadata.promptTokenCount
+                                gpt_message.usage.output_tokens = data.usageMetadata.candidatesTokenCount
+                            }
                         } else if ($model.type === 'cohere') {
                             if (data.type === 'content-delta') {
                                 gpt_message.content += data.delta.message.content.text
