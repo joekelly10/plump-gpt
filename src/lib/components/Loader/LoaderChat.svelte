@@ -186,7 +186,7 @@
             margin-bottom:    space.$default-padding
             padding:          24px
             border-radius:    8px
-            background-color: $background-darker
+            background-color: black(0.2)
             font-size:        14px
             color:            $blue-grey
             text-align:       center
