@@ -9,8 +9,8 @@
     import MessageControls from '$lib/components/Chat/MessageControls.svelte'
     import ProvisionalForkControls from '$lib/components/Chat/ProvisionalForkControls.svelte'
     import MessageInfo from '$lib/components/Chat/MessageInfo.svelte'
-    import SiblingForks from '$lib/components/Chat/SiblingForks.svelte'
-    import StraightForks from '$lib/components/Chat/StraightForks.svelte'
+    import PromptForks from '$lib/components/Chat/PromptForks.svelte'
+    import ReplyForks from '$lib/components/Chat/ReplyForks.svelte'
     import WaitingDots from '$lib/components/Chat/WaitingDots.svelte'
 
     marked.use({ breaks: true, mangle: false, headerIds: false })
@@ -153,14 +153,14 @@
 </div>
 
 {#if message.role === 'user' && message.forks.length > 1}
-    <SiblingForks
+    <PromptForks
         message={message}
         on:switchToFork
     />
 {/if}
 
 {#if message.role === 'assistant' && message.forks.length > 0}
-    <StraightForks
+    <ReplyForks
         message={message}
         on:switchToFork
     />

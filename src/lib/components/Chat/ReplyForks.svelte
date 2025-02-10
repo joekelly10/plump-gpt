@@ -13,15 +13,15 @@
     }
 </script>
 
-<div class='straight-forks-container' in:fly={{ y: -20, delay: 0, duration: 250, easing: quartOut }}>
+<div class='reply-forks-container' in:fly={{ y: -20, delay: 0, duration: 250, easing: quartOut }}>
     {#each message.forks as fork, i}
         {#if fork.provisional}
-            <button class='straight-fork-button provisional active'>
+            <button class='reply-fork-button provisional active'>
                 <svg class='icon' viewBox='4 4 16 16' transform='scale(1 -1)'><path d='M19.5 4h-4a.5.5 0 0 0 0 1h2.793l-4.147 4.146a.5.5 0 1 0 .707.707L19 5.707V8.5a.5.5 0 0 0 1 0v-4a.5.5 0 0 0-.5-.5M5.707 5H8.5a.5.5 0 0 0 0-1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 0 1 0V5.707l6.5 6.5V19.5a.5.5 0 0 0 1 0V12a.5.5 0 0 0-.146-.354Z'/></svg>
                 {i + 1}
             </button>
         {:else}
-            <button class='straight-fork-button' class:active={fork.is_active} on:click={() => clickedFork(fork)}>
+            <button class='reply-fork-button' class:active={fork.is_active} on:click={() => clickedFork(fork)}>
                 <svg class='icon' viewBox='4 4 16 16' transform='scale(1 -1)'><path d='M19.5 4h-4a.5.5 0 0 0 0 1h2.793l-4.147 4.146a.5.5 0 1 0 .707.707L19 5.707V8.5a.5.5 0 0 0 1 0v-4a.5.5 0 0 0-.5-.5M5.707 5H8.5a.5.5 0 0 0 0-1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 0 1 0V5.707l6.5 6.5V19.5a.5.5 0 0 0 1 0V12a.5.5 0 0 0-.146-.354Z'/></svg>
                 {i + 1}
             </button>
@@ -30,7 +30,7 @@
 </div>
 
 <style lang='sass'>
-    .straight-forks-container
+    .reply-forks-container
         display:         flex
         flex-wrap:       wrap
         row-gap:         16px
@@ -40,7 +40,7 @@
         margin-bottom:   space.$default-padding
         user-select:     none
     
-    .straight-fork-button
+    .reply-fork-button
         display:         flex
         justify-content: center
         align-items:     center
