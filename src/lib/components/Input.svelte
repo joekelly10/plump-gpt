@@ -5,16 +5,14 @@
     import { initialising, chat_id, messages, forks, active_fork, stars, active_messages, loader_active, prompt_editor_active, config, adding_reply, below_autoscroll_threshold } from '$lib/stores/chat'
     import { model, temperature, top_p, api_status } from '$lib/stores/ai'
     import { page } from '$app/stores'
-    import KeyboardShortcuts from '$lib/components/Input/KeyboardShortcuts.svelte'
     import SystemPromptButton from '$lib/components/Input/SystemPromptButton.svelte'
     import ScrollDownButton from '$lib/components/Input/ScrollDownButton.svelte'
-
+    import TreeButton from '$lib/components/Input/TreeButton.svelte'
     const dispatch = createEventDispatcher()
     
     let input
     let input_text
     let rate_limiter
-    let keyboard_shortcuts
 
     export const autofocus = () => input.focus()
 
@@ -368,14 +366,6 @@
             e.preventDefault()
             if ($chat_id && !$loader_active) return deleteChat()
         }
-        if (e.metaKey && e.key === '/') {
-            e.preventDefault()
-            return keyboard_shortcuts.toggleShortcuts()
-        }
-        if (e.metaKey && e.shiftKey && e.key === '?') {
-            e.preventDefault()
-            return keyboard_shortcuts.toggleShortcuts()
-        }
     }
 
     const openPromptEditor = () => $prompt_editor_active = true
@@ -399,7 +389,7 @@
 <svelte:document on:keydown={keydownDocument} />
 
 <section class='user-input'>
-    <KeyboardShortcuts bind:this={keyboard_shortcuts} />
+    <TreeButton/>
 
     <div class='container'>
         <!-- svelte-ignore a11y-no-static-element-interactions -->

@@ -1,19 +1,20 @@
 <script>
-    import { messages, loader_active, prompt_editor_active } from '$lib/stores/chat'
+    import { messages, loader_active, prompt_editor_active, tree_active } from '$lib/stores/chat'
 
     import Header from '$lib/components/Header.svelte'
     import Chat from '$lib/components/Chat.svelte'
     import Input from '$lib/components/Input.svelte'
     import Loader from '$lib/components/Loader.svelte'
+    import Tree from '$lib/components/Tree.svelte'
     import PromptEditor from '$lib/components/PromptEditor.svelte'
     import ScreenCover from '$lib/components/ScreenCover.svelte'
 
     let header,
         chat,
-        input,
-        title
+        input
 
     $: title = $messages.length > 1 ? $messages[1].content : 'Plump GPT - Fattens your thoughts'
+    $: blur  = $loader_active || $tree_active || $prompt_editor_active
 
     const chatModified    = () => input.chatLoaded()
     const regenerateReply = () => input.regenerateReply()
@@ -29,6 +30,11 @@
         chat.scrollToBottom({ delay: 150, forced: true })
         input.chatLoaded({ switch_model: true })
     }
+
+    const goToMessage = (event) => {
+        chat.goToMessage({ delay: 50, message_id: event.detail?.message_id })
+        input.chatLoaded({ switch_model: true })
+    }
 </script>
 
 <svelte:head>
@@ -36,7 +42,7 @@
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.8.0/build/styles/github-dark.min.css'>
 </svelte:head>
 
-<main class='plump-gpt' class:blur={$loader_active || $prompt_editor_active}>
+<main class='plump-gpt' class:blur={blur}>
     <Header
         bind:this={header}
     />
@@ -58,6 +64,12 @@
 {#if $loader_active}
     <Loader
         on:chatLoaded={chatLoaded}
+    />
+{/if}
+
+{#if $tree_active}
+    <Tree
+        on:goToMessage={goToMessage}
     />
 {/if}
 

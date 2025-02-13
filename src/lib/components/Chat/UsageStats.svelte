@@ -1,6 +1,6 @@
 <script>
     import { usage, forks } from '$lib/stores/chat'
-    import { slide } from 'svelte/transition'
+    import { slide, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
 
     $: cache_used     = $usage.cache_read_tokens > 0 || $usage.cache_write_tokens > 0
@@ -8,7 +8,12 @@
     $: savings_string = '$' + ($usage.total_savings / 100).toFixed(5)
 </script>
 
-<div class='usage-stats' class:cache-used={cache_used}>
+<div
+    class='usage-stats'
+    class:cache-used={cache_used}
+    in:slide={{ axis: 'x', delay: 250, duration: 250, easing: quartOut }}
+    out:fade={{ duration: 125, easing: quartOut }}
+>
     <div class='stat messages'>
         <div class='label'>
             chat
@@ -73,6 +78,7 @@
         text-align:  right
         font-size:   14px
         color:       $background-lightest
+        white-space: nowrap
     
     .stat
         margin-bottom: space.$default-padding

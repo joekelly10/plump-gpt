@@ -32,13 +32,13 @@
         display:       flex
         align-items:   center
         position:      absolute
-        top:           50%
+        top:           0
         right:         16px
-        transform:     translateY(-50%)
         max-width:     320px
-        padding:       20px space.$default-padding
-        border:        1px solid transparent
-        border-radius: 8px
+        height:        100%
+        box-sizing:    border-box
+        padding-left:  space.$default-padding
+        padding-right: space.$default-padding
         line-height:   font.$line-height-14px
         font-size:     14px
         color:         $blue-grey

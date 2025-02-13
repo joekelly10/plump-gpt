@@ -19,11 +19,14 @@
 
     export let message
 
-    let show_info         = false,
+    let element           = null,
+        show_info         = false,
         show_copied       = false,
         copy_timer        = null,
         reasoning_div     = null,
-        should_autoscroll = true
+        should_autoscroll = true,
+        temp_highlight    = false,
+        temp_timer        = null
 
     $: starred   = $stars.includes(message.id)
     $: streaming = message.is_last && message.role === 'assistant' && $api_status === 'streaming'
@@ -33,10 +36,18 @@
         char => ({ '<': '&lt;', '>': '&gt;' }[char])
     )
 
+    export const getOffsetTop = () => element.offsetTop
+
     export const scrollReasoningToBottom = () => {
         if (streaming && reasoning_div && should_autoscroll) {
             reasoning_div.scroll({ top: reasoning_div.scrollHeight, behavior: 'smooth' })
         }
+    }
+
+    export const tempHighlight = () => {
+        clearTimeout(temp_timer)
+        temp_highlight = true
+        temp_timer     = setTimeout(() => { temp_highlight = false }, 2500)
     }
 
     const copyMessageToClipboard = async () => {
@@ -63,6 +74,7 @@
 </script>
 
 <div
+    bind:this={element}
     id='message-{message.id}'
     class='message {message.role}'
     class:starred={starred}
@@ -70,6 +82,7 @@
     class:delete-highlight={message.delete_highlight}
     class:regenerate-highlight={message.regenerate_highlight}
     class:add-reply-highlight={message.add_reply_highlight}
+    class:temp-highlight={temp_highlight}
     out:slide={{ duration: $deleting ? 250 : 0, easing: quartOut }}
     in:slide={{ delay: $deleting ? 500 : 0, duration: $deleting ? 250 : 0, easing: quartOut }}
 >
@@ -222,6 +235,15 @@
 
         &.starred
             background-color: color.adjust($yellow, $alpha: -0.5)
+
+        &.temp-highlight
+            z-index:          99
+            background-color: color.adjust($background-lighter, $lightness: -2.5%)
+            box-shadow:       0 0 0 2px $off-white
+            transition:       none
+
+            &.starred
+                background-color: color.adjust($yellow, $alpha: -0.575)
 
     .avatar-container
         display:         flex

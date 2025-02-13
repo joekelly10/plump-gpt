@@ -31,6 +31,16 @@
         }, options.delay)
     }
 
+    export const goToMessage = (options = { delay: 0, message_id: null }) => {
+        setTimeout(() => {
+            const element     = message_refs[options.message_id],
+                  element_top = element?.getOffsetTop(),
+                  offset      = -40
+            chat.scroll({ top: element_top + offset, behavior: 'smooth' })
+            element.tempHighlight()
+        }, options.delay)
+    }
+
     $: processed_messages = $active_messages.slice(1).map((message, i) => ({
         ...message,
         is_last:      i === $active_messages.slice(1).length - 1,
