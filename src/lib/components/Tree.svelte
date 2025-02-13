@@ -309,7 +309,7 @@
         position:       relative
         height:         100%
         box-sizing:     border-box
-        padding-top:    round(2.5 * space.$default-padding)
+        padding-top:    math.round(2.5 * space.$default-padding)
         padding-bottom: 128px
         overflow:       scroll
         +shared.scrollbar
