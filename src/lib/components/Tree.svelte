@@ -167,8 +167,6 @@
     <div class='header'>
         <div class='title'>
             Tree View
-            <!-- Plump GPTree -->
-            <!-- Overview -->
             <span class='bull'>
                 //
             </span>
@@ -267,7 +265,7 @@
         background-color: color.adjust($background-darkest, $lightness: -2%)
 
         .title
-            font-size:      17.5px
+            font-size:      17px
             font-weight:    900
             text-transform: uppercase
             line-height:    25px
@@ -280,7 +278,7 @@
 
             .fork-text
                 font-size:      14px
-                font-weight:    500
+                font-weight:    400
                 color:          $blue-grey
                 text-transform: none
     
