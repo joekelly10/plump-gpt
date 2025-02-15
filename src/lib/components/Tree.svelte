@@ -4,151 +4,29 @@
     import { onMount, onDestroy } from 'svelte'
     import { scale } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
+    import { buildTree } from '$lib/utils/tree.js'
+    import Header from '$lib/components/Tree/Header.svelte'
+    import Sidebar from '$lib/components/Tree/Sidebar.svelte'
     import UsageStats from '$lib/components/Chat/UsageStats.svelte'
 
     const dispatch = createEventDispatcher()
 
-    onMount(() => {
-        buildTree()
-        document.addEventListener('keydown', keydown)
-    })
-
-    onDestroy(() => {
-        document.removeEventListener('keydown', keydown)
-    })
-
-    $: {
-        $active_fork
-        buildTree()
-    }
-
-    //  NOTE: node.x is 0 indexed, but the css grid is 1 indexed
-    //  so 1 is added to the x value when calculating grid columns
-
-    class Node {
-        constructor(id) {
-            this.id       = id
-            this.parent   = null
-            this.children = []
-            this.depth    = 0
-            this.x        = 0
-        }
-    }
-
     const leaf_spacing = 2 // # of columns
 
-    //  Recursively build out the tree of nodes starting from
-    //  the root node (id: 0 / system prompt)
+    let nodes,
+        hovered_message
 
-    let nodes = []
+    $: nodes = buildTree($forks, $active_fork, $messages, $stars, leaf_spacing)
 
-    function buildTree() {
-        let root_node = new Node(0)
-
-        $forks.forEach(fork => {
-            let current_node = root_node
-
-            for (let i = 1; i < fork.message_ids.length; i++) {
-                const id = fork.message_ids[i]
-                let child = current_node.children.find(c => c.id === id)
-                if (!child) {
-                    child        = new Node(id)
-                    child.parent = current_node
-                    child.depth  = current_node.depth + 1
-                    current_node.children.push(child)
-                }
-                current_node = child
-            }
-        })
-
-        //  Traverse the tree and assign x values to each node
-        //    - each leaf node has an integer value
-        //    - non-leaf / "internal" nodes get a mid-point value, which
-        //      can be a decimal (rounded during grid placement)
-
-        let leaf_counter = 0
-
-        function assignX(node) {
-            if (node.children.length === 0) {
-                node.x = leaf_counter
-                leaf_counter++
-            } else {
-                node.children.forEach(child => assignX(child))
-                const first_child = node.children[0],
-                      last_child  = node.children[node.children.length - 1]
-                node.x = (first_child.x + last_child.x) / 2
-            }
-        }
-
-        assignX(root_node)
-
-        nodes = []
-
-        //  Decorate nodes and add to `nodes` array for rendering
-
-        function process(node) {
-            const message    = $messages[node.id],
-                  is_active  = $forks[$active_fork].message_ids.slice(1).includes(node.id),
-                  is_starred = $stars.includes(node.id),
-                  role       = message.role
-
-            nodes.push({
-                ...node,
-                message,
-                is_active,
-                is_starred,
-                role
-            })
-
-            node.children.forEach(child => process(child))
-        }
-
-        process(root_node)
-
-        //  Add connectors to nodes with children (non-leaf nodes)
-        //    - each connector is a rendering of the relationship
-        //      between a given node and its children
-
-        function addConnectors(node) {
-            if (node.children.length > 0) {
-                const parent_column = Math.round(node.x * leaf_spacing) + 1,
-                      child_columns = node.children.map(child => Math.round(child.x * leaf_spacing) + 1),
-                      start         = Math.min(...child_columns),
-                      end           = Math.max(...child_columns)
-                
-                const css_grid_row = node.depth * 2 + 2
-
-                let css_grid_column,
-                    css_parent_position,
-                    css_child_positions
-
-                if (child_columns.length === 1) {
-                    //  simple vertical line
-                    css_grid_column     = parent_column
-                    css_parent_position = '50%'
-                    css_child_positions = ['50%']
-                } else {
-                    //  horizontal line with one upward nipple to parent
-                    //  and multiple downward nipples to children
-                    //  TODO: add trigger warning for people with sensitive nipples
-                    css_grid_column     = `${start} / ${end + 1}`
-                    css_parent_position = `${((parent_column - start) / (end - start)) * 100}%`
-                    css_child_positions = child_columns.map(column => `${((column - start) / (end - start)) * 100}%`)
-                }
-                
-                node.connector = {
-                    grid_row:        css_grid_row,
-                    grid_column:     css_grid_column,
-                    parent_position: css_parent_position,
-                    child_positions: css_child_positions
-                }
-            }
-        }
-
-        nodes.forEach(node => addConnectors(node))
+    const mouseenter = (node) => {
+        hovered_message = node.message
     }
 
-    const clickedNode = (node) => {
+    const mouseleave = () => {
+        hovered_message = null
+    }
+
+    const clicked = (node) => {
         $active_fork = $forks.findIndex(fork => fork.message_ids.includes(node.id))
         dispatch('goToMessage', { message_id: node.id })
         close()
@@ -161,23 +39,22 @@
     const keydown = (e) => {
         if (e.key === 'Escape') return close()
     }
+
+    onMount(() => {
+        document.addEventListener('keydown', keydown)
+    })
+
+    onDestroy(() => {
+        document.removeEventListener('keydown', keydown)
+    })
 </script>
 
 <div class='tree' in:scale={{ start: 1.02, opacity: 0, duration: 200, easing: quartOut }} out:scale={{ start: 1.02, opacity: 0, duration: 100, easing: quartOut }}>
-    <div class='header'>
-        <div class='title'>
-            Tree View
-            <span class='bull'>
-                //
-            </span>
-            <span class='fork-text'>
-                Fork {$active_fork + 1} / {$forks.length}
-            </span>
-        </div>
-        <button class='close-button' on:click={close}>
-            <img class='close-icon' src='/img/icons/close-white.png' alt='Close'>
-        </button>
-    </div>
+    <Header on:close={close} />
+
+    {#if hovered_message}
+        <Sidebar message={hovered_message} />
+    {/if}
 
     <UsageStats/>
 
@@ -187,7 +64,9 @@
                 {#if i === 0}
                     <button
                         class='system-prompt'
-                        style='grid-row: 1; grid-column: {Math.round(node.x * leaf_spacing) + 1};'
+                        style='grid-area: 1 / {node.column}'
+                        on:mouseenter={mouseenter(node)}
+                        on:mouseleave={mouseleave(node)}
                     >
                         <div class='inner-content'>
                             System prompt
@@ -198,11 +77,13 @@
                     </button>
                 {:else}
                     <button
-                        class='node {node.role}'
+                        class='node {node.message.role}'
                         class:active={node.is_active}
                         class:starred={node.is_starred}
-                        style='grid-row: {node.depth * 2 + 1}; grid-column: {Math.round(node.x * leaf_spacing) + 1};'
-                        on:click={clickedNode(node)}
+                        style='grid-area: {node.row} / {node.column}'
+                        on:click={clicked(node)}
+                        on:mouseenter={mouseenter(node)}
+                        on:mouseleave={mouseleave(node)}
                     >
                         {node.id}
                         {#if node.message.role === 'assistant'}
@@ -212,7 +93,7 @@
                 {/if}
                 {#if node.connector}
                     <div
-                        class='connector {node.role}'
+                        class='connector {node.message.role}'
                         style='grid-row: {node.connector.grid_row}; grid-column: {node.connector.grid_column};'
                     >
                         {#if node.connector.child_positions.length === 1}
@@ -252,54 +133,6 @@
         padding-top:      space.$header-height
         background-color: color.adjust($background-darkest, $alpha: -0.025)
 
-    .header
-        display:          flex
-        align-items:      center
-        justify-content:  center
-        position:         fixed
-        top:              0
-        left:             0
-        z-index:          100
-        width:            100%
-        height:           space.$header-height
-        background-color: color.adjust($background-darkest, $lightness: -2%)
-
-        .title
-            font-size:      17px
-            font-weight:    900
-            text-transform: uppercase
-            line-height:    25px
-
-            .bull
-                margin:         0 10px
-                font-weight:    900
-                letter-spacing: 0.5px
-                color:          $blue
-
-            .fork-text
-                font-size:      14px
-                font-weight:    400
-                color:          $blue-grey
-                text-transform: none
-    
-        .close-button
-            display:         flex
-            align-items:     center
-            justify-content: center
-            position:        fixed
-            top:             0
-            right:           0
-            z-index:         101
-            height:          space.$header-height
-            padding:         0 space.$default-padding
-            cursor:          pointer
-
-            .close-icon
-                height: 16px
-            
-            &:hover
-                .close-icon
-                    filter: brightness(0.8)
     .inner
         display:        flex
         flex-direction: column
@@ -307,7 +140,7 @@
         position:       relative
         height:         100%
         box-sizing:     border-box
-        padding-top:    math.round(2.5 * space.$default-padding)
+        padding-top:    math.round(3 * space.$default-padding)
         padding-bottom: 128px
         overflow:       scroll
         +shared.scrollbar
@@ -318,33 +151,6 @@
         grid-auto-columns: $cell-width
         gap:               0
         user-select:       none
-
-        .system-prompt
-            display:         flex
-            align-items:     center
-            justify-content: center
-            position:        relative
-            z-index:         2
-
-            .inner-content
-                display:         flex
-                flex-direction:  column
-                align-items:     center
-                justify-content: center
-                position:        relative
-                top:             -6px
-                padding:         14px space.$default-padding
-                border-radius:   8px
-                font-size:       14px
-                color:           $blue-grey
-                white-space:     nowrap
-                line-height:     1.5
-                transition:      transform easing.$quart-out 100ms, background-color easing.$quart-out 100ms
-
-                .title
-                    font-size:   16px
-                    font-weight: 600
-                    color:       $off-white
 
         .node
             display:          inline-flex
@@ -402,7 +208,7 @@
                 height:        21px
                 border-radius: 4px
                 box-shadow:    0 0 0 1px $background-darkest
-    
+
         .connector
             display:         flex
             align-items:     center
@@ -471,4 +277,39 @@
                 width:            1px
                 height:           $horizontal-nipple-height
                 background-color: $connector-color
+
+        .system-prompt
+            display:         flex
+            align-items:     center
+            justify-content: center
+            position:        relative
+            z-index:         2
+
+            .inner-content
+                display:          flex
+                flex-direction:   column
+                align-items:      center
+                justify-content:  center
+                position:         relative
+                top:              -10px
+                padding:          16px 24px
+                border-radius:    8px
+                border:           1px solid transparent
+                background-color: transparent
+                font-size:        14px
+                color:            $blue-grey
+                white-space:      nowrap
+                line-height:      1.5
+                transition:       background-color easing.$quart-out 100ms, border-color easing.$quart-out 100ms
+                cursor:           pointer
+
+                .title
+                    font-size:   16px
+                    font-weight: 600
+                    color:       $off-white
+                
+                &:hover
+                    border:           1px solid $background-lightest
+                    background-color: $background-darkest
+                    transition:       none
 </style>
