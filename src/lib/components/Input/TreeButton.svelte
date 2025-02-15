@@ -21,7 +21,7 @@
     <span class='text'>
         Tree
         <span class='bull'>
-            &bull;
+            &rarr;
         </span>
         {$active_fork + 1} / {$forks.length}
     </span>
