@@ -339,6 +339,15 @@
         }
     }
 
+    let nope_highlight = false,
+        nope_timer     = null
+
+    const nope = () => {
+        clearTimeout(nope_timer)
+        nope_highlight = true
+        nope_timer     = setTimeout(() => { nope_highlight = false}, 50)
+    }
+
     const keydownMessageInput = (e) => {
         if ($loader_active) {
             e.preventDefault()
@@ -346,7 +355,11 @@
         }
         if (e.key == 'Enter' && !e.shiftKey) {
             e.preventDefault()
-            if ($api_status === 'idle' && input_text.trim().length) sendMessage()
+            if ($api_status === 'idle' && input_text.trim().length) {
+                sendMessage()
+            } else {
+                nope()
+            }
         }
     }
 
@@ -391,7 +404,7 @@
 <section class='user-input'>
     <TreeButton/>
 
-    <div class='container'>
+    <div class='container' class:nope-highlight={nope_highlight}>
         <!-- svelte-ignore a11y-no-static-element-interactions -->
         <div
             class='input'
@@ -426,6 +439,12 @@
         border:           1px solid $blue-grey
         border-radius:    12px
         background-color: $background-lighter
+        transition:       box-shadow easing.$quart-out 500ms, border-color easing.$quart-out 500ms
+
+        &.nope-highlight
+            box-shadow:   0 0 0 1px $coral, 0 0 0 1px $coral inset
+            border-color: $coral
+            transition:   none
     
     .input
         position:      relative
