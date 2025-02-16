@@ -245,9 +245,18 @@
                                 console.log('🤖-❌ Error:', data.error)
                                 gpt_message.content += `\n\n**🚨 Error: ${data.error.message}**`
                             } else {
-                                gpt_message.content += data.candidates[0].content.parts[0].text ?? ''
                                 gpt_message.usage.input_tokens = data.usageMetadata.promptTokenCount
                                 gpt_message.usage.output_tokens = data.usageMetadata.candidatesTokenCount
+                                //  The Google API bazookas fat chunks of text at a time,
+                                //  which is kinda ugly, so smooth them out for a nicer UX:
+                                const text  = data.candidates[0].content.parts[0].text ?? ''
+                                const words = text.split(/(\s+)/)
+                                for (const word of words) {
+                                    gpt_message.content += word
+                                    $messages = [...$messages.slice(0, -1), gpt_message]
+                                    await tick()
+                                    await new Promise(resolve => setTimeout(resolve, 10))
+                                }
                             }
                         } else if ($model.type === 'cohere') {
                             if (data.type === 'content-delta') {
