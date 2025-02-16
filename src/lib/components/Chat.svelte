@@ -329,6 +329,8 @@
         position:   relative
         overflow-y: overlay
         +shared.scrollbar
+        scrollbar-gutter: stable
+        padding-left:     8px
 
         &.frozen
             overflow: hidden
