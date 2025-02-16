@@ -14,16 +14,31 @@
     const leaf_spacing = 2 // # of columns
 
     let nodes,
-        hovered_message
+        hovered_message,
+        debounce_timer,
+        pending_message
 
     $: nodes = buildTree($forks, $active_fork, $messages, $stars, leaf_spacing)
 
     const mouseenter = (node) => {
-        hovered_message = node.message
+        if (debounce_timer) {
+            pending_message = node.message
+        } else {
+            hovered_message = pending_message ? pending_message : node.message
+        }
+        clearTimeout(debounce_timer)
+        debounce_timer  = setTimeout(() => {
+            debounce_timer = null
+            if (pending_message) {
+                hovered_message = pending_message
+                pending_message = null
+            }
+        }, 150)
     }
 
     const mouseleave = () => {
         hovered_message = null
+        pending_message = null
     }
 
     const clicked = (node) => {
