@@ -279,11 +279,11 @@
 
             $messages = [...$messages.slice(0,-1), gpt_message]
 
-            //  Auto-scroll max once every 500ms
+            //  Auto-scroll max once every 400ms
             if (!rate_limiter) {
                 await tick()
                 dispatch('scrollChatToBottom')
-                rate_limiter = setTimeout(() => { rate_limiter = null }, 500)
+                rate_limiter = setTimeout(() => { rate_limiter = null }, 400)
             }
         }
 
