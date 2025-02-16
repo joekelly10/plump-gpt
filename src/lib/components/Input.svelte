@@ -322,7 +322,9 @@
 
     const pastedInput = (e) => {
         document.execCommand('insertText', false, e.clipboardData.getData('text/plain'))
-        input.scroll({ top: input.scrollHeight })
+        const range = window.getSelection().getRangeAt(0)
+        const el    = range.startContainer.parentElement
+        el.scrollIntoView({ block: 'nearest', inline: 'nearest' })
     }
 
     const deleteChat = async () => {
