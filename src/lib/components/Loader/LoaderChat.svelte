@@ -5,6 +5,8 @@
     import { quartOut } from 'svelte/easing'
     import { chat_id } from '$lib/stores/chat.js'
     import { formatDate } from '$lib/utils/helpers'
+    import StarIcon from '$lib/components/Icons/Star.svelte'
+    import DeleteIcon from '$lib/components/Icons/Delete.svelte'
 
     marked.use({ mangle: false, headerIds: false })
 
@@ -60,7 +62,7 @@
 
         {#if chat.stars?.length > 0}
             <div class='star-count'>
-                <svg class='star-icon' viewBox='0 0 48 48' xml:space='preserve'><g stroke-width='0'/><g stroke-linecap='round' stroke-linejoin='round'/><path d='m26.285 2.486 5.407 10.956a2.58 2.58 0 0 0 1.944 1.412l12.091 1.757c2.118.308 2.963 2.91 1.431 4.403l-8.749 8.528a2.58 2.58 0 0 0-.742 2.285l2.065 12.042c.362 2.109-1.852 3.717-3.746 2.722l-10.814-5.685a2.59 2.59 0 0 0-2.403 0l-10.814 5.685c-1.894.996-4.108-.613-3.746-2.722l2.065-12.042a2.58 2.58 0 0 0-.742-2.285L.783 21.014c-1.532-1.494-.687-4.096 1.431-4.403l12.091-1.757a2.58 2.58 0 0 0 1.944-1.412l5.407-10.956c.946-1.919 3.682-1.919 4.629 0'/></svg>
+                <StarIcon className='icon' />
                 {chat.stars.length}
             </div>
         {/if}
@@ -110,7 +112,7 @@
             on:mouseleave={() => { chat.deleting = false }}
             on:click={() => dispatch('deleteChat', { chat } )}
         >
-            <svg class='icon' xmlns='http://www.w3.org/2000/svg' enable-background='new 0 0 24 24' viewBox='0 0 24 24' id='close'><path d='M13.4,12l6.3-6.3c0.4-0.4,0.4-1,0-1.4c-0.4-0.4-1-0.4-1.4,0L12,10.6L5.7,4.3c-0.4-0.4-1-0.4-1.4,0c-0.4,0.4-0.4,1,0,1.4 l6.3,6.3l-6.3,6.3C4.1,18.5,4,18.7,4,19c0,0.6,0.4,1,1,1c0.3,0,0.5-0.1,0.7-0.3l6.3-6.3l6.3,6.3c0.2,0.2,0.4,0.3,0.7,0.3 s0.5-0.1,0.7-0.3c0.4-0.4,0.4-1,0-1.4L13.4,12z'></path></svg>
+            <DeleteIcon className='icon' />
         </button>
     </div>
 </div>
@@ -250,9 +252,10 @@
         font-weight:      600
         color:            $background-darker
 
-        .star-icon
-            height: 19px
-            fill:   $background-darker
+        :global
+            .icon
+                height: 19px
+                fill:   $background-darker
     
     .actions
         position:    absolute
@@ -260,48 +263,49 @@
         left:        100%
         margin-left: space.$default-padding
         width:       48px
-        
-        .action-button
-            display:         flex
-            align-items:     center
-            justify-content: center
-            margin-bottom:   16px
-            width:           40px
-            height:          40px
-            box-sizing:      border-box
-            border-radius:   8px
-            border:          1px solid $background-lighter
-            transition:      background-color easing.$quart-out 0.1s, border-color easing.$quart-out 0.1s
-            cursor:          pointer
 
-            &:last-of-type
-                margin-bottom: 0
-            
-            .icon
-                fill:       $background-lightest
-                transition: fill easing.$quart-out 0.1s
+        :global
+            .action-button
+                display:         flex
+                align-items:     center
+                justify-content: center
+                margin-bottom:   16px
+                width:           40px
+                height:          40px
+                box-sizing:      border-box
+                border-radius:   8px
+                border:          1px solid $background-lighter
+                transition:      background-color easing.$quart-out 0.1s, border-color easing.$quart-out 0.1s
+                cursor:          pointer
+
+                &:last-of-type
+                    margin-bottom: 0
                 
-            &.delete
                 .icon
-                    height: 19px
-
-                &:hover
-                    border-color:     $coral
-                    background-color: $coral
-                    transition:       none
+                    fill:       $background-lightest
+                    transition: fill easing.$quart-out 0.1s
                     
+                &.delete
                     .icon
-                        fill:       $background-darker
-                        transition: none
+                        height: 19px
 
-                &:active
-                    border-color:     color.adjust($coral, $lightness: -3%)
-                    background-color: color.adjust($coral, $lightness: -3%)
-                    transition:       none
-                    
-                    .icon
-                        fill:       $background-darker
-                        transition: none
+                    &:hover
+                        border-color:     $coral
+                        background-color: $coral
+                        transition:       none
+                        
+                        .icon
+                            fill:       $background-darker
+                            transition: none
+
+                    &:active
+                        border-color:     color.adjust($coral, $lightness: -3%)
+                        background-color: color.adjust($coral, $lightness: -3%)
+                        transition:       none
+                        
+                        .icon
+                            fill:       $background-darker
+                            transition: none
     
     :global(.chat.keyboard-highlight.selected)
         background-color: color.adjust($background-lighter, $lightness: -2%)

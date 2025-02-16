@@ -3,6 +3,7 @@
     import { messages } from '$lib/stores/chat'
     import { system_prompts } from '$lib/stores/prompt_editor'
     import PromptListButton from '$lib/components/PromptEditor/PromptListButton.svelte'
+    import AddIcon from '$lib/components/Icons/Add.svelte'
 
     const dispatch = createEventDispatcher()
 
@@ -39,7 +40,7 @@
     <div class='header'>
         {$system_prompts.length} prompts
         <button class='create-button' on:click={createPrompt}>
-            <svg class='icon' viewBox='0 0 7 7'><path d='m.5.5 6 6m0-6-6 6' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round'/></svg>
+            <AddIcon className='icon' />
         </button>
     </div>
     <div class='list' bind:this={list}>
@@ -76,33 +77,34 @@
         font-weight:      600
         color:            $off-white
 
-        .create-button
-            display:         flex
-            align-items:     center
-            justify-content: center
-            width:           40px
-            height:          40px
-            border-radius:   8px
-            border:          1px solid $background-lighter
-            color:           $background-lightest
-            cursor:          pointer
-            transition:      border-color easing.$quart-out 0.125s, background-color easing.$quart-out 0.125s, color easing.$quart-out 0.125s
+        :global
+            .create-button
+                display:         flex
+                align-items:     center
+                justify-content: center
+                width:           40px
+                height:          40px
+                border-radius:   8px
+                border:          1px solid $background-lighter
+                color:           $background-lightest
+                cursor:          pointer
+                transition:      border-color easing.$quart-out 0.125s, background-color easing.$quart-out 0.125s, color easing.$quart-out 0.125s
 
-            .icon
-                height:    11px
-                transform: rotate(45deg)
+                .icon
+                    height:    11px
+                    transform: rotate(45deg)
+                
+                &:hover
+                    border-color:     $yellow
+                    background-color: $yellow
+                    color:            $background-darkest
+                    transition:       none
             
-            &:hover
-                border-color:     $yellow
-                background-color: $yellow
-                color:            $background-darkest
-                transition:       none
-        
-            &:active
-                border-color:     color.adjust($yellow, $lightness: -10%)
-                background-color: color.adjust($yellow, $lightness: -10%)
-                color:            $background-darkest
-                transition:       none
+                &:active
+                    border-color:     color.adjust($yellow, $lightness: -10%)
+                    background-color: color.adjust($yellow, $lightness: -10%)
+                    color:            $background-darkest
+                    transition:       none
 
     .list
         display:          flex

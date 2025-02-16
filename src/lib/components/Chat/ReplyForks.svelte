@@ -3,6 +3,7 @@
     import { fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { api_status } from '$lib/stores/ai'
+    import ForkIcon from '$lib/components/Icons/Fork.svelte'
 
     const dispatch = createEventDispatcher()
 
@@ -17,12 +18,12 @@
     {#each message.forks as fork, i}
         {#if fork.provisional}
             <button class='reply-fork-button provisional active'>
-                <svg class='icon' viewBox='4 4 16 16' transform='scale(1 -1)'><path d='M19.5 4h-4a.5.5 0 0 0 0 1h2.793l-4.147 4.146a.5.5 0 1 0 .707.707L19 5.707V8.5a.5.5 0 0 0 1 0v-4a.5.5 0 0 0-.5-.5M5.707 5H8.5a.5.5 0 0 0 0-1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 0 1 0V5.707l6.5 6.5V19.5a.5.5 0 0 0 1 0V12a.5.5 0 0 0-.146-.354Z'/></svg>
+                <ForkIcon className='icon' />
                 {i + 1}
             </button>
         {:else}
             <button class='reply-fork-button' class:active={fork.is_active} on:click={() => clickedFork(fork)}>
-                <svg class='icon' viewBox='4 4 16 16' transform='scale(1 -1)'><path d='M19.5 4h-4a.5.5 0 0 0 0 1h2.793l-4.147 4.146a.5.5 0 1 0 .707.707L19 5.707V8.5a.5.5 0 0 0 1 0v-4a.5.5 0 0 0-.5-.5M5.707 5H8.5a.5.5 0 0 0 0-1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 0 1 0V5.707l6.5 6.5V19.5a.5.5 0 0 0 1 0V12a.5.5 0 0 0-.146-.354Z'/></svg>
+                <ForkIcon className='icon' />
                 {i + 1}
             </button>
         {/if}
@@ -39,53 +40,54 @@
         width:           5 * space.$load-save-button-width
         margin-bottom:   space.$default-padding
         user-select:     none
-    
-    .reply-fork-button
-        display:         flex
-        justify-content: center
-        align-items:     center
-        width:           space.$load-save-button-width
-        box-sizing:      border-box
-        padding:         6px 0
-        border-top:      1px solid $background-lighter
-        border-bottom:   1px solid $background-lighter
-        font-size:       14px
-        font-weight:     450
-        color:           $background-lightest
-        cursor:          pointer
 
-        &:nth-of-type(5n+1)
-            border-top-left-radius:    8px
-            border-bottom-left-radius: 8px
-            border-left:               1px solid $background-lighter
-        
-        &:nth-of-type(5n),
-        &:last-of-type
-            border-top-right-radius:    8px
-            border-bottom-right-radius: 8px
-            border-right:               1px solid $background-lighter
+        :global
+            .reply-fork-button
+                display:         flex
+                justify-content: center
+                align-items:     center
+                width:           space.$load-save-button-width
+                box-sizing:      border-box
+                padding:         6px 0
+                border-top:      1px solid $background-lighter
+                border-bottom:   1px solid $background-lighter
+                font-size:       14px
+                font-weight:     450
+                color:           $background-lightest
+                cursor:          pointer
 
-        .icon
-            margin-right: 11px
-            margin-left:  -1px
-            height:       15px
-            fill:         $background-lightest
+                &:nth-of-type(5n+1)
+                    border-top-left-radius:    8px
+                    border-bottom-left-radius: 8px
+                    border-left:               1px solid $background-lighter
+                
+                &:nth-of-type(5n),
+                &:last-of-type
+                    border-top-right-radius:    8px
+                    border-bottom-right-radius: 8px
+                    border-right:               1px solid $background-lighter
 
-        &:hover
-            background-color: $background-darker
-            color:            $off-white
+                .icon
+                    margin-right: 11px
+                    margin-left:  -1px
+                    height:       15px
+                    fill:         $background-lightest
 
-            .icon
-                fill: $off-white
-        
-        &:active
-            background-color: color.adjust($background-darker, $lightness: -1%)
+                &:hover
+                    background-color: $background-darker
+                    color:            $off-white
 
-        &.active
-            border-color:     $blue
-            background-color: $blue
-            color:            $background-darker
+                    .icon
+                        fill: $off-white
+                
+                &:active
+                    background-color: color.adjust($background-darker, $lightness: -1%)
 
-            .icon
-                fill: $background-darker
+                &.active
+                    border-color:     $blue
+                    background-color: $blue
+                    color:            $background-darker
+
+                    .icon
+                        fill: $background-darker
 </style>
