@@ -32,7 +32,7 @@
             transform: scale(0.98)
 
     .logo
-        height: 13px
+        height: 14px
     
     .padding
         display: inline-block

@@ -36,7 +36,7 @@
         background-color: color.adjust($background-darkest, $lightness: -2%)
 
     .title
-        font-size:      17px
+        font-size:      18.5px
         font-weight:    900
         text-transform: uppercase
         line-height:    25px
