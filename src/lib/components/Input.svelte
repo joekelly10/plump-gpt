@@ -8,11 +8,15 @@
     import SystemPromptButton from '$lib/components/Input/SystemPromptButton.svelte'
     import ScrollDownButton from '$lib/components/Input/ScrollDownButton.svelte'
     import TreeButton from '$lib/components/Input/TreeButton.svelte'
+    import ExpandButton from '$lib/components/Input/ExpandButton.svelte'
+
     const dispatch = createEventDispatcher()
-    
-    let input
-    let input_text
-    let rate_limiter
+
+    let input,
+        input_text,
+        rate_limiter,
+        input_overflowed,
+        input_expanded
 
     export const autofocus = () => input.focus()
 
@@ -92,8 +96,9 @@
                 role:      'user',
                 content:   input_text
             }
-            input_text = ''
-            $messages  = [...$messages, user_message]
+            input_text       = ''
+            input_overflowed = false
+            $messages        = [...$messages, user_message]
             $forks[$active_fork].message_ids.push(user_message.id)
             $forks[$active_fork].provisional = false
             dispatch('sendingMessage')
@@ -348,6 +353,10 @@
         nope_timer     = setTimeout(() => { nope_highlight = false}, 50)
     }
 
+    const inputChanged = () => {
+        input_overflowed = input.scrollHeight > input.clientHeight
+    }
+
     const keydownMessageInput = (e) => {
         if ($loader_active) {
             e.preventDefault()
@@ -355,6 +364,7 @@
         }
         if (e.key == 'Enter' && !e.shiftKey) {
             e.preventDefault()
+            input_expanded = false
             if ($api_status === 'idle' && input_text.trim().length) {
                 sendMessage()
             } else {
@@ -401,8 +411,11 @@
 
 <svelte:document on:keydown={keydownDocument} />
 
-<section class='user-input'>
-    <TreeButton/>
+<section class='user-input' class:expanded={input_expanded}>
+    <ExpandButton
+        bind:input_expanded={input_expanded}
+        input_overflowed={input_overflowed}
+    />
 
     <div class='container' class:nope-highlight={nope_highlight}>
         <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -413,11 +426,17 @@
             bind:innerText={input_text}
             on:keydown={keydownMessageInput}
             on:paste|preventDefault={pastedInput}
+            on:input={inputChanged}
         ></div>
     </div>
 
-    <SystemPromptButton/>
-    <ScrollDownButton on:clicked={() => dispatch('scrollChatToBottom', { forced: true })} />
+    {#if !input_expanded}
+        <TreeButton/>
+        <SystemPromptButton/>
+        <ScrollDownButton
+            on:clicked={() => dispatch('scrollChatToBottom', { forced: true })}
+        />
+    {/if}
 </section>
 
 <style lang='sass'>
@@ -429,11 +448,18 @@
         padding:          space.$default-padding 0
         background-color: $background-darker
         user-select:      none
+
+        &.expanded
+            .input
+                min-height: 80vh
+                max-height: 80vh
+                transition: min-height easing.$quart-out 300ms, max-height easing.$quart-out 300ms
     
     .container
+        position:         relative
+        z-index:          10
         margin:           0 auto
-        width:            space.$main-column-width
-        max-width:        720px
+        width:            720px
         box-sizing:       border-box
         padding:          16px
         border:           1px solid $blue-grey
@@ -451,6 +477,7 @@
         z-index:       1
         margin:        0 auto
         width:         100%
+        min-height:    0px
         max-height:    192px
         box-sizing:    border-box
         padding-right: 16px
@@ -464,6 +491,7 @@
         text-wrap:     wrap
         resize:        none
         overflow:      overlay
+        transition:    min-height easing.$quart-out 600ms, max-height easing.$quart-out 300ms
 
         &::-webkit-scrollbar
             width:      8px
