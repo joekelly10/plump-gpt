@@ -9,17 +9,41 @@
 
     export let message
 
+    let show_hover_info_above
+
+    const getPreview = (next_message) => {
+        return next_message.content.slice(0, 160) + (next_message.content.length > 160 ? ' [...]' : '')
+    }
+
     const clickedFork = (fork) => {
         if ($api_status === 'idle') dispatch('switchToFork', { fork_index: fork.index })
+    }
+
+    const mouseenter = (e) => {
+        const rect = e.target.getBoundingClientRect()
+        show_hover_info_above = rect.bottom > window.innerHeight - 320
     }
 </script>
 
 <div class='prompt-forks-container' class:delete-fork-highlight={message.delete_fork_highlight} in:slide={{ delay: 125, duration: 250, easing: quartOut }} out:slide={{ duration: 250, easing: quartOut }}>
     <div class='inner'>
         {#each message.forks as fork, i}
-            <button class='prompt-fork-button' class:active={fork.is_active} on:click={() => clickedFork(fork)}>
+            <button
+                class='prompt-fork-button'
+                class:active={fork.is_active}
+                on:click={() => clickedFork(fork)}
+                on:mouseenter={mouseenter}
+            >
                 <ForkIcon className='icon' />
                 {i + 1}
+                <div class='hover-info' class:above={show_hover_info_above}>
+                    <div class='avatar-container'>
+                        <img class='model-icon' src='/img/icons/models/{fork.model_icon}' alt='AI model'/>
+                    </div>
+                    <div class='next-message-preview'>
+                        {getPreview(fork.next_message)}
+                    </div>
+                </div>
             </button>
         {/each}
         {#if message.add_reply_highlight}
@@ -61,6 +85,7 @@
                 display:          flex
                 justify-content:  center
                 align-items:      center
+                position:         relative
                 width:            space.$load-save-button-width
                 box-sizing:       border-box
                 padding:          6px 0
@@ -90,12 +115,24 @@
                     height:       15px
                     fill:         $background-lightest
 
+                .hover-info
+                    +shared.fork-hover-info
+                    
+                    .avatar-container
+                        justify-content: flex-start
+                        margin:          -3px -6px
+
                 &:hover
                     background-color: $background-darker
                     color:            $off-white
 
                     .icon
                         fill: $off-white
+
+                    &:not(.active)
+                        .hover-info
+                            opacity:    1
+                            transition: opacity easing.$quart-out 100ms 100ms
 
                 &:active
                     background-color: color.adjust($background-darker, $lightness: -1%)

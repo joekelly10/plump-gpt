@@ -44,8 +44,8 @@
     $: processed_messages = $active_messages.slice(1).map((message, i) => ({
         ...message,
         is_last:      i === $active_messages.slice(1).length - 1,
-        forks:        getForksAt(message.id),
-        has_siblings: getForksAt(message.parent_id).length > 0
+        forks:        getForksAt(message),
+        has_siblings: hasSiblings(message)
     }))
 
     const keydown = (e) => {
@@ -144,17 +144,45 @@
         dispatch('chatModified')
     }
 
-    const getForksAt = (message_id) => {
-        const fork_pts = $fork_points.filter(pair => pair[0] === message_id)
+    const getForksAt = (message) => {
         let all_forks = []
+
+        const fork_pts = $fork_points.filter(pair => pair[0] === message.id)
+
         fork_pts.forEach(fp => {
-            const index         = firstIndexOf(fp)
-            const active_ids    = $forks[$active_fork].message_ids
-            const message_index = active_ids.indexOf(message_id)
-            const is_active     = fp[1] === active_ids[message_index + 1]
-            const provisional   = $forks[index]?.provisional
-            all_forks.push({ index, is_active, provisional })
+            const index           = firstIndexOf(fp),
+                  active_ids      = $forks[$active_fork].message_ids,
+                  message_index   = active_ids.indexOf(message.id),
+                  is_active       = fp[1] === active_ids[message_index + 1],
+                  provisional     = $forks[index]?.provisional,
+                  message_ids     = $forks[index].message_ids,
+                  next_message_id = message_ids[message_ids.findIndex(id => id === message.id) + 1],
+                  next_message    = $messages.find(m => m.id === next_message_id),
+                  message_count   = message_ids.slice(message_ids.findIndex(id => id === message.id) + 1).length
+
+            let model_icon
+
+            // optionals needed for the in-between moment when
+            // a provisional fork is created:
+
+            if (message.role === 'user') {
+                model_icon = next_message?.model?.icon
+            } else {
+                const next_ai_message_id = message_ids[message_ids.findIndex(id => id === message.id) + 2],
+                      next_ai_message    = $messages.find(m => m.id === next_ai_message_id)
+                model_icon = next_ai_message?.model?.icon
+            }
+
+            all_forks.push({
+                index,
+                is_active,
+                provisional,
+                next_message,
+                message_count,
+                model_icon
+            })
         })
+
         return all_forks
     }
 
@@ -164,6 +192,11 @@
             return fork.message_ids[index + 1] === fork_point[1]
         })
         return index
+    }
+
+    const hasSiblings = (message) => {
+        const parent = $messages.find(m => m.id === message.parent_id)
+        return getForksAt(parent).length > 0
     }
 
     const switchToFork = async (fork_index) => {
