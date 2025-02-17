@@ -2,7 +2,7 @@
     import { createEventDispatcher, tick } from 'svelte'
     import { slide, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { messages } from '$lib/stores/chat'
+    import { messages, highlights } from '$lib/stores/chat'
     import { model } from '$lib/stores/ai'
     import AddIcon from '$lib/components/Icons/Add.svelte'
     import RetryIcon from '$lib/components/Icons/Retry.svelte'
@@ -17,49 +17,34 @@
                starred,
                showing_message_info
 
-    $: parent_index = $messages.findIndex(m => m.id === message.parent_id)
-
     const hoveredDelete = async () => {
-        if (message.has_siblings) {
-            $messages[parent_index].delete_fork_highlight = true
-        } else {
-            $messages[parent_index].delete_highlight = true
+        if (!$highlights.delete.includes(message.id)) {
+            $highlights.delete = [...$highlights.delete, message.id, message.parent_id]
         }
-        await tick()
-        message.delete_highlight = true
     }
 
     const unhoveredDelete = async () => {
-        if (parent_index === -1) return
-        $messages[parent_index].delete_highlight      = false
-        $messages[parent_index].delete_fork_highlight = false
-        await tick()
-        message.delete_highlight = false
+        $highlights.delete = $highlights.delete.filter(id => ![message.id, message.parent_id].includes(id))
     }
 
     const hoveredRegenerate = async () => {
-        $messages[parent_index].regenerate_highlight = true
-        await tick()
-        message.regenerate_highlight = true
+        if (!$highlights.regenerate.includes(message.id)) {
+            $highlights.regenerate = [...$highlights.regenerate, message.id, message.parent_id]
+        }
     }
 
     const unhoveredRegenerate = async () => {
-        if (parent_index === -1) return
-        $messages[parent_index].regenerate_highlight = false
-        await tick()
-        message.regenerate_highlight = false
+        $highlights.regenerate = $highlights.regenerate.filter(id => ![message.id, message.parent_id].includes(id))
     }
 
     const hoveredAddReply = async () => {
-        $messages[parent_index].add_reply_highlight = true
-        await tick()
-        message.add_reply_highlight = true
+        if (!$highlights.add_reply.includes(message.id)) {
+            $highlights.add_reply = [...$highlights.add_reply, message.id, message.parent_id]
+        }
     }
     
     const unhoveredAddReply = async () => {
-        $messages[parent_index].add_reply_highlight = false
-        await tick()
-        message.add_reply_highlight = false
+        $highlights.add_reply = $highlights.add_reply.filter(id => ![message.id, message.parent_id].includes(id))
     }
 
     const clickedAddReply   = () => dispatch('addReply', { message_id: message.parent_id })

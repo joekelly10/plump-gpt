@@ -2,7 +2,7 @@
     import { createEventDispatcher, tick } from 'svelte'
     import { fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { messages } from '$lib/stores/chat'
+    import { messages, highlights } from '$lib/stores/chat'
     import { model } from '$lib/stores/ai'
     import AddIcon from '$lib/components/Icons/Add.svelte'
     import DeleteIcon from '$lib/components/Icons/Delete.svelte'
@@ -11,18 +11,12 @@
 
     export let message
 
-    $: parent_index = $messages.findIndex(m => m.id === message.parent_id)
-
     const hoveredAddReply = async () => {
-        $messages[parent_index].add_reply_highlight = true
-        await tick()
-        message.add_reply_highlight = true
+        $highlights.add_reply = [...$highlights.add_reply, message.id, message.parent_id]
     }
 
     const unhoveredAddReply = async () => {
-        $messages[parent_index].add_reply_highlight = false
-        await tick()
-        message.add_reply_highlight = false
+        $highlights.add_reply = $highlights.add_reply.filter(id => ![message.id, message.parent_id].includes(id))
     }
 
     const clickedAddReply   = () => dispatch('addReply', { message_id: message.parent_id })

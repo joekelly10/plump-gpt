@@ -2,6 +2,7 @@
     import { createEventDispatcher } from 'svelte'
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
+    import { highlights } from '$lib/stores/chat'
     import { api_status } from '$lib/stores/ai'
     import ForkIcon from '$lib/components/Icons/Fork.svelte'
 
@@ -11,7 +12,11 @@
 
     let show_hover_info_above
 
+    $: add_reply_highlight   = $highlights.add_reply.includes(message.id)
+    $: delete_fork_highlight = message.forks.length > 1 && $highlights.delete.includes(message.id)
+
     const getPreview = (next_message) => {
+        if (!next_message) return ''
         return next_message.content.slice(0, 160) + (next_message.content.length > 160 ? ' [...]' : '')
     }
 
@@ -25,7 +30,7 @@
     }
 </script>
 
-<div class='prompt-forks-container' class:delete-fork-highlight={message.delete_fork_highlight} in:slide={{ delay: 125, duration: 250, easing: quartOut }} out:slide={{ duration: 250, easing: quartOut }}>
+<div class='prompt-forks-container' class:delete-fork-highlight={delete_fork_highlight} in:slide={{ delay: 125, duration: 250, easing: quartOut }} out:slide={{ duration: 250, easing: quartOut }}>
     <div class='inner'>
         {#each message.forks as fork, i}
             <button
@@ -46,7 +51,7 @@
                 </div>
             </button>
         {/each}
-        {#if message.add_reply_highlight}
+        {#if add_reply_highlight}
             <button class='prompt-fork-button temporary' in:slide={{ axis: 'x', duration: 125, easing: quartOut }} out:slide={{ axis: 'x', duration: 125, easing: quartOut }}>
                 <ForkIcon className='icon' />
                 <span class='plus'>+</span>

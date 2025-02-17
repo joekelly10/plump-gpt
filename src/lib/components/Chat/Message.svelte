@@ -2,7 +2,7 @@
     import { createEventDispatcher } from 'svelte'
     import { slide, fly, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { deleting, provisionally_forking, stars } from '$lib/stores/chat'
+    import { deleting, provisionally_forking, stars, highlights } from '$lib/stores/chat'
     import { api_status } from '$lib/stores/ai'
     import { marked } from 'marked'
 
@@ -35,6 +35,10 @@
         /(?<!^|\n)[<>](?![^`]*`)(?![^```]*```)/g,
         char => ({ '<': '&lt;', '>': '&gt;' }[char])
     )
+
+    $: add_reply_highlight  = $highlights.add_reply.includes(message.id)
+    $: regenerate_highlight = $highlights.regenerate.includes(message.id)
+    $: delete_highlight     = !(message.role === 'user' && message.forks.length > 1) && $highlights.delete.includes(message.id)
 
     export const getOffsetTop = () => element.offsetTop
 
@@ -79,9 +83,9 @@
     class='message {message.role}'
     class:starred={starred}
     class:streaming={streaming}
-    class:delete-highlight={message.delete_highlight}
-    class:regenerate-highlight={message.regenerate_highlight}
-    class:add-reply-highlight={message.add_reply_highlight}
+    class:delete-highlight={delete_highlight}
+    class:regenerate-highlight={regenerate_highlight}
+    class:add-reply-highlight={add_reply_highlight}
     class:temp-highlight={temp_highlight}
     out:slide={{ duration: $deleting ? 250 : 0, easing: quartOut }}
     in:slide={{ delay: $deleting ? 500 : 0, duration: $deleting ? 250 : 0, easing: quartOut }}
