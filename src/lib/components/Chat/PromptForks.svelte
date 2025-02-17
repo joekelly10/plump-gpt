@@ -137,7 +137,7 @@
                     &:not(.active)
                         .hover-info
                             opacity:    1
-                            transition: opacity easing.$quart-out 100ms 100ms
+                            transition: opacity easing.$quart-out 100ms 333ms
 
                 &:active
                     background-color: color.adjust($background-darker, $lightness: -1%)
