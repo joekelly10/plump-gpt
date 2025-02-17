@@ -156,7 +156,7 @@
         height:         100%
         box-sizing:     border-box
         padding-top:    math.round(3 * space.$default-padding)
-        padding-bottom: 128px
+        padding-bottom: 50vh
         overflow:       scroll
         +shared.scrollbar
 
