@@ -47,7 +47,9 @@
                         <span class='down-arrow'>
                             ↓
                         </span>
-                        <img class='model-icon' src='/img/icons/models/{fork.model_icon}' alt='AI model'/>
+                        {#if fork.model_icon}
+                            <img class='model-icon' src='/img/icons/models/{fork.model_icon}' alt='AI model'/>
+                        {/if}
                     </div>
                     <div class='next-message-preview'>
                         {getPreview(fork.next_message)}

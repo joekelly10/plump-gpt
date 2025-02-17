@@ -43,7 +43,9 @@
                 {i + 1}
                 <div class='hover-info' class:above={show_hover_info_above}>
                     <div class='avatar-container'>
-                        <img class='model-icon' src='/img/icons/models/{fork.model_icon}' alt='AI model'/>
+                        {#if fork.model_icon}
+                            <img class='model-icon' src='/img/icons/models/{fork.model_icon}' alt='AI model'/>
+                        {/if}
                     </div>
                     <div class='next-message-preview'>
                         {getPreview(fork.next_message)}
