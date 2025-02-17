@@ -155,10 +155,9 @@
                   message_index   = active_ids.indexOf(message.id),
                   is_active       = fp[1] === active_ids[message_index + 1],
                   provisional     = $forks[index]?.provisional,
-                  message_ids     = $forks[index].message_ids,
-                  next_message_id = message_ids[message_ids.findIndex(id => id === message.id) + 1],
-                  next_message    = $messages.find(m => m.id === next_message_id),
-                  message_count   = message_ids.slice(message_ids.findIndex(id => id === message.id) + 1).length
+                  message_ids     = $forks[index]?.message_ids ?? [],
+                  next_message_id = message_ids[message_ids.findIndex(id => id === message.id) + 1] ?? null,
+                  next_message    = $messages.find(m => m.id === next_message_id)
 
             let model_icon
 
@@ -178,7 +177,6 @@
                 is_active,
                 provisional,
                 next_message,
-                message_count,
                 model_icon
             })
         })
