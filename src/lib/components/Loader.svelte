@@ -2,6 +2,7 @@
     import hljs from 'highlight.js'
     import { chat_id, messages, forks, active_fork, stars, loader_active, provisionally_forking } from '$lib/stores/chat.js'
     import { onMount, onDestroy, tick, createEventDispatcher } from 'svelte'
+    import { smoothScroll } from '$lib/utils/helpers'
     import { scale } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import Search from '$lib/components/Loader/Search.svelte'
@@ -15,7 +16,8 @@
         total_chats    = 0,
         total_pages    = 0,
         active_page    = 1,
-        suspend_mouse  = false
+        suspend_mouse  = false,
+        scrolling_div  = null
     
     let search,
         search_value,
@@ -80,23 +82,27 @@
     }
 
     const nextPage = async () => {
-        suspend_mouse = true
-
         if (!(active_page < total_pages)) return
-        active_page += 1
 
+        keyboard_index  = null
+        suspend_mouse   = true
+        active_page    += 1
+
+        await tick()
+        smoothScroll(scrolling_div, 0, 333, 'quartOut')
         await fetchChats()
-        keyboard_index = null
     }
 
     const prevPage = async () => {
-        suspend_mouse = true
-
         if (active_page === 1) return
-        active_page -= 1
 
+        keyboard_index  = null
+        suspend_mouse   = true
+        active_page    -= 1
+
+        await tick()
+        smoothScroll(scrolling_div, 0, 333, 'quartOut')
         await fetchChats()
-        keyboard_index = null
     }
 
     const prevItem = async () => {
@@ -106,7 +112,7 @@
             keyboard_index = null
             search.focus()
             await tick()
-            search.scrollIntoView()
+            smoothScroll(scrolling_div, 0, 333, 'quartOut')
             return
         }
 
@@ -117,7 +123,7 @@
         }
 
         await tick()
-        scrollIntoView()
+        scrollToHighlighted()
     }
 
     const nextItem = async () => {
@@ -132,12 +138,16 @@
         }
 
         await tick()
-        scrollIntoView()
+        scrollToHighlighted()
     }
 
-    const scrollIntoView = () => {
+    const scrollToHighlighted = () => {
         const highlighted = document.querySelector('.keyboard-highlight')
-        highlighted.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        if (!highlighted) return
+        const container_rect = scrolling_div.getBoundingClientRect(),
+              element_rect   = highlighted.getBoundingClientRect(),
+              target         = element_rect.top - container_rect.top + scrolling_div.scrollTop - 120
+        smoothScroll(scrolling_div, target, 333, 'quartOut')
     }
 
     const keyboardSelect = async () => {
@@ -283,7 +293,7 @@
         await new Promise(resolve => setTimeout(resolve, 50))
 
         await deleteChat(chats[keyboard_index])
-        scrollIntoView()
+        scrollToHighlighted()
     }
 
     const mousemove = () => suspend_mouse = false
@@ -303,7 +313,7 @@
 </script>
 
 <div class='loader' in:scale={{ start: 1.02, opacity: 0, duration: 200, easing: quartOut }} out:scale={{ start: 1.02, opacity: 0, duration: 100, easing: quartOut }}>
-    <div class='inner'>
+    <div bind:this={scrolling_div} class='inner'>
         <Search
             bind:this={search}
             bind:search_value={search_value}

@@ -87,3 +87,66 @@ export const insert = (id, array) => {
         array.splice(i, 0, id)
     }
 }
+
+//  Used to ensure only one scroll animation per element
+const active_smooth_scrolls = new WeakMap()
+
+export const smoothScroll = (element, target_scrollTop, duration = 500, easing = 'cubicInOut') => {
+    //  Clean up any existing animation for this element
+    const cleanup = active_smooth_scrolls.get(element)
+    if (cleanup) cleanup()
+
+    const start      = element.scrollTop,
+          distance   = target_scrollTop - start,
+          start_time = performance.now()
+    
+    let animation_frame = null,
+        is_interrupted  = false
+
+    const handleWheel = (e) => {
+        const scrolled_up = e.deltaY < 0
+        if (scrolled_up && !is_interrupted) {
+            is_interrupted = true
+            cancelAnimationFrame(animation_frame)
+            element.removeEventListener('wheel', handleWheel)
+        }
+    }
+
+    element.addEventListener('wheel', handleWheel)
+
+    // Store cleanup function for this element
+    active_smooth_scrolls.set(element, () => {
+        is_interrupted = true
+        cancelAnimationFrame(animation_frame)
+        element.removeEventListener('wheel', handleWheel)
+    })
+
+    const easing_functions = {
+        cubicOut:   (t) => 1 - Math.pow(1 - t, 3),
+        quartOut:   (t) => 1 - Math.pow(1 - t, 4),
+        cubicInOut: (t) => t < 0.5 ? (4 * t * t * t)     : (1 - Math.pow(-2 * t + 2, 3) / 2),
+        quartInOut: (t) => t < 0.5 ? (8 * t * t * t * t) : (1 - Math.pow(-2 * t + 2, 4) / 2),
+    }
+
+    const animateScroll = (current_time) => {
+        if (is_interrupted) return
+
+        const elapsed  = current_time - start_time,
+              progress = Math.min(elapsed / duration, 1),
+              min      = 0,
+              max      = element.scrollHeight - element.clientHeight,
+              raw      = start + (distance * easing_functions[easing](progress)),
+              clamped  = Math.max(min, Math.min(max, raw))
+
+        element.scrollTop = clamped
+
+        if (progress < 1) {
+            animation_frame = requestAnimationFrame(animateScroll)
+        } else {
+            element.removeEventListener('wheel', handleWheel)
+            active_smooth_scrolls.delete(element)
+        }
+    }
+
+    animation_frame = requestAnimationFrame(animateScroll)
+}

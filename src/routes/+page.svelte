@@ -23,11 +23,11 @@
     const sendingMessage  = () => chat.sendingMessage()
 
     const scrollChatToBottom = (event) => {
-        chat.scrollToBottom({ forced: event.detail?.forced ?? false })
+        chat.scrollToBottom({ context: event.detail?.context })
     }
 
     const chatLoaded = () => {
-        chat.scrollToBottom({ delay: 150, forced: true })
+        chat.scrollToBottom({ context: 'chat_loaded' })
         input.chatLoaded({ switch_model: true })
     }
 

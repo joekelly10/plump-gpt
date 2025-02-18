@@ -1,6 +1,6 @@
 <script>
     import { createEventDispatcher } from 'svelte'
-    import { below_autoscroll_threshold } from '$lib/stores/chat'
+    import { show_scroll_button } from '$lib/stores/chat'
     import { api_status } from '$lib/stores/ai'
     import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
@@ -10,7 +10,7 @@
     const clicked = () => dispatch('clicked')
 </script>
 
-{#if !$below_autoscroll_threshold}
+{#if $show_scroll_button}
     <button 
         class='scroll-down-button streaming'
         class:streaming={$api_status === 'streaming'}

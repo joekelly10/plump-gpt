@@ -4,6 +4,7 @@
     import { quartOut } from 'svelte/easing'
     import { deleting, provisionally_forking, stars, highlights } from '$lib/stores/chat'
     import { api_status } from '$lib/stores/ai'
+    import { smoothScroll } from '$lib/utils/helpers'
     import { marked } from 'marked'
 
     import MessageControls from '$lib/components/Chat/MessageControls.svelte'
@@ -17,16 +18,16 @@
 
     const dispatch = createEventDispatcher()
 
-    export let message
+    export let message,
+               scroll_reasoning_interrupted
 
-    let element           = null,
-        show_info         = false,
-        show_copied       = false,
-        copy_timer        = null,
-        reasoning_div     = null,
-        should_autoscroll = true,
-        temp_highlight    = false,
-        temp_timer        = null
+    let element        = null,
+        show_info      = false,
+        show_copied    = false,
+        copy_timer     = null,
+        reasoning_div  = null,
+        temp_highlight = false,
+        temp_timer     = null
 
     $: starred   = $stars.includes(message.id)
     $: streaming = message.is_last && message.role === 'assistant' && $api_status === 'streaming'
@@ -43,8 +44,14 @@
     export const getOffsetTop = () => element.offsetTop
 
     export const scrollReasoningToBottom = () => {
-        if (streaming && reasoning_div && should_autoscroll) {
-            reasoning_div.scroll({ top: reasoning_div.scrollHeight, behavior: 'smooth' })
+        if (streaming && reasoning_div && !scroll_reasoning_interrupted) {
+            const bottom   = reasoning_div.scrollHeight - reasoning_div.clientHeight,
+                  distance = bottom - reasoning_div.scrollTop
+            if (distance < 300) {
+                smoothScroll(reasoning_div, bottom, 250, 'cubicOut')
+            } else {
+                smoothScroll(reasoning_div, bottom, 500, 'quartOut')
+            }
         }
     }
 
@@ -72,8 +79,16 @@
         dispatch('save')
     }
 
-    const handleScrolledReasoning = (e) => {
-        should_autoscroll = e.target.scrollTop >= e.target.scrollHeight - e.target.clientHeight - 80
+    const handleWheel = (e) => {
+        const scrolled_down = e.deltaY > 0,
+              on_reasoning  = e.target.closest('.reasoning-content')
+        if (scrolled_down && on_reasoning) {
+            const threshold = 100,
+                  bottom    = reasoning_div.scrollHeight - reasoning_div.clientHeight
+            if (reasoning_div.scrollTop >= bottom - threshold) {
+                scroll_reasoning_interrupted = false
+            }
+        }
     }
 </script>
 
@@ -159,7 +174,7 @@
                 <div
                     class='reasoning-content'
                     bind:this={reasoning_div}
-                    on:scroll={handleScrolledReasoning}
+                    on:wheel={handleWheel}
                 >
                     {@html marked(message.reasoning_content)}
                 </div>

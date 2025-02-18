@@ -2,7 +2,7 @@
     import hljs from 'highlight.js'
     import { onMount, tick, createEventDispatcher } from 'svelte'
     import { addCopyButtons } from '$lib/utils/helpers'
-    import { initialising, chat_id, messages, forks, active_fork, stars, active_messages, loader_active, prompt_editor_active, config, adding_reply, below_autoscroll_threshold } from '$lib/stores/chat'
+    import { initialising, chat_id, messages, forks, active_fork, stars, active_messages, loader_active, prompt_editor_active, config, adding_reply, show_scroll_button } from '$lib/stores/chat'
     import { model, temperature, top_p, api_status } from '$lib/stores/ai'
     import { page } from '$app/stores'
     import SystemPromptButton from '$lib/components/Input/SystemPromptButton.svelte'
@@ -109,7 +109,7 @@
 
         await tick()
         hljs.highlightAll()
-        dispatch('scrollChatToBottom', { forced: true })
+        dispatch('scrollChatToBottom', { context: 'sending_message' })
 
         const options = {
             model:       $model.id,
@@ -151,7 +151,7 @@
         $messages = [...$messages, gpt_message]
 
         await tick()
-        dispatch('scrollChatToBottom')
+        dispatch('scrollChatToBottom', { context: 'streaming_started' })
 
         const decoder = new TextDecoderStream()
         const reader  = response.body.pipeThrough(decoder).getReader()
@@ -165,7 +165,7 @@
         addCopyButtons()
 
         await tick()
-        dispatch('scrollChatToBottom')
+        dispatch('scrollChatToBottom', { context: 'streaming_finished' })
 
         if ($config.autosave) dispatch('save')
     }
@@ -279,11 +279,10 @@
 
             $messages = [...$messages.slice(0,-1), gpt_message]
 
-            //  Auto-scroll max once every 400ms
             if (!rate_limiter) {
                 await tick()
-                dispatch('scrollChatToBottom')
-                rate_limiter = setTimeout(() => { rate_limiter = null }, 400)
+                dispatch('scrollChatToBottom', { context: 'streaming_message' })
+                rate_limiter = setTimeout(() => { rate_limiter = null }, 100)
             }
         }
 
@@ -405,18 +404,18 @@
     const openPromptEditor = () => $prompt_editor_active = true
 
     const newChat = async () => {
-        $messages      = $messages.slice(0,1)
-        $forks         = [{ message_ids: [0], forked_at: [], provisional: false }]
-        $active_fork   = 0
-        $stars         = []
-        $chat_id       = null
-        $loader_active = false
+        $messages           = $messages.slice(0,1)
+        $forks              = [{ message_ids: [0], forked_at: [], provisional: false }]
+        $active_fork        = 0
+        $stars              = []
+        $chat_id            = null
+        $loader_active      = false
+        $show_scroll_button = false
         $page.url.searchParams.delete('user_message')
         window.history.replaceState(null, '', $page.url.toString())
         autofocus()
         await fetchAndSetActivePrompt()
         await tick()
-        $below_autoscroll_threshold = true
     }
 </script>
 
@@ -445,7 +444,7 @@
         <TreeButton/>
         <SystemPromptButton/>
         <ScrollDownButton
-            on:clicked={() => dispatch('scrollChatToBottom', { forced: true })}
+            on:clicked={() => dispatch('scrollChatToBottom', { context: 'scroll_down_button' })}
         />
     {/if}
 </section>

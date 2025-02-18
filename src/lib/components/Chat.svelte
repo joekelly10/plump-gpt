@@ -2,33 +2,68 @@
     import { createEventDispatcher, tick } from 'svelte'
     import { fade, fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { initialising, messages, forks, active_fork, stars, active_messages, fork_points, usage, loader_active, prompt_editor_active, deleting, adding_reply, provisionally_forking, below_autoscroll_threshold } from '$lib/stores/chat'
+    import { initialising, messages, forks, active_fork, stars, active_messages, fork_points, usage, loader_active, prompt_editor_active, deleting, adding_reply, provisionally_forking, show_scroll_button } from '$lib/stores/chat'
     import { model, api_status } from '$lib/stores/ai'
-    import { insert } from '$lib/utils/helpers'
+    import { insert, smoothScroll } from '$lib/utils/helpers'
     import UsageStats from '$lib/components/Chat/UsageStats.svelte'
     import Message from '$lib/components/Chat/Message.svelte'
     import WaitingDots from '$lib/components/Chat/WaitingDots.svelte'
 
     const dispatch = createEventDispatcher()
     
-    let chat,
-        forking_from      = null,
-        uparrow_limiter   = null,
-        downarrow_limiter = null,
-        message_refs      = [] // references to the list of `Message` components
+    let chat                         = null,
+        forking_from                 = null,
+        uparrow_limiter              = null,
+        downarrow_limiter            = null,
+        message_refs                 = [], // references to the list of `Message` components
+        scroll_interrupted           = false,
+        scroll_reasoning_interrupted = false
 
     export const sendingMessage = () => $provisionally_forking = false
 
-    export const scrollToBottom = (options = { delay: 0, forced: false }) => {
-        setTimeout(() => {
-            if ($below_autoscroll_threshold || options.forced) {
-                chat.scroll({ top: chat.scrollHeight, behavior: 'smooth'})
+    export const scrollToBottom = (options = { context: null }) => {
+        const bottom   = chat.scrollHeight - chat.clientHeight,
+              distance = bottom - chat.scrollTop
+
+        if (options.context === 'sending_message') {
+            scroll_interrupted           = false
+            scroll_reasoning_interrupted = false
+            if (distance < 2500) {
+                smoothScroll(chat, bottom, 500, 'quartInOut')
+            } else if (distance < 5000) {
+                smoothScroll(chat, bottom, 750, 'cubicInOut')
+            } else if (distance < 7500) {
+                smoothScroll(chat, bottom, 1000, 'cubicInOut')
+            } else {
+                smoothScroll(chat, bottom, 1250, 'cubicInOut')
             }
-            if ($active_messages) {
+        } else if (['streaming_started', 'streaming_message', 'streaming_finished'].includes(options.context)) {
+            if (!scroll_interrupted) {
+                if (distance < 300) {
+                    smoothScroll(chat, bottom, 250, 'cubicOut')
+                } else {
+                    smoothScroll(chat, bottom, 500, 'quartOut')
+                }
+            }
+            if (!scroll_reasoning_interrupted) {
                 const id_of_last = $active_messages[$active_messages.length - 1].id
                 message_refs[id_of_last]?.scrollReasoningToBottom()
             }
-        }, options.delay)
+        } else if (['scroll_down_button', 'keyboard_shortcut', 'chat_loaded'].includes(options.context)) {
+            scroll_interrupted           = false
+            scroll_reasoning_interrupted = false
+            if (distance < 1000) {
+                smoothScroll(chat, bottom, 333, 'quartOut')
+            } else if (distance < 2500) {
+                smoothScroll(chat, bottom, 500, 'quartInOut')
+            } else if (distance < 5000) {
+                smoothScroll(chat, bottom, 750, 'cubicInOut')
+            } else if (distance < 7500) {
+                smoothScroll(chat, bottom, 1000, 'cubicInOut')
+            } else {
+                smoothScroll(chat, bottom, 1250, 'cubicInOut')
+            }
+        }
     }
 
     export const goToMessage = (options = { delay: 0, message_id: null }) => {
@@ -51,21 +86,33 @@
     const keydown = (e) => {
         if ($loader_active || $prompt_editor_active) return
 
-        if (e.shiftKey && e.altKey && e.key === 'ArrowUp') {
-            return chat.scroll({ top: 0, behavior: 'smooth' })
-        }
         if (e.shiftKey && e.altKey && e.key === 'ArrowDown') {
-            return chat.scroll({ top: chat.scrollHeight, behavior: 'smooth' })
+            return scrollToBottom({ context: 'keyboard_shortcut' })
         }
-        if (e.altKey && e.key === 'ArrowUp') {
-            if (uparrow_limiter) return
-            uparrow_limiter = setTimeout(() => { uparrow_limiter = null }, 200)
-            return chat.scrollBy({ top: -480, behavior: 'smooth' })
+        if (e.shiftKey && e.altKey && e.key === 'ArrowUp') {
+            scroll_interrupted = true
+            const distance = chat.scrollHeight - chat.clientHeight
+            if (distance < 1000) {
+                return smoothScroll(chat, 0, 333, 'quartOut')
+            } else if (distance < 2500) {
+                return smoothScroll(chat, 0, 500, 'quartInOut')
+            } else if (distance < 5000) {
+                return smoothScroll(chat, 0, 750, 'cubicInOut')
+            } else if (distance < 7500) {
+                return smoothScroll(chat, 0, 1000, 'cubicInOut')
+            } else {
+                return smoothScroll(chat, 0, 1250, 'cubicInOut')
+            }
         }
         if (e.altKey && e.key === 'ArrowDown') {
             if (downarrow_limiter) return
-            downarrow_limiter = setTimeout(() => { downarrow_limiter = null }, 200)
-            return chat.scrollBy({ top: 480, behavior: 'smooth' })
+            downarrow_limiter = setTimeout(() => { downarrow_limiter = null }, 50)
+            return smoothScroll(chat, chat.scrollTop + 400, 333, 'quartOut')
+        }
+        if (e.altKey && e.key === 'ArrowUp') {
+            if (uparrow_limiter) return
+            uparrow_limiter = setTimeout(() => { uparrow_limiter = null }, 50)
+            return smoothScroll(chat, chat.scrollTop - 400, 333, 'quartOut')
         }
         if (e.ctrlKey && e.key === 'Backspace') {
             return deleteMessage($messages.length-1)
@@ -310,14 +357,46 @@
 
     const cancelProvisionalFork = () => switchToFork(forking_from)
 
-    const handleScrolled = (e) => {
-        $below_autoscroll_threshold = e.target.scrollTop >= e.target.scrollHeight - e.target.clientHeight - 200
+    const handleWheel = (e) => {
+        //  UX here = the two scroll interuptions work independently
+        //  (i.e. for the main chat and the reasoning content div)
+        //  based on where the mouse is when the wheel event occurs
+        const scrolled_up  = e.deltaY < 0,
+              on_reasoning = e.target.closest('.reasoning-content')
+        if (scrolled_up) {
+            if (on_reasoning) {
+                scroll_reasoning_interrupted = true
+            } else {
+                scroll_interrupted = true
+            }
+        } else {
+            if (on_reasoning) {
+                //  handled in Message.svelte
+            } else {
+                const threshold = 160,
+                      bottom  = chat.scrollHeight - chat.clientHeight
+                if (chat.scrollTop >= bottom - threshold) {
+                    scroll_interrupted = false
+                }
+            }
+        }
+    }
+
+    const handleScroll = () => {
+        const bottom = chat.scrollHeight - chat.clientHeight
+        $show_scroll_button = chat.scrollTop <= bottom - 160
     }
 </script>
 
 <svelte:document on:keydown={keydown} />
 
-<section class='chat' class:frozen={$loader_active || $prompt_editor_active} bind:this={chat} on:scroll={handleScrolled}>
+<section
+    class='chat'
+    class:frozen={$loader_active || $prompt_editor_active}
+    bind:this={chat}
+    on:wheel={handleWheel}
+    on:scroll={handleScroll}
+>
     {#if $initialising}
         <div class='initialising' out:fade={{ delay: 250, duration: 125, easing: quartOut }}>
             Initialising...
@@ -333,6 +412,7 @@
             <Message
                 bind:this={message_refs[message.id]}
                 message={message}
+                bind:scroll_reasoning_interrupted={scroll_reasoning_interrupted}
                 on:regenerateReply={regenerateReply}
                 on:deleteOne={() => deleteMessage(false)}
                 on:deleteBoth={() => deleteMessage(true)}
