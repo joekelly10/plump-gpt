@@ -218,7 +218,7 @@
         &.delete-highlight
             .title-input,
             .prompt-input
-                box-shadow:       0 0 0 1px $coral
+                box-shadow:       0 0 0 0.5px $coral
                 border-color:     $coral
                 background-color: $delete-highlight-bg
                 text-decoration:  line-through

@@ -137,7 +137,7 @@
 
         &:not(.suspend-mouse-highlight)
             &:hover
-                box-shadow: 0 0 0 2px white
+                box-shadow: 0 0 0 1.5px white
                 transition: none
         
         &:active
@@ -148,7 +148,7 @@
             transition: none
 
         &.delete-highlight
-            box-shadow:       0 0 0 2px $coral
+            box-shadow:       0 0 0 1.5px $coral
             border-color:     $delete-highlight-bg
             background-color: $delete-highlight-bg
             transition:       none

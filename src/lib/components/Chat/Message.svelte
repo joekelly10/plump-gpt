@@ -223,7 +223,7 @@
             
             &.add-reply-highlight
                 z-index:          999
-                box-shadow:       0 0 0 2px $blue
+                box-shadow:       0 0 0 1.5px $blue
                 border-radius:    8px 8px 1px 1px
                 background-color: $regenerate-highlight-bg
                 transition:       none
@@ -234,14 +234,14 @@
             background-color: $background-lighter
 
             &.delete-highlight
-                box-shadow:       0 0 0 2px $coral
+                box-shadow:       0 0 0 1.5px $coral
                 border-radius:    1px 1px 8px 8px
                 background-color: $delete-highlight-bg
                 text-decoration:  line-through
                 transition:       none
             
             &.regenerate-highlight
-                box-shadow:       0 0 0 2px $blue
+                box-shadow:       0 0 0 1.5px $blue
                 border-radius:    1px 1px 8px 8px
                 background-color: $regenerate-highlight-bg
                 text-decoration:  line-through
@@ -258,7 +258,7 @@
         &.temp-highlight
             z-index:          99
             background-color: color.adjust($background-lighter, $lightness: -2.5%)
-            box-shadow:       0 0 0 2px $off-white
+            box-shadow:       0 0 0 1.5px $off-white
             transition:       none
 
             &.starred

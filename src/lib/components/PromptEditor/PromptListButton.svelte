@@ -123,11 +123,11 @@
             font-size:   14px
 
         &:hover
-            box-shadow: 0 0 0 2px white
+            box-shadow: 0 0 0 1.5px white
             transition: none
 
         &:active
-            box-shadow:       0 0 0 2px $off-white
+            box-shadow:       0 0 0 1.5px $off-white
             background-color: color.adjust($background-lighter, $lightness: -1%)
 
         &.selected
@@ -137,10 +137,10 @@
                 box-shadow: 0 0 0 2px $yellow
 
                 &.delete-highlight
-                    box-shadow: 0 0 0 2px $coral
+                    box-shadow: 0 0 0 1.5px $coral
         
         &.delete-highlight
-            box-shadow:       0 0 0 2px $coral
+            box-shadow:       0 0 0 1.5px $coral
             background-color: $delete-highlight-bg
             text-decoration:  line-through
 </style>
