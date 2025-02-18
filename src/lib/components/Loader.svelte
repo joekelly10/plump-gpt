@@ -319,9 +319,9 @@
             bind:search_value={search_value}
             bind:searched_value={searched_value}
             bind:filter={filter}
+            bind:active_page={active_page}
             total_chats={total_chats}
             total_pages={total_pages}
-            active_page={active_page}
             on:fetchChats={fetchChats}
             on:nextPage={nextPage}
             on:prevPage={prevPage}

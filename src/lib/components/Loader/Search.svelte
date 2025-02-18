@@ -30,17 +30,20 @@
     }
 
     const clickedAll = () => {
-        filter = 'all'
+        filter      = 'all'
+        active_page = 1
         dispatch('fetchChats')
     }
 
     const clickedStarred = () => {
-        filter = 'starred'
+        filter      = 'starred'
+        active_page = 1
         dispatch('fetchChats')
     }
 
     const clickedNonDefault = () => {
-        filter = 'non-default'
+        filter      = 'non-default'
+        active_page = 1
         dispatch('fetchChats')
     }
 </script>
