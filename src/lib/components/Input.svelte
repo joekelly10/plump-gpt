@@ -12,12 +12,13 @@
 
     const dispatch = createEventDispatcher()
 
-    let input            = null,
-        input_text       = null,
-        rate_limiter     = null,
-        input_overflowed = null,
-        input_expanded   = null,
-        nope_timer       = null,
+    let input,
+        input_text,
+        rate_limiter,
+        nope_timer
+    
+    let input_overflowed = false,
+        input_expanded   = false,
         nope_highlight   = false
 
     export const focus = () => input.focus()
