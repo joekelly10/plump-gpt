@@ -54,10 +54,8 @@ const model_prices = [
         id: 'gemini-2.0-flash-lite',
         price: {
             cents: {
-                // input_token:  7.5/1000000, // $0.075/mTok
-                // output_token:  15/1000000  // $0.15/mTok
-                input_token:  0, // Free (for now)
-                output_token: 0  //
+                input_token:  7.5/1000000, // $0.075/mTok
+                output_token:  30/1000000  // $0.30/mTok
             }
         }
     },
@@ -65,10 +63,8 @@ const model_prices = [
         id: 'gemini-2.0-flash',
         price: {
             cents: {
-                // input_token:  10/1000000, // $0.10/mTok
-                // output_token: 40/1000000
-                input_token:  0, // Free (for now)
-                output_token: 0  //
+                input_token:   10/1000000, // $0.10/mTok
+                output_token:  40/1000000
             }
         }
     },
@@ -118,15 +114,6 @@ const model_prices = [
         }
     },
     {
-        id: 'llama-3-free',
-        price: {
-            cents: {
-                input_token:  0, // Free
-                output_token: 0
-            }
-        }
-    },
-    {
         id: 'llama-3-405b',
         price: {
             cents: {
@@ -141,24 +128,6 @@ const model_prices = [
             cents: {
                 input_token:  80/1000000, // $0.80/mTok
                 output_token: 80/1000000
-            }
-        }
-    },
-    {
-        id: 'mistral-small',
-        price: {
-            cents: {
-                input_token:  0, // Free
-                output_token: 0
-            }
-        }
-    },
-    {
-        id: 'mistral-large',
-        price: {
-            cents: {
-                input_token:  0, // Free(?)
-                output_token: 0
             }
         }
     },
@@ -208,6 +177,15 @@ const model_prices = [
                 cache_read:    15/1000000
             }
         }
+    },
+    {
+        id: 'free',
+        price: {
+            cents: {
+                input_token:  0,
+                output_token: 0
+            }
+        }
     }
 ]
 
@@ -225,11 +203,13 @@ const aliases = {
     'gemini-2.0-pro-exp-02-05':                      'gemini-2.0-pro',
     'grok-2-1212':                                   'grok-2',
     'command-r-plus-08-2024':                        'command-r-plus',
-    'meta-llama/llama-3.2-11b-vision-instruct:free': 'llama-3-free',
-    'meta-llama/llama-3.3-70b-instruct:free':        'llama-3-free',
+    'meta-llama/llama-3.2-11b-vision-instruct:free': 'free',
+    'meta-llama/llama-3.3-70b-instruct:free':        'free',
     'meta-llama/llama-3.1-405b-instruct':            'llama-3-405b',
+    'mistral-small':                                 'free',
+    'mistral-large':                                 'free',
+    'mistral-large-latest':                          'free',
     'nousresearch/hermes-3-llama-3.1-405b':          'nous-hermes-3',
-    'mistral-large-latest':                          'mistral-large',
     'qwen/qwen-turbo':                               'qwen-turbo',
     'qwen/qwen-plus':                                'qwen-plus',
     'qwen/qwen-max':                                 'qwen-max'
