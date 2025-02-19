@@ -1,8 +1,8 @@
 <script>
     import hljs from 'highlight.js'
-    import { onMount, tick, createEventDispatcher } from 'svelte'
+    import { tick, createEventDispatcher } from 'svelte'
     import { addCopyButtons } from '$lib/utils/helpers'
-    import { initialising, chat_id, messages, forks, active_fork, stars, active_messages, loader_active, prompt_editor_active, config, adding_reply, show_scroll_button } from '$lib/stores/chat'
+    import { chat_id, messages, forks, active_fork, stars, active_messages, loader_active, prompt_editor_active, config, adding_reply, show_scroll_button } from '$lib/stores/chat'
     import { model, temperature, top_p, api_status } from '$lib/stores/ai'
     import { page } from '$app/stores'
     import SystemPromptButton from '$lib/components/Input/SystemPromptButton.svelte'
@@ -12,19 +12,37 @@
 
     const dispatch = createEventDispatcher()
 
-    let input,
-        input_text,
-        rate_limiter,
-        input_overflowed,
-        input_expanded
+    let input            = null,
+        input_text       = null,
+        rate_limiter     = null,
+        input_overflowed = null,
+        input_expanded   = null,
+        nope_timer       = null,
+        nope_highlight   = false
 
-    export const autofocus = () => input.focus()
+    export const focus = () => input.focus()
+
+    export const setText = async (text) => {
+        input_text = text
+        await tick()
+
+        //  move cursor to end of input
+        let range = document.createRange()
+        range.selectNodeContents(input)
+        range.collapse(false)
+
+        let selection = window.getSelection()
+        selection.removeAllRanges()
+        selection.addRange(range)
+
+        await tick()
+    }
 
     export const regenerateReply = async () => sendMessage(true)
     export const addReply        = async () => sendMessage(true)
 
     export const chatLoaded = async (options = {}) => {
-        autofocus()
+        focus()
         await tick()
         hljs.highlightAll()
         addCopyButtons()
@@ -34,60 +52,17 @@
         }
     }
 
-    onMount(async () => {
-        const send_immediately = $page.url.searchParams.get('send_immediately')
-
-        if (send_immediately) {
-            await fetchAndSetDefaultPrompt()
-        } else {
-            await fetchAndSetActivePrompt()
-        }
-
-        $initialising = false
-
-        getMessageFromURL()
-
-        if (send_immediately) {
-            sendMessage()
-            removeSendImmediatelyFromURL()
-        }
-
-        input.focus()
-    })
-
-    const fetchAndSetActivePrompt = async () => {
-        const response = await fetch('/api/system-prompts/active')
-        const data = await response.json()
-        $messages[0] = {
-            ...$messages[0],
-            system_prompt_id:    data.id,
-            system_prompt_title: data.title,
-            is_default:          data.default,
-            content:             data.message
-        }
-    }
-
-    const fetchAndSetDefaultPrompt = async () => {
-        const response = await fetch('/api/system-prompts/default')
-        const data = await response.json()
-        $messages[0] = {
-            ...$messages[0],
-            system_prompt_id:    data.id,
-            system_prompt_title: data.title,
-            is_default:          data.default,
-            content:             data.message
-        }
-    }
-
-    const getNextId = () => $messages[$messages.length - 1].id + 1
-
-    const getParentId = () => {
-        const message_ids = $forks[$active_fork].message_ids
-        return message_ids[message_ids.length - 1]
-    }
-
-    const sendMessage = async (is_regeneration = false) => {
+    export const sendMessage = async (is_regeneration = false) => {
         console.log('🤖 Sending message...')
+
+        const getNextId = () => {
+            return $messages[$messages.length - 1].id + 1
+        }
+
+        const getParentId = () => {
+            const message_ids = $forks[$active_fork].message_ids
+            return message_ids[message_ids.length - 1]
+        }
 
         if (!is_regeneration) {
             const user_message = {
@@ -350,28 +325,8 @@
         return await response.json()
     }
 
-    const getMessageFromURL = async () => {
-        if ($messages.length === 1 && $page.url.searchParams.has('user_message')) {
-            input_text = $page.url.searchParams.get('user_message')
-
-            await tick()
-
-            //  move cursor to end of input
-            let range = document.createRange()
-            range.selectNodeContents(input)
-            range.collapse(false)
-
-            let selection = window.getSelection()
-            selection.removeAllRanges()
-            selection.addRange(range)
-
-            await tick()
-        }
-    }
-
-    const removeSendImmediatelyFromURL = () => {
-        $page.url.searchParams.delete('send_immediately')
-        window.history.replaceState(null, '', $page.url.toString())
+    const inputChanged = () => {
+        input_overflowed = input.scrollHeight > input.clientHeight
     }
 
     const pastedInput = (e) => {
@@ -381,36 +336,10 @@
         el.scrollIntoView({ block: 'nearest', inline: 'nearest' })
     }
 
-    const deleteChat = async () => {
-        if (confirm('Delete current chat?  Press OK to confirm.')) {
-            console.log(`🗑️ Deleting chat: ${$chat_id}...`)
-            const response = await fetch(`/api/chats/${$chat_id}`, {
-                method:  'DELETE',
-                headers: { 'Content-Type': 'application/json' }
-            })
-
-            if (response.ok) {
-                console.log(`🗑️–✅ Chat deleted.`)
-                newChat()
-            } else {
-                console.log(`🗑️–❌ Delete failed: ${response.status} ${response.statusText}`)
-                const json = await response.json()
-                if (json) console.log(json)
-            }
-        }
-    }
-
-    let nope_highlight = false,
-        nope_timer     = null
-
     const nope = () => {
         clearTimeout(nope_timer)
         nope_highlight = true
         nope_timer     = setTimeout(() => { nope_highlight = false}, 50)
-    }
-
-    const inputChanged = () => {
-        input_overflowed = input.scrollHeight > input.clientHeight
     }
 
     const keydownMessageInput = (e) => {
@@ -447,7 +376,27 @@
         }
     }
 
-    const openPromptEditor = () => $prompt_editor_active = true
+    const openPromptEditor = () => {
+        $prompt_editor_active = true
+    }
+
+    const deleteChat = async () => {
+        if (confirm('Delete current chat?  Press OK to confirm.')) {
+            console.log(`🗑️ Deleting chat: ${$chat_id}...`)
+            const response = await fetch(`/api/chats/${$chat_id}`, {
+                method:  'DELETE',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            if (response.ok) {
+                console.log(`🗑️–✅ Chat deleted.`)
+                newChat()
+            } else {
+                console.log(`🗑️–❌ Delete failed: ${response.status} ${response.statusText}`)
+                const json = await response.json()
+                if (json) console.log(json)
+            }
+        }
+    }
 
     const newChat = async () => {
         $messages           = $messages.slice(0,1)
@@ -459,7 +408,7 @@
         $show_scroll_button = false
         $page.url.searchParams.delete('user_message')
         window.history.replaceState(null, '', $page.url.toString())
-        autofocus()
+        focus()
         await fetchAndSetActivePrompt()
         await tick()
     }

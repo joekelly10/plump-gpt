@@ -1,8 +1,8 @@
 <script>
     import { createEventDispatcher, tick } from 'svelte'
-    import { fade, fly } from 'svelte/transition'
+    import { fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { initialising, messages, forks, active_fork, stars, active_messages, fork_points, usage, loader_active, prompt_editor_active, deleting, adding_reply, provisionally_forking, show_scroll_button } from '$lib/stores/chat'
+    import { messages, forks, active_fork, stars, active_messages, fork_points, usage, loader_active, prompt_editor_active, deleting, adding_reply, provisionally_forking, show_scroll_button } from '$lib/stores/chat'
     import { model, api_status } from '$lib/stores/ai'
     import { insert, smoothScroll } from '$lib/utils/helpers'
     import UsageStats from '$lib/components/Chat/UsageStats.svelte'
@@ -397,12 +397,6 @@
     on:wheel={handleWheel}
     on:scroll={handleScroll}
 >
-    {#if $initialising}
-        <div class='initialising' out:fade={{ delay: 250, duration: 125, easing: quartOut }}>
-            Initialising...
-        </div>
-    {/if}
-
     {#if $usage.total_messages > 0}
         <UsageStats/>
     {/if}
@@ -445,14 +439,6 @@
 
         &.frozen
             overflow: hidden
-    
-    .initialising
-        position:  absolute
-        top:       50%
-        left:      50%
-        transform: translate(-50%, -50%)
-        color:     $background-lightest
-        font-size: 14px
         
     .messages
         margin:         0 auto

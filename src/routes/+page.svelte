@@ -4,6 +4,7 @@
     import Header from '$lib/components/Header.svelte'
     import Chat from '$lib/components/Chat.svelte'
     import Input from '$lib/components/Input.svelte'
+    import Initialiser from '$lib/components/Initialiser.svelte'
     import Loader from '$lib/components/Loader.svelte'
     import Tree from '$lib/components/Tree.svelte'
     import PromptEditor from '$lib/components/PromptEditor.svelte'
@@ -16,14 +17,20 @@
     $: title = $messages.length > 1 ? $messages[1].content : 'Plump GPT - Fattens your thoughts'
     $: blur  = $loader_active || $tree_active || $prompt_editor_active
 
+    const focusInput      = () => input.focus()
+    const sendImmediately = () => input.sendMessage()
     const chatModified    = () => input.chatLoaded()
     const regenerateReply = () => input.regenerateReply()
     const addReply        = () => input.addReply()
     const save            = () => header.save()
     const sendingMessage  = () => chat.sendingMessage()
 
-    const scrollChatToBottom = (event) => {
-        chat.scrollToBottom({ context: event.detail?.context })
+    const setInputText = (e) => {
+        input.setText(e.detail?.text)
+    }
+
+    const scrollChatToBottom = (e) => {
+        chat.scrollToBottom({ context: e.detail?.context })
     }
 
     const chatLoaded = () => {
@@ -31,8 +38,8 @@
         input.chatLoaded({ switch_model: true })
     }
 
-    const goToMessage = (event) => {
-        chat.goToMessage({ delay: 50, message_id: event.detail?.message_id })
+    const goToMessage = (e) => {
+        chat.goToMessage({ delay: 50, message_id: e.detail?.message_id })
         input.chatLoaded({ switch_model: true })
     }
 </script>
@@ -60,6 +67,12 @@
         on:save={save}
     />
 </main>
+
+<Initialiser
+    on:sendImmediately={sendImmediately}
+    on:setInputText={setInputText}
+    on:focusInput={focusInput}
+/>
 
 {#if $loader_active}
     <Loader

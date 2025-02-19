@@ -1,8 +1,6 @@
 <script>
-    import { page } from '$app/stores'
     import { model } from '$lib/stores/ai'
     import { getPrices } from '$lib/utils/prices'
-    import { onMount } from 'svelte'
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
 
@@ -11,16 +9,6 @@
     $: prices            = getPrices($model.id)
     $: input_price_text  = prices.input  === 0 ? 'Free' : `$${(prices.input * 10000).toFixed(2)}`
     $: output_price_text = prices.output === 0 ? 'Free' : `$${(prices.output * 10000).toFixed(2)}`
-
-    onMount(() => getModelFromURL())
-    
-    const getModelFromURL = () => {
-        if ($page.url.searchParams.has('model')) {
-            model.setById($page.url.searchParams.get('model'))
-            $page.url.searchParams.delete('model')
-            window.history.replaceState(null, '', $page.url.toString())
-        }
-    }
 
     const keydown = (e) => {
         if (e.shiftKey && e.metaKey && e.key === 'm') {
