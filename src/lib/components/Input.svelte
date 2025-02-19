@@ -174,6 +174,34 @@
         let buffer      = '',
             brace_count = 0
 
+        const append = (new_text, is_reasoning = false) => {
+            if (!new_text) return
+            if (is_reasoning) {
+                gpt_message.reasoning_content += new_text
+            } else {
+                gpt_message.content += new_text
+            }
+            $messages = [...$messages.slice(0, -1), gpt_message]
+        }
+
+        //  Smooth out (+ speed limit) the API output stream for a nicer UX.
+        //  The Google API in particular bazookas out fat chunks of text at
+        //  a time, which is a pungent scent that stings the nostrils.
+
+        const smoothAppend = async (new_text, speed_limit = 8, is_reasoning = false) => {
+            if (!new_text) return
+            const words = new_text.split(/(\s+)/)
+            for (const word of words) {
+                if (is_reasoning) {
+                    gpt_message.reasoning_content += word
+                } else {
+                    gpt_message.content += word
+                }
+                $messages = [...$messages.slice(0, -1), gpt_message]
+                await new Promise(resolve => setTimeout(resolve, speed_limit))
+            }
+        }
+
         while (true) {
             const { value, done } = await reader.read()
 
@@ -218,9 +246,21 @@
                         const data = JSON.parse(json_string)
                         if (['open-ai', 'x', 'llama', 'mistral', 'deepseek', 'openrouter'].includes($model.type)) {
                             if ($model.id === 'deepseek-reasoner') {
-                                gpt_message.reasoning_content += data.choices[0]?.delta.reasoning_content ?? ''
+                                const reasoning_content = data.choices[0]?.delta.reasoning_content ?? ''
+                                if (reasoning_content) {
+                                    if ($config.smooth_output) {
+                                        await smoothAppend(reasoning_content, 5, true)
+                                    } else {
+                                        append(reasoning_content, true)
+                                    }
+                                }
                             }
-                            gpt_message.content += data.choices[0]?.delta.content ?? ''
+                            const content = data.choices[0]?.delta.content ?? ''
+                            if ($config.smooth_output) {
+                                await smoothAppend(content)
+                            } else {
+                                append(content)
+                            }
                             if (data.usage) {
                                 const cache_read_tokens = data.usage.prompt_tokens_details?.cached_tokens ?? 0
                                 gpt_message.usage.cache_read_tokens = cache_read_tokens
@@ -229,7 +269,12 @@
                             }
                         } else if ($model.type === 'anthropic') {
                             if (data.type === 'content_block_delta') {
-                                gpt_message.content += data.delta.text ?? ''
+                                const text = data.delta.text ?? ''
+                                if ($config.smooth_output) {
+                                    await smoothAppend(text)
+                                } else {
+                                    append(text)
+                                }
                             } else if (data.type === 'message_start') {
                                 gpt_message.usage.cache_write_tokens = data.message.usage.cache_creation_input_tokens ?? 0
                                 gpt_message.usage.cache_read_tokens  = data.message.usage.cache_read_input_tokens ?? 0
@@ -245,22 +290,23 @@
                                 console.log('🤖-❌ Error:', data.error)
                                 gpt_message.content += `\n\n**🚨 Error: ${data.error.message}**`
                             } else {
+                                const text = data.candidates[0].content.parts[0].text ?? ''
+                                if ($config.smooth_output) {
+                                    await smoothAppend(text)
+                                } else {
+                                    append(text)
+                                }
                                 gpt_message.usage.input_tokens = data.usageMetadata.promptTokenCount
                                 gpt_message.usage.output_tokens = data.usageMetadata.candidatesTokenCount
-                                //  The Google API bazookas fat chunks of text at a time,
-                                //  which is kinda ugly, so smooth them out for a nicer UX:
-                                const text  = data.candidates[0].content.parts[0].text ?? ''
-                                const words = text.split(/(\s+)/)
-                                for (const word of words) {
-                                    gpt_message.content += word
-                                    $messages = [...$messages.slice(0, -1), gpt_message]
-                                    await tick()
-                                    await new Promise(resolve => setTimeout(resolve, 10))
-                                }
                             }
                         } else if ($model.type === 'cohere') {
                             if (data.type === 'content-delta') {
-                                gpt_message.content += data.delta.message.content.text
+                                const content = data.delta.message.content.text ?? ''
+                                if ($config.smooth_output) {
+                                    await smoothAppend(content)
+                                } else {
+                                    append(content)
+                                }
                             } else if (data.type === 'message-end') {
                                 gpt_message.usage.input_tokens = data.delta.usage.billed_units.input_tokens
                                 gpt_message.usage.output_tokens = data.delta.usage.billed_units.output_tokens
