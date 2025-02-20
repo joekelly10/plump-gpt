@@ -70,6 +70,8 @@
     const getMessageFromURL = async () => {
         if ($messages.length === 1 && $page.url.searchParams.has('user_message')) {
             dispatch('setInputText', { text: $page.url.searchParams.get('user_message') })
+            $page.url.searchParams.delete('user_message')
+            window.history.replaceState(null, '', $page.url.toString())
             got_message = true
         }
     }
@@ -92,18 +94,13 @@
                 </div>
             {/if}
             {#if got_model}
-                <div class='got-model' in:slide={{ axis: 'y', delay: 50, duration: 75, easing: quartOut }}>
+                <div class='got-model' in:slide={{ axis: 'y', delay: 100, duration: 75, easing: quartOut }}>
                     Model ✓
                 </div>
             {/if}
             {#if got_message}
-                <div class='got-message' in:slide={{ axis: 'y', delay: 75, duration: 75, easing: quartOut }}>
+                <div class='got-message' in:slide={{ axis: 'y', delay: 225, duration: 75, easing: quartOut }}>
                     Message ✓
-                </div>
-            {/if}
-            {#if sending}
-                <div class='sending' in:slide={{ axis: 'y', delay: 100, duration: 75, easing: quartOut }}>
-                    Sending...
                 </div>
             {/if}
         </div>
