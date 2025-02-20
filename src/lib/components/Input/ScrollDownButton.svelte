@@ -2,7 +2,7 @@
     import { createEventDispatcher } from 'svelte'
     import { show_scroll_button } from '$lib/stores/chat'
     import { api_status } from '$lib/stores/ai'
-    import { fly } from 'svelte/transition'
+    import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
 
     const dispatch = createEventDispatcher()
@@ -15,8 +15,8 @@
         class='scroll-down-button streaming'
         class:streaming={$api_status === 'streaming'}
         on:click={clicked}
-        in:fly={{ y: 24, duration: 250, easing: quartOut }}
-        out:fly={{ y: 12, duration: 125, easing: quartOut }}
+        in:fade={{ duration: 250, easing: quartOut }}
+        out:fade={{ duration: 125, easing: quartOut }}
     >
         ↓
     </button>
