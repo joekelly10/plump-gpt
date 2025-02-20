@@ -34,8 +34,8 @@
     }
 
     const chatLoaded = () => {
-        chat.scrollToBottom({ context: 'chat_loaded' })
         input.chatLoaded({ switch_model: true })
+        setTimeout(() => { chat.scrollToBottom({ context: 'chat_loaded' }) }, 250) // allow forks to load
     }
 
     const goToMessage = (e) => {
