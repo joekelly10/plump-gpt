@@ -304,7 +304,7 @@
             if (!rate_limiter) {
                 await tick()
                 dispatch('scrollChatToBottom', { context: 'streaming_message' })
-                rate_limiter = setTimeout(() => { rate_limiter = null }, 100)
+                rate_limiter = setTimeout(() => { rate_limiter = null }, 200)
             }
         }
 
