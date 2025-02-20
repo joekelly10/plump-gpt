@@ -224,8 +224,15 @@
             &.add-reply-highlight
                 z-index:          999
                 box-shadow:       0 0 0 1.5px $blue
-                border-radius:    8px 8px 1px 1px
+                border-radius:    8px 8px 1.5px 1.5px
                 background-color: $regenerate-highlight-bg
+                transition:       none
+
+            &.temp-highlight
+                z-index:          999
+                background-color: color.adjust($background-lighter, $lightness: -2.5%)
+                box-shadow:       0 0 0 1.5px $off-white
+                border-radius:    8px 8px 1.5px 1.5px
                 transition:       none
 
         &.assistant
@@ -235,16 +242,22 @@
 
             &.delete-highlight
                 box-shadow:       0 0 0 1.5px $coral
-                border-radius:    1px 1px 8px 8px
+                border-radius:    1.5px 1.5px 8px 8px
                 background-color: $delete-highlight-bg
                 text-decoration:  line-through
                 transition:       none
             
             &.regenerate-highlight
                 box-shadow:       0 0 0 1.5px $blue
-                border-radius:    1px 1px 8px 8px
+                border-radius:    1.5px 1.5px 8px 8px
                 background-color: $regenerate-highlight-bg
                 text-decoration:  line-through
+                transition:       none
+            
+            &.temp-highlight
+                background-color: color.adjust($background-lighter, $lightness: -2.5%)
+                box-shadow:       0 0 0 1.5px $off-white
+                border-radius:    1.5px 1.5px 8px 8px
                 transition:       none
         
         &.streaming
@@ -255,14 +268,11 @@
         &.starred
             background-color: color.adjust($yellow, $alpha: -0.5)
 
-        &.temp-highlight
-            z-index:          99
-            background-color: color.adjust($background-lighter, $lightness: -2.5%)
-            box-shadow:       0 0 0 1.5px $off-white
-            transition:       none
-
-            &.starred
+            &.temp-highlight
                 background-color: color.adjust($yellow, $alpha: -0.575)
+                box-shadow:       0 0 0 1.5px $off-white
+                border-radius:    1.5px 1.5px 8px 8px
+                transition:       none
 
     .avatar-container
         display:         flex
