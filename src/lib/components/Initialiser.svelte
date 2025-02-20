@@ -1,6 +1,6 @@
 <script>
     import { onMount, createEventDispatcher, tick } from 'svelte'
-    import { fade } from 'svelte/transition'
+    import { fade, slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { page } from '$app/stores'
     import { initialising, messages } from '$lib/stores/chat'
@@ -81,28 +81,28 @@
 </script>
 
 {#if $initialising}
-    <div class='initialising' in:fade={{ duration: 100, easing: quartOut }} out:fade={{ delay: 400, duration: 150, easing: quartOut }}>
+    <div class='initialising' in:fade={{ duration: 100, easing: quartOut }} out:fade={{ delay: 333, duration: 150, easing: quartOut }}>
         <div class='inner'>
             <div class='initialising-text'>
                 Initialising...
             </div>
             {#if fetched_prompt}
-                <div class='fetched-prompt' in:fade={{ delay: 50, duration: 5, easing: quartOut }}>
+                <div class='fetched-prompt' in:slide={{ axis: 'y', delay: 25, duration: 75, easing: quartOut }}>
                     System prompt ✓
                 </div>
             {/if}
             {#if got_model}
-                <div class='got-model' in:fade={{ delay: 100, duration: 5, easing: quartOut }}>
+                <div class='got-model' in:slide={{ axis: 'y', delay: 50, duration: 75, easing: quartOut }}>
                     Model ✓
                 </div>
             {/if}
             {#if got_message}
-                <div class='got-message' in:fade={{ delay: 175, duration: 5, easing: quartOut }}>
+                <div class='got-message' in:slide={{ axis: 'y', delay: 75, duration: 75, easing: quartOut }}>
                     Message ✓
                 </div>
             {/if}
             {#if sending}
-                <div class='sending' in:fade={{ delay: 200, duration: 5, easing: quartOut }}>
+                <div class='sending' in:slide={{ axis: 'y', delay: 100, duration: 75, easing: quartOut }}>
                     Sending...
                 </div>
             {/if}
