@@ -51,43 +51,47 @@
 
         :global
             .provisional-fork-button
-                display:         flex
-                justify-content: center
-                align-items:     center
-                position:        relative
-                margin-top:      16px
-                padding:         0
-                padding-right:   20px
-                border-radius:   8px
-                border:          1px solid $background-lighter
-                color:           $background-lightest
-                white-space:     nowrap
-                cursor:          pointer
+                $button-size:  40px
+                display:       flex
+                align-items:   center
+                position:      relative
+                margin-top:    16px
+                height:        $button-size
+                box-sizing:    border-box
+                padding:       0
+                padding-right: 16px
+                border-radius: 8px
+                border:        1px solid $background-lighter
+                font-size:     14px
+                font-weight:   450
+                color:         $background-lightest
+                white-space:   nowrap
+                cursor:        pointer
 
                 .icon-container
                     display:         flex
                     justify-content: center
                     align-items:     center
-                    width:           48px
-                    height:          48px
+                    width:           $button-size
+                    height:          $button-size
 
                 .icon
                     fill: $background-lightest
                 
                 .model-container
-                    display:          flex
-                    align-items:      center
-                    justify-content:  center
-                    position:         absolute
-                    top:              0
-                    left:             -1px
-                    transform:        translateY(-20px) scale(0.5)
-                    width:            48px
-                    height:           48px
-                    box-sizing:       border-box
-                    opacity:          0
-                    pointer-events:   none
-                    transition:       opacity 0.1s easing.$quart-out, transform 0.1s easing.$quart-out
+                    display:         flex
+                    align-items:     center
+                    justify-content: center
+                    position:        absolute
+                    top:             0
+                    left:            -1px
+                    transform:       translateY(-20px) scale(0.5)
+                    width:           $button-size
+                    height:          $button-size
+                    box-sizing:      border-box
+                    opacity:         0
+                    pointer-events:  none
+                    transition:      opacity 0.1s easing.$quart-out, transform 0.1s easing.$quart-out
 
                     .avatar
                         height: 21px
@@ -117,7 +121,7 @@
                         border-color:     $blue
                         background-color: $blue
                         .model-container
-                            transform:      translateY(-58px)
+                            transform:      translateY(-50px)
                             opacity:        1
                             pointer-events: all
                             transition:     opacity 0.1s easing.$quart-out, transform 0.1s easing.$quart-out
