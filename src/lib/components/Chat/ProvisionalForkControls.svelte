@@ -31,6 +31,7 @@
         Add Reply
         <div class='model-container'>
             <img class='avatar' src='/img/icons/models/{$model.icon}' alt='{$model.name}'>
+            <span class='arrow'>→</span>
         </div>
     </button>
     <button class='provisional-fork-button cancel-fork' title='Cancel Fork (esc)' on:click={clickedCancelFork}>
@@ -91,6 +92,16 @@
                     .avatar
                         height: 21px
 
+                    .arrow
+                        position:   absolute
+                        top:        50%
+                        left:       50%
+                        transform:  translate(10px, -50%)
+                        opacity:    0
+                        font-size:  16px
+                        color:      $off-white
+                        transition: none
+
                 &:hover,
                 &:active
                     color: $background-darker
@@ -110,6 +121,10 @@
                             opacity:        1
                             pointer-events: all
                             transition:     opacity 0.1s easing.$quart-out, transform 0.1s easing.$quart-out
+                            .arrow
+                                transform:  translate(20px, -50%)
+                                opacity:    1
+                                transition: transform 0.1s easing.$quart-out 0.25s, opacity 0.1s easing.$quart-out 0.25s
                     &:active
                         border-color:     color.adjust($blue, $lightness: -3%)
                         background-color: color.adjust($blue, $lightness: -3%)

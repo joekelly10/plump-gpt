@@ -70,6 +70,7 @@
             <AddIcon className='icon' />
             <div class='model-container'>
                 <img class='avatar' src='/img/icons/models/{$model.icon}' alt='{$model.name}'>
+                <span class='arrow'>→</span>
             </div>
         </button>
         <button class='message-control-button retry' title='Regenerate reply' on:click={clickedRegenerate} on:mouseenter={hoveredRegenerate} on:mouseleave={unhoveredRegenerate}>
@@ -163,6 +164,16 @@
                         .avatar
                             height: 21px
 
+                        .arrow
+                            position:   absolute
+                            top:        50%
+                            left:       50%
+                            transform:  translate(10px, -50%)
+                            opacity:    0
+                            font-size:  16px
+                            color:      $off-white
+                            transition: none
+
                     .icon
                         height:    11px
                         transform: rotate(45deg)
@@ -176,6 +187,11 @@
                             opacity:        1
                             pointer-events: all
                             transition:     opacity 0.1s easing.$quart-out, transform 0.1s easing.$quart-out
+
+                            .arrow
+                                transform:  translate(20px, -50%)
+                                opacity:    1
+                                transition: transform 0.1s easing.$quart-out 0.25s, opacity 0.1s easing.$quart-out 0.25s
 
                         //  hack/fix: when adding a 6th reply, the forks container
                         //  expands on hover, moving the button down, causing the hover
