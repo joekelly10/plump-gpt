@@ -223,8 +223,8 @@
 
                 &.delete-highlight
                     background-color: color.adjust($delete-highlight-bg, $alpha: -0.4)
-                    transition:       none
                     text-decoration:  line-through
+                    color:            color.adjust($off-white, $alpha: -0.125)
                 
                 &.add-reply-highlight
                     z-index:          999
@@ -251,12 +251,14 @@
                     border-radius:    1.5px 1.5px 8px 8px
                     background-color: $delete-highlight-bg
                     text-decoration:  line-through
+                    color:            color.adjust($off-white, $alpha: -0.125)
                 
                 &.regenerate-highlight
                     box-shadow:       0 0 0 1.5px $blue
                     border-radius:    1.5px 1.5px 8px 8px
                     background-color: $regenerate-highlight-bg
                     text-decoration:  line-through
+                    color:            color.adjust($off-white, $alpha: -0.125)
                 
                 &.star-highlight
                     background-color: color.adjust($yellow, $alpha: -0.7)
