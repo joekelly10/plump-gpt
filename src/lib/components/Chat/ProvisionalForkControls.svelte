@@ -51,7 +51,7 @@
 
         :global
             .provisional-fork-button
-                $button-size:  40px
+                $button-size:  48px
                 display:       flex
                 align-items:   center
                 position:      relative
@@ -59,11 +59,11 @@
                 height:        $button-size
                 box-sizing:    border-box
                 padding:       0
-                padding-right: 16px
+                padding-right: 21px
                 border-radius: 8px
                 border:        1px solid $background-lighter
-                font-size:     14px
-                font-weight:   450
+                font-size:     16px
+                font-weight:   425
                 color:         $background-lightest
                 white-space:   nowrap
                 cursor:        pointer
@@ -121,7 +121,7 @@
                         border-color:     $blue
                         background-color: $blue
                         .model-container
-                            transform:      translateY(-50px)
+                            transform:      translateY(-58px)
                             opacity:        1
                             pointer-events: all
                             transition:     opacity 0.1s easing.$quart-out, transform 0.1s easing.$quart-out
