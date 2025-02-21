@@ -151,7 +151,9 @@
             box-shadow:       0 0 0 1.5px $coral
             border-color:     $delete-highlight-bg
             background-color: $delete-highlight-bg
-            transition:       none
+            color:            color.adjust($off-white, $alpha: -0.125)
+            text-decoration:  line-through
+            transition:       background-color easing.$quart-out 0.050s, box-shadow easing.$quart-out 0.050s
 
     .date
         margin-bottom: space.$default-padding
