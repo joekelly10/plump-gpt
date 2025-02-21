@@ -39,6 +39,7 @@
 
     $: add_reply_highlight  = $highlights.add_reply.includes(message.id)
     $: regenerate_highlight = $highlights.regenerate.includes(message.id)
+    $: star_highlight       = $highlights.star.includes(message.id)
     $: delete_highlight     = !(message.role === 'user' && message.forks.length > 1) && $highlights.delete.includes(message.id)
 
     export const getOffsetTop = () => element.offsetTop
@@ -101,6 +102,7 @@
     class:delete-highlight={delete_highlight}
     class:regenerate-highlight={regenerate_highlight}
     class:add-reply-highlight={add_reply_highlight}
+    class:star-highlight={star_highlight}
     class:temp-highlight={temp_highlight}
     out:slide={{ duration: $deleting ? 250 : 0, easing: quartOut }}
     in:slide={{ delay: $deleting ? 500 : 0, duration: $deleting ? 250 : 0, easing: quartOut }}
@@ -216,63 +218,73 @@
             border-radius:    8px 8px 0 0
             background-color: $background-lighter
 
-            &.delete-highlight
-                background-color: color.adjust($delete-highlight-bg, $alpha: -0.4)
-                transition:       none
-                text-decoration:  line-through
-            
-            &.add-reply-highlight
-                z-index:          999
-                box-shadow:       0 0 0 1.5px $blue
-                border-radius:    8px 8px 1.5px 1.5px
-                background-color: $regenerate-highlight-bg
-                transition:       none
+            &:not(.streaming)
+                transition: background-color easing.$quart-out 0.075s, box-shadow easing.$quart-out 0.075s
 
-            &.temp-highlight
-                z-index:          999
-                background-color: color.adjust($background-lighter, $lightness: -2.5%)
-                box-shadow:       0 0 0 1.5px $off-white
-                border-radius:    8px 8px 1.5px 1.5px
-                transition:       none
+                &.delete-highlight
+                    background-color: color.adjust($delete-highlight-bg, $alpha: -0.4)
+                    transition:       none
+                    text-decoration:  line-through
+                
+                &.add-reply-highlight
+                    z-index:          999
+                    box-shadow:       0 0 0 1.5px $blue
+                    border-radius:    8px 8px 1.5px 1.5px
+                    background-color: $regenerate-highlight-bg
+
+                &.temp-highlight
+                    z-index:          999
+                    background-color: color.adjust($background-lighter, $lightness: -2.5%)
+                    box-shadow:       0 0 0 1.5px $off-white
+                    border-radius:    8px 8px 1.5px 1.5px
 
         &.assistant
             margin-bottom:    space.$default-padding
             border-radius:    0 0 8px 8px
             background-color: $background-lighter
 
-            &.delete-highlight
-                box-shadow:       0 0 0 1.5px $coral
-                border-radius:    1.5px 1.5px 8px 8px
-                background-color: $delete-highlight-bg
-                text-decoration:  line-through
-                transition:       none
-            
-            &.regenerate-highlight
-                box-shadow:       0 0 0 1.5px $blue
-                border-radius:    1.5px 1.5px 8px 8px
-                background-color: $regenerate-highlight-bg
-                text-decoration:  line-through
-                transition:       none
-            
-            &.temp-highlight
-                background-color: color.adjust($background-lighter, $lightness: -2.5%)
-                box-shadow:       0 0 0 1.5px $off-white
-                border-radius:    1.5px 1.5px 8px 8px
-                transition:       none
-        
+            &:not(.streaming)
+                transition: background-color easing.$quart-out 0.075s, box-shadow easing.$quart-out 0.075s
+
+                &.delete-highlight
+                    box-shadow:       0 0 0 1.5px $coral
+                    border-radius:    1.5px 1.5px 8px 8px
+                    background-color: $delete-highlight-bg
+                    text-decoration:  line-through
+                
+                &.regenerate-highlight
+                    box-shadow:       0 0 0 1.5px $blue
+                    border-radius:    1.5px 1.5px 8px 8px
+                    background-color: $regenerate-highlight-bg
+                    text-decoration:  line-through
+                
+                &.star-highlight
+                    background-color: color.adjust($yellow, $alpha: -0.725)
+                    box-shadow:       0 0 0 1.5px $yellow
+                    border-radius:    1.5px 1.5px 8px 8px
+                
+                &.temp-highlight
+                    background-color: color.adjust($background-lighter, $lightness: -2.5%)
+                    box-shadow:       0 0 0 1.5px $off-white
+                    border-radius:    1.5px 1.5px 8px 8px
+                
+                &.starred
+                    &.star-highlight
+                        background-color: color.adjust($yellow, $alpha: -0.675)
+                        box-shadow:       0 0 0 1.5px $yellow
+                        border-radius:    1.5px 1.5px 8px 8px
+
+                    &.temp-highlight
+                        background-color: color.adjust($yellow, $alpha: -0.575)
+                        box-shadow:       0 0 0 1.5px $off-white
+
         &.streaming
             min-height:     space.$avatar-container-width
             padding-bottom: 1.25 * space.$default-padding
             animation:      streaming 1.5s linear infinite
 
         &.starred
-            background-color: color.adjust($yellow, $alpha: -0.5)
-
-            &.temp-highlight
-                background-color: color.adjust($yellow, $alpha: -0.575)
-                box-shadow:       0 0 0 1.5px $off-white
-                border-radius:    1.5px 1.5px 8px 8px
-                transition:       none
+            background-color: color.adjust($yellow, $alpha: -0.633)
 
     .avatar-container
         display:         flex

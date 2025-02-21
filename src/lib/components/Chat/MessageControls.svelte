@@ -2,7 +2,7 @@
     import { createEventDispatcher, tick } from 'svelte'
     import { slide, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { messages, highlights } from '$lib/stores/chat'
+    import { highlights } from '$lib/stores/chat'
     import { model } from '$lib/stores/ai'
     import AddIcon from '$lib/components/Icons/Add.svelte'
     import RetryIcon from '$lib/components/Icons/Retry.svelte'
@@ -47,6 +47,16 @@
         $highlights.add_reply = $highlights.add_reply.filter(id => ![message.id, message.parent_id].includes(id))
     }
 
+    const hoveredStar = async () => {
+        if (!$highlights.star.includes(message.id)) {
+            $highlights.star = [...$highlights.star, message.id]
+        }
+    }
+
+    const unhoveredStar = async () => {
+        $highlights.star = $highlights.star.filter(id => id !== message.id)
+    }
+
     const clickedAddReply   = () => dispatch('addReply', { message_id: message.parent_id })
     const clickedRegenerate = () => dispatch('regenerateReply')
     const clickedDelete     = () => dispatch(message.has_siblings ? 'deleteOne' : 'deleteBoth')
@@ -77,7 +87,7 @@
 
 {#if !showing_message_info}
     <div class='message-controls-left' in:slide={{ axis: 'x', duration: 250, easing: quartOut }} out:fade={{ duration: 250, easing: quartOut }}>
-        <button class='message-control-button star' class:starred={starred} title='Star' on:click={clickedStar}>
+        <button class='message-control-button star' class:starred={starred} title='Star' on:click={clickedStar} on:mouseenter={hoveredStar} on:mouseleave={unhoveredStar}>
             <StarIcon className='icon full' />
             <StarEmptyIcon className='icon empty' />
         </button>

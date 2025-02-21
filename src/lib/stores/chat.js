@@ -14,7 +14,7 @@ export const config                = writable({ autosave: true, smooth_output: t
 export const deleting              = writable(false)
 export const adding_reply          = writable(false)
 export const provisionally_forking = writable(false)
-export const highlights            = writable({ delete: [], regenerate: [], add_reply: [] })
+export const highlights            = writable({ delete: [], regenerate: [], add_reply: [], star: [] })
 export const show_scroll_button    = writable(false)
 
 export const active_messages = derived([messages, forks, active_fork], ([$messages, $forks, $active_fork]) => {
