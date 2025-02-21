@@ -259,7 +259,7 @@
                     text-decoration:  line-through
                 
                 &.star-highlight
-                    background-color: color.adjust($yellow, $alpha: -0.725)
+                    background-color: color.adjust($yellow, $alpha: -0.7)
                     box-shadow:       0 0 0 1.5px $yellow
                     border-radius:    1.5px 1.5px 8px 8px
                 
@@ -270,7 +270,7 @@
                 
                 &.starred
                     &.star-highlight
-                        background-color: color.adjust($yellow, $alpha: -0.675)
+                        background-color: color.adjust($yellow, $alpha: -0.666)
                         box-shadow:       0 0 0 1.5px $yellow
                         border-radius:    1.5px 1.5px 8px 8px
 
