@@ -196,7 +196,8 @@
                 color:            $off-white
 
             &.starred
-                color: $yellow
+                background-color: color.adjust($yellow, $alpha: -0.9)
+                color:            $yellow
 
                 &.active
                     background-color: $yellow
