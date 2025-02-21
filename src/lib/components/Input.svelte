@@ -164,7 +164,7 @@
         //  The Google API in particular bazookas out fat chunks of text at
         //  a time, which is a pungent scent that stings the nostrils.
 
-        const smoothAppend = async (new_text, speed_limit = 8, is_reasoning = false) => {
+        const smoothAppend = async (new_text, speed_limit = 10, is_reasoning = false) => {
             if (!new_text) return
             const words = new_text.split(/(\s+)/)
             for (const word of words) {
@@ -268,7 +268,7 @@
                             } else {
                                 const text = data.candidates[0].content.parts[0].text ?? ''
                                 if ($config.smooth_output) {
-                                    await smoothAppend(text)
+                                    await smoothAppend(text, 8)
                                 } else {
                                     append(text)
                                 }
