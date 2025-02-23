@@ -155,7 +155,7 @@
         position:       relative
         height:         100%
         box-sizing:     border-box
-        padding-top:    math.round(3 * space.$default-padding)
+        padding-top:    108px
         padding-bottom: 50vh
         overflow:       scroll
         +shared.scrollbar
@@ -307,11 +307,11 @@
                 align-items:      center
                 justify-content:  center
                 position:         relative
-                top:              -10px
+                top:              -30px
                 padding:          16px 24px
                 border-radius:    8px
                 border:           1px solid transparent
-                background-color: transparent
+                background-color: color.adjust($blue-grey, $alpha: -0.966)
                 font-size:        14px
                 color:            $blue-grey
                 white-space:      nowrap
@@ -325,7 +325,9 @@
                     color:       $off-white
                 
                 &:hover
-                    border:           1px solid $background-lightest
-                    background-color: $background-darkest
+                    background-color: color.adjust($blue-grey, $alpha: -0.933)
                     transition:       none
+                
+                &:active
+                    background-color: color.adjust($blue-grey, $alpha: -0.936)
 </style>
