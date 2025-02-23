@@ -327,7 +327,7 @@
     }
 
     const inputChanged = () => {
-        input_overflowed = input.scrollHeight > input.clientHeight
+        input_overflowed = input_expanded || input.scrollHeight > input.clientHeight
     }
 
     const pastedInput = (e) => {
