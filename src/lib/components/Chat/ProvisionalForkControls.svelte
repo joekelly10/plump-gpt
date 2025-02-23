@@ -129,6 +129,19 @@
                                 transform:  translate(18px, -50%)
                                 opacity:    1
                                 transition: transform 0.1s easing.$quart-out 0.25s, opacity 0.1s easing.$quart-out 0.25s
+                        //  hack/fix: when adding a 6th reply, the forks container
+                        //  expands on hover, moving the button down, causing the hover
+                        //  to glitch on/off, so we need to compensate for that with
+                        //  a run-off area above.  (And to the right, for the edge case
+                        //  where the scrollbar is added to the screen by the change
+                        //  in height):
+                        &:before
+                            content:  ''
+                            position: absolute
+                            top:      -58px
+                            left:     0
+                            width:    100%
+                            height:   100px
                     &:active
                         border-color:     color.adjust($blue, $lightness: -3%)
                         background-color: color.adjust($blue, $lightness: -3%)
