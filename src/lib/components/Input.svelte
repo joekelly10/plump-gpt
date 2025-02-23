@@ -206,6 +206,7 @@
                         } else if ($model.type === 'cohere') {
                             await processCohereObject(data, gpt_message)
                         }
+                        $messages = [...$messages.slice(0, -1), gpt_message]
                     } catch {
                         console.log('❌ Error parsing json: ', json_string)
                     }
@@ -325,7 +326,6 @@
                 } else {
                     gpt_message.content += word
                 }
-                $messages = [...$messages.slice(0, -1), gpt_message]
                 await new Promise(resolve => setTimeout(resolve, options.speed_limit))
             }
         } else {
@@ -334,7 +334,6 @@
             } else {
                 gpt_message.content += new_text
             }
-            $messages = [...$messages.slice(0, -1), gpt_message]
         }
     }
 
