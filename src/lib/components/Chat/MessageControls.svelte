@@ -189,7 +189,7 @@
                             transition:     opacity 0.1s easing.$quart-out, transform 0.1s easing.$quart-out
 
                             .arrow
-                                transform:  translate(20px, -50%)
+                                transform:  translate(18px, -50%)
                                 opacity:    1
                                 transition: transform 0.1s easing.$quart-out 0.25s, opacity 0.1s easing.$quart-out 0.25s
 
