@@ -176,7 +176,7 @@
             height:           100%
             width:            100%
             border-radius:    6px
-            background-color: transparent
+            background-color: color.adjust($blue-grey, $alpha: -0.966)
             font-size:        14px
             font-weight:      600
             color:            $blue-grey
