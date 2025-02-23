@@ -102,16 +102,17 @@
         console.log(`🤖-⏳ ${$model.short_name} is replying...`)
 
         let gpt_message = {
-            id:                getNextId(),
-            parent_id:         getParentId(),
-            role:              'assistant',
-            reasoning_content: '',
-            content:           '',
-            timestamp:         '',
-            model:             $model,
-            temperature:       $temperature,
-            top_p:             $top_p,
-            usage:             {
+            id:                 getNextId(),
+            parent_id:          getParentId(),
+            role:               'assistant',
+            reasoning_content:  '',
+            reasoning_finished: false,
+            content:            '',
+            timestamp:          '',
+            model:              $model,
+            temperature:        $temperature,
+            top_p:              $top_p,
+            usage:              {
                 cache_write_tokens: 0,
                 cache_read_tokens:  0,
                 input_tokens:       0,
@@ -147,37 +148,8 @@
     }
 
     const streamGPTResponse = async (reader, gpt_message) => {
-        let buffer         = '',
-            brace_count    = 0,
-            reasoning_done = false
-
-        const append = (new_text, is_reasoning = false) => {
-            if (!new_text) return
-            if (is_reasoning) {
-                gpt_message.reasoning_content += new_text
-            } else {
-                gpt_message.content += new_text
-            }
-            $messages = [...$messages.slice(0, -1), gpt_message]
-        }
-
-        //  Smooth out (+ speed limit) the API output stream for a nicer UX.
-        //  The Google API in particular bazookas out fat chunks of text at
-        //  a time, which is a pungent scent that stings the nostrils.
-
-        const smoothAppend = async (new_text, speed_limit = 10, is_reasoning = false) => {
-            if (!new_text) return
-            const words = new_text.split(/(\s+)/)
-            for (const word of words) {
-                if (is_reasoning) {
-                    gpt_message.reasoning_content += word
-                } else {
-                    gpt_message.content += word
-                }
-                $messages = [...$messages.slice(0, -1), gpt_message]
-                await new Promise(resolve => setTimeout(resolve, speed_limit))
-            }
-        }
+        let buffer      = '',
+            brace_count = 0
 
         while (true) {
             const { value, done } = await reader.read()
@@ -221,106 +193,18 @@
                     const json_string = buffer.slice(start_index, end_index)
                     try {
                         const data = JSON.parse(json_string)
-                        if (['open-ai', 'x', 'llama', 'mistral', 'deepseek', 'openrouter'].includes($model.type)) {
-                            if ($model.id === 'deepseek-reasoner') {
-                                const reasoning_content = data.choices[0]?.delta.reasoning_content ?? ''
-                                if (reasoning_content) {
-                                    if ($config.smooth_output) {
-                                        await smoothAppend(reasoning_content, 5, true)
-                                    } else {
-                                        append(reasoning_content, true)
-                                    }
-                                }
-                            }
-                            const content = data.choices[0]?.delta.content ?? ''
-                            if ($config.smooth_output) {
-                                await smoothAppend(content)
-                            } else {
-                                append(content)
-                            }
-                            if (data.usage) {
-                                const cache_read_tokens = data.usage.prompt_tokens_details?.cached_tokens ?? 0
-                                gpt_message.usage.cache_read_tokens = cache_read_tokens
-                                gpt_message.usage.input_tokens      = data.usage.prompt_tokens - cache_read_tokens
-                                gpt_message.usage.output_tokens     = data.usage.completion_tokens
-                            }
+                        if (['open-ai', 'x', 'mistral', 'openrouter'].includes($model.type)) {
+                            await processOpenAIObject(data, gpt_message)
                         } else if ($model.type === 'anthropic') {
-                            if (data.type === 'content_block_delta') {
-                                const text = data.delta.text ?? ''
-                                if ($config.smooth_output) {
-                                    await smoothAppend(text)
-                                } else {
-                                    append(text)
-                                }
-                            } else if (data.type === 'message_start') {
-                                gpt_message.usage.cache_write_tokens = data.message.usage.cache_creation_input_tokens ?? 0
-                                gpt_message.usage.cache_read_tokens  = data.message.usage.cache_read_input_tokens ?? 0
-                                gpt_message.usage.input_tokens       = data.message.usage.input_tokens
-                            } else if (data.type === 'message_delta') {
-                                gpt_message.usage.output_tokens = data.usage.output_tokens
-                            } else if (data.type === 'error') {
-                                console.log('🤖-❌ Error: ', data)
-                                gpt_message.content += `\n\n**🚨 Error: ${data.error.message}**`
-                            }
+                            await processAnthropicObject(data, gpt_message)
                         } else if ($model.type === 'google') {
-                            if (data.error) {
-                                console.log('🤖-❌ Error:', data.error)
-                                gpt_message.content += `\n\n**🚨 Error: ${data.error.message}**`
-                            } else {
-                                const text = data.candidates[0].content.parts[0].text ?? ''
-                                if ($config.smooth_output) {
-                                    await smoothAppend(text, 8)
-                                } else {
-                                    append(text)
-                                }
-                                gpt_message.usage.input_tokens = data.usageMetadata.promptTokenCount
-                                gpt_message.usage.output_tokens = data.usageMetadata.candidatesTokenCount
-                            }
+                            await processGoogleObject(data, gpt_message)
+                        } else if ($model.type === 'deepseek') {
+                            await processDeepSeekObject(data, gpt_message)
                         } else if ($model.type === 'groq') {
-                            const content = data.choices[0]?.delta.content ?? ''
-                            if ($model.is_reasoner) {
-                                if (reasoning_done) {
-                                    if ($config.smooth_output) {
-                                        await smoothAppend(content, 8)
-                                    } else {
-                                        append(content)
-                                    }
-                                } else if (content === '<think>') {
-                                    gpt_message.reasoning_content = ''
-                                } else if (content === '</think>') {
-                                    reasoning_done = true
-                                } else {
-                                    if ($config.smooth_output) {
-                                        await smoothAppend(content, 4, true)
-                                    } else {
-                                        append(content, true)
-                                    }
-                                }
-                            } else {
-                                if ($config.smooth_output) {
-                                    await smoothAppend(content, 8)
-                                } else {
-                                    append(content)
-                                }
-                            }
-                            if (data.usage) {
-                                const cache_read_tokens = data.usage.prompt_tokens_details?.cached_tokens ?? 0
-                                gpt_message.usage.cache_read_tokens = cache_read_tokens
-                                gpt_message.usage.input_tokens      = data.usage.prompt_tokens - cache_read_tokens
-                                gpt_message.usage.output_tokens     = data.usage.completion_tokens
-                            }
+                            await processGroqObject(data, gpt_message)
                         } else if ($model.type === 'cohere') {
-                            if (data.type === 'content-delta') {
-                                const content = data.delta.message.content.text ?? ''
-                                if ($config.smooth_output) {
-                                    await smoothAppend(content)
-                                } else {
-                                    append(content)
-                                }
-                            } else if (data.type === 'message-end') {
-                                gpt_message.usage.input_tokens = data.delta.usage.billed_units.input_tokens
-                                gpt_message.usage.output_tokens = data.delta.usage.billed_units.output_tokens
-                            }
+                            await processCohereObject(data, gpt_message)
                         }
                     } catch {
                         console.log('❌ Error parsing json: ', json_string)
@@ -333,31 +217,125 @@
                 }
             }
 
-            $messages = [...$messages.slice(0,-1), gpt_message]
-
             if (!rate_limiter) {
-                await tick()
                 dispatch('scrollChatToBottom', { context: 'streaming_message' })
                 rate_limiter = setTimeout(() => { rate_limiter = null }, 200)
             }
         }
 
         gpt_message.timestamp = new Date().toISOString()
-        
-        //  usage is not sent in the event stream for Llama
-        if ($model.type === 'llama') gpt_message.usage = await getUsage()
-
         $messages = [...$messages.slice(0,-1), gpt_message]
     }
 
-    const getUsage = async () => {
-        const response = await fetch(`/api/ai/usage/${$model.type}`, {
-            method:  'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ messages: $active_messages })
-        })
+    const processOpenAIObject = async (data, gpt_message) => {
+        const content = data.choices[0]?.delta.content ?? ''
+        await append(gpt_message, content)
+        if (data.usage) {
+            const cache_read_tokens = data.usage.prompt_tokens_details?.cached_tokens ?? 0
+            gpt_message.usage.cache_read_tokens = cache_read_tokens
+            gpt_message.usage.input_tokens      = data.usage.prompt_tokens - cache_read_tokens
+            gpt_message.usage.output_tokens     = data.usage.completion_tokens
+        }
+    }
 
-        return await response.json()
+    const processAnthropicObject = async (data, gpt_message) => {
+        if (data.type === 'content_block_delta') {
+            const text = data.delta.text ?? ''
+            await append(gpt_message, text)
+        } else if (data.type === 'message_start') {
+            gpt_message.usage.cache_write_tokens = data.message.usage.cache_creation_input_tokens ?? 0
+            gpt_message.usage.cache_read_tokens  = data.message.usage.cache_read_input_tokens ?? 0
+            gpt_message.usage.input_tokens       = data.message.usage.input_tokens
+        } else if (data.type === 'message_delta') {
+            gpt_message.usage.output_tokens = data.usage.output_tokens
+        } else if (data.type === 'error') {
+            console.log('🤖-❌ Error: ', data)
+            gpt_message.content += `\n\n**🚨 Error: ${data.error.message}**`
+        }
+    }
+
+    const processGoogleObject = async (data, gpt_message) => {
+        if (data.error) {
+            console.log('🤖-❌ Error:', data.error)
+            gpt_message.content += `\n\n**🚨 Error: ${data.error.message}**`
+        } else {
+            const text = data.candidates[0].content.parts[0].text ?? ''
+            await append(gpt_message, text, { speed_limit: 8 })
+            gpt_message.usage.input_tokens = data.usageMetadata.promptTokenCount
+            gpt_message.usage.output_tokens = data.usageMetadata.candidatesTokenCount
+        }
+    }
+
+    const processDeepSeekObject = async (data, gpt_message) => {
+        const reasoning_content = data.choices[0]?.delta.reasoning_content ?? '',
+              content           = data.choices[0]?.delta.content ?? ''
+        await append(gpt_message, reasoning_content, { is_reasoning: true })
+        await append(gpt_message, content)
+        if (data.usage) {
+            const cache_read_tokens = data.usage.prompt_tokens_details?.cached_tokens ?? 0
+            gpt_message.usage.cache_read_tokens = cache_read_tokens
+            gpt_message.usage.input_tokens      = data.usage.prompt_tokens - cache_read_tokens
+            gpt_message.usage.output_tokens     = data.usage.completion_tokens
+        }
+    }
+
+    const processGroqObject = async (data, gpt_message) => {
+        const content = data.choices[0]?.delta.content ?? ''
+        if ($model.is_reasoner) {
+            if (gpt_message.reasoning_finished) {
+                await append(gpt_message, content, { speed_limit: 4 })
+            } else if (content === '<think>') {
+                gpt_message.reasoning_content = ''
+            } else if (content === '</think>') {
+                gpt_message.reasoning_finished = true
+            } else {
+                await append(gpt_message, content, { is_reasoning: true, speed_limit: 2 })
+            }
+        } else {
+            await append(gpt_message, content, { speed_limit: 4 })
+        }
+        if (data.usage) {
+            const cache_read_tokens = data.usage.prompt_tokens_details?.cached_tokens ?? 0
+            gpt_message.usage.cache_read_tokens = cache_read_tokens
+            gpt_message.usage.input_tokens      = data.usage.prompt_tokens - cache_read_tokens
+            gpt_message.usage.output_tokens     = data.usage.completion_tokens
+        }
+    }
+
+    const processCohereObject = async (data, gpt_message) => {
+        if (data.type === 'content-delta') {
+            const content = data.delta.message.content.text ?? ''
+            await append(gpt_message, content)
+        } else if (data.type === 'message-end') {
+            gpt_message.usage.input_tokens = data.delta.usage.billed_units.input_tokens
+            gpt_message.usage.output_tokens = data.delta.usage.billed_units.output_tokens
+        }
+    }
+
+    const append = async(gpt_message, new_text, options = { is_reasoning: false, speed_limit: 10 }) => {
+        if (!new_text) return
+        if ($config.smooth_output) {
+            //  Smooth out + speed limit the API output stream for a nicer UX.
+            //  The Google API in particular bazookas out fat chunks of text at a time,
+            //  which in terms of UX is a formidable scent that stings the nostrils.
+            const words = new_text.split(/(\s+)/)
+            for (const word of words) {
+                if (options.is_reasoning) {
+                    gpt_message.reasoning_content += word
+                } else {
+                    gpt_message.content += word
+                }
+                $messages = [...$messages.slice(0, -1), gpt_message]
+                await new Promise(resolve => setTimeout(resolve, options.speed_limit))
+            }
+        } else {
+            if (options.is_reasoning) {
+                gpt_message.reasoning_content += new_text
+            } else {
+                gpt_message.content += new_text
+            }
+            $messages = [...$messages.slice(0, -1), gpt_message]
+        }
     }
 
     const inputChanged = () => {
