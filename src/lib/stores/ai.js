@@ -152,6 +152,25 @@ function createModel() {
             hosted_at:      'openrouter.ai',
             context_window: 131000
         },
+        // {
+        //     type:           'groq',
+        //     id:             'llama-3.3-70b-versatile',
+        //     name:           'Groq Llama 70b Versatile',
+        //     short_name:     'Llama',
+        //     icon:           'groq-llama.png',
+        //     hosted_at:      'Groq',
+        //     context_window: 128000
+        // },
+        // {
+        //     type:           'groq',
+        //     id:             'deepseek-r1-distill-llama-70b',
+        //     name:           'Groq R1 Distill 70b',
+        //     short_name:     'R1',
+        //     icon:           'groq-r1.png',
+        //     hosted_at:      'Groq',
+        //     context_window: 128000,
+        //     is_reasoner:    true
+        // },
         {
             type:           'mistral',
             id:             'mistral-small',

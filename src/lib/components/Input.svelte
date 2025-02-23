@@ -147,8 +147,9 @@
     }
 
     const streamGPTResponse = async (reader, gpt_message) => {
-        let buffer      = '',
-            brace_count = 0
+        let buffer         = '',
+            brace_count    = 0,
+            reasoning_done = false
 
         const append = (new_text, is_reasoning = false) => {
             if (!new_text) return
@@ -274,6 +275,39 @@
                                 }
                                 gpt_message.usage.input_tokens = data.usageMetadata.promptTokenCount
                                 gpt_message.usage.output_tokens = data.usageMetadata.candidatesTokenCount
+                            }
+                        } else if ($model.type === 'groq') {
+                            const content = data.choices[0]?.delta.content ?? ''
+                            if ($model.is_reasoner) {
+                                if (reasoning_done) {
+                                    if ($config.smooth_output) {
+                                        await smoothAppend(content, 8)
+                                    } else {
+                                        append(content)
+                                    }
+                                } else if (content === '<think>') {
+                                    gpt_message.reasoning_content = ''
+                                } else if (content === '</think>') {
+                                    reasoning_done = true
+                                } else {
+                                    if ($config.smooth_output) {
+                                        await smoothAppend(content, 4, true)
+                                    } else {
+                                        append(content, true)
+                                    }
+                                }
+                            } else {
+                                if ($config.smooth_output) {
+                                    await smoothAppend(content, 8)
+                                } else {
+                                    append(content)
+                                }
+                            }
+                            if (data.usage) {
+                                const cache_read_tokens = data.usage.prompt_tokens_details?.cached_tokens ?? 0
+                                gpt_message.usage.cache_read_tokens = cache_read_tokens
+                                gpt_message.usage.input_tokens      = data.usage.prompt_tokens - cache_read_tokens
+                                gpt_message.usage.output_tokens     = data.usage.completion_tokens
                             }
                         } else if ($model.type === 'cohere') {
                             if (data.type === 'content-delta') {

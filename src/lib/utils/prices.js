@@ -205,6 +205,8 @@ const aliases = {
     'command-r-plus-08-2024':                        'command-r-plus',
     'meta-llama/llama-3.2-11b-vision-instruct:free': 'free',
     'meta-llama/llama-3.3-70b-instruct:free':        'free',
+    'llama-3.3-70b-versatile':                       'free',
+    'deepseek-r1-distill-llama-70b':                 'free',
     'meta-llama/llama-3.1-405b-instruct':            'llama-3-405b',
     'mistral-small':                                 'free',
     'mistral-large':                                 'free',
