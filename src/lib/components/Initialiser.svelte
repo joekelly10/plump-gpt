@@ -83,7 +83,7 @@
 </script>
 
 {#if $initialising}
-    <div class='initialising' in:fade={{ duration: 100, easing: quartOut }} out:fade={{ delay: 333, duration: 150, easing: quartOut }}>
+    <div class='initialising' in:fade={{ duration: 100, easing: quartOut }} out:fade={{ delay: 333, duration: 250, easing: quartOut }}>
         <div class='inner'>
             <div class='initialising-text'>
                 Initialising...
