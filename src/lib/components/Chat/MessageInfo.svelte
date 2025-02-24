@@ -4,6 +4,7 @@
     import { formatDate } from '$lib/utils/helpers'
     import { getCost } from '$lib/utils/prices'
     import { onMount, onDestroy } from 'svelte'
+    import { api_status } from '$lib/stores/ai'
     import TemperatureIcon from '$lib/components/Icons/Temperature.svelte'
 
     export let message
@@ -65,29 +66,35 @@
             <TemperatureIcon level={temperature_icon_level} className='temperature-icon' />
             {message.temperature.toFixed(1)}
         </div>
-        <div class='timestamp'>
-            {@html message.timestamp ? formatDate(message.timestamp) : ''}
-        </div>
-        <div class='usage'>
-            {message.usage.input_tokens} in / {message.usage.output_tokens} out
-            {#if message.usage.cache_read_tokens > 0 || message.usage.cache_write_tokens > 0}
-                <br>
-                {message.usage.cache_read_tokens} read / {message.usage.cache_write_tokens} write
-            {/if}
-        </div>
-        <div class='cost'>
-            {cost_string.substring(0,5)}<span class='small'>{cost_string.substring(5)}</span>
-            {#if cost.cache_savings !== 0}
-                <br>
-                <span class='small'>
-                    ({savings_string} saved)
-                </span>
-            {/if}
-        </div>
-        {#if timeleft && timeleft !== 'Expired'}
-            <div class='timeleft'>
-                Cache: {timeleft}
+        {#if $api_status === 'streaming'}
+            <div class='streaming'>
+                Streaming...
             </div>
+        {:else}
+            <div class='timestamp'>
+                {@html message.timestamp ? formatDate(message.timestamp) : ''}
+            </div>
+            <div class='usage'>
+                {message.usage.input_tokens} in / {message.usage.output_tokens} out
+                {#if message.usage.cache_read_tokens > 0 || message.usage.cache_write_tokens > 0}
+                    <br>
+                    {message.usage.cache_read_tokens} read / {message.usage.cache_write_tokens} write
+                {/if}
+            </div>
+            <div class='cost'>
+                {cost_string.substring(0,5)}<span class='small'>{cost_string.substring(5)}</span>
+                {#if cost.cache_savings !== 0}
+                    <br>
+                    <span class='small'>
+                        ({savings_string} saved)
+                    </span>
+                {/if}
+            </div>
+            {#if timeleft && timeleft !== 'Expired'}
+                <div class='timeleft'>
+                    Cache: {timeleft}
+                </div>
+            {/if}
         {/if}
     </div>
 </div>
@@ -127,6 +134,12 @@
                     margin:         -3px 2px 0 8px
                     height:         16px
                     fill:           $background-lightest
+
+    .streaming
+        margin-top:  22.5px
+        font-style:  italic
+        font-weight: 450
+        color:       $pale-blue
 
     .timestamp
         margin-top: 22.5px
