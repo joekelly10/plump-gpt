@@ -100,6 +100,8 @@
 </div>
 
 <style lang='sass'>
+    $vertical-margin: 22.5px
+
     .message-info
         position:    absolute
         left:        0 - space.$default-padding
@@ -136,16 +138,16 @@
                     fill:           $background-lightest
 
     .streaming
-        margin-top:  22.5px
+        margin-top:  $vertical-margin
         font-style:  italic
         font-weight: 450
         color:       $pale-blue
 
     .timestamp
-        margin-top: 22.5px
+        margin-top: $vertical-margin
 
     .timeleft
-        margin-top:  22.5px
+        margin-top:  $vertical-margin
         font-weight: 600
         color:       $yellow
     
