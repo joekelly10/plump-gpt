@@ -284,10 +284,11 @@
 
         &.streaming
             min-height: space.$avatar-container-width
-            animation:  streaming 1.5s linear infinite
+            animation:  streaming-no-message 1.5s linear infinite
 
             &:not(.no-message)
                 padding-bottom: 1.25 * space.$default-padding
+                animation:      streaming 1.5s linear infinite
 
         &.starred
             background-color: color.adjust($yellow, $alpha: -0.633)
@@ -389,6 +390,16 @@
             border-bottom: 8px solid white(0.5)
         75%
             border-bottom: 8px solid white(0.5)
+        100%
+            border-bottom: 8px solid $background-lighter
+
+    @keyframes streaming-no-message
+        0%
+            border-bottom: 8px solid $background-lighter
+        67%
+            border-bottom: 8px solid color.adjust($pale-blue, $alpha: -0.5)
+        75%
+            border-bottom: 8px solid color.adjust($pale-blue, $alpha: -0.5)
         100%
             border-bottom: 8px solid $background-lighter
 </style>
