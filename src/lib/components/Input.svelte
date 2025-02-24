@@ -422,7 +422,6 @@
         $page.url.searchParams.delete('user_message')
         window.history.replaceState(null, '', $page.url.toString())
         focus()
-        await fetchAndSetActivePrompt()
         await tick()
     }
 </script>
