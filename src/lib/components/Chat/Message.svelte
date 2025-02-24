@@ -29,9 +29,10 @@
         temp_highlight = false,
         temp_timer     = null
 
-    $: starred   = $stars.includes(message.id)
-    $: streaming = message.is_last && message.role === 'assistant' && $api_status === 'streaming'
-    $: content   = message.content.replace(
+    $: starred    = $stars.includes(message.id)
+    $: streaming  = message.is_last && message.role === 'assistant' && $api_status === 'streaming'
+    $: no_message = !message.content && !message.reasoning_content
+    $: content    = message.content.replace(
         // Match < or > that's not inside `inline code` or ``` code blocks
         /(?<!^|\n)[<>](?![^`]*`)(?![^```]*```)/g,
         char => ({ '<': '&lt;', '>': '&gt;' }[char])
@@ -99,6 +100,7 @@
     class='message {message.role}'
     class:starred={starred}
     class:streaming={streaming}
+    class:no-message={no_message}
     class:delete-highlight={delete_highlight}
     class:regenerate-highlight={regenerate_highlight}
     class:add-reply-highlight={add_reply_highlight}
@@ -163,7 +165,7 @@
     </div>
 
     <div class='content'>
-        {#if !message.content && !message.reasoning_content}
+        {#if no_message}
             <p class='status-text'>
                 {#if streaming}
                     Waiting for {message.model.short_name} to speak<WaitingDots/>
@@ -281,9 +283,11 @@
                         box-shadow:       0 0 0 1.5px $off-white
 
         &.streaming
-            min-height:     space.$avatar-container-width
-            padding-bottom: 1.25 * space.$default-padding
-            animation:      streaming 1.5s linear infinite
+            min-height: space.$avatar-container-width
+            animation:  streaming 1.5s linear infinite
+
+            &:not(.no-message)
+                padding-bottom: 1.25 * space.$default-padding
 
         &.starred
             background-color: color.adjust($yellow, $alpha: -0.633)
