@@ -423,6 +423,7 @@
         window.history.replaceState(null, '', $page.url.toString())
         focus()
         await tick()
+        console.log('🌱 New chat created.')
     }
 </script>
 
