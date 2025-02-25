@@ -48,10 +48,11 @@ It runs in your browser on `localhost:1337`.
 **Open AI**
 - <img alt='GPT-4o mini' src='./static/img/icons/models/gpt-4o-mini.png' width='21' height='21' valign='middle'>&nbsp; GPT-4o mini
 - <img alt='GPT-4o' src='./static/img/icons/models/gpt-4o.png' width='21' height='21' valign='middle'>&nbsp; GPT-4o
+- <img alt='o3-mini' src='./static/img/icons/models/o3-mini.png' width='21' height='21' valign='middle'>&nbsp; o3-mini
 
 **Anthropic**
-- <img alt='Claude Haiku' src='./static/img/icons/models/claude-3-haiku.png' width='21' height='21' valign='middle'>&nbsp; Claude 3 Haiku
-- <img alt='Claude Sonnet' src='./static/img/icons/models/claude-3-sonnet.png' width='21' height='21' valign='middle'>&nbsp; Claude 3.5 Sonnet
+- <img alt='Claude Haiku' src='./static/img/icons/models/claude-3-haiku.png' width='21' height='21' valign='middle'>&nbsp; Claude 3.5 Haiku
+- <img alt='Claude Sonnet' src='./static/img/icons/models/claude-3-sonnet.png' width='21' height='21' valign='middle'>&nbsp; Claude 3.7 Sonnet
 - <img alt='Claude Opus' src='./static/img/icons/models/claude-3-opus.png' width='21' height='21' valign='middle'>&nbsp; Claude 3 Opus
 
 **Google**

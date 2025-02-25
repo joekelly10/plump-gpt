@@ -18,6 +18,15 @@ const model_prices = [
         }
     },
     {
+        id: 'o3-mini',
+        price: {
+            cents: {
+                input_token:  110/1000000, // $1.10/mTok
+                output_token: 440/1000000
+            }
+        }
+    },
+    {
         id: 'claude-3-5-haiku',
         price: {
             cents: {
@@ -29,7 +38,7 @@ const model_prices = [
         }
     },
     {
-        id: 'claude-3-5-sonnet',
+        id: 'claude-sonnet',
         price: {
             cents: {
                 input_token:   300/1000000, // $3.00/mTok
@@ -191,10 +200,13 @@ const model_prices = [
 
 const aliases = {
     'gpt-4o-2024-08-06':                             'gpt-4o',
+    'openai/o3-mini':                                'o3-mini',
     'claude-3-5-haiku-latest':                       'claude-3-5-haiku',
-    'claude-3-5-sonnet-20240620':                    'claude-3-5-sonnet',
-    'claude-3-5-sonnet-20241022':                    'claude-3-5-sonnet',
-    'claude-3-5-sonnet-latest':                      'claude-3-5-sonnet',
+    'claude-3-5-sonnet-20240620':                    'claude-sonnet',
+    'claude-3-5-sonnet-20241022':                    'claude-sonnet',
+    'claude-3-5-sonnet-latest':                      'claude-sonnet',
+    'claude-3-7-sonnet-20250219':                    'claude-sonnet',
+    'claude-3-7-sonnet-latest':                      'claude-sonnet',
     'claude-3-opus-20240229':                        'claude-3-opus',
     'claude-3-opus-latest':                          'claude-3-opus',
     'gemini-2.0-flash-lite-preview-02-05':           'gemini-2.0-flash-lite',

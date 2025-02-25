@@ -27,6 +27,15 @@ function createModel() {
             context_window: 128000
         },
         {
+            type:           'openrouter',
+            id:             'openai/o3-mini',
+            name:           'o3-mini',
+            short_name:     'o3-mini',
+            icon:           'o3-mini.png',
+            hosted_at:      'openrouter.ai',
+            context_window: 128000
+        },
+        {
             type:           'anthropic',
             id:             'claude-3-5-haiku-latest',
             name:           'Claude 3.5 Haiku',
@@ -41,6 +50,15 @@ function createModel() {
             name:           'Claude 3.5 Sonnet',
             short_name:     'Claude',
             icon:           'claude-3-sonnet.png',
+            hosted_at:      'Anthropic',
+            context_window: 200000
+        },
+        {
+            type:           'anthropic',
+            id:             'claude-3-7-sonnet-latest',
+            name:           'Claude 3.7 Sonnet',
+            short_name:     'Claude',
+            icon:           'claude-3.7-sonnet.png',
             hosted_at:      'Anthropic',
             context_window: 200000
         },
