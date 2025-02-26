@@ -1,8 +1,8 @@
 <script>
-    import { model } from '$lib/stores/ai'
-    import { getPrices } from '$lib/utils/prices'
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
+    import { model } from '$lib/stores/ai'
+    import { getPrices } from '$lib/utils/prices'
 
     let hovering = false
 

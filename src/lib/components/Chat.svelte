@@ -5,6 +5,7 @@
     import { messages, forks, active_fork, stars, active_messages, fork_points, usage, loader_active, prompt_editor_active, deleting, adding_reply, provisionally_forking, show_scroll_button } from '$lib/stores/chat'
     import { model, api_status } from '$lib/stores/ai'
     import { insert, smoothScroll } from '$lib/utils/helpers'
+
     import UsageStats from '$lib/components/Chat/UsageStats.svelte'
     import Message from '$lib/components/Chat/Message.svelte'
     import WaitingDots from '$lib/components/Chat/WaitingDots.svelte'
@@ -18,6 +19,13 @@
         message_refs                 = [], // references to the list of `Message` components
         scroll_interrupted           = false,
         scroll_reasoning_interrupted = false
+
+    $: processed_messages = $active_messages.slice(1).map((message, i) => ({
+        ...message,
+        is_last:      i === $active_messages.slice(1).length - 1,
+        forks:        getForksAt(message),
+        has_siblings: hasSiblings(message)
+    }))
 
     export const sendingMessage = () => $provisionally_forking = false
 
@@ -75,13 +83,6 @@
             element.tempHighlight()
         }, options.delay)
     }
-
-    $: processed_messages = $active_messages.slice(1).map((message, i) => ({
-        ...message,
-        is_last:      i === $active_messages.slice(1).length - 1,
-        forks:        getForksAt(message),
-        has_siblings: hasSiblings(message)
-    }))
 
     const keydown = (e) => {
         if ($loader_active || $prompt_editor_active) return

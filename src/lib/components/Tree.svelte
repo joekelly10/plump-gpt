@@ -1,24 +1,32 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
-    import { messages, forks, active_fork, stars, tree_active } from '$lib/stores/chat.js'
-    import { onMount, onDestroy } from 'svelte'
+    import { createEventDispatcher, onMount, onDestroy } from 'svelte'
     import { scale } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
+    import { messages, forks, active_fork, stars, tree_active } from '$lib/stores/chat.js'
     import { buildTree } from '$lib/utils/tree.js'
+
     import Header from '$lib/components/Tree/Header.svelte'
     import Sidebar from '$lib/components/Tree/Sidebar.svelte'
     import UsageStats from '$lib/components/Chat/UsageStats.svelte'
 
     const dispatch = createEventDispatcher()
 
-    const leaf_spacing = 2 // # of columns
-
     let nodes,
         hovered_message,
         debounce_timer,
         pending_message
+    
+    const leaf_spacing = 2 // # of columns
 
     $: nodes = buildTree($forks, $active_fork, $messages, $stars, leaf_spacing)
+
+    onMount(() => {
+        document.addEventListener('keydown', keydown)
+    })
+
+    onDestroy(() => {
+        document.removeEventListener('keydown', keydown)
+    })
 
     const mouseenter = (node) => {
         if (debounce_timer) {
@@ -54,14 +62,6 @@
     const keydown = (e) => {
         if (e.key === 'Escape') return close()
     }
-
-    onMount(() => {
-        document.addEventListener('keydown', keydown)
-    })
-
-    onDestroy(() => {
-        document.removeEventListener('keydown', keydown)
-    })
 </script>
 
 <div class='tree' in:scale={{ start: 1.02, opacity: 0, duration: 200, easing: quartOut }} out:scale={{ start: 1.02, opacity: 0, duration: 100, easing: quartOut }}>

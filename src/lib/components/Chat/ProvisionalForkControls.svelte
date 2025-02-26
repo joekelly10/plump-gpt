@@ -1,9 +1,10 @@
 <script>
-    import { createEventDispatcher, tick } from 'svelte'
+    import { createEventDispatcher } from 'svelte'
     import { fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { messages, highlights } from '$lib/stores/chat'
+    import { highlights } from '$lib/stores/chat'
     import { model } from '$lib/stores/ai'
+
     import AddIcon from '$lib/components/Icons/Add.svelte'
     import DeleteIcon from '$lib/components/Icons/Delete.svelte'
 

@@ -1,9 +1,9 @@
 <script>
     import { createEventDispatcher } from 'svelte'
-    import { show_scroll_button } from '$lib/stores/chat'
-    import { api_status } from '$lib/stores/ai'
     import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
+    import { show_scroll_button } from '$lib/stores/chat'
+    import { api_status } from '$lib/stores/ai'
 
     const dispatch = createEventDispatcher()
 

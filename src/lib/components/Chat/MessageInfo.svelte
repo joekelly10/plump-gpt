@@ -1,38 +1,23 @@
 <script>
+    import { onMount, onDestroy } from 'svelte'
     import { fade, slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
+    import { api_status } from '$lib/stores/ai'
     import { formatDate } from '$lib/utils/helpers'
     import { getCost } from '$lib/utils/prices'
-    import { onMount, onDestroy } from 'svelte'
-    import { api_status } from '$lib/stores/ai'
+
     import TemperatureIcon from '$lib/components/Icons/Temperature.svelte'
 
     export let message
-
-    $: temperature_icon_level = message.temperature > 1 ? 4 : Math.round(message.temperature / 0.25)
-    $: cost                   = getCost(message.model.id, message.usage)
-    $: cost_string            = '$' + (cost.total / 100).toFixed(5)
-    $: savings_string         = '$' + (cost.cache_savings / 100).toFixed(5)
 
     let cache_duration,
         timeleft,
         timer
 
-    function updateTimeleft() {
-        const now       = new Date(),
-              timestamp = new Date(message.timestamp),
-              expiry    = timestamp.getTime() + cache_duration,
-              diff      = expiry - now.getTime()
-
-        if (diff > 0) {
-            const minutes = Math.floor(diff / 60000),
-                  seconds = Math.floor((diff % 60000) / 1000)
-            timeleft = `${minutes}:${seconds.toString().padStart(2, '0')}`
-        } else {
-            timeleft = 'Expired'
-            clearInterval(timer)
-        }
-    }
+    $: temperature_icon_level = message.temperature > 1 ? 4 : Math.round(message.temperature / 0.25)
+    $: cost                   = getCost(message.model.id, message.usage)
+    $: cost_string            = '$' + (cost.total / 100).toFixed(5)
+    $: savings_string         = '$' + (cost.cache_savings / 100).toFixed(5)
 
     onMount(() => {
         if (message.is_last) {
@@ -51,6 +36,22 @@
     onDestroy(() => {
         clearInterval(timer)
     })
+
+    const updateTimeleft = () => {
+        const now       = new Date(),
+              timestamp = new Date(message.timestamp),
+              expiry    = timestamp.getTime() + cache_duration,
+              diff      = expiry - now.getTime()
+
+        if (diff > 0) {
+            const minutes = Math.floor(diff / 60000),
+                  seconds = Math.floor((diff % 60000) / 1000)
+            timeleft = `${minutes}:${seconds.toString().padStart(2, '0')}`
+        } else {
+            timeleft = 'Expired'
+            clearInterval(timer)
+        }
+    }
 </script>
 
 <div class='message-info' in:slide={{ axis: 'x', duration: 150, easing: quartOut }} out:fade={{ duration: 150, easing: quartOut }}>

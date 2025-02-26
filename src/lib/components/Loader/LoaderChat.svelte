@@ -1,10 +1,11 @@
 <script>
-    import { marked } from 'marked'
     import { createEventDispatcher } from 'svelte'
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { chat_id } from '$lib/stores/chat.js'
     import { formatDate } from '$lib/utils/helpers'
+    import { marked } from 'marked'
+
     import StarIcon from '$lib/components/Icons/Star.svelte'
     import DeleteIcon from '$lib/components/Icons/Delete.svelte'
 

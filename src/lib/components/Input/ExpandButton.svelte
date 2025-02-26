@@ -1,5 +1,5 @@
 <script>
-    import { slide, fade } from 'svelte/transition'
+    import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
 
     export let input_overflowed = false,

@@ -4,6 +4,7 @@
     import { quartOut } from 'svelte/easing'
     import { highlights } from '$lib/stores/chat'
     import { api_status } from '$lib/stores/ai'
+
     import ForkIcon from '$lib/components/Icons/Fork.svelte'
 
     const dispatch = createEventDispatcher()
@@ -15,6 +16,11 @@
     $: add_reply_highlight   = $highlights.add_reply.includes(message.id)
     $: delete_fork_highlight = message.forks.length > 1 && $highlights.delete.includes(message.id)
 
+    const mouseenter = (e) => {
+        const rect = e.target.getBoundingClientRect()
+        show_hover_info_above = rect.bottom > window.innerHeight - 320
+    }
+
     const getPreview = (next_message) => {
         if (!next_message) return ''
         return next_message.content.slice(0, 160) + (next_message.content.length > 160 ? ' [...]' : '')
@@ -22,11 +28,6 @@
 
     const clickedFork = (fork) => {
         if ($api_status === 'idle') dispatch('switchToFork', { fork_index: fork.index })
-    }
-
-    const mouseenter = (e) => {
-        const rect = e.target.getBoundingClientRect()
-        show_hover_info_above = rect.bottom > window.innerHeight - 320
     }
 </script>
 

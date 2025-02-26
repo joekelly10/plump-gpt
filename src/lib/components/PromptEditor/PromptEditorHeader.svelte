@@ -1,5 +1,6 @@
 <script>
     import { createEventDispatcher } from 'svelte'
+
     import EyeIcon from '$lib/components/Icons/Eye.svelte'
     import SystemPromptIcon from '$lib/components/Icons/SystemPrompt.svelte'
 

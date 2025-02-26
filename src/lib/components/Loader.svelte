@@ -1,10 +1,11 @@
 <script>
-    import hljs from 'highlight.js'
-    import { chat_id, messages, forks, active_fork, stars, loader_active, provisionally_forking } from '$lib/stores/chat.js'
     import { onMount, onDestroy, tick, createEventDispatcher } from 'svelte'
-    import { smoothScroll } from '$lib/utils/helpers'
     import { scale } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
+    import { chat_id, messages, forks, active_fork, stars, loader_active, provisionally_forking } from '$lib/stores/chat.js'
+    import { smoothScroll } from '$lib/utils/helpers'
+    import hljs from 'highlight.js'
+
     import Search from '$lib/components/Loader/Search.svelte'
     import LoaderChat from '$lib/components/Loader/LoaderChat.svelte'
     

@@ -1,7 +1,7 @@
 <script>
-    import { usage, forks } from '$lib/stores/chat'
     import { slide, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
+    import { usage, forks } from '$lib/stores/chat'
 
     $: cache_used     = $usage.cache_read_tokens > 0 || $usage.cache_write_tokens > 0
     $: cost_string    = '$' + ($usage.total_cost / 100).toFixed(5)

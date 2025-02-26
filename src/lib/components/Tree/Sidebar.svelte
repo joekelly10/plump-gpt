@@ -2,6 +2,7 @@
     import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { marked } from 'marked'
+
     import MessageInfo from '$lib/components/Tree/MessageInfo.svelte'
     import SystemPromptIcon from '$lib/components/Icons/SystemPrompt.svelte'
 

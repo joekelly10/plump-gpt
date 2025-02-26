@@ -1,14 +1,15 @@
 <script>
-    import hljs from 'highlight.js'
     import { tick, createEventDispatcher } from 'svelte'
-    import { addCopyButtons } from '$lib/utils/helpers'
+    import { page } from '$app/stores'
     import { chat_id, messages, forks, active_fork, stars, active_messages, loader_active, prompt_editor_active, config, adding_reply, show_scroll_button } from '$lib/stores/chat'
     import { model, temperature, top_p, api_status } from '$lib/stores/ai'
-    import { page } from '$app/stores'
+    import { addCopyButtons } from '$lib/utils/helpers'
+    import hljs from 'highlight.js'
+
+    import ExpandButton from '$lib/components/Input/ExpandButton.svelte'
+    import TreeButton from '$lib/components/Input/TreeButton.svelte'
     import SystemPromptButton from '$lib/components/Input/SystemPromptButton.svelte'
     import ScrollDownButton from '$lib/components/Input/ScrollDownButton.svelte'
-    import TreeButton from '$lib/components/Input/TreeButton.svelte'
-    import ExpandButton from '$lib/components/Input/ExpandButton.svelte'
 
     const dispatch = createEventDispatcher()
 

@@ -1,5 +1,6 @@
 <script>
     import { temperature } from '$lib/stores/ai'
+
     import TemperatureIcon from '$lib/components/Icons/Temperature.svelte'
 
     $: icon_level = $temperature > 1 ? 4 : Math.round($temperature / 0.25)

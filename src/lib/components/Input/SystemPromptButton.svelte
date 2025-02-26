@@ -1,17 +1,20 @@
 <script>
     import { onMount } from 'svelte'
     import { messages, prompt_editor_active } from '$lib/stores/chat'
+
     import SystemPromptIcon from '$lib/components/Icons/SystemPrompt.svelte'
 
-    const openPromptEditor = () => $prompt_editor_active = true
-
     let two_secs_elapsed = false
+
+    $: highlight = $messages[0].system_prompt_title && !$messages[0].is_default && !two_secs_elapsed
 
     onMount(() => {
         setTimeout(() => two_secs_elapsed = true, 2000)
     })
 
-    $: highlight = $messages[0].system_prompt_title && !$messages[0].is_default && !two_secs_elapsed
+    const openPromptEditor = () => {
+        $prompt_editor_active = true
+    }
 </script>
 
 <div class='system-prompt-button-container'>
