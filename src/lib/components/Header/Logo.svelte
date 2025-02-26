@@ -36,11 +36,12 @@
     
     .padding
         display: inline-block
-        width:   12px
+        width:   12.5px
     
     .text
         display:     inline-block
         font-size:   14px
+        font-weight: 450
         color:       $blue-grey
         white-space: nowrap
 </style>
