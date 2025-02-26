@@ -1,15 +1,15 @@
 <script>
     import { loader_active } from '$lib/stores/chat.js'
-    import { api_status } from '$lib/stores/ai.js'
+    import { is_idle } from '$lib/stores/api.js'
 
     const clickedLoad = () => {
-        if ($api_status === 'idle') $loader_active = true
+        if ($is_idle) $loader_active = true
     }
 
     const keydown = (e) => {
         if ((e.ctrlKey && e.key === 'o') || (e.metaKey && e.key === 'o')) {
             e.preventDefault()
-            if ($api_status === 'idle') $loader_active = !$loader_active
+            if ($is_idle) $loader_active = !$loader_active
         }
     }
 </script>

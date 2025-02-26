@@ -4,7 +4,6 @@ import { browser } from '$app/environment'
 export const model       = createModel()
 export const temperature = writable(0.7)
 export const top_p       = writable(1)
-export const api_status  = writable('idle')
 
 function createModel() {
     const models = [

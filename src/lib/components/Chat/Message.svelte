@@ -3,7 +3,7 @@
     import { slide, fly, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { deleting, provisionally_forking, stars, highlights } from '$lib/stores/chat'
-    import { api_status } from '$lib/stores/ai'
+    import { is_streaming } from '$lib/stores/api'
     import { smoothScroll } from '$lib/utils/helpers'
     import { marked } from 'marked'
 
@@ -30,7 +30,7 @@
         temp_timer     = null
 
     $: starred    = $stars.includes(message.id)
-    $: streaming  = message.is_last && message.role === 'assistant' && $api_status === 'streaming'
+    $: streaming  = message.is_last && message.role === 'assistant' && $is_streaming
     $: no_message = !message.content && !message.reasoning_content
     $: content    = message.content.replace(
         // Match < or > that's not inside `inline code` or ``` code blocks
@@ -110,7 +110,7 @@
     out:slide={{ duration: $deleting ? 250 : 0, easing: quartOut }}
     in:slide={{ delay: $deleting ? 500 : 0, duration: $deleting ? 250 : 0, easing: quartOut }}
 >
-    {#if message.role === 'assistant' && $api_status !== 'streaming' && !$provisionally_forking}
+    {#if message.role === 'assistant' && !$is_streaming && !$provisionally_forking}
         <MessageControls
             bind:message
             starred={starred}

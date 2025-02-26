@@ -2,7 +2,7 @@
     import { createEventDispatcher } from 'svelte'
     import { fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { api_status } from '$lib/stores/ai'
+    import { is_idle } from '$lib/stores/api'
 
     import ForkIcon from '$lib/components/Icons/Fork.svelte'
 
@@ -22,7 +22,7 @@
     }
 
     const clickedFork = (fork) => {
-        if ($api_status === 'idle') dispatch('switchToFork', { fork_index: fork.index })
+        if ($is_idle) dispatch('switchToFork', { fork_index: fork.index })
     }
 </script>
 

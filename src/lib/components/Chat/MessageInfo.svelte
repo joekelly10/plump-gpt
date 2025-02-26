@@ -2,7 +2,7 @@
     import { onMount, onDestroy } from 'svelte'
     import { fade, slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { api_status } from '$lib/stores/ai'
+    import { is_streaming } from '$lib/stores/api'
     import { formatDate } from '$lib/utils/helpers'
     import { getCost } from '$lib/utils/prices'
 
@@ -67,7 +67,7 @@
             <TemperatureIcon level={temperature_icon_level} className='temperature-icon' />
             {message.temperature.toFixed(1)}
         </div>
-        {#if $api_status === 'streaming'}
+        {#if $is_streaming}
             <div class='streaming'>
                 Streaming...
             </div>

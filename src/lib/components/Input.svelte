@@ -2,7 +2,8 @@
     import { tick, createEventDispatcher } from 'svelte'
     import { page } from '$app/stores'
     import { chat_id, messages, forks, active_fork, stars, active_messages, loader_active, prompt_editor_active, config, adding_reply, show_scroll_button } from '$lib/stores/chat'
-    import { model, temperature, top_p, api_status } from '$lib/stores/ai'
+    import { model, temperature, top_p } from '$lib/stores/ai'
+    import { api_state, is_idle } from '$lib/stores/api'
     import { addCopyButtons } from '$lib/utils/helpers'
     import hljs from 'highlight.js'
 
@@ -82,7 +83,7 @@
             $forks = $forks
         }
 
-        $api_status = 'sending'
+        api_state.startSending()
 
         await tick()
         hljs.highlightAll()
@@ -121,7 +122,7 @@
             }
         }
 
-        $api_status = 'streaming'
+        api_state.startStreaming()
 
         $forks[$active_fork].message_ids.push(gpt_message.id)
         $forks = $forks
@@ -137,7 +138,7 @@
 
         console.log(`🤖-✅ ${$model.short_name} replied: `, gpt_message.content)
 
-        $api_status   = 'idle'
+        api_state.finishStreaming()
         $adding_reply = false
         hljs.highlightAll()
         addCopyButtons()
@@ -368,7 +369,7 @@
         if (e.key == 'Enter' && !e.shiftKey) {
             e.preventDefault()
             input_expanded = false
-            if ($api_status === 'idle' && input_text.trim().length) {
+            if ($is_idle && input_text.trim().length) {
                 sendMessage()
             } else {
                 nope()

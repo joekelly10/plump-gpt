@@ -1,17 +1,17 @@
 <script>
     import { forks, active_fork, tree_active } from '$lib/stores/chat'
-    import { api_status } from '$lib/stores/ai.js'
+    import { is_idle } from '$lib/stores/api.js'
 
     import ForkIcon from '$lib/components/Icons/Fork.svelte'
 
     const clicked = () => {
-        if ($api_status === 'idle') $tree_active = true
+        if ($is_idle) $tree_active = true
     }
 
     const keydown = (e) => {
         if ((e.ctrlKey && e.key === 'v')) {
             e.preventDefault()
-            if ($api_status === 'idle') $tree_active = !$tree_active
+            if ($is_idle) $tree_active = !$tree_active
         }
     }
 </script>

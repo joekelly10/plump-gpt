@@ -3,7 +3,8 @@
     import { fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { messages, forks, active_fork, stars, active_messages, fork_points, usage, loader_active, prompt_editor_active, deleting, adding_reply, provisionally_forking, show_scroll_button } from '$lib/stores/chat'
-    import { model, api_status } from '$lib/stores/ai'
+    import { model } from '$lib/stores/ai'
+    import { is_idle, is_sending } from '$lib/stores/api'
     import { insert, smoothScroll } from '$lib/utils/helpers'
 
     import UsageStats from '$lib/components/Chat/UsageStats.svelte'
@@ -181,7 +182,7 @@
     }
 
     const forkFrom = async (message_id) => {
-        if ($api_status !== 'idle') return
+        if (!$is_idle) return
         forking_from = $active_fork
         $provisionally_forking = true
         insert(message_id, $forks[$active_fork].forked_at)
@@ -418,7 +419,7 @@
                 on:save
             />
         {/each}
-        {#if $api_status === 'sending'}
+        {#if $is_sending}
             <div class='connecting' in:fly={{ y: -16, delay: 2500, duration: 125, easing: quartOut }}>
                 <img class='model-icon' src='/img/icons/models/{$model.icon}' alt='{$model.name}'>
                 <span class='text'>
