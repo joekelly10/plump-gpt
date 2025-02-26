@@ -106,6 +106,7 @@
     class:add-reply-highlight={add_reply_highlight}
     class:star-highlight={star_highlight}
     class:temp-highlight={temp_highlight}
+    class:no-forks={message.forks.length === 0}
     out:slide={{ duration: $deleting ? 250 : 0, easing: quartOut }}
     in:slide={{ delay: $deleting ? 500 : 0, duration: $deleting ? 250 : 0, easing: quartOut }}
 >
@@ -205,6 +206,7 @@
 <style lang='sass'>
     .message
         position:     relative
+        top:          0
         margin:       1px 0
         box-sizing:   border-box
         padding:      space.$default-padding
@@ -221,7 +223,7 @@
             background-color: $background-lighter
 
             &:not(.streaming)
-                transition: background-color easing.$quart-out 0.075s, box-shadow easing.$quart-out 0.075s
+                transition: background-color easing.$quart-out 0.075s, box-shadow easing.$quart-out 0.075s, top easing.$quart-out 0.125s
 
                 &.delete-highlight
                     background-color: color.adjust($delete-highlight-bg, $alpha: -0.4)
@@ -234,6 +236,13 @@
                     border-radius:    8px 8px 1.5px 1.5px
                     background-color: $regenerate-highlight-bg
 
+                    &.no-forks
+                        top:        5px
+                        transition: background-color easing.$quart-out 0.075s, box-shadow easing.$quart-out 0.075s, top easing.$quart-out 0.2s
+
+                        .content
+                            transition: filter easing.$quart-out 0.2s
+
                 &.temp-highlight
                     z-index:          999
                     background-color: color.adjust($background-lighter, $lightness: -2.5%)
@@ -245,8 +254,29 @@
             border-radius:    0 0 8px 8px
             background-color: $background-lighter
 
+            &:after
+                content:          ''
+                position:         absolute
+                top:              0
+                left:             0
+                width:            100%
+                height:           100%
+                background-color: $blue
+                border-radius:    1.5px 1.5px 8px 8px
+                opacity:          0
+                transition:       opacity easing.$quart-out 0.125s
+                pointer-events:   none
+
             &:not(.streaming)
                 transition: background-color easing.$quart-out 0.075s, box-shadow easing.$quart-out 0.075s
+
+                &.add-reply-highlight
+                    .avatar-container,
+                    .content
+                        filter: blur(2px)
+
+                    &:after
+                        opacity: 0.1
 
                 &.delete-highlight
                     box-shadow:       0 0 0 1.5px $coral
@@ -372,6 +402,9 @@
 
             &:last-child
                 margin-bottom: 0
+    
+    .content
+        transition: filter easing.$quart-out 0.125s
 
     .status-text
         font-size:   14px
