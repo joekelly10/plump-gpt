@@ -326,6 +326,8 @@
                     gpt_message.content += word
                 }
                 $messages = [...$messages.slice(0, -1), gpt_message]
+                await tick()
+                hljs.highlightAll()
                 await new Promise(resolve => setTimeout(resolve, options.speed_limit))
             }
         } else {
@@ -335,6 +337,8 @@
                 gpt_message.content += new_text
             }
             $messages = [...$messages.slice(0, -1), gpt_message]
+            await tick()
+            hljs.highlightAll()
         }
     }
 
