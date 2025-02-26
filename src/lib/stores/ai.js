@@ -72,7 +72,7 @@ function createModel() {
         },
         {
             type:           'google',
-            id:             'gemini-2.0-flash-lite-preview-02-05',
+            id:             'gemini-2.0-flash-lite',
             name:           'Gemini 2.0 Flash Lite',
             short_name:     'Gemini',
             icon:           'gemini-flash-lite.png',
