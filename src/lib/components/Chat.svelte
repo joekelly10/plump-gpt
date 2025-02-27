@@ -4,7 +4,7 @@
     import { quartOut } from 'svelte/easing'
     import { loader_active, prompt_editor_active } from '$lib/stores/app'
     import { messages, forks, active_fork, active_messages, fork_points, stars, usage } from '$lib/stores/chat'
-    import { deleting, adding_reply, provisionally_forking, show_scroll_button } from '$lib/stores/chat/interactions'
+    import { is_deleting, is_adding_reply, is_provisionally_forking, is_scrolled_to_bottom } from '$lib/stores/chat/interactions'
     import { model } from '$lib/stores/ai'
     import { is_idle, is_sending } from '$lib/stores/api'
     import { insert, smoothScroll } from '$lib/utils/helpers'
@@ -30,7 +30,7 @@
         has_siblings: hasSiblings(message)
     }))
 
-    export const sendingMessage = () => $provisionally_forking = false
+    export const sendingMessage = () => $is_provisionally_forking = false
 
     export const scrollToBottom = (options = { context: null }) => {
         const bottom   = chat.scrollHeight - chat.clientHeight,
@@ -131,7 +131,7 @@
 
     const regenerateReply = async () => {
         if (confirm(`Regenerate this reply?  Press OK to confirm.`)) {
-            $deleting = true
+            $is_deleting = true
             await tick()
 
             const deleted = $forks[$active_fork].message_ids.splice(-1,1)
@@ -140,13 +140,13 @@
             dispatch('regenerateReply')
 
             await tick()
-            $deleting = false
+            $is_deleting = false
         }
     }
 
     const deleteMessage = async (delete_both = false) => {
         if (confirm(`Delete this message?  Press OK to confirm.`)) {
-            $deleting = true
+            $is_deleting = true
             await tick()
 
             let deleted
@@ -163,15 +163,15 @@
             dispatch('save')
 
             await tick()
-            $deleting = false
+            $is_deleting = false
         }
     }
 
     const addReply = async (message_id) => {
-        $adding_reply = true
-        if ($provisionally_forking) {
-            forking_from = null
-            $provisionally_forking = false
+        $is_adding_reply = true
+        if ($is_provisionally_forking) {
+            forking_from              = null
+            $is_provisionally_forking = false
             removeProvisionalFork()
         }
         insert(message_id, $forks[$active_fork].forked_at)
@@ -185,8 +185,8 @@
 
     const forkFrom = async (message_id) => {
         if (!$is_idle) return
-        forking_from = $active_fork
-        $provisionally_forking = true
+        forking_from              = $active_fork
+        $is_provisionally_forking = true
         insert(message_id, $forks[$active_fork].forked_at)
         const forked_at   = $forks[$active_fork].forked_at.filter(id => id <= message_id)
         const message_ids = $forks[$active_fork].message_ids.filter(id => id <= message_id)
@@ -251,8 +251,8 @@
     const switchToFork = async (fork_index) => {
         $active_fork = fork_index
         if (forking_from !== null) {
-            forking_from = null
-            $provisionally_forking = false
+            forking_from              = null
+            $is_provisionally_forking = false
             removeProvisionalFork()
         }
         dispatch('chatModified')
@@ -303,9 +303,9 @@
                 for (let _i = 0; _i < $forks.length; _i++) {
                     if (_i === i) continue
                     if ($forks[_i].forked_at.includes(last_forked_at)) {
-                        forking_from = _i
-                        $forks[i].provisional = true
-                        $provisionally_forking = true
+                        forking_from              = _i
+                        $forks[i].provisional     = true
+                        $is_provisionally_forking = true
                     }
                 }
             } else if (last_message?.role === 'user') {
@@ -388,7 +388,7 @@
 
     const handleScroll = () => {
         const bottom = chat.scrollHeight - chat.clientHeight
-        $show_scroll_button = chat.scrollTop <= bottom - 160
+        $is_scrolled_to_bottom = chat.scrollTop >= bottom - 160
     }
 </script>
 

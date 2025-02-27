@@ -3,7 +3,7 @@
     import { slide, fly, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { stars } from '$lib/stores/chat'
-    import { highlights, deleting, provisionally_forking } from '$lib/stores/chat/interactions'
+    import { highlights, is_deleting, is_provisionally_forking } from '$lib/stores/chat/interactions'
     import { is_streaming } from '$lib/stores/api'
     import { smoothScroll } from '$lib/utils/helpers'
     import { marked } from 'marked'
@@ -108,10 +108,10 @@
     class:star-highlight={star_highlight}
     class:temp-highlight={temp_highlight}
     class:no-forks={message.forks.length === 0}
-    out:slide={{ duration: $deleting ? 250 : 0, easing: quartOut }}
-    in:slide={{ delay: $deleting ? 500 : 0, duration: $deleting ? 250 : 0, easing: quartOut }}
+    out:slide={{ duration: $is_deleting ? 250 : 0, easing: quartOut }}
+    in:slide={{ delay: $is_deleting ? 500 : 0, duration: $is_deleting ? 250 : 0, easing: quartOut }}
 >
-    {#if message.role === 'assistant' && !$is_streaming && !$provisionally_forking}
+    {#if message.role === 'assistant' && !$is_streaming && !$is_provisionally_forking}
         <MessageControls
             bind:message
             starred={starred}
@@ -123,7 +123,7 @@
             on:forkFrom
             on:toggleStar={toggleStar}
         />
-    {:else if $provisionally_forking && message.is_last}
+    {:else if $is_provisionally_forking && message.is_last}
         <ProvisionalForkControls
             bind:message
             on:addReply

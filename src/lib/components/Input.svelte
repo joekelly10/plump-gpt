@@ -3,7 +3,7 @@
     import { page } from '$app/stores'
     import { loader_active, prompt_editor_active, config } from '$lib/stores/app'
     import { chat_id, messages, forks, active_fork, active_messages, stars } from '$lib/stores/chat'
-    import { adding_reply, show_scroll_button } from '$lib/stores/chat/interactions'
+    import { is_adding_reply, is_scrolled_to_bottom } from '$lib/stores/chat/interactions'
     import { model, temperature, top_p } from '$lib/stores/ai'
     import { api_state, is_idle } from '$lib/stores/api'
     import { addCopyButtons } from '$lib/utils/helpers'
@@ -141,7 +141,7 @@
         console.log(`🤖-✅ ${$model.short_name} replied: `, gpt_message.content)
 
         api_state.finishStreaming()
-        $adding_reply = false
+        $is_adding_reply = false
         hljs.highlightAll()
         addCopyButtons()
 
@@ -420,13 +420,13 @@
     }
 
     const newChat = async () => {
-        $messages           = $messages.slice(0,1)
-        $forks              = [{ message_ids: [0], forked_at: [], provisional: false }]
-        $active_fork        = 0
-        $stars              = []
-        $chat_id            = null
-        $loader_active      = false
-        $show_scroll_button = false
+        $messages              = $messages.slice(0,1)
+        $forks                 = [{ message_ids: [0], forked_at: [], provisional: false }]
+        $active_fork           = 0
+        $stars                 = []
+        $chat_id               = null
+        $loader_active         = false
+        $is_scrolled_to_bottom = true
         $page.url.searchParams.delete('user_message')
         window.history.replaceState(null, '', $page.url.toString())
         focus()

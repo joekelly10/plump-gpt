@@ -2,7 +2,7 @@
     import { createEventDispatcher } from 'svelte'
     import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { show_scroll_button } from '$lib/stores/chat/interactions'
+    import { is_scrolled_to_bottom } from '$lib/stores/chat/interactions'
     import { is_streaming } from '$lib/stores/api'
 
     const dispatch = createEventDispatcher()
@@ -10,7 +10,7 @@
     const clicked = () => dispatch('clicked')
 </script>
 
-{#if $show_scroll_button}
+{#if !$is_scrolled_to_bottom}
     <button 
         class='scroll-down-button streaming'
         class:streaming={$is_streaming}

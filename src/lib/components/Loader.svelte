@@ -4,7 +4,7 @@
     import { quartOut } from 'svelte/easing'
     import { loader_active } from '$lib/stores/app'
     import { chat_id, messages, forks, active_fork, stars } from '$lib/stores/chat'
-    import { provisionally_forking } from '$lib/stores/chat/interactions'
+    import { is_provisionally_forking } from '$lib/stores/chat/interactions'
     import { smoothScroll } from '$lib/utils/helpers'
     import hljs from 'highlight.js'
 
@@ -181,11 +181,11 @@
 
     const unload = () => {
         //  the order here is important
-        $active_fork           = 0
-        $forks                 = [{ message_ids: [0], forked_at: [], provisional: false }]
-        $messages              = $messages.slice(0,1)
-        $chat_id               = null
-        $provisionally_forking = false
+        $active_fork              = 0
+        $forks                    = [{ message_ids: [0], forked_at: [], provisional: false }]
+        $messages                 = $messages.slice(0,1)
+        $chat_id                  = null
+        $is_provisionally_forking = false
     }
 
     const migrateIfNeeded = (chat) => {

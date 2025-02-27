@@ -7,7 +7,7 @@ export const highlights = writable({
     star:       []
 })
 
-export const deleting              = writable(false)
-export const adding_reply          = writable(false)
-export const provisionally_forking = writable(false)
-export const show_scroll_button    = writable(false)
+export const is_deleting              = writable(false)
+export const is_adding_reply          = writable(false)
+export const is_provisionally_forking = writable(false)
+export const is_scrolled_to_bottom    = writable(true)
