@@ -2,7 +2,7 @@
     import { createEventDispatcher } from 'svelte'
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { highlights } from '$lib/stores/chat'
+    import { highlights } from '$lib/stores/chat/interactions'
     import { is_idle } from '$lib/stores/api'
 
     import ForkIcon from '$lib/components/Icons/Fork.svelte'

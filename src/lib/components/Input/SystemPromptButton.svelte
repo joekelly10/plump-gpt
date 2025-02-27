@@ -1,6 +1,7 @@
 <script>
     import { onMount } from 'svelte'
-    import { messages, prompt_editor_active } from '$lib/stores/chat'
+    import { prompt_editor_active } from '$lib/stores/app'
+    import { messages } from '$lib/stores/chat'
 
     import SystemPromptIcon from '$lib/components/Icons/SystemPrompt.svelte'
 

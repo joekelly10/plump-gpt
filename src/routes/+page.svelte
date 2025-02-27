@@ -1,5 +1,6 @@
 <script>
-    import { messages, loader_active, prompt_editor_active, tree_active } from '$lib/stores/chat'
+    import { tree_active, loader_active, prompt_editor_active } from '$lib/stores/app'
+    import { messages } from '$lib/stores/chat'
 
     import Header from '$lib/components/Header.svelte'
     import Chat from '$lib/components/Chat.svelte'

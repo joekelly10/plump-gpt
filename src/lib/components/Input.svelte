@@ -1,7 +1,9 @@
 <script>
     import { tick, createEventDispatcher } from 'svelte'
     import { page } from '$app/stores'
-    import { chat_id, messages, forks, active_fork, stars, active_messages, loader_active, prompt_editor_active, config, adding_reply, show_scroll_button } from '$lib/stores/chat'
+    import { loader_active, prompt_editor_active, config } from '$lib/stores/app'
+    import { chat_id, messages, forks, active_fork, active_messages, stars } from '$lib/stores/chat'
+    import { adding_reply, show_scroll_button } from '$lib/stores/chat/interactions'
     import { model, temperature, top_p } from '$lib/stores/ai'
     import { api_state, is_idle } from '$lib/stores/api'
     import { addCopyButtons } from '$lib/utils/helpers'

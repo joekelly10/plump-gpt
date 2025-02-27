@@ -1,6 +1,6 @@
 <script>
     import { createEventDispatcher } from 'svelte'
-    import { active_fork, forks } from '$lib/stores/chat.js'
+    import { forks, active_fork } from '$lib/stores/chat'
 
     const dispatch = createEventDispatcher()
 

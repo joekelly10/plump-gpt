@@ -1,5 +1,5 @@
 <script>
-    import { loader_active } from '$lib/stores/chat.js'
+    import { loader_active } from '$lib/stores/app.js'
     import { is_idle } from '$lib/stores/api.js'
 
     const clickedLoad = () => {

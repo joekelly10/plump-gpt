@@ -2,7 +2,7 @@
     import { createEventDispatcher } from 'svelte'
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { chat_id } from '$lib/stores/chat.js'
+    import { chat_id } from '$lib/stores/chat'
     import { formatDate } from '$lib/utils/helpers'
     import { marked } from 'marked'
 

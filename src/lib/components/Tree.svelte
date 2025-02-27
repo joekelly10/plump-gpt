@@ -2,7 +2,8 @@
     import { createEventDispatcher, onMount, onDestroy } from 'svelte'
     import { scale } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { messages, forks, active_fork, stars, tree_active } from '$lib/stores/chat.js'
+    import { tree_active } from '$lib/stores/app.js'
+    import { messages, forks, active_fork, stars } from '$lib/stores/chat'
     import { buildTree } from '$lib/utils/tree.js'
 
     import Header from '$lib/components/Tree/Header.svelte'

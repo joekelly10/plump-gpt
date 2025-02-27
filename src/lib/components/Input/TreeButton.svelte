@@ -1,5 +1,6 @@
 <script>
-    import { forks, active_fork, tree_active } from '$lib/stores/chat'
+    import { tree_active } from '$lib/stores/app'
+    import { forks, active_fork } from '$lib/stores/chat'
     import { is_idle } from '$lib/stores/api.js'
 
     import ForkIcon from '$lib/components/Icons/Fork.svelte'

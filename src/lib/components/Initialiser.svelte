@@ -3,7 +3,8 @@
     import { fade, slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { page } from '$app/stores'
-    import { initialising, messages } from '$lib/stores/chat'
+    import { initialising } from '$lib/stores/app'
+    import { messages } from '$lib/stores/chat'
     import { model } from '$lib/stores/ai'
 
     const dispatch = createEventDispatcher()

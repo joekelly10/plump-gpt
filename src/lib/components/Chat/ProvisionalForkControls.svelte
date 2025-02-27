@@ -2,7 +2,7 @@
     import { createEventDispatcher } from 'svelte'
     import { fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { highlights } from '$lib/stores/chat'
+    import { highlights } from '$lib/stores/chat/interactions'
     import { model } from '$lib/stores/ai'
 
     import AddIcon from '$lib/components/Icons/Add.svelte'

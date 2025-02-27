@@ -2,7 +2,8 @@
     import { onMount, onDestroy, tick } from 'svelte'
     import { scale } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { prompt_editor_active, messages } from '$lib/stores/chat'
+    import { prompt_editor_active } from '$lib/stores/app'
+    import { messages } from '$lib/stores/chat'
     import { system_prompts, save_status } from '$lib/stores/prompt_editor'
 
     import PromptEditorHeader from '$lib/components/PromptEditor/PromptEditorHeader.svelte'

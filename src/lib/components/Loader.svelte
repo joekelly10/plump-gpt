@@ -2,7 +2,9 @@
     import { onMount, onDestroy, tick, createEventDispatcher } from 'svelte'
     import { scale } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { chat_id, messages, forks, active_fork, stars, loader_active, provisionally_forking } from '$lib/stores/chat.js'
+    import { loader_active } from '$lib/stores/app'
+    import { chat_id, messages, forks, active_fork, stars } from '$lib/stores/chat'
+    import { provisionally_forking } from '$lib/stores/chat/interactions'
     import { smoothScroll } from '$lib/utils/helpers'
     import hljs from 'highlight.js'
 

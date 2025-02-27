@@ -2,7 +2,7 @@
     import { createEventDispatcher } from 'svelte'
     import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { show_scroll_button } from '$lib/stores/chat'
+    import { show_scroll_button } from '$lib/stores/chat/interactions'
     import { is_streaming } from '$lib/stores/api'
 
     const dispatch = createEventDispatcher()
