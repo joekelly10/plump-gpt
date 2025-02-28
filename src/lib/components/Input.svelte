@@ -368,6 +368,17 @@
             e.preventDefault()
             return
         }
+
+        if (e.ctrlKey && e.shiftKey && e.key === 'ArrowUp') {
+            e.preventDefault()
+            input_expanded = true
+        }
+        
+        if (e.ctrlKey && e.shiftKey && e.key === 'ArrowDown') {
+            e.preventDefault()
+            input_expanded = false
+        }
+
         if (e.key == 'Enter' && !e.shiftKey) {
             e.preventDefault()
             input_expanded = false
