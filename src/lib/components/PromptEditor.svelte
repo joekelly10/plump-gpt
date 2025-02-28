@@ -37,7 +37,22 @@
                 original_message: prompt.message,
                 modified:         false
             }))
-            $system_prompts = decorated
+            current_prompt_index = decorated.findIndex(prompt => prompt.id === $messages[0].system_prompt_id)
+            if (current_prompt_index === -1) {
+                //  if not found (e.g. when the prompt is old and
+                //  has since been deleted), add by hand
+                $system_prompts = [{
+                    id:               $messages[0].system_prompt_id,
+                    title:            $messages[0].system_prompt_title,
+                    message:          $messages[0].content,
+                    default:          false,
+                    original_title:   $messages[0].system_prompt_title,
+                    original_message: $messages[0].content,
+                    modified:         false
+                }, ...decorated]
+            } else {
+                $system_prompts = decorated
+            }
             console.log(`📝–✅ Fetched: ${$system_prompts.length} prompts.`)
         } else {
             console.log(`📝–❌ Fetch system prompts failed: ${response.status} ${response.statusText}`)
