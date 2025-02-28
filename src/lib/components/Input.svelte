@@ -420,30 +420,37 @@
 
     const quoteSelectedText = () => {
         let selection = window.getSelection()
+
         if (selection.rangeCount > 0 && !selection.isCollapsed) {
             const selected_text = selection.toString().trim()
-
             if (!selected_text) return
-            const quoted_text = selected_text.split('\n').map(line => `> ${line}`).join('\n')
-
-            input.focus()
-
-            const range = document.createRange()
-            range.selectNodeContents(input)
-            range.collapse(false)
-            selection.removeAllRanges()
-            selection.addRange(range)
-
-            if (input_text && input_text.trim().length > 0) {
-                if (input_text.slice(-2) === '\n\n') {
-                    document.execCommand('insertText', false, quoted_text + '\n\n')
-                } else if (input_text.slice(-1) === '\n') {
-                    document.execCommand('insertText', false, '\n' + quoted_text + '\n\n')
-                } else {
-                    document.execCommand('insertText', false, '\n\n' + quoted_text + '\n\n')
-                }
+            
+            const quoted_text = selected_text.split('\n').map(line => `> ${line}`).join('\n'),
+                  range       = selection.getRangeAt(0),
+                  is_in_input = input.contains(range.commonAncestorContainer)
+            
+            if (is_in_input) {
+                document.execCommand('insertText', false, quoted_text)
             } else {
-                document.execCommand('insertText', false, quoted_text + '\n\n')
+                input.focus()
+
+                const new_range = document.createRange()
+                new_range.selectNodeContents(input)
+                new_range.collapse(false)
+                selection.removeAllRanges()
+                selection.addRange(new_range)
+
+                if (input_text && input_text.trim().length > 0) {
+                    if (input_text.slice(-2) === '\n\n') {
+                        document.execCommand('insertText', false, quoted_text + '\n\n')
+                    } else if (input_text.slice(-1) === '\n') {
+                        document.execCommand('insertText', false, '\n' + quoted_text + '\n\n')
+                    } else {
+                        document.execCommand('insertText', false, '\n\n' + quoted_text + '\n\n')
+                    }
+                } else {
+                    document.execCommand('insertText', false, quoted_text + '\n\n')
+                }
             }
 
             input.scrollTop = input.scrollHeight
