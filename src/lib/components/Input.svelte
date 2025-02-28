@@ -387,18 +387,56 @@
             return openPromptEditor()
         }
 
-        if (e.ctrlKey && e.key === 'n') {
+        if (e.ctrlKey && e.key.toLowerCase() === '.') {
             e.preventDefault()
-            return newChat()
+            return quoteSelectedText()
         }
+
         if (e.metaKey && e.altKey && e.key === 'Backspace') {
             e.preventDefault()
             if ($chat_id && !$loader_active) return deleteChat()
+        }
+
+        if (e.ctrlKey && e.key === 'n') {
+            e.preventDefault()
+            return newChat()
         }
     }
 
     const openPromptEditor = () => {
         $prompt_editor_active = true
+    }
+
+    const quoteSelectedText = () => {
+        let selection = window.getSelection()
+        if (selection.rangeCount > 0 && !selection.isCollapsed) {
+            const selected_text = selection.toString().trim()
+
+            if (!selected_text) return
+            const quoted_text = selected_text.split('\n').map(line => `> ${line}`).join('\n')
+
+            input.focus()
+
+            const range = document.createRange()
+            range.selectNodeContents(input)
+            range.collapse(false)
+            selection.removeAllRanges()
+            selection.addRange(range)
+
+            if (input_text && input_text.trim().length > 0) {
+                if (input_text.slice(-2) === '\n\n') {
+                    document.execCommand('insertText', false, quoted_text + '\n\n')
+                } else if (input_text.slice(-1) === '\n') {
+                    document.execCommand('insertText', false, '\n' + quoted_text + '\n\n')
+                } else {
+                    document.execCommand('insertText', false, '\n\n' + quoted_text + '\n\n')
+                }
+            } else {
+                document.execCommand('insertText', false, quoted_text + '\n\n')
+            }
+
+            input.scrollTop = input.scrollHeight
+        }
     }
 
     const deleteChat = async () => {
