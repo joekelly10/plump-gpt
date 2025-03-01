@@ -69,13 +69,13 @@
             if (distance < 1000) {
                 smoothScroll(chat, bottom, 333, 'quartOut')
             } else if (distance < 2500) {
-                smoothScroll(chat, bottom, 500, 'quartInOut')
+                smoothScroll(chat, bottom, 500, 'quartOut')
             } else if (distance < 5000) {
-                smoothScroll(chat, bottom, 750, 'cubicInOut')
+                smoothScroll(chat, bottom, 750, 'quartOut')
             } else if (distance < 7500) {
-                smoothScroll(chat, bottom, 1000, 'cubicInOut')
+                smoothScroll(chat, bottom, 1000, 'quartOut')
             } else {
-                smoothScroll(chat, bottom, 1250, 'cubicInOut')
+                smoothScroll(chat, bottom, 1250, 'quartOut')
             }
         }
     }
@@ -90,6 +90,22 @@
         }, options.delay)
     }
 
+    const scrollToTop = () => {
+        scroll_interrupted = true
+        const distance = chat.scrollHeight - chat.clientHeight
+        if (distance < 1000) {
+            return smoothScroll(chat, 0, 333, 'quartOut')
+        } else if (distance < 2500) {
+            return smoothScroll(chat, 0, 500, 'quartOut')
+        } else if (distance < 5000) {
+            return smoothScroll(chat, 0, 750, 'quartOut')
+        } else if (distance < 7500) {
+            return smoothScroll(chat, 0, 1000, 'quartOut')
+        } else {
+            return smoothScroll(chat, 0, 1250, 'quartOut')
+        }
+    }
+
     const keydown = (e) => {
         if ($loader_active || $prompt_editor_active) return
 
@@ -97,19 +113,7 @@
             return scrollToBottom({ context: 'keyboard_shortcut' })
         }
         if (e.shiftKey && e.altKey && e.key === 'ArrowUp') {
-            scroll_interrupted = true
-            const distance = chat.scrollHeight - chat.clientHeight
-            if (distance < 1000) {
-                return smoothScroll(chat, 0, 333, 'quartOut')
-            } else if (distance < 2500) {
-                return smoothScroll(chat, 0, 500, 'quartInOut')
-            } else if (distance < 5000) {
-                return smoothScroll(chat, 0, 750, 'cubicInOut')
-            } else if (distance < 7500) {
-                return smoothScroll(chat, 0, 1000, 'cubicInOut')
-            } else {
-                return smoothScroll(chat, 0, 1250, 'cubicInOut')
-            }
+            return scrollToTop()
         }
         if (e.altKey && e.key === 'ArrowDown') {
             if (downarrow_limiter) return
