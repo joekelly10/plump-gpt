@@ -15,13 +15,16 @@
 
     const dispatch = createEventDispatcher()
     
-    let chat                         = null,
-        forking_from                 = null,
-        uparrow_limiter              = null,
-        downarrow_limiter            = null,
-        message_refs                 = [], // references to the list of `Message` components
+    let chat,
+        forking_from,
+        uparrow_limiter,
+        downarrow_limiter
+
+    let message_refs                 = [], // references to the list of `Message` components
         scroll_interrupted           = false,
-        scroll_reasoning_interrupted = false
+        scroll_reasoning_interrupted = false,
+        highlight_action_visible     = false,
+        highlight_action_position    = { x: 0, y: 0 }
 
     $: processed_messages = $active_messages.slice(1).map((message, i) => ({
         ...message,
@@ -389,17 +392,87 @@
     const handleScroll = () => {
         const bottom = chat.scrollHeight - chat.clientHeight
         $is_scrolled_to_bottom = chat.scrollTop >= bottom - 160
+
+        if (highlight_action_visible) {
+            const selection = window.getSelection()
+            if (selection && !selection.isCollapsed) {
+                positionHighlightAction(selection)
+            }
+        }
+    }
+
+    const mouseup = async (e) => {
+        if (e.target.closest('.highlight-action')) return
+        //  Known issue: when de-selecting text, the selection isn't
+        //  updated before mouseup, so we need to wait a tick
+        await new Promise(resolve => setTimeout(resolve, 1))
+
+        const selection = window.getSelection()
+        if (selection && !selection.isCollapsed) {
+            positionHighlightAction(selection)
+            highlight_action_visible = true
+        } else {
+            highlight_action_visible = false
+        }
+    }
+
+    const mousedown = (e) => {
+        if (e.target.closest('.highlight-action')) return
+        highlight_action_visible = false
+    }
+
+    const selectionchange = () => {
+        const selection = window.getSelection()
+        if (!selection || selection.isCollapsed) {
+            highlight_action_visible = false
+        }
+    }
+
+    const positionHighlightAction = (selection) => {
+        if (isForwardSelection(selection)) {
+            const range      = selection.getRangeAt(0),
+                  all_rects  = range.getClientRects(),
+                  last_rect  = all_rects[all_rects.length - 1]
+            highlight_action_position = {
+                x: last_rect.right,
+                y: last_rect.top - 16
+            }
+        } else {
+            const range      = selection.getRangeAt(0),
+                  all_rects  = range.getClientRects(),
+                  first_rect = all_rects[0]
+            highlight_action_position = {
+                x: first_rect.left,
+                y: first_rect.top - 16
+            }
+        }
+    }
+
+    const isForwardSelection = (selection) => {
+        if (selection.anchorNode === selection.focusNode) {
+            return selection.anchorOffset <= selection.focusOffset
+        }
+        const node_relationship = selection.anchorNode.compareDocumentPosition(selection.focusNode)
+        return node_relationship & Node.DOCUMENT_POSITION_FOLLOWING
+    }
+    
+    const clickedHighlightAction = () => {
+        dispatch('quoteSelectedText')
+        highlight_action_visible = false
     }
 </script>
 
-<svelte:document on:keydown={keydown} />
+<svelte:document on:keydown={keydown} on:mousedown={mousedown} on:selectionchange={selectionchange}/>
 
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <section
     class='chat'
     class:frozen={$loader_active || $prompt_editor_active}
     bind:this={chat}
     on:wheel={handleWheel}
     on:scroll={handleScroll}
+    on:mouseup={mouseup}
 >
     {#if $usage.total_messages > 0}
         <UsageStats/>
@@ -430,6 +503,18 @@
             </div>
         {/if}
     </div>
+    
+    {#if highlight_action_visible}
+        <button 
+            class='highlight-action'
+            style='left: {highlight_action_position.x}px; top: {highlight_action_position.y}px;'
+            on:click={clickedHighlightAction}
+            in:fly={{ y: 8, duration: 100, easing: quartOut }}
+            out:fly={{ y: 8, duration: 50 }}
+        >
+            <span class='highlight-action-quote-icon'>”</span>
+        </button>
+    {/if}
 </section>
 
 <style lang='sass'>
@@ -462,6 +547,50 @@
 
         .model-icon
             height: 21px
+    
+    .highlight-action
+        display:          flex
+        align-items:      center
+        justify-content:  center
+        position:         fixed
+        z-index:          1
+        transform:        translateX(-50%) translateY(-100%)
+        width:            50px
+        height:           36px
+        border-radius:    99px
+        background-color: $background-darker
+        color:            $off-white
+        cursor:           pointer
+        user-select:      none
+
+        &:after
+            content:      ''
+            position:     absolute
+            top:          100%
+            left:         50%
+            transform:    translateX(-50%)
+            border-width: 5px
+            border-style: solid
+            border-color: $background-darker transparent transparent
+        
+        &:hover
+            background-color: color.adjust($background-darker, $lightness: -2%)
+
+            &:after
+                border-top-color: color.adjust($background-darker, $lightness: -2%)
+        
+        &:active
+            background-color: color.adjust($background-darker, $lightness: -4%)
+
+            &:after
+                border-top-color: color.adjust($background-darker, $lightness: -4%)
+
+        .highlight-action-quote-icon
+            transform:      translateY(16.66%)
+            font-family:    'Times New Roman', serif
+            font-size:      36px
+            font-weight:    600
+            pointer-events: none
     
     @keyframes pulse
         0%

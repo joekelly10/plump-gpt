@@ -30,6 +30,7 @@
     .header
         flex-grow:        0
         position:         relative
+        z-index:          9
         height:           space.$header-height
         box-sizing:       border-box
         background-color: $background-darker

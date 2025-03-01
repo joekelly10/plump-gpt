@@ -18,13 +18,14 @@
     $: title = $messages.length > 1 ? $messages[1].content : 'Plump GPT - Fattens your thoughts'
     $: blur  = $loader_active || $tree_active || $prompt_editor_active
 
-    const focusInput      = () => input.focus()
-    const sendImmediately = () => input.sendMessage()
-    const chatModified    = () => input.chatLoaded()
-    const regenerateReply = () => input.regenerateReply()
-    const addReply        = () => input.addReply()
-    const save            = () => header.save()
-    const sendingMessage  = () => chat.sendingMessage()
+    const focusInput        = () => input.focus()
+    const sendImmediately   = () => input.sendMessage()
+    const quoteSelectedText = () => input.quoteSelectedText()
+    const chatModified      = () => input.chatLoaded()
+    const regenerateReply   = () => input.regenerateReply()
+    const addReply          = () => input.addReply()
+    const save              = () => header.save()
+    const sendingMessage    = () => chat.sendingMessage()
 
     const setInputText = (e) => {
         input.setText(e.detail?.text)
@@ -57,6 +58,7 @@
     <Chat
         bind:this={chat}
         on:chatModified={chatModified}
+        on:quoteSelectedText={quoteSelectedText}
         on:regenerateReply={regenerateReply}
         on:addReply={addReply}
         on:save={save}
