@@ -334,12 +334,12 @@
         width:           space.$avatar-container-width
         height:          space.$avatar-container-width
         text-align:      center
-        user-select:     none
 
         .avatar
-            height:     32px
-            transition: transform easing.$quart-out 0.125s
-            cursor:     pointer
+            height:      32px
+            transition:  transform easing.$quart-out 0.125s
+            cursor:      pointer
+            user-select: none
 
             &.user
                 border-radius: 8px
