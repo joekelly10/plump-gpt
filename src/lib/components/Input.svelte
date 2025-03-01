@@ -437,7 +437,7 @@
             return openPromptEditor()
         }
 
-        if (e.ctrlKey && e.key.toLowerCase() === '.') {
+        if (e.ctrlKey && e.key.toLowerCase() === '.' || e.metaKey && e.key.toLowerCase() === '.') {
             e.preventDefault()
             return quoteSelectedText()
         }
