@@ -1,6 +1,6 @@
 <script>
     import { createEventDispatcher } from 'svelte'
-    import { slide, fly, fade } from 'svelte/transition'
+    import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { stars } from '$lib/stores/chat'
     import { highlights, is_deleting, is_provisionally_forking } from '$lib/stores/chat/interactions'
@@ -8,9 +8,10 @@
     import { smoothScroll } from '$lib/utils/helpers'
     import { marked } from 'marked'
 
+    import MessageAvatar from '$lib/components/Chat/MessageAvatar.svelte'
+    import MessageInfo from '$lib/components/Chat/MessageInfo.svelte'
     import MessageControls from '$lib/components/Chat/MessageControls.svelte'
     import ProvisionalForkControls from '$lib/components/Chat/ProvisionalForkControls.svelte'
-    import MessageInfo from '$lib/components/Chat/MessageInfo.svelte'
     import PromptForks from '$lib/components/Chat/PromptForks.svelte'
     import ReplyForks from '$lib/components/Chat/ReplyForks.svelte'
     import WaitingDots from '$lib/components/Chat/WaitingDots.svelte'
@@ -24,8 +25,6 @@
 
     let element        = null,
         show_info      = false,
-        show_copied    = false,
-        copy_timer     = null,
         reasoning_div  = null,
         temp_highlight = false,
         temp_timer     = null
@@ -33,7 +32,8 @@
     $: starred    = $stars.includes(message.id)
     $: streaming  = message.is_last && message.role === 'assistant' && $is_streaming
     $: no_message = !message.content && !message.reasoning_content
-    $: content    = message.content.replace(
+
+    $: content = message.content.replace(
         // Match < or > that's not inside `inline code` or ``` code blocks
         /(?<!^|\n)[<>](?![^`]*`)(?![^```]*```)/g,
         char => ({ '<': '&lt;', '>': '&gt;' }[char])
@@ -62,13 +62,6 @@
         clearTimeout(temp_timer)
         temp_highlight = true
         temp_timer     = setTimeout(() => { temp_highlight = false }, 2500)
-    }
-
-    const copyMessageToClipboard = async () => {
-        clearTimeout(copy_timer)
-        await navigator.clipboard.writeText(message.content)
-        show_copied = true
-        copy_timer = setTimeout(() => { show_copied = false }, 2000)
     }
 
     const toggleStar = () => {
@@ -111,61 +104,6 @@
     out:slide={{ duration: $is_deleting ? 250 : 0, easing: quartOut }}
     in:slide={{ delay: $is_deleting ? 500 : 0, duration: $is_deleting ? 250 : 0, easing: quartOut }}
 >
-    {#if message.role === 'assistant' && !$is_streaming && !$is_provisionally_forking}
-        <MessageControls
-            bind:message
-            starred={starred}
-            showing_message_info={show_info}
-            on:addReply
-            on:regenerateReply
-            on:deleteOne
-            on:deleteBoth
-            on:forkFrom
-            on:toggleStar={toggleStar}
-        />
-    {:else if $is_provisionally_forking && message.is_last}
-        <ProvisionalForkControls
-            bind:message
-            on:addReply
-            on:cancelProvisionalFork
-        />
-    {/if}
-
-    {#if show_info}
-        <MessageInfo
-            message={message}
-        />
-    {/if}
-
-    <div class='avatar-container'>
-        {#if message.role === 'user'}
-            <img
-                class='avatar user'
-                src='/img/avatar.png'
-                alt='You'
-                on:dblclick={copyMessageToClipboard}
-            >
-        {:else}
-            <img
-                class='avatar gpt'
-                src='/img/icons/models/{message.model.icon}'
-                alt='{message.model.name}'
-                on:mouseenter={() => { show_info = true }}
-                on:mouseleave={() => { show_info = false }}
-                on:dblclick={copyMessageToClipboard}
-            >
-        {/if}
-        {#if show_copied}
-            <div
-                class='copied-feedback'
-                in:fly={{ y: 8, duration: 100, easing: quartOut }}
-                out:fade={{ duration: 100, easing: quartOut }}
-            >
-                Message copied!
-            </div>
-        {/if}
-    </div>
-
     <div class='content'>
         {#if no_message}
             <p class='status-text'>
@@ -188,6 +126,37 @@
             {@html marked(content)}
         {/if}
     </div>
+
+    <MessageAvatar
+        bind:show_info
+        message={message}
+    />
+
+    {#if show_info}
+        <MessageInfo
+            message={message}
+        />
+    {/if}
+
+    {#if message.role === 'assistant' && !$is_streaming && !$is_provisionally_forking}
+        <MessageControls
+            bind:message
+            starred={starred}
+            showing_message_info={show_info}
+            on:addReply
+            on:regenerateReply
+            on:deleteOne
+            on:deleteBoth
+            on:forkFrom
+            on:toggleStar={toggleStar}
+        />
+    {:else if $is_provisionally_forking && message.is_last}
+        <ProvisionalForkControls
+            bind:message
+            on:addReply
+            on:cancelProvisionalFork
+        />
+    {/if}
 </div>
 
 {#if message.role === 'user' && message.forks.length > 1}
@@ -323,58 +292,6 @@
 
         &.starred
             background-color: color.adjust($yellow, $alpha: -0.633)
-
-    .avatar-container
-        display:         flex
-        align-items:     center
-        justify-content: center
-        position:        absolute
-        top:             0
-        left:            0
-        width:           space.$avatar-container-width
-        height:          space.$avatar-container-width
-        text-align:      center
-
-        .avatar
-            height:      32px
-            transition:  transform easing.$quart-out 0.125s
-            cursor:      pointer
-            user-select: none
-
-            &.user
-                border-radius: 8px
-
-            &:hover
-                transform:  scale(1.1)
-                transition: none
-            
-            &:active
-                transform:  scale(1.05)
-                transition: none
-        
-        .copied-feedback
-            position:         absolute
-            bottom:           100%
-            left:             50%
-            transform:        translate(-50%, 4px)
-            padding:          12px 24px
-            border-radius:    8px
-            background-color: $background-darker
-            font-size:        14px
-            font-weight:      500
-            line-height:      font.$line-height-14px
-            color:            $off-white
-            white-space:      nowrap
-
-            &:after
-                content:        ''
-                position:       absolute
-                top:            100%
-                left:           50%
-                transform:      translateX(-50%)
-                border-width:   8px
-                border-style:   solid
-                border-color:   $background-darker transparent transparent
     
     .reasoning-content
         margin-bottom:    32px
