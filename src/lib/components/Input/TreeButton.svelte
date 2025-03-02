@@ -52,6 +52,7 @@
                 line-height:     font.$line-height-14px
                 text-align:      left
                 font-size:       14px
+                font-weight:     450
                 color:           $background-lightest
                 cursor:          pointer
 

@@ -193,6 +193,7 @@
             border-radius:    6px
             background-color: black(0.2)
             font-size:        14px
+            font-weight:      450
             color:            $blue-grey
             text-align:       center
 
@@ -203,9 +204,10 @@
                 color:       $off-white
     
     .message-count
-        margin-top: space.$default-padding
-        text-align: right
-        color:      $blue-grey
+        margin-top:  space.$default-padding
+        text-align:  right
+        font-weight: 450
+        color:       $blue-grey
 
         .models-used
             $icon-size:      32px

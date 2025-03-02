@@ -129,6 +129,7 @@
         .search-option-button
             padding:       7px 12px
             border-radius: 6px
+            font-weight:   450
             cursor:        pointer
 
             &:hover

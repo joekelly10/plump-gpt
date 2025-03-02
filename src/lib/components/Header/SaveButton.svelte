@@ -88,6 +88,7 @@
         width:           space.$load-save-button-width
         height:          space.$header-height
         font-size:       14px
+        font-weight:     450
         color:           $background-lightest
         cursor:          pointer
         

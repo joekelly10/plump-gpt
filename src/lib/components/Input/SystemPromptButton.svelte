@@ -53,6 +53,7 @@
                 padding-right: space.$default-padding
                 line-height:   font.$line-height-14px
                 font-size:     14px
+                font-weight:   450
                 color:         $blue-grey
                 text-align:    left
                 cursor:        pointer

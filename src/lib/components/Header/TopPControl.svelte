@@ -42,6 +42,7 @@
         height:          space.$header-height
         width:           space.$temperature-button-width
         font-size:       14px
+        font-weight:     450
         color:           $background-lightest
         cursor:          pointer
 

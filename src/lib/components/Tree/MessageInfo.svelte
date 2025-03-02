@@ -28,6 +28,7 @@
 <style lang='sass'>
     .message-info
         font-size:   14px
+        font-weight: 450
         line-height: font.$line-height-14px
         color:       $background-lightest
 </style>
