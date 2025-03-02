@@ -43,18 +43,18 @@
             scroll_interrupted           = false
             scroll_reasoning_interrupted = false
             if (distance < 2500) {
-                smoothScroll(chat, bottom, 500, 'quartInOut')
+                smoothScroll(chat, bottom, 500, 'quartOut')
             } else if (distance < 5000) {
-                smoothScroll(chat, bottom, 750, 'cubicInOut')
+                smoothScroll(chat, bottom, 750, 'quartOut')
             } else if (distance < 7500) {
-                smoothScroll(chat, bottom, 1000, 'cubicInOut')
+                smoothScroll(chat, bottom, 1000, 'quartOut')
             } else {
-                smoothScroll(chat, bottom, 1250, 'cubicInOut')
+                smoothScroll(chat, bottom, 1250, 'quartOut')
             }
         } else if (['streaming_started', 'streaming_message', 'streaming_finished'].includes(options.context)) {
             if (!scroll_interrupted) {
                 if (distance < 300) {
-                    smoothScroll(chat, bottom, 250, 'cubicOut')
+                    smoothScroll(chat, bottom, 250, 'quartOut')
                 } else {
                     smoothScroll(chat, bottom, 500, 'quartOut')
                 }
