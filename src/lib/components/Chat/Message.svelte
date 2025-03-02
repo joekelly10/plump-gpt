@@ -241,8 +241,8 @@
                 transition: background-color easing.$quart-out 0.075s, box-shadow easing.$quart-out 0.075s
 
                 &.add-reply-highlight
-                    .avatar-container,
-                    .content
+                    .content,
+                    :global(.avatar-container)
                         filter: blur(2.5px)
 
                     &:after
