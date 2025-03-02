@@ -559,8 +559,8 @@
         position:         fixed
         z-index:          1
         transform:        translateX(-50%) translateY(-100%)
-        width:            50px
-        height:           36px
+        width:            48px
+        height:           35px
         border-radius:    99px
         background-color: $background-darker
         color:            $off-white
@@ -573,7 +573,7 @@
             top:          100%
             left:         50%
             transform:    translateX(-50%)
-            border-width: 5px
+            border-width: 4px
             border-style: solid
             border-color: $background-darker transparent transparent
         
