@@ -402,6 +402,31 @@
         nope_timer     = setTimeout(() => { nope_highlight = false}, 50)
     }
 
+    const formatSelectedText = (format_type) => {
+        const selection = window.getSelection()
+        if (selection.rangeCount > 0 && !selection.isCollapsed) {
+            const selected_text = selection.toString().trim()
+            if (!selected_text) return
+            if (format_type === 'bold') {
+                if (selected_text.startsWith('**') && selected_text.endsWith('**') && selected_text.length >= 4) {
+                    const unformatted_text = selected_text.substring(2, selected_text.length - 2)
+                    document.execCommand('insertText', false, unformatted_text)
+                } else {
+                    const bold_text = `**${selected_text}**`
+                    document.execCommand('insertText', false, bold_text)
+                }
+            } else if (format_type === 'italic') {
+                if (selected_text.startsWith('_') && selected_text.endsWith('_') && selected_text.length >= 2) {
+                    const unformatted_text = selected_text.substring(1, selected_text.length - 1)
+                    document.execCommand('insertText', false, unformatted_text)
+                } else {
+                    const italic_text = `_${selected_text}_`
+                    document.execCommand('insertText', false, italic_text)
+                }
+            }
+        }
+    }
+
     const keydownMessageInput = (e) => {
         if ($loader_active) {
             e.preventDefault()
@@ -416,6 +441,16 @@
         if (e.ctrlKey && e.shiftKey && e.key === 'ArrowDown') {
             e.preventDefault()
             input_expanded = false
+        }
+
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'b') {
+            e.preventDefault()
+            return formatSelectedText('bold')
+        }
+
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'i') {
+            e.preventDefault()
+            return formatSelectedText('italic')
         }
 
         if (e.key == 'Enter' && !e.shiftKey) {
