@@ -435,12 +435,12 @@
 
         if (e.ctrlKey && e.shiftKey && e.key === 'ArrowUp') {
             e.preventDefault()
-            input_expanded = true
+            return input_expanded = true
         }
         
         if (e.ctrlKey && e.shiftKey && e.key === 'ArrowDown') {
             e.preventDefault()
-            input_expanded = false
+            return input_expanded = false
         }
 
         if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'b') {
@@ -457,9 +457,9 @@
             e.preventDefault()
             input_expanded = false
             if ($is_idle && input_text.trim().length) {
-                sendMessage()
+                return sendMessage()
             } else {
-                nope()
+                return nope()
             }
         }
     }
@@ -472,7 +472,7 @@
             return openPromptEditor()
         }
 
-        if (e.ctrlKey && e.key.toLowerCase() === '.' || e.metaKey && e.key.toLowerCase() === '.') {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === '.') {
             e.preventDefault()
             return quoteSelectedText()
         }
