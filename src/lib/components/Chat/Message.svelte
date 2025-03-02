@@ -243,7 +243,7 @@
                 &.add-reply-highlight
                     .content,
                     :global(.avatar-container)
-                        filter: blur(2.5px)
+                        filter: blur(2px)
 
                     &:after
                         opacity: 0.1
