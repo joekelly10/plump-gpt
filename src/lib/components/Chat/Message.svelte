@@ -231,7 +231,7 @@
                 left:             0
                 width:            100%
                 height:           100%
-                background-color: $blue
+                background-color: color.adjust($blue, $lightness: 3%)
                 border-radius:    1.5px 1.5px 8px 8px
                 opacity:          0
                 transition:       opacity easing.$quart-out 0.125s
@@ -246,7 +246,7 @@
                         filter: blur(2px)
 
                     &:after
-                        opacity: 0.1
+                        opacity: 0.33
 
                 &.delete-highlight
                     box-shadow:       0 0 0 1.5px $coral
