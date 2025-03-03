@@ -234,7 +234,7 @@
                 background-color: color.adjust($blue, $lightness: 3%)
                 border-radius:    1.5px 1.5px 8px 8px
                 opacity:          0
-                transition:       opacity easing.$quart-out 0.125s
+                transition:       opacity easing.$quart-out 0.1s
                 pointer-events:   none
 
             &:not(.streaming)
@@ -322,7 +322,7 @@
                 margin-bottom: 0
     
     .content
-        transition: filter easing.$quart-out 0.125s
+        transition: filter easing.$quart-out 0.1s
 
     .status-text
         font-size:   14px
