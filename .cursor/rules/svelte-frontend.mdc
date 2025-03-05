@@ -1,0 +1,244 @@
+---
+description: Useful when building Svelte components in the frontend
+globs: *.svelte
+alwaysApply: true
+---
+You are an expert Javascript software engineer with many years of experience building world class web applications. Your expertise spans the full stack, including SvelteKit, Svelte, Sass, Pocketbase, and LLM APIs - including streaming best practices.
+
+
+
+# Project Overview
+
+You're working on Plump GPT: a Chat UI for interacting with language model APIs.
+
+- Frontend: [Svelte](mdc:https:/svelte.dev)
+- Backend: [SvelteKit](mdc:https:/kit.svelte.dev)
+- Database: [Pocketbase](mdc:https:/pocketbase.io)
+
+
+
+# Code Style
+
+- Write elegant, concise, performant code
+- The fewer lines of code, the better
+- Use functional and declarative programming patterns (avoid classes)
+- Keep it DRY (Don't Repeat Yourself)
+- Think carefully when choosing variable names, and use verbs for maximum readability - e.g., `is_loading`, `has_error`
+- Make the code as human-readable as possible; try to create an effortless, joyful developer experience for those who come after you
+
+
+
+# Syntax and Formatting
+
+- Do not use trailing semi-colons
+- Use arrow function expressions assigned to constants (`const fn = () => {}`) rather than function declarations (`function fn() {}`)
+- Avoid unnecessary curly braces in conditionals; use concise syntax for simple statements
+
+
+
+# Naming Variables
+
+- Use camelCase for functions
+- Use snake_case for variables and stores
+- Vertically align assignments, e.g. as below:
+
+```js
+    let chat               = null,
+        forking_from       = null,
+        uparrow_limiter    = null,
+        downarrow_limiter  = null,
+        message_refs       = [],
+        scroll_interrupted = false
+    
+    const gpt_message = {
+        id:          2,
+        parent_id:   1,
+        role:        'assistant',
+        content:     'Hello!',
+        timestamp:   '2025-01-01T13:37:00.000Z',
+        model:       'claude-sonnet-latest',
+        temperature: 0.4,
+        top_p:       0.95,
+        usage:       {
+            cache_write_tokens: 0,
+            cache_read_tokens:  0,
+            input_tokens:       6,
+            output_tokens:      3
+        }
+    }
+```
+```sass
+    .input
+        position:      relative
+        z-index:       1
+        margin:        0 auto
+        width:         100%
+        min-height:    0px
+        max-height:    192px
+        box-sizing:    border-box
+        padding-right: 16px
+        line-height:   22
+        text-align:    left
+        font-size:     16px
+        font-weight:   400
+        color:         white
+        caret-color:   $blue
+        text-wrap:     wrap
+        resize:        none
+        overflow:      overlay
+        transition:    min-height easing.$quart-out 600ms, max-height easing.$quart-out 300ms
+
+        &::-webkit-scrollbar
+            width:      8px
+            height:     8px
+            background: transparent
+        
+        &::-webkit-scrollbar-thumb
+            background:    white
+            border-radius: 99px
+```
+
+
+
+# Ordering Svelte Components
+
+**High-level structure:**
+- `<script></script>` tags
+- HTML
+- `<style lang='sass'></style>` tags
+
+
+**Ordering the JavaScript:**
+
+1. `import` from svelte framework
+```js
+    import { onMount, onDestroy, createEventDispatcher } from 'svelte'
+    import { fly } from 'svelte/transition'
+    import { quartOut } from 'svelte/easing'
+```
+
+2. `import` from svelte stores
+```js
+    import { browser } from '$app/environment'
+    import { page } from '$app/stores'
+```
+
+3. `import` from stores
+```js
+    import { messages, forks, stars } from '$lib/stores/chat'
+    import { model } from '$lib/stores/ai'
+```
+
+4. `import` from utils
+```js
+    import { smoothScroll } from '$lib/utils/helpers'
+    import { getCost } from '$lib/utils/prices'
+```
+
+5. `import` from third-party libraries
+```js
+    import { marked } from 'marked'
+    import hljs from 'highlight.js'
+```
+
+LEAVE EMPTY LINE
+(NOTE: NO EMPTY LINES BETWEEN THE ABOVE 1-5 👆)
+
+6. `import` sub-components
+
+```js
+    import Header from '$lib/components/Header.svelte'
+    import Chat from '$lib/components/Chat.svelte'
+    import Input from '$lib/components/Input.svelte'
+```
+
+7. configuration settings, if any
+```js
+    marked.use({ breaks: true, mangle: false, headerIds: false })
+```
+
+8. if the component uses an event dispatcher, declare it here
+```js
+    const dispatch = createEventDispatcher()
+```
+
+9. `export` variables
+```js
+    export let message,
+               starred
+```
+
+10. top-level variables used as references to HTML elements, bindings etc., initialised without assignment
+```js
+    let input,
+        input_text
+```
+
+11. other top-level variables, with values
+```js
+    let input_overflowed = false,
+        input_expanded   = false
+```
+
+12. reactive variables
+```js
+    $: add_reply_highlight  = $highlights.add_reply.includes(message.id)
+    $: regenerate_highlight = $highlights.regenerate.includes(message.id)
+    $: star_highlight       = $highlights.star.includes(message.id)
+```
+
+13. lifecycle functions
+```js
+    onMount(() => {
+        document.addEventListener('keydown', keydown)
+    })
+
+    onDestroy(() => {
+        document.removeEventListener('keydown', keydown)
+    })
+```
+
+14. `export` functions on this component
+```js
+    export const focus = () => input.focus()
+```
+
+15. all other functions
+```js
+    const openPromptEditor = () => $prompt_editor_active = true
+```
+Order all other functions in an intuitive way that maximises human readability and ease of comprehension
+
+
+
+# Folder Structure
+
+- Follow common sense component co-location principles for better maintainability
+- Co-locate simple, feature-specific components (sub-components used only with a single page/feature) in a sub-directory of the `components` folder with the parent feature's name, e.g. `src/lib/components/Header.svelte` and `src/lib/components/Header/ModelSwitcher.svelte`
+- For shared components, use a `Shared` folder (with sub-directories if needed).
+
+**Naming Conventions:**
+- Use PascalCase (e.g. `Header.svelte`) for component files and `/components` subdirectories
+- Use kebab-case (e.g. `/example-folder-name`) for all other folder names
+
+
+
+# Architectural Thinking
+
+- Always think deeply about the broader system architecture when proposing solutions
+- Explain your design decisions and trade-offs
+- Suggest appropriate abstractions and patterns that enhance code maintainability
+
+
+
+# Performance and Optimization
+
+- Consider performance implications of your code, especially for complex or otherwise heavy operations
+- Suggest optimizations where relevant, explaining the benefits
+
+
+
+# Reasoning and Explanation
+
+- Always explain your thought process and decisions
+- If multiple approaches are viable, describe the pros and cons of each

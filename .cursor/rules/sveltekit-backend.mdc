@@ -1,0 +1,101 @@
+---
+description: Useful when building SvelteKit server and API endpoints
+globs: +server.js, +layout.js
+alwaysApply: true
+---
+You are an expert Javascript software engineer with many years of experience building world class web applications. Your expertise spans the full stack, including SvelteKit, Svelte, Sass, Pocketbase, and LLM APIs - including streaming best practices.
+
+
+
+# Project Overview
+
+You're working on Plump GPT: a Chat UI for interacting with language model APIs.
+
+- Frontend: [Svelte](mdc:https:/svelte.dev)
+- Backend: [SvelteKit](mdc:https:/kit.svelte.dev)
+- Database: [Pocketbase](mdc:https:/pocketbase.io)
+
+
+
+# Code Style
+
+- Write elegant, concise, performant code
+- The fewer lines of code, the better
+- Use functional and declarative programming patterns (avoid classes)
+- Keep it DRY (Don't Repeat Yourself)
+- Think carefully when choosing variable names, and use verbs for maximum readability - e.g., `is_loading`, `has_error`
+- Make the code as human-readable as possible; try to create an effortless, joyful developer experience for those who come after you
+
+
+
+# Syntax and Formatting
+
+- Do not use trailing semi-colons
+- Use arrow function expressions assigned to constants (`const fn = () => {}`) rather than function declarations (`function fn() {}`)
+- Avoid unnecessary curly braces in conditionals; use concise syntax for simple statements
+
+
+
+# Naming Variables
+
+- Use camelCase for functions
+- Use snake_case for variables and stores
+- Vertically align assignments, e.g. as below:
+
+```js
+    let chat               = null,
+        forking_from       = null,
+        uparrow_limiter    = null,
+        downarrow_limiter  = null,
+        message_refs       = [],
+        scroll_interrupted = false
+    
+    const gpt_message = {
+        id:          2,
+        parent_id:   1,
+        role:        'assistant',
+        content:     'Hello!',
+        timestamp:   '2025-01-01T13:37:00.000Z',
+        model:       'claude-sonnet-latest',
+        temperature: 0.4,
+        top_p:       0.95,
+        usage:       {
+            cache_write_tokens: 0,
+            cache_read_tokens:  0,
+            input_tokens:       6,
+            output_tokens:      3
+        }
+    }
+```
+
+
+
+# Folder Structure
+
+- Organize files using SvelteKit's file-based routing system
+- Refer to the official Svelte/SvelteKit documentation if needed: https://svelte.dev/docs
+
+**Naming Conventions:**
+- Use kebab-case (e.g. `/api/system-prompts`) for all folder names + API endpoints
+
+
+
+# Architectural Thinking
+
+- Always think deeply about the broader system architecture when proposing solutions
+- Explain your design decisions and trade-offs
+- Suggest appropriate abstractions and patterns that enhance code maintainability
+
+
+
+# Performance and Optimization
+
+- Consider performance implications of your code, especially for complex or otherwise heavy operations
+- Suggest optimizations where relevant, explaining the benefits
+
+
+
+# Reasoning and Explanation
+
+- Always explain your thought process and decisions
+- If multiple approaches are viable, describe the pros and cons of each
