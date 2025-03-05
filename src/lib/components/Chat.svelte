@@ -385,7 +385,7 @@
                 //  handled in Message.svelte
             } else {
                 const threshold = 160,
-                      bottom  = chat.scrollHeight - chat.clientHeight
+                      bottom    = chat.scrollHeight - chat.clientHeight
                 if (chat.scrollTop >= bottom - threshold) {
                     scroll_interrupted = false
                 }
@@ -413,8 +413,14 @@
 
         const selection = window.getSelection()
         if (selection && !selection.isCollapsed) {
-            positionHighlightAction(selection)
-            highlight_action_visible = true
+            const messages_div   = document.querySelector('.chat > .messages'),
+                  is_in_messages = messages_div.contains(selection.anchorNode) && messages_div.contains(selection.focusNode)
+            if (is_in_messages) {
+                positionHighlightAction(selection)
+                highlight_action_visible = true
+            } else {
+                highlight_action_visible = false
+            }
         } else {
             highlight_action_visible = false
         }
