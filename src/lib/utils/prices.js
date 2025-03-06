@@ -1,6 +1,5 @@
-const model_prices = [
-    {
-        id: 'gpt-4o-mini',
+const model_prices = {
+    'gpt-4o-mini': {
         price: {
             cents: {
                 input_token:  15/1000000, // $0.15/mTok
@@ -8,8 +7,7 @@ const model_prices = [
             }
         }
     },
-    {
-        id: 'gpt-4o',
+    'gpt-4o': {
         price: {
             cents: {
                 input_token:   250/1000000, // $2.50/mTok
@@ -17,8 +15,7 @@ const model_prices = [
             }
         }
     },
-    {
-        id: 'o3-mini',
+    'o3-mini': {
         price: {
             cents: {
                 input_token:  110/1000000, // $1.10/mTok
@@ -26,8 +23,7 @@ const model_prices = [
             }
         }
     },
-    {
-        id: 'claude-3-5-haiku',
+    'claude-haiku': {
         price: {
             cents: {
                 input_token:   80/1000000, // $0.80/mTok
@@ -37,8 +33,7 @@ const model_prices = [
             }
         }
     },
-    {
-        id: 'claude-sonnet',
+    'claude-sonnet': {
         price: {
             cents: {
                 input_token:   300/1000000, // $3.00/mTok
@@ -48,8 +43,27 @@ const model_prices = [
             }
         }
     },
-    {
-        id: 'claude-3-opus',
+    'claude-3-5-sonnet-latest': {
+        price: {
+            cents: {
+                input_token:   300/1000000, // $3.00/mTok
+                output_token: 1500/1000000,
+                cache_write:   375/1000000,
+                cache_read:     30/1000000
+            }
+        }
+    },
+    'claude-3-7-sonnet-latest': {
+        price: {
+            cents: {
+                input_token:   300/1000000, // $3.00/mTok
+                output_token: 1500/1000000,
+                cache_write:   375/1000000,
+                cache_read:     30/1000000
+            }
+        }
+    },
+    'claude-opus': {
         price: {
             cents: {
                 input_token:  1500/1000000, // $15.00/mTok
@@ -59,8 +73,7 @@ const model_prices = [
             }
         }
     },
-    {
-        id: 'gemini-2.0-flash-lite',
+    'gemini-2.0-flash-lite': {
         price: {
             cents: {
                 input_token:  7.5/1000000, // $0.075/mTok
@@ -68,8 +81,7 @@ const model_prices = [
             }
         }
     },
-    {
-        id: 'gemini-2.0-flash',
+    'gemini-2.0-flash': {
         price: {
             cents: {
                 input_token:   10/1000000, // $0.10/mTok
@@ -77,26 +89,23 @@ const model_prices = [
             }
         }
     },
-    {
-        id: 'gemini-2.0-flash-thinking',
+    'gemini-2.0-flash-thinking': {
         price: {
             cents: {
                 input_token:  0, // Free (for now)
-                output_token: 0  //
+                output_token: 0 
             }
         }
     },
-    {
-        id: 'gemini-2.0-pro',
+    'gemini-2.0-pro': {
         price: {
             cents: {
                 input_token:  0, // Free (for now)
-                output_token: 0  //
+                output_token: 0 
             }
         }
     },
-    {
-        id: 'grok-2',
+    'grok-2': {
         price: {
             cents: {
                 input_token:   200/1000000, // $2.00/mTok
@@ -104,8 +113,7 @@ const model_prices = [
             }
         }
     },
-    {
-        id: 'command-r',
+    'command-r': {
         price: {
             cents: {
                 input_token:  15/1000000, // $0.15/mTok
@@ -113,8 +121,7 @@ const model_prices = [
             }
         }
     },
-    {
-        id: 'command-r-plus',
+    'command-r-plus': {
         price: {
             cents: {
                 input_token:   250/1000000, // $2.50/mTok
@@ -122,8 +129,7 @@ const model_prices = [
             }
         }
     },
-    {
-        id: 'llama-3-405b',
+    'llama-3-405b': {
         price: {
             cents: {
                 input_token:  80/1000000, // $0.80/mTok
@@ -131,8 +137,7 @@ const model_prices = [
             }
         }
     },
-    {
-        id: 'nous-hermes-3',
+    'hermes-3-405b': {
         price: {
             cents: {
                 input_token:  80/1000000, // $0.80/mTok
@@ -140,8 +145,7 @@ const model_prices = [
             }
         }
     },
-    {
-        id: 'qwen-turbo',
+    'qwen-turbo': {
         price: {
             cents: {
                 input_token:   5/1000000, // $0.05/mTok
@@ -149,8 +153,7 @@ const model_prices = [
             }
         }
     },
-    {
-        id: 'qwen-plus',
+    'qwen-plus': {
         price: {
             cents: {
                 input_token:   40/1000000, // $0.40/mTok
@@ -158,8 +161,7 @@ const model_prices = [
             }
         }
     },
-    {
-        id: 'qwen-max',
+    'qwen-max': {
         price: {
             cents: {
                 input_token:  160/1000000, // $1.60/mTok
@@ -167,8 +169,7 @@ const model_prices = [
             }
         }
     },
-    {
-        id: 'deepseek-chat',
+    'deepseek-chat': {
         price: {
             cents: {
                 input_token:   27/1000000, // $0.27/mTok
@@ -177,8 +178,7 @@ const model_prices = [
             }
         }
     },
-    {
-        id: 'deepseek-reasoner',
+    'deepseek-reasoner': {
         price: {
             cents: {
                 input_token:   55/1000000, // $0.55/mTok
@@ -186,104 +186,68 @@ const model_prices = [
                 cache_read:    15/1000000
             }
         }
-    },
-    {
-        id: 'free',
-        price: {
-            cents: {
-                input_token:  0,
-                output_token: 0
-            }
-        }
     }
-]
-
-const aliases = {
-    'gpt-4o-2024-08-06':                             'gpt-4o',
-    'openai/o3-mini':                                'o3-mini',
-    'claude-3-5-haiku-latest':                       'claude-3-5-haiku',
-    'claude-3-5-sonnet-20240620':                    'claude-sonnet',
-    'claude-3-5-sonnet-20241022':                    'claude-sonnet',
-    'claude-3-5-sonnet-latest':                      'claude-sonnet',
-    'claude-3-7-sonnet-20250219':                    'claude-sonnet',
-    'claude-3-7-sonnet-latest':                      'claude-sonnet',
-    'claude-3-opus-20240229':                        'claude-3-opus',
-    'claude-3-opus-latest':                          'claude-3-opus',
-    'gemini-2.0-flash-lite-preview-02-05':           'gemini-2.0-flash-lite',
-    'gemini-2.0-flash-exp':                          'gemini-2.0-flash',
-    'gemini-2.0-flash-thinking-exp-01-21':           'gemini-2.0-flash-thinking',
-    'gemini-2.0-pro-exp-02-05':                      'gemini-2.0-pro',
-    'grok-2-1212':                                   'grok-2',
-    'command-r-plus-08-2024':                        'command-r-plus',
-    'meta-llama/llama-3.2-11b-vision-instruct:free': 'free',
-    'meta-llama/llama-3.3-70b-instruct:free':        'free',
-    'llama-3.3-70b-versatile':                       'free',
-    'deepseek-r1-distill-llama-70b':                 'free',
-    'meta-llama/llama-3.1-405b-instruct':            'llama-3-405b',
-    'mistral-small':                                 'free',
-    'mistral-large':                                 'free',
-    'mistral-large-latest':                          'free',
-    'nousresearch/hermes-3-llama-3.1-405b':          'nous-hermes-3',
-    'qwen/qwen-turbo':                               'qwen-turbo',
-    'qwen/qwen-plus':                                'qwen-plus',
-    'qwen/qwen-max':                                 'qwen-max'
 }
 
-export const getCost = (model_id, usage) => {
-    let cache_write_cost = 0,
+export const getCost = (model, usage) => {
+    if (model.pricing_id === 'free') return { input: 0, output: 0, cache_write: 0, cache_read: 0, total: 0, cache_savings: 0 }
+
+    const price = model_prices[model.pricing_id ?? model.id]?.price
+
+    if (!price) {
+        console.log(`❌ Model ID "${model.pricing_id}" not found in price list.`)
+        return { input: -1, output: -1, cache_write: -1, cache_read: -1, total: -1, cache_savings: -1 }
+    }
+
+    let input_cost       = 0,
+        output_cost      = 0,
+        cache_write_cost = 0,
         cache_read_cost  = 0,
-        input_cost       = 0,
-        output_cost      = 0
+        cache_savings    = 0
 
-    model_id = aliases[model_id] ?? model_id
-
-    const model = model_prices.find(m => m.id === model_id)
-
-    if (!model) {
-        console.log(`❌ Model ID "${model_id}" not found in price list.`)
-        return { cached: 0, input: 0, output: 0, total: 0 }
+    if (model.type === 'openai') {
+        cache_read_cost = usage.cache_read_tokens * 0.5 * price.cents.input_token
+        cache_savings   = usage.cache_read_tokens * 0.5 * price.cents.input_token
     }
 
-    let cache_savings = 0
+    if (model.type === 'anthropic') {
+        cache_write_cost = usage.cache_write_tokens * price.cents.cache_write
+        cache_read_cost  = usage.cache_read_tokens * price.cents.cache_read
 
-    if (model_id.startsWith('gpt-4o')) {
-        cache_read_cost = usage.cache_read_tokens * 0.5 * model.price.cents.input_token
-        cache_savings   = usage.cache_read_tokens * 0.5 * model.price.cents.input_token
+        cache_savings += usage.cache_read_tokens * (price.cents.input_token - price.cents.cache_read)
+        cache_savings -= usage.cache_write_tokens * (price.cents.cache_write - price.cents.input_token)
     }
 
-    if (model_id.startsWith('claude')) {
-        cache_write_cost = usage.cache_write_tokens * model.price.cents.cache_write
-        cache_read_cost  = usage.cache_read_tokens * model.price.cents.cache_read
-
-        cache_savings += usage.cache_read_tokens * (model.price.cents.input_token - model.price.cents.cache_read)
-        cache_savings -= usage.cache_write_tokens * (model.price.cents.cache_write - model.price.cents.input_token)
+    if (model.type === 'deepseek') {
+        cache_read_cost = usage.cache_read_tokens * price.cents.cache_read
+        cache_savings   = usage.cache_read_tokens * (price.cents.input_token - price.cents.cache_read)
     }
 
-    if (model_id.startsWith('deepseek')) {
-        cache_read_cost = usage.cache_read_tokens * model.price.cents.cache_read
-        cache_savings   = usage.cache_read_tokens * (model.price.cents.input_token - model.price.cents.cache_read)
-    }
-
-    input_cost  = usage.input_tokens * model.price.cents.input_token
-    output_cost = usage.output_tokens * model.price.cents.output_token
+    input_cost  = usage.input_tokens * price.cents.input_token
+    output_cost = usage.output_tokens * price.cents.output_token
 
     return {
-        cache_write:   cache_write_cost,
-        cache_read:    cache_read_cost,
         input:         input_cost,
         output:        output_cost,
+        cache_write:   cache_write_cost,
+        cache_read:    cache_read_cost,
         total:         cache_write_cost + cache_read_cost + input_cost + output_cost,
         cache_savings: cache_savings
     }
 }
 
-export const getPrices = (model_id) => {
-    model_id = aliases[model_id] ?? model_id
+export const getPrices = (model) => {
+    if (model.pricing_id === 'free') return { input: 0, output: 0 }
 
-    const model = model_prices.find(m => m.id === model_id)
+    const price = model_prices[model.pricing_id ?? model.id]?.price
+
+    if (!price) {
+        console.log(`❌ Model ID "${model.pricing_id}" not found in price list.`)
+        return { input: -1, output: -1 }
+    }
 
     return {
-        input:  model.price.cents.input_token,
-        output: model.price.cents.output_token
+        input:  price.cents.input_token,
+        output: price.cents.output_token
     }
 }

@@ -13,8 +13,9 @@ function createModel() {
             name:           'GPT-4o mini',
             short_name:     'GPT-4o mini',
             icon:           'gpt-4o-mini.png',
-            hosted_at:      'Open AI',
-            context_window: 128000
+            hosted_at:      'openai.com',
+            context_window: 128000,
+            pricing_id:     'gpt-4o-mini'
         },
         {
             type:           'open-ai',
@@ -22,8 +23,9 @@ function createModel() {
             name:           'GPT-4o',
             short_name:     'GPT-4o',
             icon:           'gpt-4o.png',
-            hosted_at:      'Open AI',
-            context_window: 128000
+            hosted_at:      'openai.com',
+            context_window: 128000,
+            pricing_id:     'gpt-4o'
         },
         {
             type:           'openrouter',
@@ -32,7 +34,8 @@ function createModel() {
             short_name:     'o3-mini',
             icon:           'o3-mini.png',
             hosted_at:      'openrouter.ai',
-            context_window: 128000
+            context_window: 128000,
+            pricing_id:     'o3-mini'
         },
         {
             type:           'anthropic',
@@ -40,8 +43,9 @@ function createModel() {
             name:           'Claude 3.5 Haiku',
             short_name:     'Claude',
             icon:           'claude-3-haiku.png',
-            hosted_at:      'Anthropic',
-            context_window: 200000
+            hosted_at:      'anthropic.com',
+            context_window: 200000,
+            pricing_id:     'claude-haiku'
         },
         {
             type:           'anthropic',
@@ -49,8 +53,9 @@ function createModel() {
             name:           'Claude 3.5 Sonnet',
             short_name:     'Claude',
             icon:           'claude-3-sonnet.png',
-            hosted_at:      'Anthropic',
-            context_window: 200000
+            hosted_at:      'anthropic.com',
+            context_window: 200000,
+            pricing_id:     'claude-sonnet'
         },
         {
             type:           'anthropic',
@@ -58,8 +63,9 @@ function createModel() {
             name:           'Claude 3.7 Sonnet',
             short_name:     'Claude',
             icon:           'claude-3.7-sonnet.png',
-            hosted_at:      'Anthropic',
-            context_window: 200000
+            hosted_at:      'anthropic.com',
+            context_window: 200000,
+            pricing_id:     'claude-sonnet'
         },
         {
             type:           'anthropic',
@@ -67,8 +73,9 @@ function createModel() {
             name:           'Claude 3 Opus',
             short_name:     'Claude',
             icon:           'claude-3-opus.png',
-            hosted_at:      'Anthropic',
-            context_window: 200000
+            hosted_at:      'anthropic.com',
+            context_window: 200000,
+            pricing_id:     'claude-opus'
         },
         {
             type:           'google',
@@ -76,8 +83,9 @@ function createModel() {
             name:           'Gemini 2.0 Flash Lite',
             short_name:     'Gemini',
             icon:           'gemini-flash-lite.png',
-            hosted_at:      'Google',
-            context_window: 1000000
+            hosted_at:      'googleapis.com',
+            context_window: 1000000,
+            pricing_id:     'free'
         },
         {
             type:           'google',
@@ -85,8 +93,9 @@ function createModel() {
             name:           'Gemini 2.0 Flash',
             short_name:     'Gemini',
             icon:           'gemini-flash.png',
-            hosted_at:      'Google',
-            context_window: 1000000
+            hosted_at:      'googleapis.com',
+            context_window: 1000000,
+            pricing_id:     'free'
         },
         {
             type:           'google',
@@ -94,8 +103,9 @@ function createModel() {
             name:           'Gemini 2.0 Flash Thinking',
             short_name:     'Gemini',
             icon:           'gemini-flash-thinking.png',
-            hosted_at:      'Google',
-            context_window: 1000000
+            hosted_at:      'googleapis.com',
+            context_window: 1000000,
+            pricing_id:     'free'
         },
         {
             type:           'google',
@@ -103,8 +113,9 @@ function createModel() {
             name:           'Gemini 2.0 Pro',
             short_name:     'Gemini',
             icon:           'gemini-pro.png',
-            hosted_at:      'Google',
-            context_window: 1000000
+            hosted_at:      'googleapis.com',
+            context_window: 1000000,
+            pricing_id:     'free'
         },
         {
             type:           'x',
@@ -112,8 +123,9 @@ function createModel() {
             name:           'Grok 2',
             short_name:     'Grok',
             icon:           'grok.png',
-            hosted_at:      'xAI',
-            context_window: 131072
+            hosted_at:      'x.ai',
+            context_window: 131072,
+            pricing_id:     'grok-2'
         },
         {
             type:           'cohere',
@@ -121,8 +133,9 @@ function createModel() {
             name:           'Command R',
             short_name:     'Command R',
             icon:           'command-r.png',
-            hosted_at:      'Cohere',
-            context_window: 128000
+            hosted_at:      'cohere.com',
+            context_window: 128000,
+            pricing_id:     'command-r'
         },
         {
             type:           'cohere',
@@ -130,8 +143,9 @@ function createModel() {
             name:           'Command R+',
             short_name:     'Command R+',
             icon:           'command-r-plus.png',
-            hosted_at:      'Cohere',
-            context_window: 128000
+            hosted_at:      'cohere.com',
+            context_window: 128000,
+            pricing_id:     'command-r-plus'
         },
         {
             type:           'openrouter',
@@ -140,7 +154,8 @@ function createModel() {
             short_name:     'Llama 11b',
             icon:           'llama-3-light.png',
             hosted_at:      'openrouter.ai',
-            context_window: 128000
+            context_window: 128000,
+            pricing_id:     'free'
         },
         {
             type:           'openrouter',
@@ -149,7 +164,8 @@ function createModel() {
             short_name:     'Llama 70b',
             icon:           'llama-3-medium.png',
             hosted_at:      'openrouter.ai',
-            context_window: 128000
+            context_window: 128000,
+            pricing_id:     'free'
         },
         {
             type:           'openrouter',
@@ -158,7 +174,8 @@ function createModel() {
             short_name:     'Llama 405b',
             icon:           'llama-3-heavy.png',
             hosted_at:      'openrouter.ai',
-            context_window: 33000
+            context_window: 33000,
+            pricing_id:     'llama-3-405b'
         },
         {
             type:           'openrouter',
@@ -167,7 +184,8 @@ function createModel() {
             short_name:     'Hermes',
             icon:           'nous-hermes.png',
             hosted_at:      'openrouter.ai',
-            context_window: 131000
+            context_window: 131000,
+            pricing_id:     'hermes-3-405b'
         },
         // {
         //     type:           'groq',
@@ -176,7 +194,8 @@ function createModel() {
         //     short_name:     'Llama',
         //     icon:           'groq-llama.png',
         //     hosted_at:      'Groq',
-        //     context_window: 128000
+        //     context_window: 128000,
+        //     pricing_id:     'free'
         // },
         // {
         //     type:           'groq',
@@ -186,7 +205,8 @@ function createModel() {
         //     icon:           'groq-r1.png',
         //     hosted_at:      'Groq',
         //     context_window: 128000,
-        //     is_reasoner:    true
+        //     is_reasoner:    true,
+        //     pricing_id:     'free'
         // },
         {
             type:           'mistral',
@@ -195,7 +215,8 @@ function createModel() {
             short_name:     'Mistral',
             icon:           'mistral-small.png',
             hosted_at:      'mistral.ai',
-            context_window: 32000
+            context_window: 32000,
+            pricing_id:     'free'
         },
         {
             type:           'mistral',
@@ -204,7 +225,8 @@ function createModel() {
             short_name:     'Mistral',
             icon:           'mistral-large.png',
             hosted_at:      'mistral.ai',
-            context_window: 131000
+            context_window: 131000,
+            pricing_id:     'free'
         },
         {
             type:           'openrouter',
@@ -213,7 +235,8 @@ function createModel() {
             short_name:     'Qwen',
             icon:           'qwen-turbo.png',
             hosted_at:      'openrouter.ai',
-            context_window: 1000000
+            context_window: 1000000,
+            pricing_id:     'qwen-turbo'
         },
         {
             type:           'openrouter',
@@ -222,7 +245,8 @@ function createModel() {
             short_name:     'Qwen',
             icon:           'qwen-plus.png',
             hosted_at:      'openrouter.ai',
-            context_window: 128000
+            context_window: 1000000,
+            pricing_id:     'qwen-plus'
         },
         {
             type:           'openrouter',
@@ -231,7 +255,8 @@ function createModel() {
             short_name:     'Qwen',
             icon:           'qwen-max.png',
             hosted_at:      'openrouter.ai',
-            context_window: 32000
+            context_window: 32000,
+            pricing_id:     'qwen-max'
         },
         {
             type:           'deepseek',
@@ -239,8 +264,9 @@ function createModel() {
             name:           'DeepSeek V3',
             short_name:     'V3',
             icon:           'deepseek-chat.png',
-            hosted_at:      'DeepSeek',
-            context_window: 64000
+            hosted_at:      'deepseek.com',
+            context_window: 64000,
+            pricing_id:     'deepseek-chat'
         },
         {
             type:           'deepseek',
@@ -248,8 +274,9 @@ function createModel() {
             name:           'DeepSeek R1',
             short_name:     'R1',
             icon:           'deepseek-reasoner.png',
-            hosted_at:      'DeepSeek',
-            context_window: 64000
+            hosted_at:      'deepseek.com',
+            context_window: 64000,
+            pricing_id:     'deepseek-reasoner'
         }
     ]
 

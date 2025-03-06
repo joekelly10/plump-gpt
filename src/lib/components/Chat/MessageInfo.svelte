@@ -15,7 +15,7 @@
         timer
 
     $: temperature_icon_level = message.temperature > 1 ? 4 : Math.round(message.temperature / 0.25)
-    $: cost                   = getCost(message.model.id, message.usage)
+    $: cost                   = getCost(message.model, message.usage)
     $: cost_string            = '$' + (cost.total / 100).toFixed(5)
     $: savings_string         = '$' + (cost.cache_savings / 100).toFixed(5)
 

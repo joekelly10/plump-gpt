@@ -6,7 +6,7 @@
 
     let hovering = false
 
-    $: prices            = getPrices($model.id)
+    $: prices            = getPrices($model)
     $: input_price_text  = prices.input  === 0 ? 'Free' : `$${(prices.input * 10000).toFixed(2)}`
     $: output_price_text = prices.output === 0 ? 'Free' : `$${(prices.output * 10000).toFixed(2)}`
 
