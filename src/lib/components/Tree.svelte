@@ -3,7 +3,7 @@
     import { scale } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { tree_active } from '$lib/stores/app.js'
-    import { messages, forks, active_fork, stars } from '$lib/stores/chat'
+    import { messages, forks, active_fork, stars, highlights } from '$lib/stores/chat'
     import { buildTree } from '$lib/utils/tree.js'
 
     import Header from '$lib/components/Tree/Header.svelte'
@@ -19,7 +19,7 @@
     
     const leaf_spacing = 2 // # of columns
 
-    $: nodes = buildTree($forks, $active_fork, $messages, $stars, leaf_spacing)
+    $: nodes = buildTree($forks, $active_fork, $messages, $stars, $highlights, leaf_spacing)
 
     onMount(() => {
         document.addEventListener('keydown', keydown)
@@ -96,6 +96,7 @@
                         class='node {node.message.role}'
                         class:active={node.is_active}
                         class:starred={node.is_starred}
+                        class:highlighted={node.is_highlighted}
                         style='grid-area: {node.row} / {node.column}'
                         on:click={clicked(node)}
                         on:mouseenter={mouseenter(node)}
@@ -196,7 +197,8 @@
                 background-color: $background-lightest
                 color:            $off-white
 
-            &.starred
+            &.starred,
+            &.highlighted
                 background-color: color.adjust($yellow, $alpha: -0.9)
                 color:            $yellow
 

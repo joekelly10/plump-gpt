@@ -1,4 +1,4 @@
-export const buildTree = (forks, active_fork, messages, stars, leaf_spacing) => {
+export const buildTree = (forks, active_fork, messages, stars, highlights,leaf_spacing) => {
     let nodes = []
 
     class Node {
@@ -64,15 +64,17 @@ export const buildTree = (forks, active_fork, messages, stars, leaf_spacing) => 
         node.row    = node.depth * 2 + 1
         node.column = Math.round(node.x * leaf_spacing) + 1
 
-        const message    = messages.find(m => m.id === node.id),
-              is_active  = forks[active_fork].message_ids.slice(1).includes(node.id),
-              is_starred = stars.includes(node.id)
+        const message        = messages.find(m => m.id === node.id),
+              is_active      = forks[active_fork].message_ids.slice(1).includes(node.id),
+              is_starred     = stars.includes(node.id),
+              is_highlighted = highlights.some(hl => hl.message_id === node.id)
 
         nodes.push({
             ...node,
             message,
             is_active,
-            is_starred
+            is_starred,
+            is_highlighted
         })
 
         node.children.forEach(child => process(child))

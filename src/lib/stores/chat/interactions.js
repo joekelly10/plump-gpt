@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store'
 
-export const highlights = writable({
+export const is_hovering = writable({
     delete:     [],
     regenerate: [],
     add_reply:  [],

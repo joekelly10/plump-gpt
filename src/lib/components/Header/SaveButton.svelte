@@ -1,5 +1,5 @@
 <script>
-    import { chat_id, messages, forks, active_fork, stars } from '$lib/stores/chat'
+    import { chat_id, messages, forks, active_fork, stars, highlights } from '$lib/stores/chat'
 
     let timer
     let status = 'idle'
@@ -28,7 +28,8 @@
                 messages:    $messages,
                 forks:       $forks,
                 active_fork: $active_fork,
-                stars:       $stars
+                stars:       $stars,
+                highlights:  $highlights
             })
         })
 

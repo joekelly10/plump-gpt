@@ -2,7 +2,7 @@
     import { tick, createEventDispatcher } from 'svelte'
     import { page } from '$app/stores'
     import { loader_active, prompt_editor_active, config } from '$lib/stores/app'
-    import { chat_id, messages, forks, active_fork, active_messages, stars } from '$lib/stores/chat'
+    import { chat_id, messages, forks, active_fork, active_messages, stars, highlights } from '$lib/stores/chat'
     import { is_adding_reply, is_scrolled_to_bottom } from '$lib/stores/chat/interactions'
     import { model, temperature, top_p } from '$lib/stores/ai'
     import { api_state, is_idle } from '$lib/stores/api'
@@ -515,6 +515,7 @@
         $forks                 = [{ message_ids: [0], forked_at: [], provisional: false }]
         $active_fork           = 0
         $stars                 = []
+        $highlights            = []
         $chat_id               = null
         $loader_active         = false
         $is_scrolled_to_bottom = true

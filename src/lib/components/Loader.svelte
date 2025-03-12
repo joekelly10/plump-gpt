@@ -3,9 +3,10 @@
     import { scale } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { loader_active } from '$lib/stores/app'
-    import { chat_id, messages, forks, active_fork, stars } from '$lib/stores/chat'
+    import { chat_id, messages, forks, active_fork, stars, highlights } from '$lib/stores/chat'
     import { is_provisionally_forking } from '$lib/stores/chat/interactions'
     import { smoothScroll } from '$lib/utils/helpers'
+    import { removeAllHighlights } from '$lib/utils/highlighter'
     import hljs from 'highlight.js'
 
     import Search from '$lib/components/Loader/Search.svelte'
@@ -166,12 +167,16 @@
         // temp hack
         migrateIfNeeded(chat)
 
-        unload() // reset all stores (to prevent out of range errors)
+        await unload() // reset all stores (to prevent out of range errors)
+
+        // allow time for the unpainting of highlights (tick doesn't work here)
+        await new Promise(resolve => setTimeout(resolve, 10))
 
         $messages    = chat.messages
         $forks       = chat.forks
         $active_fork = chat.active_fork
         $stars       = chat.stars
+        $highlights  = chat.highlights
         $chat_id     = chat.id
 
         await tick()
@@ -179,13 +184,16 @@
         dispatch('chatLoaded')
     }
 
-    const unload = () => {
+    const unload = async () => {
         //  the order here is important
+        $highlights               = []
+        $stars                    = []
         $active_fork              = 0
         $forks                    = [{ message_ids: [0], forked_at: [], provisional: false }]
         $messages                 = $messages.slice(0,1)
         $chat_id                  = null
         $is_provisionally_forking = false
+        await tick()
     }
 
     const migrateIfNeeded = (chat) => {
@@ -232,6 +240,8 @@
         })
         // stars are missing from old chats
         if (!chat.stars) chat.stars = []
+        // highlights are missing from old chats
+        if (!chat.highlights) chat.highlights = []
     }
 
     const deleteChat = async (chat) => {

@@ -37,6 +37,7 @@
 
     const chatLoaded = () => {
         input.chatLoaded({ switch_model: true })
+        chat.renderActiveHighlights()
         setTimeout(() => { chat.scrollToBottom({ context: 'chat_loaded' }) }, 250) // allow forks to load
     }
 

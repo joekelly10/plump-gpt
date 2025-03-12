@@ -2,7 +2,7 @@
     import { createEventDispatcher } from 'svelte'
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { highlights } from '$lib/stores/chat/interactions'
+    import { is_hovering } from '$lib/stores/chat/interactions'
     import { is_idle } from '$lib/stores/api'
 
     import ForkIcon from '$lib/components/Icons/Fork.svelte'
@@ -13,8 +13,8 @@
 
     let show_hover_info_above
 
-    $: add_reply_highlight   = $highlights.add_reply.includes(message.id)
-    $: delete_fork_highlight = message.forks.length > 1 && $highlights.delete.includes(message.id)
+    $: add_reply_highlight   = $is_hovering.add_reply.includes(message.id)
+    $: delete_fork_highlight = message.forks.length > 1 && $is_hovering.delete.includes(message.id)
 
     const mouseenter = (e) => {
         const rect = e.target.getBoundingClientRect()

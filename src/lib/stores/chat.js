@@ -6,6 +6,7 @@ export const messages    = writable([{ id: 0, role: 'system', content: 'You are 
 export const forks       = writable([{ message_ids: [0], forked_at: [], provisional: false }])
 export const active_fork = writable(0)
 export const stars       = writable([])
+export const highlights  = writable([])
 
 export const active_messages = derived([messages, forks, active_fork], ([$messages, $forks, $active_fork]) => {
     return $messages.filter(m => $forks[$active_fork ?? 0]?.message_ids.includes(m.id))

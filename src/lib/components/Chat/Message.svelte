@@ -1,11 +1,12 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
+    import { createEventDispatcher, tick } from 'svelte'
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { stars } from '$lib/stores/chat'
-    import { highlights, is_deleting, is_provisionally_forking } from '$lib/stores/chat/interactions'
+    import { is_hovering, is_deleting, is_provisionally_forking } from '$lib/stores/chat/interactions'
     import { is_streaming } from '$lib/stores/api'
     import { smoothScroll } from '$lib/utils/helpers'
+    import { deleteHighlight } from '$lib/utils/highlighter'
     import { marked } from 'marked'
 
     import MessageAvatar from '$lib/components/Chat/MessageAvatar.svelte'
@@ -33,16 +34,13 @@
     $: streaming  = message.is_last && message.role === 'assistant' && $is_streaming
     $: no_message = !message.content && !message.reasoning_content
 
-    $: content = message.content.replace(
-        // Match < or > that's not inside `inline code` or ``` code blocks
-        /(?<!^|\n)[<>](?![^`]*`)(?![^```]*```)/g,
-        char => ({ '<': '&lt;', '>': '&gt;' }[char])
-    )
+    // Match < or > that's not inside `inline code` or ``` code blocks
+    $: content = message.content.replace(/(?<!^|\n)[<>](?![^`]*`)(?![^```]*```)/g,char => ({ '<': '&lt;', '>': '&gt;' }[char]))
 
-    $: add_reply_highlight  = $highlights.add_reply.includes(message.id)
-    $: regenerate_highlight = $highlights.regenerate.includes(message.id)
-    $: star_highlight       = $highlights.star.includes(message.id)
-    $: delete_highlight     = !(message.role === 'user' && message.forks.length > 1) && $highlights.delete.includes(message.id)
+    $: add_reply_highlight  = $is_hovering.add_reply.includes(message.id)
+    $: regenerate_highlight = $is_hovering.regenerate.includes(message.id)
+    $: star_highlight       = $is_hovering.star.includes(message.id)
+    $: delete_highlight     = !(message.role === 'user' && message.forks.length > 1) && $is_hovering.delete.includes(message.id)
 
     export const getOffsetTop = () => element.offsetTop
 
@@ -86,11 +84,38 @@
             }
         }
     }
+
+    const handleClick = (e) => {
+        const text_highlight = e.target.closest('._text-highlight')
+        if (text_highlight) {
+            const highlight_id = text_highlight.dataset.highlight_id
+            confirmDeleteHighlight(highlight_id)
+        }
+    }
+
+    const confirmDeleteHighlight = async (highlight_id) => {
+        const all_spans = document.querySelectorAll(`._text-highlight[data-highlight_id="${highlight_id}"]`)
+        all_spans.forEach(span => { span.classList.add('deleting') })
+
+        // allow time for it to be painted (nb: tick doesn't work here)
+        await new Promise(resolve => setTimeout(resolve, 10))
+
+        if (confirm(`Delete this highlight?  Press OK to confirm.`)) {
+            deleteHighlight(highlight_id)
+            dispatch('save')
+        } else {
+            all_spans.forEach(span => { span.classList.remove('deleting') })
+        }
+    }
 </script>
 
+
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
     bind:this={element}
     id='message-{message.id}'
+    data-message_id={message.id}
     class='message {message.role}'
     class:starred={starred}
     class:streaming={streaming}
@@ -103,6 +128,7 @@
     class:no-forks={message.forks.length === 0}
     out:slide={{ duration: $is_deleting ? 250 : 0, easing: quartOut }}
     in:slide={{ delay: $is_deleting ? 500 : 0, duration: $is_deleting ? 250 : 0, easing: quartOut }}
+    on:click={handleClick}
 >
     <div class='content'>
         {#if no_message}
@@ -291,7 +317,7 @@
                 animation:      streaming 1.5s linear infinite
 
         &.starred
-            background-color: color.adjust($yellow, $alpha: -0.633)
+            background-color: color.adjust($yellow, $alpha: -0.6)
     
     .reasoning-content
         margin-bottom:    32px
@@ -323,6 +349,27 @@
     
     .content
         transition: filter easing.$quart-out 0.1s
+
+    :global
+        ._text-highlight
+            padding:          5px 0
+            background-color: color.adjust($yellow, $alpha: -0.5)
+            font-weight:      450
+            cursor:           pointer
+
+            &:hover
+                background-color: color.adjust($yellow, $alpha: -0.55)
+
+            &:active
+                background-color: color.adjust($yellow, $alpha: -0.575)
+            
+            &.deleting
+                border-radius:    2px
+                box-shadow:       0 0 0 1px $coral
+                background-color: color.adjust($coral, $alpha: -0.5)
+
+    :global(strong ._text-highlight)
+        font-weight: 750
 
     .status-text
         font-size:   14px

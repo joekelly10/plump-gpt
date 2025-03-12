@@ -3,15 +3,17 @@
     import { fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { loader_active, prompt_editor_active } from '$lib/stores/app'
-    import { messages, forks, active_fork, active_messages, fork_points, stars, usage } from '$lib/stores/chat'
+    import { messages, forks, active_fork, active_messages, fork_points, stars, highlights, usage } from '$lib/stores/chat'
     import { is_deleting, is_adding_reply, is_provisionally_forking, is_scrolled_to_bottom } from '$lib/stores/chat/interactions'
     import { model } from '$lib/stores/ai'
     import { is_idle, is_sending } from '$lib/stores/api'
     import { insert, smoothScroll } from '$lib/utils/helpers'
+    import { createHighlight, renderHighlights } from '$lib/utils/highlighter'
 
     import UsageStats from '$lib/components/Chat/UsageStats.svelte'
     import Message from '$lib/components/Chat/Message.svelte'
     import WaitingDots from '$lib/components/Chat/WaitingDots.svelte'
+    import HighlightAction from '$lib/components/Chat/HighlightAction.svelte'
 
     const dispatch = createEventDispatcher()
     
@@ -32,6 +34,11 @@
         forks:        getForksAt(message),
         has_siblings: hasSiblings(message)
     }))
+
+    $: {
+        $highlights
+        renderActiveHighlights()
+    }
 
     export const sendingMessage = () => $is_provisionally_forking = false
 
@@ -90,6 +97,21 @@
         }, options.delay)
     }
 
+    export const renderActiveHighlights = () => {
+        //
+        //  HACK: prevents rendering highlights twice when loading chat.
+        //  first time is when $highlights is set on load but chat html
+        //  isn't rendered yet
+        //
+        const is_before_chat_has_loaded = $loader_active
+        if (is_before_chat_has_loaded) return
+        
+        const active_highlights = $highlights.filter(highlight => {
+            return $active_messages.some(message => message.id === highlight.message_id)
+        })
+        renderHighlights(active_highlights)
+    }
+
     const scrollToTop = () => {
         scroll_interrupted = true
         const distance = chat.scrollHeight - chat.clientHeight
@@ -132,7 +154,9 @@
             return regenerateReply()
         }
         if (e.key === 'Escape') {
-            if ($forks[$active_fork].provisional) return cancelProvisionalFork()
+            if ($forks[$active_fork].provisional) cancelProvisionalFork()
+            deselectText()
+            return
         }
     }
 
@@ -142,8 +166,9 @@
             await tick()
 
             const deleted = $forks[$active_fork].message_ids.splice(-1,1)
-            $messages = $messages.filter(m => m.id !== deleted[0])
-            $stars    = $stars.filter(m => m.id !== deleted[0])
+            $messages   = $messages.filter(m => m.id !== deleted[0])
+            $stars      = $stars.filter(m => m.id !== deleted[0])
+            $highlights = $highlights.filter(hl => hl.message_id !== deleted[0])
             dispatch('regenerateReply')
 
             await tick()
@@ -163,8 +188,9 @@
                 deleted = $forks[$active_fork].message_ids.splice(-1,1)
             }
 
-            $messages = $messages.filter(m => !deleted.includes(m.id))
-            $stars    = $stars.filter(id => !deleted.includes(id))
+            $messages   = $messages.filter(m => !deleted.includes(m.id))
+            $stars      = $stars.filter(id => !deleted.includes(id))
+            $highlights = $highlights.filter(hl => !deleted.includes(hl.message_id))
             updateForksAfterDelete()
             dispatch('chatModified') 
             dispatch('save')
@@ -263,6 +289,8 @@
             removeProvisionalFork()
         }
         dispatch('chatModified')
+        await tick()
+        renderActiveHighlights()
     }
 
     const removeProvisionalFork = () => {
@@ -368,6 +396,12 @@
 
     const cancelProvisionalFork = () => switchToFork(forking_from)
 
+    const deselectText = () => {
+        const selection = window.getSelection()
+        if (selection) selection.removeAllRanges()
+        highlight_action_visible = false
+    }
+
     const handleWheel = (e) => {
         //  UX here = the two scroll interuptions work independently
         //  (i.e. for the main chat and the reasoning content div)
@@ -445,7 +479,7 @@
                   last_rect  = all_rects[all_rects.length - 1]
             highlight_action_position = {
                 x: last_rect.right,
-                y: last_rect.top - 16
+                y: last_rect.top - 17
             }
         } else {
             const range      = selection.getRangeAt(0),
@@ -453,7 +487,7 @@
                   first_rect = all_rects[0]
             highlight_action_position = {
                 x: first_rect.left,
-                y: first_rect.top - 16
+                y: first_rect.top - 17
             }
         }
     }
@@ -466,9 +500,25 @@
         return node_relationship & Node.DOCUMENT_POSITION_FOLLOWING
     }
     
-    const clickedHighlightAction = () => {
+    const clickedQuoteButton = () => {
         dispatch('quoteSelectedText')
         highlight_action_visible = false
+    }
+
+    const clickedHighlightButton = async () => {
+        const selection = window.getSelection()
+
+        if (!selection || selection.isCollapsed) {
+            highlight_action_visible = false
+            return
+        }
+
+        const highlight = createHighlight(selection)
+
+        if (highlight) {
+            deselectText()
+            dispatch('save')
+        }
     }
 </script>
 
@@ -515,15 +565,11 @@
     </div>
     
     {#if highlight_action_visible}
-        <button 
-            class='highlight-action'
-            style='left: {highlight_action_position.x}px; top: {highlight_action_position.y}px;'
-            on:click={clickedHighlightAction}
-            in:fly={{ y: 8, duration: 100, easing: quartOut }}
-            out:fly={{ y: 8, duration: 50 }}
-        >
-            <span class='highlight-action-quote-icon'>”</span>
-        </button>
+        <HighlightAction
+            bind:highlight_action_position
+            on:clickedQuoteButton={clickedQuoteButton}
+            on:clickedHighlightButton={clickedHighlightButton}
+        />
     {/if}
 </section>
 
@@ -557,50 +603,6 @@
 
         .model-icon
             height: 21px
-    
-    .highlight-action
-        display:          flex
-        align-items:      center
-        justify-content:  center
-        position:         fixed
-        z-index:          1
-        transform:        translateX(-50%) translateY(-100%)
-        width:            48px
-        height:           35px
-        border-radius:    99px
-        background-color: $background-darker
-        color:            $off-white
-        cursor:           pointer
-        user-select:      none
-
-        &:after
-            content:      ''
-            position:     absolute
-            top:          100%
-            left:         50%
-            transform:    translateX(-50%)
-            border-width: 4px
-            border-style: solid
-            border-color: $background-darker transparent transparent
-        
-        &:hover
-            background-color: color.adjust($background-darker, $lightness: -2%)
-
-            &:after
-                border-top-color: color.adjust($background-darker, $lightness: -2%)
-        
-        &:active
-            background-color: color.adjust($background-darker, $lightness: -4%)
-
-            &:after
-                border-top-color: color.adjust($background-darker, $lightness: -4%)
-
-        .highlight-action-quote-icon
-            transform:      translateY(16.66%)
-            font-family:    'Times New Roman', serif
-            font-size:      36px
-            font-weight:    600
-            pointer-events: none
     
     @keyframes pulse
         0%

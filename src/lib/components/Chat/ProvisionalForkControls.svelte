@@ -2,7 +2,7 @@
     import { createEventDispatcher } from 'svelte'
     import { fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { highlights } from '$lib/stores/chat/interactions'
+    import { is_hovering } from '$lib/stores/chat/interactions'
     import { model } from '$lib/stores/ai'
 
     import AddIcon from '$lib/components/Icons/Add.svelte'
@@ -13,11 +13,11 @@
     export let message
 
     const hoveredAddReply = async () => {
-        $highlights.add_reply = [...$highlights.add_reply, message.id, message.parent_id]
+        $is_hovering.add_reply = [...$is_hovering.add_reply, message.id, message.parent_id]
     }
 
     const unhoveredAddReply = async () => {
-        $highlights.add_reply = $highlights.add_reply.filter(id => ![message.id, message.parent_id].includes(id))
+        $is_hovering.add_reply = $is_hovering.add_reply.filter(id => ![message.id, message.parent_id].includes(id))
     }
 
     const clickedAddReply   = () => dispatch('addReply', { message_id: message.parent_id })

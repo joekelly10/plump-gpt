@@ -2,7 +2,7 @@
     import { createEventDispatcher } from 'svelte'
     import { slide, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { highlights } from '$lib/stores/chat/interactions'
+    import { is_hovering } from '$lib/stores/chat/interactions'
     import { model } from '$lib/stores/ai'
 
     import AddIcon from '$lib/components/Icons/Add.svelte'
@@ -19,43 +19,43 @@
                showing_message_info
 
     const hoveredDelete = async () => {
-        if (!$highlights.delete.includes(message.id)) {
-            $highlights.delete = [...$highlights.delete, message.id, message.parent_id]
+        if (!$is_hovering.delete.includes(message.id)) {
+            $is_hovering.delete = [...$is_hovering.delete, message.id, message.parent_id]
         }
     }
 
     const unhoveredDelete = async () => {
-        $highlights.delete = $highlights.delete.filter(id => ![message.id, message.parent_id].includes(id))
+        $is_hovering.delete = $is_hovering.delete.filter(id => ![message.id, message.parent_id].includes(id))
     }
 
     const hoveredRegenerate = async () => {
-        if (!$highlights.regenerate.includes(message.id)) {
-            $highlights.regenerate = [...$highlights.regenerate, message.id, message.parent_id]
+        if (!$is_hovering.regenerate.includes(message.id)) {
+            $is_hovering.regenerate = [...$is_hovering.regenerate, message.id, message.parent_id]
         }
     }
 
     const unhoveredRegenerate = async () => {
-        $highlights.regenerate = $highlights.regenerate.filter(id => ![message.id, message.parent_id].includes(id))
+        $is_hovering.regenerate = $is_hovering.regenerate.filter(id => ![message.id, message.parent_id].includes(id))
     }
 
     const hoveredAddReply = async () => {
-        if (!$highlights.add_reply.includes(message.id)) {
-            $highlights.add_reply = [...$highlights.add_reply, message.id, message.parent_id]
+        if (!$is_hovering.add_reply.includes(message.id)) {
+            $is_hovering.add_reply = [...$is_hovering.add_reply, message.id, message.parent_id]
         }
     }
     
     const unhoveredAddReply = async () => {
-        $highlights.add_reply = $highlights.add_reply.filter(id => ![message.id, message.parent_id].includes(id))
+        $is_hovering.add_reply = $is_hovering.add_reply.filter(id => ![message.id, message.parent_id].includes(id))
     }
 
     const hoveredStar = async () => {
-        if (!$highlights.star.includes(message.id)) {
-            $highlights.star = [...$highlights.star, message.id]
+        if (!$is_hovering.star.includes(message.id)) {
+            $is_hovering.star = [...$is_hovering.star, message.id]
         }
     }
 
     const unhoveredStar = async () => {
-        $highlights.star = $highlights.star.filter(id => id !== message.id)
+        $is_hovering.star = $is_hovering.star.filter(id => id !== message.id)
     }
 
     const clickedAddReply   = () => dispatch('addReply', { message_id: message.parent_id })
