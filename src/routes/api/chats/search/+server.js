@@ -13,7 +13,7 @@ export const GET = async ({ url }) => {
         const search_terms  = query.split(' ').filter(term => term.trim().length > 0)
 
         let filter_string = search_terms.map(term => `messages ~ "${term}"`).join(' && ')
-        if (filter === 'starred') filter_string += ` && stars.0 != null`
+        if (filter === 'starred') filter_string += ` && stars.0 != null || highlights.0 != null`
         if (filter === 'non-default') filter_string += ` && messages.0.is_default = false`
 
         const data = await pb.collection('chats').getList(page, per_page, {

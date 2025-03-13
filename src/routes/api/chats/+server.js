@@ -10,7 +10,7 @@ export const GET = async ({ url }) => {
         const per_page = Number(url.searchParams.get('per_page') ?? 20)
 
         let filter_string = ''
-        if (filter === 'starred') filter_string = `stars.0 != null`
+        if (filter === 'starred') filter_string = `stars.0 != null || highlights.0 != null`
         if (filter === 'non-default') filter_string = `messages.0.is_default = false`
 
         const data = await pb.collection('chats').getList(page, per_page, {
