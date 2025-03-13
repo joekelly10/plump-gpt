@@ -7,6 +7,7 @@
     import { marked } from 'marked'
 
     import StarIcon from '$lib/components/Icons/Star.svelte'
+    import HighlightIcon from '$lib/components/Icons/Highlight.svelte'
     import DeleteIcon from '$lib/components/Icons/Delete.svelte'
 
     marked.use({ mangle: false, headerIds: false })
@@ -61,12 +62,20 @@
             {/if}
         </div>
 
-        {#if chat.stars?.length > 0}
-            <div class='star-count'>
-                <StarIcon className='icon' />
-                {chat.stars.length}
-            </div>
-        {/if}
+        <div class='stars-and-highlights'>
+            {#if chat.stars?.length > 0}
+                <div class='star-count'>
+                    <StarIcon className='icon' />
+                    {chat.stars.length}
+                </div>
+            {/if}
+            {#if chat.highlights?.length > 0}
+                <div class='highlight-count'>
+                    <HighlightIcon className='icon' />
+                    {chat.highlights.length}
+                </div>
+            {/if}
+        </div>
 
         <div class='message'>
             <div class='author-container'>
@@ -158,8 +167,8 @@
 
     .date
         margin-bottom: space.$default-padding
-        font-weight:   600
-        color:         $yellow
+        font-weight:   450
+        color:         $blue-grey
         
         :global(.bull)
             margin:      0 3px
@@ -242,25 +251,49 @@
         .bull
             margin: 0 5px
     
-    .star-count
-        display:          flex
-        align-items:      center
-        gap:              8px
-        position:         absolute
-        top:              space.$default-padding - 8px
-        right:            100%
-        margin-right:     space.$default-padding
-        padding:          8px 12px
-        background-color: $yellow
-        border-radius:    8px
-        white-space:      nowrap
-        font-weight:      600
-        color:            $background-darker
+    .stars-and-highlights
+        display:        flex
+        flex-direction: column
+        align-items:    center
+        gap:            16px
+        position:       absolute
+        top:            space.$default-padding - 8px
+        right:          100%
+        margin-right:   space.$default-padding
+        width:          64px
+        user-select:    none
 
-        :global
-            .icon
-                height: 19px
-                fill:   $background-darker
+        .star-count,
+        .highlight-count
+            display:       flex
+            align-items:   center
+            gap:           9px
+            width:         100%
+            height:        35px
+            box-sizing:    border-box
+            padding:       0 12px
+            border-radius: 6px
+            white-space:   nowrap
+            font-weight:   600
+
+        .star-count
+            background-color: $yellow
+            color:            $background-darker
+
+            :global
+                .icon
+                    height: 19px
+                    fill:   $background-darker
+        
+        .highlight-count
+            background-color: $background-lighter
+            color:            $yellow
+
+            :global
+                .icon
+                    margin-right: -1px
+                    height:       25px
+                    fill:         $yellow
     
     .actions
         position:    absolute
