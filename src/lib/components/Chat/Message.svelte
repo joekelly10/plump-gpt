@@ -272,7 +272,7 @@
                         filter: blur(2px)
 
                     &:after
-                        opacity: 0.33
+                        opacity: 0.4
 
                 &.delete-highlight
                     box-shadow:       0 0 0 1.5px $coral
