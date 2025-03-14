@@ -60,7 +60,7 @@ export const renderHighlights = (highlights) => {
 
     if (highlights.length === 0) return
 
-    console.log(`🟨 Adding highlight spans...`)
+    console.log(`🟨 Painting highlights...`)
 
     let count = 0
 
@@ -128,7 +128,7 @@ export const renderHighlights = (highlights) => {
         }
     })
 
-    console.log(`🟨-✅ Rendered ${count}/${highlights.length} highlight${highlights.length === 1 ? '' : 's'}.`)
+    console.log(`🟨-✅ ${count}/${highlights.length} highlight${highlights.length === 1 ? '' : 's'} rendered.`)
 }
 
 export const removeAllHighlights = () => {
