@@ -2,7 +2,7 @@
     import { createEventDispatcher, tick } from 'svelte'
     import { fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { loader_active, prompt_editor_active } from '$lib/stores/app'
+    import { tree_active, loader_active, prompt_editor_active } from '$lib/stores/app'
     import { messages, forks, active_fork, active_messages, fork_points, stars, highlights, usage } from '$lib/stores/chat'
     import { is_deleting, is_adding_reply, is_provisionally_forking, is_scrolled_to_bottom } from '$lib/stores/chat/interactions'
     import { model } from '$lib/stores/ai'
@@ -94,6 +94,7 @@
                   offset      = -40
             chat.scroll({ top: element_top + offset, behavior: 'smooth' })
             element.tempHighlight()
+            renderActiveHighlights()
         }, options.delay)
     }
 
@@ -103,7 +104,7 @@
         //  first time is when $highlights is set on load but chat html
         //  isn't rendered yet
         //
-        const is_before_chat_has_loaded = $loader_active
+        const is_before_chat_has_loaded = $loader_active || $tree_active
         if (is_before_chat_has_loaded) return
         
         const active_highlights = $highlights.filter(highlight => {
