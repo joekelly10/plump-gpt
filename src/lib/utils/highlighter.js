@@ -7,23 +7,31 @@ export const createHighlight = (selection) => {
 
     try {
         const message_el = getRootMessageElement(selection)
-        if (!message_el) return null
+        if (!message_el) {
+            console.warn('🟡–❌ No message element found')
+            return null
+        }
+
+        const range = getNormalizedRange(selection, message_el)
+        if (!range) {
+            console.warn('🟡–❌ Could not get normalized range')
+            return null
+        }
 
         const id         = 'hl-' + Date.now(),
               message_id = parseInt(message_el.dataset.message_id),
-              range      = selection.getRangeAt(0),
-              text       = selection.toString(),
+              text       = range.toString(),
               created_at = new Date().toISOString()
 
         const highlight = {
             id,
             message_id,
             start: {
-                xpath:  getXPathForNode(range.startContainer, message_el),
+                xpath:  generateXPathForNode(range.startContainer, message_el),
                 offset: range.startOffset
             },
             end: {
-                xpath:  getXPathForNode(range.endContainer, message_el),
+                xpath:  generateXPathForNode(range.endContainer, message_el),
                 offset: range.endOffset
             },
             text,
@@ -68,7 +76,13 @@ export const renderHighlights = (highlights) => {
               end_node   = getNodeByXPath(highlight.end.xpath, message_el)
 
         try {
-            if (!start_node || !end_node || start_node.textContent.trim().length === 0 || end_node.textContent.trim().length === 0) {
+            if (!start_node || !end_node) {
+                console.log(`🟨 ⏭ Skipping ${index + 1}/${highlights.length} (start/end node(s) not found)`)
+                return null
+            }
+
+            if (start_node.textContent.trim().length === 0 || end_node.textContent.trim().length === 0) {
+                console.log(`🟨 ⏭ Skipping ${index + 1}/${highlights.length} (start/end node(s) empty)`)
                 return null
             }
     
@@ -114,7 +128,26 @@ export const renderHighlights = (highlights) => {
         }
     })
 
-    console.log(`🟨-✅ Rendered ${count}/${highlights.length} highlight${count === 1 ? '' : 's'}.`)
+    console.log(`🟨-✅ Rendered ${count}/${highlights.length} highlight${highlights.length === 1 ? '' : 's'}.`)
+}
+
+export const removeAllHighlights = () => {
+    if (typeof document === 'undefined') return
+
+    const spans = document.querySelectorAll(`.${highlight_class}`)
+
+    spans.forEach(span => {
+        const message_el = span.closest('.message')
+        if (message_el) {
+            unwrapText(span)
+            //
+            //  `.normalize()` restores previous state by smushing all
+            //  of the text nodes together into one contiguous, dominant,
+            //  more sexually desirable ultra text node
+            //
+            message_el.querySelector('.content').normalize()
+        }
+    })
 }
 
 const getRootMessageElement = (selection) => {
@@ -136,7 +169,65 @@ const findAncestor = (node, selector) => {
     return node.closest(selector)
 }
 
-const getXPathForNode = (node, root) => {
+
+const getNormalizedRange = (selection, root_el) => {
+    //
+    //  Normalize the range to ensure both start
+    //  and end containers are text nodes
+    //
+    const range = selection.getRangeAt(0)
+    //
+    //  If the start container isn't a text node,
+    //  find the first text node inside it
+    //
+    if (range.startContainer.nodeType !== Node.TEXT_NODE) {
+        const walker = document.createTreeWalker(
+            range.startContainer,
+            NodeFilter.SHOW_TEXT,
+            node => node.textContent?.trim().length > 0 ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP
+        )
+
+        const firstTextNode = walker.nextNode()
+
+        if (firstTextNode) {
+            range.setStart(firstTextNode, 0)
+        } else {
+            console.log('🟡–❌ No text node found for start container', range.startContainer)
+        }
+    }
+    //
+    //  If the end container isn't a text node,
+    //  find the last text node in the previous element
+    //
+    if (range.endContainer.nodeType !== Node.TEXT_NODE) {
+        const walker = document.createTreeWalker(
+            root_el,
+            NodeFilter.SHOW_TEXT,
+            node => node.textContent?.trim().length > 0 ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP
+        )
+
+        let last_text_node = null,
+            current_node   = walker.nextNode()
+
+        while (current_node !== null) {
+            if (range.endContainer.contains(current_node) || isNodeAfter(current_node, range.endContainer)) {
+                break
+            }
+            last_text_node = current_node
+            current_node   = walker.nextNode()
+        }
+
+        if (last_text_node) {
+            range.setEnd(last_text_node, last_text_node.textContent.length)
+        } else {
+            console.log('🟡–❌ No text node found for end container', range.endContainer)
+        }
+    }
+
+    return range
+}
+
+const generateXPathForNode = (node, root) => {
     if (!node.parentNode) return null
 
     let xpath   = '',
@@ -172,35 +263,48 @@ const getNodeByXPath = (xpath, root) => {
 }
 
 const getTextNodesBetween = (start_node, end_node, root_node) => {
-    const iterator      = document.createNodeIterator(root_node, NodeFilter.SHOW_TEXT),
-          nodes_between = []
+    const nodes_between = []
 
-    let node        = iterator.nextNode(),
+    const walker = document.createTreeWalker(
+        root_node,
+        NodeFilter.SHOW_TEXT,
+        node => node.textContent?.trim().length > 0 ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP
+    )
+
+    let node        = walker.nextNode(),
+        found_end   = false,
         should_take = false
 
-    while (node !== end_node) {
-        if (should_take && node?.textContent?.trim().length > 0) {
+    while (!found_end && node !== null) {
+        if (node === end_node) {
+            found_end = true
+            continue
+        }
+        //
+        //  edge case (e.g. on triple-click highlight) where the end node
+        //  is an element node with 0 offset, not a text node
+        //
+        if (end_node.nodeType === Node.ELEMENT_NODE && (end_node.contains(node) || isNodeAfter(node, end_node))) {
+            found_end = true
+            continue
+        }
+
+        if (should_take) {
             nodes_between.push(node)
         }
-        if (node === start_node) should_take = true
-        node = iterator.nextNode()
+
+        if (node === start_node) {
+            should_take = true
+        }
+
+        node = walker.nextNode()
     }
 
     return nodes_between
 }
 
-export const removeAllHighlights = () => {
-    if (typeof document === 'undefined') return
-
-    const spans = document.querySelectorAll(`.${highlight_class}`)
-
-    spans.forEach(span => {
-        const message_el = span.closest('.message')
-        if (message_el) {
-            unwrapText(span)
-            message_el.normalize()
-        }
-    })
+const isNodeAfter = (node_a, node_b) => {
+    return (node_b.compareDocumentPosition(node_a) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0
 }
 
 const unwrapText = (span) => {
