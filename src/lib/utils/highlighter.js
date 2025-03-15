@@ -131,7 +131,7 @@ export const renderHighlights = (highlights) => {
     console.log(`🟨-✅ ${count}/${highlights.length} highlight${highlights.length === 1 ? '' : 's'} rendered.`)
 }
 
-export const removeAllHighlights = () => {
+const removeAllHighlights = () => {
     if (typeof document === 'undefined') return
 
     const spans = document.querySelectorAll(`.${highlight_class}`)

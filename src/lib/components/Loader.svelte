@@ -6,7 +6,6 @@
     import { chat_id, messages, forks, active_fork, stars, highlights } from '$lib/stores/chat'
     import { is_provisionally_forking } from '$lib/stores/chat/interactions'
     import { smoothScroll } from '$lib/utils/helpers'
-    import { removeAllHighlights } from '$lib/utils/highlighter'
     import hljs from 'highlight.js'
 
     import Search from '$lib/components/Loader/Search.svelte'
