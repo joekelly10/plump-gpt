@@ -3,19 +3,33 @@ import { ANTHROPIC_API_KEY } from '$env/static/private'
 export const POST = async ({ request }) => {
     let { messages, options } = await request.json()
 
+    let long_first_message = messages[1]?.content.length > 2000
+
     // strip all properties except `role` + `content` else you get a 400
     messages = messages.map(({ role, content }, i) => {
-        // set cache breakpoints on the current and previous user messages
-        const set_breakpoint = i === messages.length - 1 || i === messages.length - 3
-
-        return {
+        const message = {
             role,
             content: [{
                 type: 'text',
-                text: content,
-                ...(set_breakpoint && { cache_control: { type: 'ephemeral' } })
+                text: content
             }]
         }
+        //
+        //  set a cache breakpoint on the first assistant message if the
+        //  first user message contains e.g. a long article, else set
+        //  breakpoints on the last and second-to-last assistant messages
+        //
+        if (long_first_message) {
+            if (i === 2 || i === messages.length - 1) {
+                message.content[0].cache_control = { type: 'ephemeral' }
+            }
+        } else {
+            if (i === messages.length - 1 || i === messages.length - 3) {
+                message.content[0].cache_control = { type: 'ephemeral' }
+            }
+        }
+
+        return message
     })
 
     const headers = new Headers({
