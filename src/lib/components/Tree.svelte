@@ -51,7 +51,9 @@
     }
 
     const clicked = (node) => {
-        $active_fork = $forks.findIndex(fork => fork.message_ids.includes(node.id))
+        if (!$forks[$active_fork].message_ids.includes(node.id)) {
+            $active_fork = $forks.findIndex(fork => fork.message_ids.includes(node.id))
+        }
         dispatch('goToMessage', { message_id: node.id })
         close()
     }
