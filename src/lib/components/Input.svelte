@@ -3,7 +3,7 @@
     import { page } from '$app/stores'
     import { loader_active, prompt_editor_active, config } from '$lib/stores/app'
     import { chat_id, messages, forks, active_fork, active_messages, stars, highlights } from '$lib/stores/chat'
-    import { is_adding_reply, is_scrolled_to_bottom } from '$lib/stores/chat/interactions'
+    import { is_hovering, is_adding_reply, is_scrolled_to_bottom } from '$lib/stores/chat/interactions'
     import { model, temperature, top_p } from '$lib/stores/ai'
     import { api_state, is_idle } from '$lib/stores/api'
     import { addCopyButtons } from '$lib/utils/helpers'
@@ -519,6 +519,7 @@
         $chat_id               = null
         $loader_active         = false
         $is_scrolled_to_bottom = true
+        $is_hovering           = { delete: [], regenerate: [], add_reply: [], star: [] }
         $page.url.searchParams.delete('user_message')
         window.history.replaceState(null, '', $page.url.toString())
         focus()
