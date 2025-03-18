@@ -236,7 +236,7 @@
                     const json_string = buffer.slice(start_index, end_index)
                     try {
                         const data = JSON.parse(json_string)
-                        if (['open-ai', 'x', 'mistral', 'openrouter'].includes($model.type)) {
+                        if (['open-ai', 'x', 'mistral', 'openrouter', 'ai21'].includes($model.type)) {
                             await processOpenAIObject(data, gpt_message)
                         } else if ($model.type === 'anthropic') {
                             await processAnthropicObject(data, gpt_message)

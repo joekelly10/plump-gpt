@@ -229,6 +229,26 @@ function createModel() {
             pricing_id:     'free'
         },
         {
+            type:           'ai21',
+            id:             'jamba-mini',
+            name:           'Jamba 1.6 Mini',
+            short_name:     'Jamba',
+            icon:           'jamba-mini.png',
+            hosted_at:      'ai21.com',
+            context_window: 256000,
+            pricing_id:     'jamba-1.6-mini'
+        },
+        {
+            type:           'ai21',
+            id:             'jamba-large',
+            name:           'Jamba 1.6 Large',
+            short_name:     'Jamba',
+            icon:           'jamba-large.png',
+            hosted_at:      'ai21.com',
+            context_window: 256000,
+            pricing_id:     'jamba-1.6-large'
+        },
+        {
             type:           'openrouter',
             id:             'qwen/qwen-turbo',
             name:           'Qwen 2.5 Turbo',
