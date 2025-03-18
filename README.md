@@ -12,37 +12,6 @@ It runs in your browser on `localhost:1337`.
 
 
 
-# Why?
-
-- 🤖 **All models**
-    - Switch freely between models + providers
-    - Send the same prompt to multiple models
-    - Switch models mid-chat, e.g. start with `gpt-4o-mini` then switch to `Claude 3.5 Sonnet`
-- 📐 **Forks**
-    - Branched conversations
-    - No-one had done this, and I needed it, so I did it
-    - Should be a fundamental feature of any LLM interface, imo
-- 📝 **System prompt**
-    - Full control of the `system_prompt`
-    - Store multiple prompts in the db and switch easily
-- 🔧 **Model settings**
-    - Set `temperature`, `top_p`, etc.
-- 🚀 **Quick launch**
-    - Start a new chat 'from anywhere' via a keyboard launcher (e.g. [Alfred](https://www.alfredapp.com/) on MacOS)
-    - Model + prompt are passed via URL query parameters, `http://localhost:1337/?model=gpt-4o&prompt=wake+up+gpt`
-    - No-one had done this either, and I needed it
-- 🔍 **Chat history**
-    - Browse + search your past conversations
-- 💰 **Usage**
-    - See input + output token counts
-    - See cache read + write (where the API provides prompt caching)
-    - See total cost
-    - _^^ All of the above a) for each message, b) for whole conversation_
-- 💵 **API pricing**
-    - Pay as you go = much cheaper than all the various subscriptions
-
-
-
 # Models
 
 **Open AI**
@@ -92,6 +61,37 @@ It runs in your browser on `localhost:1337`.
 **DeepSeek**
 - <img alt='DeepSeek V3' src='./static/img/icons/models/deepseek-chat.png' width='21' height='21' valign='middle'>&nbsp; DeepSeek V3 (Chat)
 - <img alt='DeepSeek R1' src='./static/img/icons/models/deepseek-reasoner.png' width='21' height='21' valign='middle'>&nbsp; DeepSeek R1 (Reasoner)
+
+
+
+# Why?
+
+- 🤖 **All models**
+    - Switch freely between models + providers
+    - Send the same prompt to multiple models
+    - Switch models mid-chat, e.g. start with `gpt-4o-mini` then switch to `Claude 3.5 Sonnet`
+- 📐 **Forks**
+    - Branched conversations
+    - No-one had done this, and I needed it, so I did it
+    - Should be a fundamental feature of any LLM interface, imo
+- 📝 **System prompt**
+    - Full control of the `system_prompt`
+    - Store multiple prompts in the db and switch easily
+- 🔧 **Model settings**
+    - Set `temperature`, `top_p`, etc.
+- 🚀 **Quick launch**
+    - Start a new chat 'from anywhere' via a keyboard launcher (e.g. [Alfred](https://www.alfredapp.com/) on MacOS)
+    - Model + prompt are passed via URL query parameters, `http://localhost:1337/?model=gpt-4o&prompt=wake+up+gpt`
+    - No-one had done this either, and I needed it
+- 🔍 **Chat history**
+    - Browse + search your past conversations
+- 💰 **Usage**
+    - See input + output token counts
+    - See cache read + write (where the API provides prompt caching)
+    - See total cost
+    - _^^ All of the above a) for each message, b) for whole conversation_
+- 💵 **API pricing**
+    - Pay as you go = much cheaper than all the various subscriptions
 
 
 
