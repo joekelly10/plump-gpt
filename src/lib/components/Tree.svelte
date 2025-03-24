@@ -13,9 +13,9 @@
     const dispatch = createEventDispatcher()
 
     let nodes,
-        hovered_message,
+        hovered_node,
         debounce_timer,
-        pending_message
+        pending_node
     
     const leaf_spacing = 2 // # of columns
 
@@ -31,23 +31,23 @@
 
     const mouseenter = (node) => {
         if (debounce_timer) {
-            pending_message = node.message
+            pending_node = node
         } else {
-            hovered_message = pending_message ? pending_message : node.message
+            hovered_node = pending_node ? pending_node : node
         }
         clearTimeout(debounce_timer)
         debounce_timer  = setTimeout(() => {
             debounce_timer = null
-            if (pending_message) {
-                hovered_message = pending_message
-                pending_message = null
+            if (pending_node) {
+                hovered_node = pending_node
+                pending_node = null
             }
         }, 150)
     }
 
     const mouseleave = () => {
-        hovered_message = null
-        pending_message = null
+        hovered_node = null
+        pending_node = null
     }
 
     const clicked = (node) => {
@@ -70,8 +70,8 @@
 <div class='tree' in:scale={{ start: 1.02, opacity: 0, duration: 200, easing: quartOut }} out:scale={{ start: 1.02, opacity: 0, duration: 100, easing: quartOut }}>
     <Header on:close={close} />
 
-    {#if hovered_message}
-        <Sidebar message={hovered_message} />
+    {#if hovered_node}
+        <Sidebar node={hovered_node} />
     {/if}
 
     <UsageStats/>

@@ -5,29 +5,33 @@
 
     import MessageInfo from '$lib/components/Tree/MessageInfo.svelte'
     import SystemPromptIcon from '$lib/components/Icons/SystemPrompt.svelte'
+    import StarIcon from '$lib/components/Icons/Star.svelte'
 
     marked.use({ breaks: true, mangle: false, headerIds: false })
 
-    export let message
+    export let node
 
-    $: preview = message?.content.slice(0, 500) + (message?.content.length > 500 ? ' [...]' : '')
+    $: preview = node?.message?.content.slice(0, 500) + (node?.message?.content.length > 500 ? ' [...]' : '')
 </script>
 
-<div class='tree-sidebar' in:fade={{ duration: 250, easing: quartOut }} out:fade={{ duration: 125, easing: quartOut }}>
+<div class='tree-sidebar' class:starred={node.is_starred} in:fade={{ duration: 250, easing: quartOut }} out:fade={{ duration: 125, easing: quartOut }}>
     <div class='inner'>
         <div class='avatar-container'>
-            {#if message.role === 'system'}
+            {#if node.message.role === 'system'}
                 <SystemPromptIcon className='icon system-prompt-icon' />
-            {:else if message.role === 'assistant'}
-                <img class='avatar ai' src='/img/icons/models/{message.model.icon}' alt='{message.model.name}' />
+            {:else if node.message.role === 'assistant'}
+                <img class='avatar ai' src='/img/icons/models/{node.message.model.icon}' alt='{node.message.model.name}' />
             {:else}
                 <img class='avatar user' src='/img/avatar.png' alt='You' />
+            {/if}
+            {#if node.is_starred}
+                <StarIcon className='icon star-icon' />
             {/if}
         </div>
         <div class='message-preview'>
             {@html marked(preview)}
         </div>
-        <MessageInfo message={message} />
+        <MessageInfo message={node.message} />
     </div>
 </div>
 
@@ -65,6 +69,7 @@
         display:         flex
         align-items:     center
         justify-content: flex-start
+        gap:             16px
 
         .avatar
             width:         32px
@@ -74,6 +79,10 @@
             .system-prompt-icon
                 height: 32px
                 fill:   $blue-grey
+            
+            .star-icon
+                height: 32px
+                fill:   $yellow
 
     .message-preview
         margin-top:    space.$default-padding
