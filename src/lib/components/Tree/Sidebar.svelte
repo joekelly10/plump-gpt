@@ -6,6 +6,7 @@
     import MessageInfo from '$lib/components/Tree/MessageInfo.svelte'
     import SystemPromptIcon from '$lib/components/Icons/SystemPrompt.svelte'
     import StarIcon from '$lib/components/Icons/Star.svelte'
+    import HighlightIcon from '$lib/components/Icons/Highlight.svelte'
 
     marked.use({ breaks: true, mangle: false, headerIds: false })
 
@@ -26,6 +27,9 @@
             {/if}
             {#if node.is_starred}
                 <StarIcon className='icon star-icon' />
+            {/if}
+            {#if node.is_highlighted}
+                <HighlightIcon className='icon highlight-icon' />
             {/if}
         </div>
         <div class='message-preview'>
@@ -81,6 +85,10 @@
                 fill:   $blue-grey
             
             .star-icon
+                height: 32px
+                fill:   $yellow
+
+            .highlight-icon
                 height: 32px
                 fill:   $yellow
 
