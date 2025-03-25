@@ -5,6 +5,7 @@
     import { tree_active } from '$lib/stores/app.js'
     import { messages, forks, active_fork, stars, highlights } from '$lib/stores/chat'
     import { buildTree } from '$lib/utils/tree.js'
+    import { smoothScroll } from '$lib/utils/helpers.js'
 
     import Header from '$lib/components/Tree/Header.svelte'
     import Sidebar from '$lib/components/Tree/Sidebar.svelte'
@@ -15,7 +16,8 @@
     let nodes,
         hovered_node,
         debounce_timer,
-        pending_node
+        pending_node,
+        container_el
     
     const leaf_spacing = 2 // # of columns
 
@@ -23,11 +25,27 @@
 
     onMount(() => {
         document.addEventListener('keydown', keydown)
+        scrollToActiveNode()
     })
 
     onDestroy(() => {
         document.removeEventListener('keydown', keydown)
     })
+
+    const scrollToActiveNode = () => {
+        const active_node    = nodes.find(node => node.is_active && node.children.length === 0),
+              active_node_el = container_el?.querySelector(`[data-node-id="${active_node.id}"]`)
+        if (active_node_el) {
+            const node_bottom = active_node_el.offsetTop + active_node_el.offsetHeight,
+                  threshold   = 100
+            if (node_bottom > container_el.clientHeight - threshold) {
+                const target_scroll_position = node_bottom - container_el.clientHeight / 2
+                setTimeout(() => {
+                    smoothScroll(container_el, target_scroll_position, 1000, 'quartOut')
+                }, 200)
+            }
+        }
+    }
 
     const mouseenter = (node) => {
         if (debounce_timer) {
@@ -76,7 +94,7 @@
 
     <UsageStats/>
 
-    <div class='inner'>
+    <div class='inner' bind:this={container_el}>
         <div class='chat-tree'>
             {#each nodes as node, i}
                 {#if i === 0}
@@ -95,6 +113,7 @@
                     </button>
                 {:else}
                     <button
+                        data-node-id={node.id}
                         class='node {node.message.role}'
                         class:active={node.is_active}
                         class:starred={node.is_starred}
