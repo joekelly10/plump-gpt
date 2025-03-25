@@ -128,6 +128,12 @@
                             <img class='model-icon' src='/img/icons/models/{node.message.model.icon}' alt='{node.message.model.name}' />
                         {/if}
                     </button>
+                    {#if node.is_active && node.children.length === 0}
+                        <div class='you-are-here' style='grid-area: {node.row + 1} / {node.column}'>
+                            <div class='line1'>YOU ARE</div>
+                            <div class='line2'>HERE</div>
+                        </div>
+                    {/if}
                 {/if}
                 {#if node.connector}
                     <div
@@ -248,6 +254,33 @@
                 height:        21px
                 border-radius: 4px
                 box-shadow:    0 0 0 1px $background-darkest
+
+        .you-are-here
+            position:       relative
+            top:            38px
+            font-size:      18px
+            font-weight:    600
+            color:          $off-white
+            text-align:     center
+            pointer-events: none
+
+            &:before
+                content:       ''
+                position:      absolute
+                top:           -15px
+                left:          50%
+                transform:     translateX(-50%)
+                width:         0
+                height:        0
+                border-left:   5px solid transparent
+                border-right:  5px solid transparent
+                border-bottom: 5px solid $off-white
+
+            .line1
+                font-size:   10px
+                line-height: 12px
+                font-weight: 700
+                white-space: nowrap
 
         .connector
             display:         flex
