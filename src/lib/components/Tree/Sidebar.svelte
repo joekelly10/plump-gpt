@@ -28,8 +28,13 @@
             {#if node.is_starred}
                 <StarIcon className='icon star-icon' />
             {/if}
-            {#if node.is_highlighted}
-                <HighlightIcon className='icon highlight-icon' />
+            {#if node.highlights.length > 0}
+                <div class='highlight-count-container'>
+                    <HighlightIcon className='icon highlight-icon' />
+                    <span class='highlight-count'>
+                        {node.highlights.length}
+                    </span>
+                </div>
             {/if}
         </div>
         <div class='message-preview'>
@@ -85,12 +90,27 @@
                 fill:   $blue-grey
             
             .star-icon
-                height: 32px
+                height: 25px
                 fill:   $yellow
 
-            .highlight-icon
-                height: 32px
-                fill:   $yellow
+        .highlight-count-container
+            display:          flex
+            align-items:      center
+            justify-content:  center
+            gap:              9px
+            height:           32px
+            padding:          0 12px
+            border-radius:    6px
+            background-color: $background-lighter
+            font-size:        16px
+            font-weight:      600
+            color:            $yellow
+            
+            :global
+                .highlight-icon
+                    margin-right: -1px
+                    height:       25px
+                    fill:         $yellow
 
     .message-preview
         margin-top:    space.$default-padding

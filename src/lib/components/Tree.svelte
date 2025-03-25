@@ -98,7 +98,7 @@
                         class='node {node.message.role}'
                         class:active={node.is_active}
                         class:starred={node.is_starred}
-                        class:highlighted={node.is_highlighted}
+                        class:highlighted={node.highlights.length > 0}
                         style='grid-area: {node.row} / {node.column}'
                         on:click={clicked(node)}
                         on:mouseenter={mouseenter(node)}
