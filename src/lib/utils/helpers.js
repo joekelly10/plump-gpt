@@ -91,7 +91,7 @@ export const insert = (id, array) => {
 //  Used to ensure only one scroll animation per element
 const active_smooth_scrolls = new WeakMap()
 
-export const smoothScroll = (element, target_scrollTop, duration = 500, easing = 'cubicInOut') => {
+export const smoothScroll = (element, target_scrollTop, duration = 500, easing = 'quartOut') => {
     //  Clean up any existing animation for this element
     const cleanup = active_smooth_scrolls.get(element)
     if (cleanup) cleanup()
