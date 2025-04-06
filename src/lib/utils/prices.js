@@ -97,11 +97,11 @@ const model_prices = {
             }
         }
     },
-    'gemini-2.0-pro': {
+    'gemini-2.5-pro': {
         price: {
             cents: {
-                input_token:  0, // Free (for now)
-                output_token: 0 
+                input_token:   125/1000000, // $1.25/mTok
+                output_token: 1000/1000000
             }
         }
     },
@@ -129,15 +129,23 @@ const model_prices = {
             }
         }
     },
-    'llama-3-405b': {
+    'llama-4-scout': {
         price: {
             cents: {
-                input_token:  80/1000000, // $0.80/mTok
-                output_token: 80/1000000
+                input_token:  10/1000000, // $0.10/mTok
+                output_token: 30/1000000
             }
         }
     },
-    'hermes-3-405b': {
+    'llama-4-maverick': {
+        price: {
+            cents: {
+                input_token:  20/1000000, // $0.20/mTok
+                output_token: 60/1000000
+            }
+        }
+    },
+    'llama-3-405b': {
         price: {
             cents: {
                 input_token:  80/1000000, // $0.80/mTok

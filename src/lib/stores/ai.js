@@ -109,13 +109,13 @@ function createModel() {
         },
         {
             type:           'google',
-            id:             'gemini-2.0-pro-exp-02-05',
-            name:           'Gemini 2.0 Pro',
+            id:             'gemini-2.5-pro-exp-03-25',
+            name:           'Gemini 2.5 Pro',
             short_name:     'Gemini',
             icon:           'gemini-pro.png',
             hosted_at:      'googleapis.com',
             context_window: 1000000,
-            pricing_id:     'free'
+            pricing_id:     'gemini-2.5-pro'
         },
         {
             type:           'x',
@@ -149,20 +149,20 @@ function createModel() {
         },
         {
             type:           'openrouter',
-            id:             'meta-llama/llama-3.2-11b-vision-instruct:free',
-            name:           'Llama 3.2 11b',
-            short_name:     'Llama 11b',
-            icon:           'llama-3-light.png',
+            id:             'meta-llama/llama-4-scout:free',
+            name:           'Llama 4 Scout (free)',
+            short_name:     'Llama 4 Scout',
+            icon:           'llama-light.png',
             hosted_at:      'openrouter.ai',
-            context_window: 128000,
+            context_window: 512000,
             pricing_id:     'free'
         },
         {
             type:           'openrouter',
-            id:             'meta-llama/llama-3.3-70b-instruct:free',
-            name:           'Llama 3.3 70b',
-            short_name:     'Llama 70b',
-            icon:           'llama-3-medium.png',
+            id:             'meta-llama/llama-4-maverick:free',
+            name:           'Llama 4 Maverick (free)',
+            short_name:     'Llama 4 Maverick',
+            icon:           'llama-medium.png',
             hosted_at:      'openrouter.ai',
             context_window: 128000,
             pricing_id:     'free'
@@ -185,7 +185,7 @@ function createModel() {
             icon:           'nous-hermes.png',
             hosted_at:      'openrouter.ai',
             context_window: 131000,
-            pricing_id:     'hermes-3-405b'
+            pricing_id:     'llama-3-405b'
         },
         // {
         //     type:           'groq',
@@ -208,6 +208,16 @@ function createModel() {
         //     is_reasoner:    true,
         //     pricing_id:     'free'
         // },
+        {
+            type:           'openrouter',
+            id:             'openrouter/quasar-alpha',
+            name:           'Quasar Alpha',
+            short_name:     'Quasar',
+            icon:           'quasar-alpha.png',
+            hosted_at:      'openrouter.ai',
+            context_window: 1000000,
+            pricing_id:     'free'
+        },
         {
             type:           'mistral',
             id:             'mistral-small',

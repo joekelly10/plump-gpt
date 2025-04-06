@@ -28,7 +28,7 @@ It runs in your browser on `localhost:1337`.
 - <img alt='Gemini Flash' src='./static/img/icons/models/gemini-flash-lite.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.0 Flash Lite
 - <img alt='Gemini Flash' src='./static/img/icons/models/gemini-flash.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.0 Flash
 - <img alt='Gemini Flash Thinking' src='./static/img/icons/models/gemini-flash-thinking.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.0 Flash Thinking
-- <img alt='Gemini Pro' src='./static/img/icons/models/gemini-pro.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.0 Pro
+- <img alt='Gemini Pro' src='./static/img/icons/models/gemini-pro.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.5 Pro
 
 **X**
 - <img alt='Grok' src='./static/img/icons/models/grok.png' width='21' height='21' valign='middle'>&nbsp; Grok 2
@@ -38,12 +38,15 @@ It runs in your browser on `localhost:1337`.
 - <img alt='Command-R+' src='./static/img/icons/models/command-r-plus.png' width='21' height='21' valign='middle'>&nbsp; Command-R+
 
 **Meta**
-- <img alt='Llama 3.2 11b' src='./static/img/icons/models/llama-3-light.png' width='21' height='21' valign='middle'>&nbsp; Llama 3.2 11b
-- <img alt='Llama 3.2 70b' src='./static/img/icons/models/llama-3-medium.png' width='21' height='21' valign='middle'>&nbsp; Llama 3.2 70b
+- <img alt='Llama 4 Scout' src='./static/img/icons/models/llama-3-light.png' width='21' height='21' valign='middle'>&nbsp; Llama 4 Scout
+- <img alt='Llama 4 Maverick' src='./static/img/icons/models/llama-3-medium.png' width='21' height='21' valign='middle'>&nbsp; Llama 4 Maverick
 - <img alt='Llama 3.1 405b' src='./static/img/icons/models/llama-3-heavy.png' width='21' height='21' valign='middle'>&nbsp; Llama 3.1 405b
 
 **Nous**
 - <img alt='Nous Hermes 3 405b' src='./static/img/icons/models/nous-hermes.png' width='21' height='21' valign='middle'>&nbsp; Nous Hermes 3 405b
+
+**Unknown**
+- <img alt='Quasar Alpha' src='./static/img/icons/models/quasar-alpha.png' width='21' height='21' valign='middle'>&nbsp; Quasar Alpha
 
 **Mistral**
 - <img alt='Mistral Small' src='./static/img/icons/models/mistral-small.png' width='21' height='21' valign='middle'>&nbsp; Mistral Small
