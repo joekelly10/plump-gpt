@@ -38,9 +38,9 @@ It runs in your browser on `localhost:1337`.
 - <img alt='Command-R+' src='./static/img/icons/models/command-r-plus.png' width='21' height='21' valign='middle'>&nbsp; Command-R+
 
 **Meta**
-- <img alt='Llama 4 Scout' src='./static/img/icons/models/llama-3-light.png' width='21' height='21' valign='middle'>&nbsp; Llama 4 Scout
-- <img alt='Llama 4 Maverick' src='./static/img/icons/models/llama-3-medium.png' width='21' height='21' valign='middle'>&nbsp; Llama 4 Maverick
-- <img alt='Llama 3.1 405b' src='./static/img/icons/models/llama-3-heavy.png' width='21' height='21' valign='middle'>&nbsp; Llama 3.1 405b
+- <img alt='Llama 4 Scout' src='./static/img/icons/models/llama-light.png' width='21' height='21' valign='middle'>&nbsp; Llama 4 Scout
+- <img alt='Llama 4 Maverick' src='./static/img/icons/models/llama-medium.png' width='21' height='21' valign='middle'>&nbsp; Llama 4 Maverick
+- <img alt='Llama 3.1 405b' src='./static/img/icons/models/llama-heavy.png' width='21' height='21' valign='middle'>&nbsp; Llama 3.1 405b
 
 **Nous**
 - <img alt='Nous Hermes 3 405b' src='./static/img/icons/models/nous-hermes.png' width='21' height='21' valign='middle'>&nbsp; Nous Hermes 3 405b
