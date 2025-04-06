@@ -172,7 +172,7 @@ function createModel() {
             id:             'meta-llama/llama-3.1-405b-instruct',
             name:           'Llama 3.1 405b',
             short_name:     'Llama 405b',
-            icon:           'llama-3-heavy.png',
+            icon:           'llama-heavy.png',
             hosted_at:      'openrouter.ai',
             context_window: 33000,
             pricing_id:     'llama-3-405b'
