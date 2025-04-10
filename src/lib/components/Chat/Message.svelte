@@ -228,7 +228,7 @@
                 
                 &.add-reply-highlight
                     z-index:          999
-                    box-shadow:       0 0 0 1.5px $blue
+                    box-shadow:       0 0 0 1.5px $blue, 0 1.5px 9px 1.5px color.adjust($background-darker, $alpha: -0.75)
                     border-radius:    8px 8px 1.5px 1.5px
                     background-color: $regenerate-highlight-bg
 
@@ -259,7 +259,7 @@
                 height:           100%
                 box-sizing:       border-box
                 border-radius:    1.5px 1.5px 8px 8px
-                background-color: color.adjust(color.adjust($blue, $lightness: 3%), $alpha: -0.61)
+                background-color: color.adjust($blue, $alpha: -0.5)
                 opacity:          0
                 transition:       opacity easing.$quart-out 0.1s
                 pointer-events:   none
@@ -270,7 +270,7 @@
                 &.add-reply-highlight
                     .content,
                     :global(.avatar-container)
-                        filter: blur(2px)
+                        filter: blur(6px)
 
                     &:after
                         opacity: 1
