@@ -119,13 +119,23 @@ function createModel() {
         },
         {
             type:           'x',
-            id:             'grok-2-1212',
-            name:           'Grok 2',
+            id:             'grok-3-mini-beta',
+            name:           'Grok 3 Mini',
+            short_name:     'Grok',
+            icon:           'grok-mini.png',
+            hosted_at:      'x.ai',
+            context_window: 131072,
+            pricing_id:     'grok-3-mini'
+        },
+        {
+            type:           'x',
+            id:             'grok-3-beta',
+            name:           'Grok 3',
             short_name:     'Grok',
             icon:           'grok.png',
             hosted_at:      'x.ai',
             context_window: 131072,
-            pricing_id:     'grok-2'
+            pricing_id:     'grok-3'
         },
         {
             type:           'cohere',
@@ -210,10 +220,10 @@ function createModel() {
         // },
         {
             type:           'openrouter',
-            id:             'openrouter/quasar-alpha',
-            name:           'Quasar Alpha',
-            short_name:     'Quasar',
-            icon:           'quasar-alpha.png',
+            id:             'openrouter/optimus-alpha',
+            name:           'Optimus Alpha',
+            short_name:     'Optimus',
+            icon:           'optimus-alpha.png',
             hosted_at:      'openrouter.ai',
             context_window: 1000000,
             pricing_id:     'free'
@@ -287,6 +297,16 @@ function createModel() {
             hosted_at:      'openrouter.ai',
             context_window: 32000,
             pricing_id:     'qwen-max'
+        },
+        {
+            type:           'openrouter',
+            id:             'deepseek/deepseek-chat-v3-0324:free',
+            name:           'DeepSeek V3 (free)',
+            short_name:     'V3',
+            icon:           'deepseek-chat.png',
+            hosted_at:      'openrouter.ai',
+            context_window: 64000,
+            pricing_id:     'free'
         },
         {
             type:           'deepseek',
