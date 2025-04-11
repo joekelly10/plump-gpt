@@ -31,7 +31,8 @@ It runs in your browser on `localhost:1337`.
 - <img alt='Gemini Pro' src='./static/img/icons/models/gemini-pro.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.5 Pro
 
 **X**
-- <img alt='Grok' src='./static/img/icons/models/grok.png' width='21' height='21' valign='middle'>&nbsp; Grok 2
+- <img alt='Grok Mini' src='./static/img/icons/models/grok-mini.png' width='21' height='21' valign='middle'>&nbsp; Grok 3 Mini
+- <img alt='Grok' src='./static/img/icons/models/grok.png' width='21' height='21' valign='middle'>&nbsp; Grok 3
 
 **Cohere**
 - <img alt='Command-R' src='./static/img/icons/models/command-r.png' width='21' height='21' valign='middle'>&nbsp; Command-R
@@ -45,8 +46,9 @@ It runs in your browser on `localhost:1337`.
 **Nous**
 - <img alt='Nous Hermes 3 405b' src='./static/img/icons/models/nous-hermes.png' width='21' height='21' valign='middle'>&nbsp; Nous Hermes 3 405b
 
-**Unknown**
+**Stealth**
 - <img alt='Quasar Alpha' src='./static/img/icons/models/quasar-alpha.png' width='21' height='21' valign='middle'>&nbsp; Quasar Alpha
+- <img alt='Optimus Alpha' src='./static/img/icons/models/optimus-alpha.png' width='21' height='21' valign='middle'>&nbsp; Optimus Alpha
 
 **Mistral**
 - <img alt='Mistral Small' src='./static/img/icons/models/mistral-small.png' width='21' height='21' valign='middle'>&nbsp; Mistral Small
