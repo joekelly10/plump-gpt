@@ -59,20 +59,10 @@ function createModel() {
         },
         {
             type:           'anthropic',
-            id:             'claude-3-5-sonnet-latest',
-            name:           'Claude 3.5 Sonnet',
-            short_name:     'Claude',
-            icon:           'claude-3-sonnet.png',
-            hosted_at:      'anthropic.com',
-            context_window: 200000,
-            pricing_id:     'claude-sonnet'
-        },
-        {
-            type:           'anthropic',
             id:             'claude-3-7-sonnet-latest',
             name:           'Claude 3.7 Sonnet',
             short_name:     'Claude',
-            icon:           'claude-3.7-sonnet.png',
+            icon:           'claude-3-sonnet.png',
             hosted_at:      'anthropic.com',
             context_window: 200000,
             pricing_id:     'claude-sonnet'
