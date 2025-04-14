@@ -9,23 +9,33 @@ function createModel() {
     const models = [
         {
             type:           'open-ai',
-            id:             'gpt-4o-mini',
-            name:           'GPT-4o mini',
-            short_name:     'GPT-4o mini',
-            icon:           'gpt-4o-mini.png',
+            id:             'gpt-4.1-nano',
+            name:           'GPT-4.1 nano',
+            short_name:     'GPT-4.1 nano',
+            icon:           'gpt-4.1-nano.png',
             hosted_at:      'openai.com',
-            context_window: 128000,
-            pricing_id:     'gpt-4o-mini'
+            context_window: 1000000,
+            pricing_id:     'gpt-4.1-nano'
         },
         {
             type:           'open-ai',
-            id:             'gpt-4o',
-            name:           'GPT-4o',
-            short_name:     'GPT-4o',
-            icon:           'gpt-4o.png',
+            id:             'gpt-4.1-mini',
+            name:           'GPT-4.1 mini',
+            short_name:     'GPT-4.1 mini',
+            icon:           'gpt-4.1-mini.png',
             hosted_at:      'openai.com',
-            context_window: 128000,
-            pricing_id:     'gpt-4o'
+            context_window: 1000000,
+            pricing_id:     'gpt-4.1-mini'
+        },
+        {
+            type:           'open-ai',
+            id:             'gpt-4.1',
+            name:           'GPT-4.1',
+            short_name:     'GPT-4.1',
+            icon:           'gpt-4.1.png',
+            hosted_at:      'openai.com',
+            context_window: 1000000,
+            pricing_id:     'gpt-4.1'
         },
         {
             type:           'openrouter',
@@ -218,16 +228,6 @@ function createModel() {
         //     is_reasoner:    true,
         //     pricing_id:     'free'
         // },
-        {
-            type:           'openrouter',
-            id:             'openrouter/optimus-alpha',
-            name:           'Optimus Alpha',
-            short_name:     'Optimus',
-            icon:           'optimus-alpha.png',
-            hosted_at:      'openrouter.ai',
-            context_window: 1000000,
-            pricing_id:     'free'
-        },
         {
             type:           'mistral',
             id:             'mistral-small',

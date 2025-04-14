@@ -15,8 +15,9 @@ It runs in your browser on `localhost:1337`.
 # Models
 
 **Open AI**
-- <img alt='GPT-4o mini' src='./static/img/icons/models/gpt-4o-mini.png' width='21' height='21' valign='middle'>&nbsp; GPT-4o mini
-- <img alt='GPT-4o' src='./static/img/icons/models/gpt-4o.png' width='21' height='21' valign='middle'>&nbsp; GPT-4o
+- <img alt='GPT-4.1 nano' src='./static/img/icons/models/gpt-4.1-nano.png' width='21' height='21' valign='middle'>&nbsp; GPT-4o mini
+- <img alt='GPT-4.1 mini' src='./static/img/icons/models/gpt-4.1-mini.png' width='21' height='21' valign='middle'>&nbsp; GPT-4o
+- <img alt='GPT-4.1' src='./static/img/icons/models/gpt-4.1.png' width='21' height='21' valign='middle'>&nbsp; GPT-4o
 - <img alt='o3-mini' src='./static/img/icons/models/o3-mini.png' width='21' height='21' valign='middle'>&nbsp; o3-mini
 
 **Anthropic**
