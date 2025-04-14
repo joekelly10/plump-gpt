@@ -46,10 +46,6 @@ It runs in your browser on `localhost:1337`.
 **Nous**
 - <img alt='Nous Hermes 3 405b' src='./static/img/icons/models/nous-hermes.png' width='21' height='21' valign='middle'>&nbsp; Nous Hermes 3 405b
 
-**Stealth**
-- <img alt='Quasar Alpha' src='./static/img/icons/models/quasar-alpha.png' width='21' height='21' valign='middle'>&nbsp; Quasar Alpha
-- <img alt='Optimus Alpha' src='./static/img/icons/models/optimus-alpha.png' width='21' height='21' valign='middle'>&nbsp; Optimus Alpha
-
 **Mistral**
 - <img alt='Mistral Small' src='./static/img/icons/models/mistral-small.png' width='21' height='21' valign='middle'>&nbsp; Mistral Small
 - <img alt='Mistral Large' src='./static/img/icons/models/mistral-large.png' width='21' height='21' valign='middle'>&nbsp; Mistral Large
