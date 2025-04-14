@@ -37,16 +37,16 @@ function createModel() {
             context_window: 1000000,
             pricing_id:     'gpt-4.1'
         },
-        {
-            type:           'openrouter',
-            id:             'openai/o3-mini',
-            name:           'o3-mini',
-            short_name:     'o3-mini',
-            icon:           'o3-mini.png',
-            hosted_at:      'openrouter.ai',
-            context_window: 128000,
-            pricing_id:     'o3-mini'
-        },
+        // {
+        //     type:           'openrouter',
+        //     id:             'openai/o3-mini',
+        //     name:           'o3-mini',
+        //     short_name:     'o3-mini',
+        //     icon:           'o3-mini.png',
+        //     hosted_at:      'openrouter.ai',
+        //     context_window: 128000,
+        //     pricing_id:     'o3-mini'
+        // },
         {
             type:           'anthropic',
             id:             'claude-3-5-haiku-latest',
