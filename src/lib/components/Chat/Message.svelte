@@ -13,6 +13,7 @@
     import MessageInfo from '$lib/components/Chat/MessageInfo.svelte'
     import MessageControls from '$lib/components/Chat/MessageControls.svelte'
     import ProvisionalForkControls from '$lib/components/Chat/ProvisionalForkControls.svelte'
+    import AddReplyHoverInfo from '$lib/components/Chat/AddReplyHoverInfo.svelte'
     import PromptForks from '$lib/components/Chat/PromptForks.svelte'
     import ReplyForks from '$lib/components/Chat/ReplyForks.svelte'
     import WaitingDots from '$lib/components/Chat/WaitingDots.svelte'
@@ -183,6 +184,10 @@
             on:cancelProvisionalFork
         />
     {/if}
+
+    {#if message.role === 'assistant' && add_reply_highlight}
+        <AddReplyHoverInfo/>
+    {/if}
 </div>
 
 {#if message.role === 'user' && message.forks.length > 1}
@@ -259,7 +264,7 @@
                 height:           100%
                 box-sizing:       border-box
                 border-radius:    1.5px 1.5px 8px 8px
-                background-color: color.adjust($blue, $alpha: -0.5)
+                background-color: color.adjust($background, $alpha: -0.5)
                 opacity:          0
                 transition:       opacity easing.$quart-out 0.1s
                 pointer-events:   none
@@ -270,7 +275,8 @@
                 &.add-reply-highlight
                     .content,
                     :global(.avatar-container)
-                        filter: blur(6px)
+                        opacity: 0.75
+                        filter:  blur(2px)
 
                     &:after
                         opacity: 1

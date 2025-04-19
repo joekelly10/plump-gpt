@@ -30,10 +30,6 @@
             <AddIcon className='icon' />
         </div>
         Add Reply
-        <div class='model-container'>
-            <img class='avatar' src='/img/icons/models/{$model.icon}' alt='{$model.name}'>
-            <span class='arrow'>→</span>
-        </div>
     </button>
     <button class='provisional-fork-button cancel-fork' title='Cancel Fork (esc)' on:click={clickedCancelFork}>
         <div class='icon-container'>
@@ -79,34 +75,6 @@
                 .icon
                     fill: $background-lightest
                 
-                .model-container
-                    display:         flex
-                    align-items:     center
-                    justify-content: center
-                    position:        absolute
-                    top:             0
-                    left:            -1px
-                    transform:       translateY(-20px) scale(0.5)
-                    width:           $button-size
-                    height:          $button-size
-                    box-sizing:      border-box
-                    opacity:         0
-                    pointer-events:  none
-                    transition:      opacity 0.1s easing.$quart-out, transform 0.1s easing.$quart-out
-
-                    .avatar
-                        height: 21px
-
-                    .arrow
-                        position:   absolute
-                        top:        50%
-                        left:       50%
-                        transform:  translate(10px, -50%)
-                        opacity:    0
-                        font-size:  16px
-                        color:      $off-white
-                        transition: none
-
                 &:hover,
                 &:active
                     color: $background-darker
@@ -121,15 +89,6 @@
                     &:hover
                         border-color:     $blue
                         background-color: $blue
-                        .model-container
-                            transform:      translateY(-58px)
-                            opacity:        1
-                            pointer-events: all
-                            transition:     opacity 0.1s easing.$quart-out, transform 0.1s easing.$quart-out
-                            .arrow
-                                transform:  translate(18px, -50%)
-                                opacity:    1
-                                transition: transform 0.1s easing.$quart-out 0.25s, opacity 0.1s easing.$quart-out 0.25s
                         //  hack/fix: when adding a 6th reply, the forks container
                         //  expands on hover, moving the button down, causing the hover
                         //  to glitch on/off, so we need to compensate for that with

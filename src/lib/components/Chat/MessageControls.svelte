@@ -67,12 +67,8 @@
 
 <div class='message-controls-right' in:slide={{ axis: 'x', duration: 250, easing: quartOut }} out:fade={{ duration: 250, easing: quartOut }}>
     {#if message.is_last}
-        <button class='message-control-button add' title='Add another reply' on:click={clickedAddReply} on:mouseenter={hoveredAddReply} on:mouseleave={unhoveredAddReply}>
+        <button class='message-control-button add' on:click={clickedAddReply} on:mouseenter={hoveredAddReply} on:mouseleave={unhoveredAddReply}>
             <AddIcon className='icon' />
-            <div class='model-container'>
-                <img class='avatar' src='/img/icons/models/{$model.icon}' alt='{$model.name}'>
-                <span class='arrow'>→</span>
-            </div>
         </button>
         <button class='message-control-button retry' title='Regenerate reply' on:click={clickedRegenerate} on:mouseenter={hoveredRegenerate} on:mouseleave={unhoveredRegenerate}>
             <RetryIcon className='icon' />
@@ -147,34 +143,6 @@
                         transition: none
 
                 &.add
-                    .model-container
-                        display:          flex
-                        align-items:      center
-                        justify-content:  center
-                        position:         absolute
-                        top:              0
-                        left:             -1px
-                        transform:        translateY(-20px) scale(0.5)
-                        width:            $button-size
-                        height:           $button-size
-                        box-sizing:       border-box
-                        opacity:          0
-                        pointer-events:   none
-                        transition:       opacity 0.1s easing.$quart-out, transform 0.1s easing.$quart-out
-
-                        .avatar
-                            height: 21px
-
-                        .arrow
-                            position:   absolute
-                            top:        50%
-                            left:       50%
-                            transform:  translate(10px, -50%)
-                            opacity:    0
-                            font-size:  16px
-                            color:      $off-white
-                            transition: none
-
                     .icon
                         height:    11px
                         transform: rotate(45deg)
@@ -182,17 +150,6 @@
                     &:hover
                         border-color:     $blue
                         background-color: $blue
-
-                        .model-container
-                            transform:      translateY(-50px)
-                            opacity:        1
-                            pointer-events: all
-                            transition:     opacity 0.1s easing.$quart-out, transform 0.1s easing.$quart-out
-
-                            .arrow
-                                transform:  translate(18px, -50%)
-                                opacity:    1
-                                transition: transform 0.1s easing.$quart-out 0.25s, opacity 0.1s easing.$quart-out 0.25s
 
                         //  hack/fix: when adding a 6th reply, the forks container
                         //  expands on hover, moving the button down, causing the hover
@@ -212,10 +169,6 @@
                     &:active
                         border-color:     color.adjust($blue, $lightness: -3%)
                         background-color: color.adjust($blue, $lightness: -3%)
-
-                        .model-container
-                            .avatar
-                                height: 19px
 
                 &.retry
                     .icon
