@@ -264,7 +264,7 @@
                 height:           100%
                 box-sizing:       border-box
                 border-radius:    1.5px 1.5px 8px 8px
-                background-color: color.adjust($background, $alpha: -0.5)
+                background-color: color.adjust($background, $alpha: -0.6)
                 opacity:          0
                 transition:       opacity easing.$quart-out 0.1s
                 pointer-events:   none

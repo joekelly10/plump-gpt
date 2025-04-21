@@ -4,7 +4,7 @@
     import { model } from '$lib/stores/ai'
 </script>
 
-<div class='add-reply-hover-info' in:fly={{ x: 8, duration: 125, easing: quartOut }} out:fade={{ duration: 125, easing: quartOut }}>
+<div class='add-reply-hover-info' in:fly={{ y: 5, duration: 200, easing: quartOut }} out:fade={{ duration: 125, easing: quartOut }}>
     <img class='model-icon' src='/img/icons/models/{$model.icon}' alt='{$model.name}'>
     <span class='text'>
         Add Reply<br>
