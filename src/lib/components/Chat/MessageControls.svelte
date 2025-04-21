@@ -70,10 +70,10 @@
         <button class='message-control-button add' on:click={clickedAddReply} on:mouseenter={hoveredAddReply} on:mouseleave={unhoveredAddReply}>
             <AddIcon className='icon' />
         </button>
-        <button class='message-control-button retry' title='Regenerate reply' on:click={clickedRegenerate} on:mouseenter={hoveredRegenerate} on:mouseleave={unhoveredRegenerate}>
+        <button class='message-control-button retry' on:click={clickedRegenerate} on:mouseenter={hoveredRegenerate} on:mouseleave={unhoveredRegenerate}>
             <RetryIcon className='icon' />
         </button>
-        <button class='message-control-button delete' title='Delete message' on:click={clickedDelete} on:mouseenter={hoveredDelete} on:mouseleave={unhoveredDelete}>
+        <button class='message-control-button delete' on:click={clickedDelete} on:mouseenter={hoveredDelete} on:mouseleave={unhoveredDelete}>
             <DeleteIcon className='icon' />
         </button>
     {:else}
@@ -85,7 +85,7 @@
 
 {#if !showing_message_info}
     <div class='message-controls-left' in:slide={{ axis: 'x', duration: 250, easing: quartOut }} out:fade={{ duration: 250, easing: quartOut }}>
-        <button class='message-control-button star' class:starred={starred} title='Star' on:click={clickedStar} on:mouseenter={hoveredStar} on:mouseleave={unhoveredStar}>
+        <button class='message-control-button star' class:starred={starred} on:click={clickedStar} on:mouseenter={hoveredStar} on:mouseleave={unhoveredStar}>
             <StarIcon className='icon full' />
             <StarEmptyIcon className='icon empty' />
         </button>

@@ -14,6 +14,8 @@
     import MessageControls from '$lib/components/Chat/MessageControls.svelte'
     import ProvisionalForkControls from '$lib/components/Chat/ProvisionalForkControls.svelte'
     import AddReplyHoverInfo from '$lib/components/Chat/AddReplyHoverInfo.svelte'
+    import RegenerateHoverInfo from '$lib/components/Chat/RegenerateHoverInfo.svelte'
+    import DeleteHoverInfo from '$lib/components/Chat/DeleteHoverInfo.svelte'
     import PromptForks from '$lib/components/Chat/PromptForks.svelte'
     import ReplyForks from '$lib/components/Chat/ReplyForks.svelte'
     import WaitingDots from '$lib/components/Chat/WaitingDots.svelte'
@@ -187,6 +189,10 @@
 
     {#if message.role === 'assistant' && add_reply_highlight}
         <AddReplyHoverInfo/>
+    {:else if message.role === 'assistant' && regenerate_highlight}
+        <RegenerateHoverInfo/>
+    {:else if message.role === 'assistant' && delete_highlight}
+        <DeleteHoverInfo/>
     {/if}
 </div>
 

@@ -2,23 +2,23 @@
     import { fly, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { model } from '$lib/stores/ai'
+
+    import RetryIcon from '$lib/components/Icons/Retry.svelte'
 </script>
 
-<div class='add-reply-hover-info' in:fly={{ x: 4, duration: 125, easing: quartOut }} out:fade={{ duration: 125, easing: quartOut }}>
+<div class='regenerate-hover-info' in:fly={{ x: 4, duration: 125, easing: quartOut }} out:fade={{ duration: 125, easing: quartOut }}>
     <img class='model-icon' src='/img/icons/models/{$model.icon}' alt='{$model.name}'>
     <span class='text'>
-        Add Reply<br>
+        Regenerate Reply<br>
         <span class='model-name'>
             {$model.name}
         </span>
     </span>
-    <span class='arrow'>
-        &rarr;
-    </span>
+    <RetryIcon className='icon' />
 </div>
 
 <style lang='sass'>
-    .add-reply-hover-info
+    .regenerate-hover-info
         position:         absolute
         bottom:           space.$default-padding
         right:            space.$default-padding
@@ -28,8 +28,13 @@
         gap:              24px
         padding:          24px
         border-radius:    8px
-        background-color: $blue
+        background-color: $off-white
         color:            $background-darkest
+
+        :global
+            .icon
+                height: 19px
+                fill:   $background-darkest
 
     .model-icon
         height: 32px
@@ -43,8 +48,4 @@
             font-size:   14px
             font-weight: 450
             color:       color.adjust($background-darkest, $alpha: -0.5)
-
-    .arrow
-        font-size:   21px
-        font-weight: 600
 </style>
