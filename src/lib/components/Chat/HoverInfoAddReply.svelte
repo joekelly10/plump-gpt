@@ -7,7 +7,7 @@
 <div class='hover-info-add-reply' in:fly={{ x: 4, duration: 125, easing: quartOut }} out:fade={{ duration: 125, easing: quartOut }}>
     <img class='model-icon' src='/img/icons/models/{$model.icon}' alt='{$model.name}'>
     <span class='text'>
-        Add Reply<br>
+        Add Another Reply<br>
         <span class='model-name'>
             {$model.name}
         </span>
