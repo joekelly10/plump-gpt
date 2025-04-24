@@ -1,5 +1,5 @@
 <script>
-    import { createEventDispatcher, tick } from 'svelte'
+    import { createEventDispatcher } from 'svelte'
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { stars } from '$lib/stores/chat'
