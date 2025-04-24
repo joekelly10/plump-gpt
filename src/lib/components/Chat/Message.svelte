@@ -13,9 +13,10 @@
     import MessageInfo from '$lib/components/Chat/MessageInfo.svelte'
     import MessageControls from '$lib/components/Chat/MessageControls.svelte'
     import ProvisionalForkControls from '$lib/components/Chat/ProvisionalForkControls.svelte'
-    import AddReplyHoverInfo from '$lib/components/Chat/AddReplyHoverInfo.svelte'
-    import RegenerateHoverInfo from '$lib/components/Chat/RegenerateHoverInfo.svelte'
-    import DeleteHoverInfo from '$lib/components/Chat/DeleteHoverInfo.svelte'
+    import HoverInfoAddReply from '$lib/components/Chat/HoverInfoAddReply.svelte'
+    import HoverInfoRegenerate from '$lib/components/Chat/HoverInfoRegenerate.svelte'
+    import HoverInfoDelete from '$lib/components/Chat/HoverInfoDelete.svelte'
+    import HoverInfoStar from '$lib/components/Chat/HoverInfoStar.svelte'
     import PromptForks from '$lib/components/Chat/PromptForks.svelte'
     import ReplyForks from '$lib/components/Chat/ReplyForks.svelte'
     import WaitingDots from '$lib/components/Chat/WaitingDots.svelte'
@@ -188,11 +189,13 @@
     {/if}
 
     {#if message.role === 'assistant' && add_reply_highlight}
-        <AddReplyHoverInfo/>
+        <HoverInfoAddReply/>
     {:else if message.role === 'assistant' && regenerate_highlight}
-        <RegenerateHoverInfo/>
+        <HoverInfoRegenerate/>
     {:else if message.role === 'assistant' && delete_highlight}
-        <DeleteHoverInfo/>
+        <HoverInfoDelete/>
+    {:else if message.role === 'assistant' && star_highlight}
+        <HoverInfoStar starred={starred}/>
     {/if}
 </div>
 
@@ -270,7 +273,7 @@
                 height:           100%
                 box-sizing:       border-box
                 border-radius:    1.5px 1.5px 8px 8px
-                background-color: color.adjust($background, $alpha: -0.6)
+                background-image: linear-gradient(to bottom, color.adjust($background, $alpha: -0.5), color.adjust($background, $alpha: -0.75))
                 opacity:          0
                 transition:       opacity easing.$quart-out 0.1s
                 pointer-events:   none
@@ -281,8 +284,8 @@
                 &.add-reply-highlight
                     .content,
                     :global(.avatar-container)
-                        opacity: 0.75
-                        filter:  blur(2px)
+                        filter: blur(1.5px)
+                        color:  color.adjust($blue, $lightness: 15%)
 
                     &:after
                         opacity: 1

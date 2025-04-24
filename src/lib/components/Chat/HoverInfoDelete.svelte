@@ -3,14 +3,14 @@
     import { quartOut } from 'svelte/easing'
 </script>
 
-<div class='delete-hover-info' in:fly={{ x: 4, duration: 125, easing: quartOut }} out:fade={{ duration: 125, easing: quartOut }}>
+<div class='hover-info-delete' in:fly={{ x: 4, duration: 125, easing: quartOut }} out:fade={{ duration: 125, easing: quartOut }}>
     <span class='text'>
         Delete
     </span>
 </div>
 
 <style lang='sass'>
-    .delete-hover-info
+    .hover-info-delete
         position:         absolute
         bottom:           space.$default-padding
         right:            space.$default-padding
@@ -18,7 +18,7 @@
         display:          flex
         align-items:      center
         gap:              24px
-        padding:          24px
+        padding:          16px 24px
         border-radius:    8px
         background-color: $coral
         color:            $background-darkest

@@ -6,7 +6,7 @@
     import RetryIcon from '$lib/components/Icons/Retry.svelte'
 </script>
 
-<div class='regenerate-hover-info' in:fly={{ x: 4, duration: 125, easing: quartOut }} out:fade={{ duration: 125, easing: quartOut }}>
+<div class='hover-info-regenerate' in:fly={{ x: 4, duration: 125, easing: quartOut }} out:fade={{ duration: 125, easing: quartOut }}>
     <img class='model-icon' src='/img/icons/models/{$model.icon}' alt='{$model.name}'>
     <span class='text'>
         Regenerate Reply<br>
@@ -18,7 +18,7 @@
 </div>
 
 <style lang='sass'>
-    .regenerate-hover-info
+    .hover-info-regenerate
         position:         absolute
         bottom:           space.$default-padding
         right:            space.$default-padding
