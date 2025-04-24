@@ -193,9 +193,9 @@
     {:else if message.role === 'assistant' && regenerate_highlight}
         <HoverInfoRegenerate/>
     {:else if message.role === 'assistant' && delete_highlight}
-        <HoverInfoDelete/>
+        <HoverInfoDelete small={element.clientHeight < 140} />
     {:else if message.role === 'assistant' && star_highlight}
-        <HoverInfoStar starred={starred}/>
+        <HoverInfoStar starred={starred} small={element.clientHeight < 140} />
     {/if}
 </div>
 

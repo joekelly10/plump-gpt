@@ -1,9 +1,11 @@
 <script>
     import { fly, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
+
+    export let small = false
 </script>
 
-<div class='hover-info-delete' in:fly={{ x: 4, duration: 125, easing: quartOut }} out:fade={{ duration: 125, easing: quartOut }}>
+<div class='hover-info-delete' class:small={small} in:fly={{ x: 4, duration: 125, easing: quartOut }} out:fade={{ duration: 125, easing: quartOut }}>
     <span class='text'>
         Delete
     </span>
@@ -22,6 +24,11 @@
         border-radius:    8px
         background-color: $coral
         color:            $background-darkest
+
+        &.small
+            bottom:    50%
+            right:     24px
+            transform: translateY(50%)
 
     .text
         line-height: 24px
