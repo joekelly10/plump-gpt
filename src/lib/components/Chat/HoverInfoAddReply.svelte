@@ -12,9 +12,6 @@
             {$model.name}
         </span>
     </span>
-    <span class='arrow'>
-        &rarr;
-    </span>
 </div>
 
 <style lang='sass'>
@@ -26,7 +23,7 @@
         display:          flex
         align-items:      center
         gap:              24px
-        padding:          24px
+        padding:          24px 48px 24px 24px
         border-radius:    8px
         background-color: $blue
         color:            $background-darkest
@@ -43,8 +40,4 @@
             font-size:   14px
             font-weight: 450
             color:       color.adjust($background-darkest, $alpha: -0.5)
-
-    .arrow
-        font-size:   21px
-        font-weight: 600
 </style>

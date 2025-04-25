@@ -14,7 +14,6 @@
             {$model.name}
         </span>
     </span>
-    <RetryIcon className='icon' />
 </div>
 
 <style lang='sass'>
@@ -26,7 +25,7 @@
         display:          flex
         align-items:      center
         gap:              24px
-        padding:          24px
+        padding:          24px 48px 24px 24px
         border-radius:    8px
         background-color: $off-white
         color:            $background-darkest
