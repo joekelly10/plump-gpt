@@ -26,7 +26,7 @@
     >
         <SystemPromptIcon className='icon' />
         <div class='button-title'>
-            System prompt<br>
+            Prompt<br>
             <span class='prompt-title' class:highlight={highlight}>
                 {$messages[0].system_prompt_title ?? ''}
             </span>
@@ -54,14 +54,14 @@
                 line-height:   font.$line-height-14px
                 font-size:     14px
                 font-weight:   450
-                color:         $blue-grey
+                color:         $background-lightest
                 text-align:    left
                 cursor:        pointer
 
                 .icon
                     flex-shrink: 0
                     height:      21px
-                    fill:        $blue-grey
+                    fill:        $background-lightest
 
                 .prompt-title
                     font-weight: 600
