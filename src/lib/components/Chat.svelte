@@ -559,7 +559,7 @@
             <div class='connecting' in:fly={{ y: -16, delay: 2500, duration: 125, easing: quartOut }}>
                 <img class='model-icon' src='/img/icons/models/{$model.icon}' alt='{$model.name}'>
                 <span class='text'>
-                    Connecting to {$model.hosted_at} API<WaitingDots/>
+                    Connecting to {$model.hosted_at}<WaitingDots/>
                 </span>
             </div>
         {/if}
