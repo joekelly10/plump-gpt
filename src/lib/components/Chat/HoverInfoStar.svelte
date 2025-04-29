@@ -21,8 +21,8 @@
 <style lang='sass'>
     .hover-info-star
         position:         absolute
-        bottom:           space.$default-padding
-        left:             space.$default-padding
+        bottom:           32px
+        left:             32px
         z-index:          1000
         display:          flex
         align-items:      center

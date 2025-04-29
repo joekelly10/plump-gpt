@@ -19,8 +19,8 @@
 <style lang='sass'>
     .hover-info-regenerate
         position:         absolute
-        bottom:           space.$default-padding
-        right:            space.$default-padding
+        bottom:           32px
+        right:            32px
         z-index:          1000
         display:          flex
         align-items:      center
