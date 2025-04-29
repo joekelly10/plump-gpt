@@ -2,11 +2,9 @@
     import { fly, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { model } from '$lib/stores/ai'
-
-    import RetryIcon from '$lib/components/Icons/Retry.svelte'
 </script>
 
-<div class='hover-info-regenerate' in:fly={{ x: 4, duration: 125, easing: quartOut }} out:fade={{ duration: 125, easing: quartOut }}>
+<div class='hover-info-regenerate' in:fly={{ x: 4, duration: 125, easing: quartOut }} out:fade={{ duration: 75, easing: quartOut }}>
     <img class='model-icon' src='/img/icons/models/{$model.icon}' alt='{$model.name}'>
     <span class='text'>
         Regenerate Reply<br>

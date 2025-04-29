@@ -6,7 +6,7 @@
                small   = false
 </script>
 
-<div class='hover-info-star' class:starred={starred} class:small={small} in:fly={{ x: -4, duration: 125, easing: quartOut }} out:fade={{ duration: 125, easing: quartOut }}>
+<div class='hover-info-star' class:starred={starred} class:small={small} in:fly={{ x: -4, duration: 125, easing: quartOut }} out:fade={{ duration: 75, easing: quartOut }}>
     {#if !starred}
         <span class='text' in:slide={{ axis: 'x', delay: 25, duration: 75, easing: quartOut }} out:slide={{ axis: 'x', duration: 25, easing: quartOut }}>
             Add Star

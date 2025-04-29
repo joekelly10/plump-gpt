@@ -5,7 +5,7 @@
     export let small = false
 </script>
 
-<div class='hover-info-delete' class:small={small} in:fly={{ x: 4, duration: 125, easing: quartOut }} out:fade={{ duration: 125, easing: quartOut }}>
+<div class='hover-info-delete' class:small={small} in:fly={{ x: 4, duration: 125, easing: quartOut }} out:fade={{ duration: 75, easing: quartOut }}>
     <span class='text'>
         Delete
     </span>

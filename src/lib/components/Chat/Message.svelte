@@ -248,7 +248,7 @@
 
                     &.no-forks
                         top:        5px
-                        transition: background-color easing.$quart-out 0.075s, box-shadow easing.$quart-out 0.075s, top easing.$quart-out 0.2s
+                        transition: background-color easing.$quart-out 0.075s, box-shadow easing.$quart-out 0.075s, top easing.$quart-out 0.125s
 
                         .content
                             transition: filter easing.$quart-out 0.2s
