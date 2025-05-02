@@ -128,6 +128,7 @@
 
         await tick()
         hljs.highlightAll()
+        clearIsHovering()
         dispatch('scrollChatToBottom', { context: 'sending_message' })
 
         const options = {
@@ -519,12 +520,16 @@
         $chat_id               = null
         $loader_active         = false
         $is_scrolled_to_bottom = true
-        $is_hovering           = { delete: [], regenerate: [], add_reply: [], star: [] }
+        clearIsHovering()
         $page.url.searchParams.delete('user_message')
         window.history.replaceState(null, '', $page.url.toString())
         focus()
         await tick()
         console.log('🌱 New chat created.')
+    }
+
+    const clearIsHovering = () => {
+        is_hovering.set({ delete: [], regenerate: [], add_reply: [], star: [] })
     }
 </script>
 
