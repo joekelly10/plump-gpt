@@ -131,7 +131,9 @@
         clearIsHovering()
         dispatch('scrollChatToBottom', { context: 'sending_message' })
 
-        const options = {
+        const options = $model.is_reasoner ? {
+            model: $model.id
+        } : {
             model:       $model.id,
             temperature: $temperature,
             top_p:       $top_p
