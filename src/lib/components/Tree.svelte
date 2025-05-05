@@ -25,7 +25,7 @@
 
     onMount(() => {
         document.addEventListener('keydown', keydown)
-        scrollToActiveNode()
+        if ($messages.length > 1) scrollToActiveNode()
     })
 
     onDestroy(() => {
