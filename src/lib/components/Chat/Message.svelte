@@ -284,8 +284,8 @@
                 &.add-reply-highlight
                     .content,
                     :global(.avatar-container)
-                        filter: blur(1.5px)
-                        color:  color.adjust($blue, $lightness: 15%)
+                        filter: blur(2px)
+                        color:  $blue-grey
 
                     &:after
                         opacity: 1
@@ -295,14 +295,14 @@
                     border-radius:    1.5px 1.5px 8px 8px
                     background-color: $delete-highlight-bg
                     text-decoration:  line-through
-                    color:            color.adjust($off-white, $alpha: -0.125)
+                    color:            color.adjust(color.adjust($coral, $lightness: 20%), $alpha: -0.5)
                 
                 &.regenerate-highlight
                     box-shadow:       0 0 0 1.5px $blue
                     border-radius:    1.5px 1.5px 8px 8px
                     background-color: $regenerate-highlight-bg
                     text-decoration:  line-through
-                    color:            color.adjust($off-white, $alpha: -0.125)
+                    color:            color.adjust($blue-grey, $alpha: -0.5)
                 
                 &.star-highlight
                     background-color: color.adjust($yellow, $alpha: -0.7)
