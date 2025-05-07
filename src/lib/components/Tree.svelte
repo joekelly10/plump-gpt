@@ -92,7 +92,7 @@
         <Sidebar node={hovered_node} />
     {/if}
 
-    <UsageStats/>
+    <UsageStats tree_view={true} />
 
     <div class='inner' bind:this={container_el}>
         <div class='chat-tree'>
@@ -184,7 +184,7 @@
         position:       relative
         height:         100%
         box-sizing:     border-box
-        padding-top:    108px
+        padding-top:    120px
         padding-bottom: 50vh
         overflow:       scroll
         +shared.scrollbar

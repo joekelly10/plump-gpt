@@ -1,10 +1,10 @@
 <script>
+    import { messages } from '$lib/stores/chat'
+
     import LoadButton from '$lib/components/Header/LoadButton.svelte'
     import SaveButton from '$lib/components/Header/SaveButton.svelte'
+    import TreeButton from '$lib/components/Header/TreeButton.svelte'
     import Logo from '$lib/components/Header/Logo.svelte'
-    import TopPControl from '$lib/components/Header/TopPControl.svelte'
-    import TemperatureControl from '$lib/components/Header/TemperatureControl.svelte'
-    import ModelSwitcher from '$lib/components/Header/ModelSwitcher.svelte'
 
     let save_button
 
@@ -12,17 +12,17 @@
 </script>
 
 <header class='header'>
-    <div class='load-and-save'>
+    <div class='left'>
         <LoadButton/>
         <SaveButton bind:this={save_button} />
     </div>
     <div class='title'>
         <Logo/>
     </div>
-    <div class='model'>
-        <TopPControl/>
-        <TemperatureControl/>
-        <ModelSwitcher/>
+    <div class='right'>
+        {#if $messages.length > 1}
+            <TreeButton/>
+        {/if}
     </div>
 </header>
 
@@ -37,7 +37,7 @@
         text-align:       center
         user-select:      none
     
-    .load-and-save
+    .left
         display:      flex
         position:     absolute
         top:          0
@@ -51,7 +51,7 @@
         align-items: center
         height:      space.$header-height
     
-    .model
+    .right
         display:       flex
         position:      absolute
         top:           0

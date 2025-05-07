@@ -32,7 +32,7 @@
         left:             0
         z-index:          100
         width:            100%
-        height:           space.$header-height
+        height:           space.$tree-view-header-height
         background-color: color.adjust($background-darkest, $lightness: -2%)
 
     .title
@@ -61,7 +61,7 @@
         top:             0
         right:           0
         z-index:         101
-        height:          space.$header-height
+        height:          space.$tree-view-header-height
         padding:         0 space.$default-padding
         cursor:          pointer
 

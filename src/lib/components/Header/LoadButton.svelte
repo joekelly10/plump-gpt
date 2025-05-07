@@ -37,7 +37,7 @@
         &:hover
             background-color: $background-darkest
             font-weight:      600
-            color:            white
+            color:            $off-white
             transition:       none
 
         &:active

@@ -100,11 +100,12 @@
 
             .save-text
                 font-weight: 600
-                color:       white
+                color:       $off-white
         
         &:active
             background-color: color.adjust($background-darkest, $lightness: -1%)
             transition:       none
+
         &.saving
             .save-text
                 opacity:    0

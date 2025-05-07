@@ -18,87 +18,75 @@
     }
 </script>
 
-<div class='system-prompt-button-container'>
-    <button
-        class='system-prompt-button'
-        class:editor-active={$prompt_editor_active}
-        on:click={openPromptEditor}
-    >
-        <SystemPromptIcon className='icon' />
-        <div class='button-title'>
-            Prompt<br>
-            <span class='prompt-title' class:highlight={highlight}>
-                {$messages[0].system_prompt_title ?? ''}
-            </span>
+<button
+    class='system-prompt-button'
+    class:editor-active={$prompt_editor_active}
+    on:click={openPromptEditor}
+>
+    <div class='text'>
+        <div class='label'>
+            System Prompt
         </div>
-    </button>
-</div>
+        <div class='prompt-title' class:highlight={highlight}>
+            {$messages[0].system_prompt_title ?? ''}
+        </div>
+    </div>
+</button>
 
 <style lang='sass'>
-    .system-prompt-button-container
-        position: absolute
-        top:      0
-        right:    16px
-        height:   100%
+    .system-prompt-button
+        display:       flex
+        align-items:   center
+        gap:           16px
+        position:      absolute
+        top:           space.$default-padding
+        right:         16px
+        max-width:     320px
+        height:        space.$input-initial-height
+        box-sizing:    border-box
+        padding-left:  space.$default-padding
+        padding-right: space.$default-padding
+        border-radius: 8px
+        border:        1px solid transparent
+        line-height:   font.$line-height-14px
+        font-size:     14px
+        font-weight:   450
+        color:         $background-lightest
+        text-align:    right
+        cursor:        pointer
+        transition:    background-color easing.$quart-out 0.1s, color easing.$quart-out 0.1s
 
-        :global
-            .system-prompt-button
-                display:       flex
-                align-items:   center
-                gap:           16px
-                max-width:     320px
-                height:        100%
-                box-sizing:    border-box
-                padding-left:  space.$default-padding
-                padding-right: space.$default-padding
-                line-height:   font.$line-height-14px
-                font-size:     14px
-                font-weight:   450
-                color:         $background-lightest
-                text-align:    left
-                cursor:        pointer
+        .label
+            font-weight:    600
+            font-size:      12px
+            text-transform: uppercase
 
-                .icon
-                    flex-shrink: 0
-                    height:      21px
-                    fill:        $background-lightest
+        .prompt-title
+            font-weight: 600
+            color:       $off-white
+            transition:  font-size easing.$quart-out 0.25s, color easing.$quart-out 0.1s
 
-                .prompt-title
-                    font-weight: 600
-                    color:       $off-white
-                    transition:  font-size easing.$quart-out 0.25s
+            &.highlight
+                font-size: 1.25em
+                color:     $yellow
 
-                    &.highlight
-                        font-size: 1.25em
-                        color:     $yellow
+        &:hover
+            border:     1px solid $background-lightest
+            color:      $blue-grey
+            transition: none
 
-                &:hover
-                    background-color: $background-darkest
-                    color:            $blue-grey
+            .prompt-title
+                transition: font-size easing.$quart-out 0.25s
+        
+        &:active
+            background-color: color.adjust($background-darker, $lightness: -1%)
+            color:            $blue-grey
+            transition:       none
 
-                    .icon
-                        fill: $blue-grey
+            .prompt-title
+                transition: none
 
-                    .prompt-title
-                        color: $off-white
-                
-                &:active
-                    background-color: color.adjust($background-darkest, $lightness: -1%)
-                    color:            $blue-grey
-
-                    .icon
-                        fill: $blue-grey
-
-                    .prompt-title
-                        color: $off-white
-
-                &.editor-active
-                    border-color: $background-lighter
-                    color:        $blue-grey
-
-                    .icon
-                        fill: $blue-grey
-                    
-                    .prompt-title
-                        color: $off-white
+        &.editor-active
+            border: 1px solid $background-lightest
+            color:  $blue-grey
 </style>

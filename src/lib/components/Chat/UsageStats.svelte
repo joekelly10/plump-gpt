@@ -3,6 +3,8 @@
     import { quartOut } from 'svelte/easing'
     import { usage, forks } from '$lib/stores/chat'
 
+    export let tree_view = false
+
     $: cache_used     = $usage.cache_read_tokens > 0 || $usage.cache_write_tokens > 0
     $: cost_string    = '$' + ($usage.total_cost / 100).toFixed(5)
     $: savings_string = '$' + ($usage.total_savings / 100).toFixed(5)
@@ -10,6 +12,7 @@
 
 <div
     class='usage-stats'
+    class:tree-view={tree_view}
     class:cache-used={cache_used}
     in:slide={{ axis: 'x', delay: 250, duration: 250, easing: quartOut }}
     out:fade={{ duration: 125, easing: quartOut }}
@@ -79,6 +82,9 @@
         font-size:   14px
         color:       $background-lightest
         white-space: nowrap
+
+        &.tree-view
+            top: space.$tree-view-header-height
     
     .stat
         margin-bottom: space.$default-padding

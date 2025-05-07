@@ -9,8 +9,9 @@
     import { addCopyButtons } from '$lib/utils/helpers'
     import hljs from 'highlight.js'
 
+    import ModelSwitcher from '$lib/components/Input/ModelSwitcher.svelte'
+    import ModelSettings from '$lib/components/Input/ModelSettings.svelte'
     import ExpandButton from '$lib/components/Input/ExpandButton.svelte'
-    import TreeButton from '$lib/components/Input/TreeButton.svelte'
     import SystemPromptButton from '$lib/components/Input/SystemPromptButton.svelte'
     import ScrollDownButton from '$lib/components/Input/ScrollDownButton.svelte'
 
@@ -21,9 +22,10 @@
         rate_limiter,
         nope_timer
     
-    let input_overflowed = false,
-        input_expanded   = false,
-        nope_highlight   = false
+    let input_overflowed           = false,
+        input_expanded             = false,
+        nope_highlight             = false,
+        is_hovering_model_switcher = false
 
     export const focus = () => input.focus()
 
@@ -538,12 +540,15 @@
 <svelte:document on:keydown={keydownDocument} />
 
 <section class='user-input' class:expanded={input_expanded}>
-    <ExpandButton
-        bind:input_expanded={input_expanded}
-        input_overflowed={input_overflowed}
+    <ModelSettings
+        is_hovering_model_switcher={is_hovering_model_switcher}
     />
 
     <div class='container' class:nope-highlight={nope_highlight}>
+        <ModelSwitcher
+            on:focusInput={focus}
+            bind:hovering={is_hovering_model_switcher}
+        />
         <!-- svelte-ignore a11y-no-static-element-interactions -->
         <div
             class='input'
@@ -556,8 +561,12 @@
         ></div>
     </div>
 
+    <ExpandButton
+        bind:input_expanded={input_expanded}
+        input_overflowed={input_overflowed}
+    />
+
     {#if !input_expanded}
-        <TreeButton/>
         <SystemPromptButton/>
         <ScrollDownButton
             on:clicked={() => dispatch('scrollChatToBottom', { context: 'scroll_down_button' })}
