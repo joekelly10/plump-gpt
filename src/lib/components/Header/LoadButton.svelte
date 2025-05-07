@@ -32,12 +32,15 @@
         font-weight:     450
         color:           $background-lightest
         cursor:          pointer
+        transition:      background-color easing.$quart-out 0.1s, color easing.$quart-out 0.1s
 
         &:hover
             background-color: $background-darkest
             font-weight:      600
             color:            white
-        
+            transition:       none
+
         &:active
             background-color: color.adjust($background-darkest, $lightness: -1%)
+            transition:       none
 </style>
