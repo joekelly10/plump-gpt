@@ -302,7 +302,7 @@
                     border-radius:    1.5px 1.5px 8px 8px
                     background-color: $regenerate-highlight-bg
                     text-decoration:  line-through
-                    color:            color.adjust($blue-grey, $alpha: -0.5)
+                    color:            color.adjust($blue-grey, $alpha: -0.25)
                 
                 &.star-highlight
                     background-color: color.adjust($yellow, $alpha: -0.7)
