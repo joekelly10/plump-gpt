@@ -49,7 +49,7 @@
         justify-content: center
         align-items:     center
         height:          space.$input-initial-height
-        width:           space.$load-save-button-width
+        padding:         0 space.$default-padding
         border-radius:   8px
         font-size:       12px
         color:           $background-lightest
