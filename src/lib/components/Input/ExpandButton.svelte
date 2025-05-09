@@ -35,7 +35,7 @@
         position:         absolute
         top:              space.$default-padding + 12px
         left:             50%
-        z-index:          1
+        z-index:          5
         transform:        translateX(-50%) translateY(-100%)
         width:            700px
         height:           56px

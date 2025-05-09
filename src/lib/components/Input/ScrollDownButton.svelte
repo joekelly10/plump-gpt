@@ -29,6 +29,7 @@
         position:         absolute
         bottom:           100%
         right:            16px + space.$default-padding
+        z-index:          1
         transform:        translateY(-48px)
         width:            $button-size
         height:           $button-size
