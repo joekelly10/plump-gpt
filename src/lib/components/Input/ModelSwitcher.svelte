@@ -110,9 +110,10 @@
         display:        flex
         flex-direction: column
         padding-left:   18px
-        font-size:      10.5px
+        font-family:    font.$mono
+        font-size:      10px
         font-weight:    500
         color:          $blue-grey
-        text-align:     left
-        line-height:    14px
+        text-align:     right
+        line-height:    16px
 </style>

@@ -99,10 +99,11 @@
             flex-direction:  column
             justify-content: center
             align-items:     flex-end
-            font-size:       10.5px
+            font-family:     font.$mono
+            font-size:       10px
             font-weight:     500
             color:           $blue-grey
-            line-height:     14px
+            line-height:     16px
         
         &:hover
             background-color: $background-darker
