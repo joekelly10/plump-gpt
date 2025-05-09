@@ -23,7 +23,7 @@ const model_prices = {
             }
         }
     },
-    'o3-mini': {
+    'o4-mini': {
         price: {
             cents: {
                 input_token:  110/1000000, // $1.10/mTok

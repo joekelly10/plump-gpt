@@ -26,14 +26,23 @@
     }
 
     const clicked = () => {
-        model.next()
+        dispatch('toggleModelList')
         dispatch('focusInput')
     }
 
     const rightClicked = (e) => {
         e.preventDefault()
-        model.prev()
         dispatch('focusInput')
+        return false
+    }
+
+    const handleWheel = (e) => {
+        e.preventDefault()
+        if (e.deltaY > 0) {
+            model.next()
+        } else {
+            model.prev()
+        }
         return false
     }
 </script>
@@ -46,6 +55,7 @@
     on:contextmenu={rightClicked}
     on:mouseenter={() => hovering = true}
     on:mouseleave={() => hovering = false}
+    on:wheel={handleWheel}
 >
     <img class='icon' src='img/icons/models/{$model.icon}' alt='{$model.name}'>
     {#if hovering}

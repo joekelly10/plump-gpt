@@ -9,6 +9,7 @@
     import { addCopyButtons } from '$lib/utils/helpers'
     import hljs from 'highlight.js'
 
+    import ModelList from '$lib/components/Input/ModelList.svelte'
     import ModelSwitcher from '$lib/components/Input/ModelSwitcher.svelte'
     import ModelSettings from '$lib/components/Input/ModelSettings.svelte'
     import ExpandButton from '$lib/components/Input/ExpandButton.svelte'
@@ -25,7 +26,8 @@
     let input_overflowed           = false,
         input_expanded             = false,
         nope_highlight             = false,
-        is_hovering_model_switcher = false
+        is_hovering_model_switcher = false,
+        model_list_expanded        = false
 
     export const focus = () => input.focus()
 
@@ -540,6 +542,11 @@
 <svelte:document on:keydown={keydownDocument} />
 
 <section class='user-input' class:expanded={input_expanded}>
+    <ModelList
+        on:focusInput={focus}
+        bind:expanded={model_list_expanded}
+    />
+
     <ModelSettings
         is_hovering_model_switcher={is_hovering_model_switcher}
     />
@@ -547,6 +554,7 @@
     <div class='container' class:nope-highlight={nope_highlight}>
         <ModelSwitcher
             on:focusInput={focus}
+            on:toggleModelList={() => model_list_expanded = !model_list_expanded}
             bind:hovering={is_hovering_model_switcher}
         />
         <!-- svelte-ignore a11y-no-static-element-interactions -->
