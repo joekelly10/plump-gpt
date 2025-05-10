@@ -111,7 +111,7 @@
         flex-direction: column
         padding-left:   18px
         font-family:    font.$mono
-        font-size:      10px
+        font-size:      10.5px
         font-weight:    500
         color:          $blue-grey
         text-align:     right
