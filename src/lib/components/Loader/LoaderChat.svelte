@@ -98,7 +98,7 @@
             <div class='models-used'>
                 {#each models_used as model}
                     <div class='model'>
-                        <img class='ai-icon' src='/img/icons/models/{model.icon ?? 'gpt-4o.png'}' alt='{model.name}' title='{model.count} {model.count === 1 ? 'message' : 'messages'}'>
+                        <img class='ai-icon' src='/img/icons/models/{model.icon ?? 'gpt-4.1-mini.png'}' alt='{model.name}' title='{model.count} {model.count === 1 ? 'message' : 'messages'}'>
                     </div>
                 {/each}
             </div>
