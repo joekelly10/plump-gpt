@@ -11,3 +11,5 @@ vite.config.ts.timestamp-*
 /static/saved/*.json
 /pocketbase/*
 !/pocketbase/pb_migrations/
+/db
+/src/generated
