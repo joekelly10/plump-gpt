@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Chat {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  messages    Message[]
+  forks       Json      // Array of { message_ids: number[], forked_at: number[] }
+  activeFork  Int?
+  stars       Int[]
+}
+
+model Message {
+  id                  String    @id @default(cuid())
+  position            Int
+  parent_position     Int?
+  role                String
+  content             String    @db.Text
+  reasoning_content   String?   @db.Text
+  model               Json?
+  temperature         Float?
+  topP                Float?
+  usage               Json?
+  is_default          Boolean   @default(false)
+  system_prompt_id    String?
+  system_prompt_title String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  chat                Chat      @relation(fields: [chatId], references: [id])
+  chatId              String
+
+  @@index([chatId, position])
+}
+
+model SystemPrompt {
+  id        String    @id @default(cuid())
+  message   String    @db.Text
+  title     String
+  active    Boolean   @default(false)
+  default   Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+

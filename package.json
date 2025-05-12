@@ -22,9 +22,11 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@prisma/client": "^6.7.0",
 		"highlight.js": "^11.8.0",
 		"marked": "^15.0.6",
 		"pocketbase": "^0.25.1",
+		"prisma": "^6.7.0",
 		"tiktoken": "^1.0.10"
 	}
 }
