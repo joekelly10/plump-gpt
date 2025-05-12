@@ -1,14 +1,17 @@
 import { json } from '@sveltejs/kit'
-import PocketBase from 'pocketbase'
-import { POCKETBASE_URL } from '$lib/config'
+import { prisma } from '$lib/db/prisma'
 
 export const GET = async () => {
     try {
-        const pb   = new PocketBase(POCKETBASE_URL)
-        const data = await pb.collection('system_prompts').getFullList({ sort: '-updated' })
+        const data = await prisma.systemPrompt.findMany({
+            orderBy: {
+                updatedAt: 'desc'
+            }
+        })
 
         return json(data, { status: 200 })
     } catch (error) {
-        return json(error, { status: error.status || 500 })
+        console.error('Error fetching system prompts:', error)
+        return json({ message: 'Failed to fetch system prompts' }, { status: 500 })
     }
 }

@@ -1,21 +1,41 @@
 import { json } from '@sveltejs/kit'
-import PocketBase from 'pocketbase'
-import { POCKETBASE_URL } from '$lib/config'
+import { prisma } from '$lib/db/prisma'
 
 export const DELETE = async ({ params }) => {
     try {
-        const pb     = new PocketBase(POCKETBASE_URL)
-        const active = await pb.collection('system_prompts').getFirstListItem('active=true')
+        // default prompt must not be deleted
+        const default_prompt = await prisma.systemPrompt.findFirst({
+            where: {
+                default: true
+            }
+        })
 
-        if (params.id === active.id) {
-            const default_prompt = await pb.collection('system_prompts').getFirstListItem('default=true')
-            await pb.collection('system_prompts').update(default_prompt.id, { active: true })
+        if (default_prompt.id === params.id) {
+            return json({ message: 'Cannot delete default system prompt' }, { status: 400 })
         }
 
-        const data = await pb.collection('system_prompts').delete(params.id)
+        // if we're deleting the active prompt, make the default prompt active
+        const active_prompt = await prisma.systemPrompt.findFirst({
+            where: {
+                active: true
+            }
+        })
 
-        return json(data, { status: 204 })
+        if (active_prompt?.id === params.id) {
+            await prisma.systemPrompt.update({
+                where: { id: default_prompt.id },
+                data:  { active: true }
+            })
+        }
+
+        // delete the prompt
+        await prisma.systemPrompt.delete({
+            where: { id: params.id }
+        })
+
+        return json(null, { status: 204 })
     } catch (error) {
-        return json(error, { status: error.status })
+        console.error('Error deleting system prompt:', error)
+        return json({ message: 'Failed to delete system prompt' }, { status: 500 })
     }
 }
