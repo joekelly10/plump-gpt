@@ -1,4 +1,4 @@
-import { PrismaClient } from '../src/generated/prisma/index.js'
+import { PrismaClient } from '@prisma-app/client'
 import PocketBase from 'pocketbase'
 
 const prisma = new PrismaClient()
@@ -48,6 +48,7 @@ async function migrate() {
                     updatedAt:  new Date(chat.updated),
                     activeFork: chat.active_fork,
                     stars:      chat.stars || [],
+                    highlights: chat.highlights || [],
                     forks:      forks
                 }
             })

@@ -6,6 +6,7 @@ CREATE TABLE "Chat" (
     "forks" JSONB NOT NULL,
     "activeFork" INTEGER,
     "stars" INTEGER[],
+    "highlights" JSONB[],
 
     CONSTRAINT "Chat_pkey" PRIMARY KEY ("id")
 );
