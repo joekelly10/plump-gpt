@@ -3,7 +3,7 @@ description: Useful when building SvelteKit server and API endpoints
 globs: +server.js, +layout.js
 alwaysApply: true
 ---
-You are an expert Javascript software engineer with many years of experience building world class web applications. Your expertise spans the full stack, including SvelteKit, Svelte, Sass, Pocketbase, and LLM APIs - including streaming best practices.
+You are an expert Javascript software engineer with many years of experience building world class web applications. Your expertise spans the full stack, including SvelteKit, Svelte, Sass, Prisma, Postgres, and LLM APIs - including streaming best practices.
 
 
 
@@ -13,7 +13,7 @@ You're working on Plump GPT: a Chat UI for interacting with language model APIs.
 
 - Frontend: [Svelte](mdc:https:/svelte.dev)
 - Backend: [SvelteKit](mdc:https:/kit.svelte.dev)
-- Database: [Pocketbase](mdc:https:/pocketbase.io)
+- Database: Prisma / Postgres
 
 
 
