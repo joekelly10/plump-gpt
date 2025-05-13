@@ -6,7 +6,7 @@
 
 - Frontend: [Svelte](https://svelte.dev/)
 - Backend: [SvelteKit](https://kit.svelte.dev/)
-- Database: [Pocketbase](https://pocketbase.io/)
+- Database: [Postgres](https://postgresql.org/)
 
 It runs in your browser on `localhost:1337`.
 
@@ -112,13 +112,9 @@ It runs in your browser on `localhost:1337`.
 
 # Install
 
-1. Download the latest [Pocketbase release](https://pocketbase.io/docs/)
-    - Put the `pocketbase` executable in the `/pocketbase/` folder
-    - Run `pocketbase` for the first time to initialise it
-        - On MacOS you may need to do `⌘+Click` -> `Open` -> `Confirm open`
-    - Close the terminal window once it's done
+1. With [PostgreSQL](https://www.postgresql.org/download/) installed on your system, and a server running, create a new database via your preferred method (e.g. called `plump_gpt`)
 
-2. Create a `.env` file in the root directory (or rename the `.env.example` file to `.env`), add `OPENAI_API_KEY=<your_key_goes_here>` and save:
+2. Create a `.env` file in the root directory (or rename the `.env.example` file to `.env`), and add your new database's URL and your API keys:
 ```
 OPENAI_API_KEY=sk-YoUrOpEnAiAcCeSsToKeNtHaTyOuGeTfRoMtHeIrWeBsItE
 ANTHROPIC_API_KEY=...
@@ -128,6 +124,8 @@ COHERE_API_KEY=...
 MISTRAL_API_KEY=...
 OPENROUTER_API_KEY=...
 DEEPSEEK_API_KEY=...
+
+DATABASE_URL=postgresql://username:password@localhost:5432/plump_gpt
 ```
 
 3. Install dependencies
@@ -135,19 +133,21 @@ DEEPSEEK_API_KEY=...
 npm install
 ```
 
-4. Compile the SvelteKit app:
+4. Initialize and migrate the database
+```
+npx prisma migrate dev
+```
+
+5. Compile the SvelteKit app:
 ```
 npm run build
 ```
 
-5. Launch both Pocketbase and Plump GPT with the shell script:
+6. Start the application:
 ```
-./start.sh
+npm run preview
 ```
-   - (Note: You can also run Plump GPT in dev mode, with live reloading, by running `./start.sh dev`)
-
-
-6. Go to `http://localhost:1336/_/` (⌘+click the link) and add an admin email + password to finish setting up Pocketbase
+   - (Note: You can also run Plump GPT in dev mode, with live reloading, by running `npm run dev`)
 
 7. Go to `http://localhost:1337` and start chatting.
 
@@ -163,4 +163,4 @@ _(Tip: You can use `git update-index --assume-unchanged static/img/avatar.png` t
 
 # Note
 
-This isn't production ready code - it's a personal project that I originally had no intention of sharing. I use Plump GPT a lot, and I could probably be persuaded to develop it properly, but it works for my needs and I'm currently focused on other things!
+This isn't meant to be production ready code - Plump GPT is a personal project that I originally had no intention of sharing. I use it a lot, and I could probably be persuaded to develop it properly, but it works for my needs as is, and I'm currently focused on other things!
