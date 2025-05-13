@@ -149,6 +149,12 @@ npm run preview
 ```
    - (Note: You can also run Plump GPT in dev mode, with live reloading, by running `npm run dev`)
 
+Or use the start script:
+```
+./start.sh
+```
+   - (You can also run in dev mode with `./start.sh dev`)
+
 7. Go to `http://localhost:1337` and start chatting.
 
 
