@@ -75,9 +75,23 @@ It runs in your browser on `localhost:1337`.
     - Branched conversations
     - No-one had done this, and I needed it, so I did it
     - Should be a fundamental feature of any LLM interface, imo
+- 🌴 **Tree view**
+    - Get a birds-eye view of the chat (all forks)
+    - Easily navigate to specific messages
+- ⭐️ **Stars**
+    - Mark (whole) messages as starred
+    - Searchable later
+    - Shows on tree
+- 🟨 **Highlights**
+    - Add highlights on specific text within messages
+    - Searchable later
+    - Shows on tree
+- 💬 **Quote**
+    - Quick-add the currently highlighted text to your next input
+    - Super-useful pattern, used a lot, for focusing on a specific part of the AI's reply
 - 📝 **System prompt**
-    - Full control of the `system_prompt`
-    - Store multiple prompts in the db and switch easily
+    - Control the `system_prompt`
+    - Keep a library of prompts in the db and switch easily
 - 🔧 **Model settings**
     - Set `temperature`, `top_p`, etc.
 - 🚀 **Quick launch**
