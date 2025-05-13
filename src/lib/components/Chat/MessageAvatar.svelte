@@ -1,6 +1,7 @@
 <script>
     import { fly, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
+    import { model } from '$lib/stores/ai'
 
     export let message,
                show_info
@@ -25,12 +26,15 @@
             on:dblclick={copyMessageToClipboard}
         >
     {:else}
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
         <img
             class='avatar ai'
             src='/img/icons/models/{message.model.icon}'
             alt='{message.model.name}'
             on:mouseenter={() => { show_info = true }}
             on:mouseleave={() => { show_info = false }}
+            on:click={() => { model.setById(message.model.id) }}
             on:dblclick={copyMessageToClipboard}
         >
     {/if}
