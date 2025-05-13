@@ -1,32 +1,123 @@
 import { json } from '@sveltejs/kit'
-import PocketBase from 'pocketbase'
-import { POCKETBASE_URL } from '$lib/config'
+import { prisma } from '$lib/db/prisma'
 
 export const GET = async ({ url }) => {
     try {
-        const pb       = new PocketBase(POCKETBASE_URL),
-              filter   = url.searchParams.get('filter'),
+        const filter   = url.searchParams.get('filter'),
               page     = Number(url.searchParams.get('page') ?? 1),
               per_page = Number(url.searchParams.get('per_page') ?? 20),
-              query    = url.searchParams.get('query') ?? ''
+              query    = url.searchParams.get('query') ?? '',
+              mode     = url.searchParams.get('mode') ?? 'insensitive'
 
-        const search_terms  = query.split(' ').filter(term => term.trim().length > 0)
-
-        let filter_string = search_terms.map(term => `messages ~ "${term}"`).join(' && ')
-        if (filter === 'starred') filter_string += ` && stars.0 != null || highlights.0 != null`
-        if (filter === 'non-default') filter_string += ` && messages.0.is_default = false`
-
-        const data = await pb.collection('chats').getList(page, per_page, {
-            filter: filter_string,
-            sort:   '-updated'
+        const search_terms = query.split(' ').filter(term => term.trim().length > 0)
+        
+        // search messages -> get distinct chat ids
+        const matched_messages = await prisma.message.findMany({
+            where: {
+                OR: search_terms.map(term => ({
+                    content: {
+                        contains: term,
+                        mode
+                    }
+                }))
+            },
+            select: {
+                chatId: true
+            },
+            distinct: ['chatId']
         })
 
-        // TODO: If query string matches on json keys,
-        //       then handle further filtering of these
-        //       special cases manually
+        const matched_chat_ids = matched_messages.map(msg => msg.chatId)
+
+        let where = {}
+
+        if (!filter || filter === 'all') {
+            where = {
+                id: {
+                    in: matched_chat_ids
+                }
+            }
+        } else if (filter === 'starred') {
+            where = {
+                id: {
+                    in: matched_chat_ids
+                },
+                OR: [
+                    { stars: { isEmpty: false } },
+                    { highlights: { isEmpty: false } }
+                ]
+            }
+        } else if (filter === 'non-default') {
+            // filter by system prompts (always at position 0) that are not default
+            const non_default_system_messages = await prisma.message.findMany({
+                where: {
+                    chronologicalId:       0,
+                    systemPromptTitle:     { not: null },
+                    systemPromptIsDefault: false,
+                    chatId:                { in: matched_chat_ids }
+                },
+                select: {
+                    chatId: true
+                }
+            })
+            
+            const matched_non_default_chat_ids = non_default_system_messages.map(msg => msg.chatId)
+            
+            where = {
+                id: {
+                    in: matched_non_default_chat_ids
+                }
+            }
+        }
+
+        const total_items = await prisma.chat.count({ where })
+        
+        let items = await prisma.chat.findMany({
+            where,
+            include: {
+                messages: {
+                    orderBy: {
+                        chronologicalId: 'asc'
+                    }
+                }
+            },
+            orderBy: { updatedAt: 'desc' },
+            skip:    (page - 1) * per_page,
+            take:    per_page
+        })
+        
+        // standardise to API format
+        items = items.map(chat => ({
+            ...chat,
+            active_fork: chat.activeFork,
+            messages:    chat.messages.map(message => ({
+                ...message,
+                db_id:     message.id,
+                id:        message.chronologicalId,
+                parent_id: message.chronologicalParentId,
+                timestamp: message.updatedAt,
+                ...(message.role === 'system' && {
+                    system_prompt_id:    message.systemPromptId,
+                    system_prompt_title: message.systemPromptTitle,
+                    is_default:          message.systemPromptIsDefault
+                }),
+                ...(message.role === 'assistant' && {
+                    top_p: message.topP
+                })
+            }))
+        }))
+
+        const data = {
+            items,
+            total_items,
+            page,
+            per_page,
+            total_pages: Math.ceil(total_items / per_page)
+        }
 
         return json(data, { status: 200 })
     } catch (error) {
-        return json(error, { status: error.status })
+        console.error('Error searching chats:', error)
+        return json({ message: 'Failed to search chats' }, { status: 500 })
     }
 }

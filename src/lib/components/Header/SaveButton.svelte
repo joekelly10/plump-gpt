@@ -34,9 +34,9 @@
         })
 
         if (response.ok) {
-            const { record } = await response.json()
-            $chat_id = record.id
-            console.log(`💾–✅ Saved chat: ${record.id}`)
+            const { saved_chat } = await response.json()
+            $chat_id = saved_chat.id
+            console.log(`💾–✅ Saved chat: ${saved_chat.id}`)
             timer = setTimeout(() => {
                 status = 'saved'
                 if (queued) {

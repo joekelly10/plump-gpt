@@ -1,14 +1,19 @@
 import { json } from '@sveltejs/kit'
-import PocketBase from 'pocketbase'
-import { POCKETBASE_URL } from '$lib/config'
+import { prisma } from '$lib/db/prisma'
 
 export const DELETE = async ({ params }) => {
     try {
-        const pb   = new PocketBase(POCKETBASE_URL)
-        const data = await pb.collection('chats').delete(params.id)
+        // NB: all Messages get deleted automatically due to onDelete: Cascade
+        await prisma.chat.delete({
+            where: {
+                id: params.id
+            }
+        })
 
-        return json(data, { status: 204 })
+        // Use the Response constructor directly instead of json helper
+        return new Response(null, { status: 204 })
     } catch (error) {
-        return json(error, { status: error.status })
+        console.error('Error deleting chat:', error)
+        return json({ message: 'Failed to delete chat' }, { status: 500 })
     }
 }

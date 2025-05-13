@@ -70,8 +70,8 @@
             const json = await response.json()
 
             chats          = json.items
-            total_chats    = json.totalItems
-            total_pages    = json.totalPages
+            total_chats    = json.total_items
+            total_pages    = json.total_pages
             searched_value = search_value
 
             await tick()
@@ -226,7 +226,7 @@
                     input_tokens:       0,
                     output_tokens:      0
                 }
-                message.timestamp = new Date(chat.updated).toISOString()
+                message.timestamp = new Date(chat.updatedAt).toISOString()
             }
             // cache_write_tokens and cache_read_tokens are missing from old usage objects
             if (message.role === 'assistant' && message.usage.cache_write_tokens === undefined) {

@@ -54,7 +54,7 @@
         on:click={() => dispatch('loadChat', { chat })}
     >
         <div class='date'>
-            {@html formatDate(chat.updated)}
+            {@html formatDate(chat.updatedAt)}
             {#if chat.id === $chat_id}
                 <span class='active'>
                     (active now)
