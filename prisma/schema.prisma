@@ -26,25 +26,25 @@ model Chat {
 }
 
 model Message {
-  id                  String    @id @default(cuid())
-  position            Int
-  parent_position     Int?
-  role                String
-  content             String    @db.Text
-  reasoning_content   String?   @db.Text
-  model               Json?
-  temperature         Float?
-  topP                Float?
-  usage               Json?
-  is_default          Boolean   @default(false)
-  system_prompt_id    String?
-  system_prompt_title String?
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
-  chat                Chat      @relation(fields: [chatId], references: [id])
-  chatId              String
+  id                    String    @id @default(cuid())
+  chronologicalId       Int
+  chronologicalParentId Int?
+  role                  String
+  content               String    @db.Text
+  reasoningContent      String?   @db.Text
+  model                 Json?
+  temperature           Float?
+  topP                  Float?
+  usage                 Json?
+  systemPromptId        String?
+  systemPromptTitle     String?
+  systemPromptIsDefault Boolean?  @default(false)
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  chat                  Chat      @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chatId                String
 
-  @@index([chatId, position])
+  @@index([chatId, chronologicalId])
 }
 
 model SystemPrompt {

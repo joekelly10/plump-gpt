@@ -14,18 +14,18 @@ CREATE TABLE "Chat" (
 -- CreateTable
 CREATE TABLE "Message" (
     "id" TEXT NOT NULL,
-    "position" INTEGER NOT NULL,
-    "parent_position" INTEGER,
+    "chronologicalId" INTEGER NOT NULL,
+    "chronologicalParentId" INTEGER,
     "role" TEXT NOT NULL,
     "content" TEXT NOT NULL,
-    "reasoning_content" TEXT,
+    "reasoningContent" TEXT,
     "model" JSONB,
     "temperature" DOUBLE PRECISION,
     "topP" DOUBLE PRECISION,
     "usage" JSONB,
-    "is_default" BOOLEAN NOT NULL DEFAULT false,
-    "system_prompt_id" TEXT,
-    "system_prompt_title" TEXT,
+    "systemPromptId" TEXT,
+    "systemPromptTitle" TEXT,
+    "systemPromptIsDefault" BOOLEAN DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "chatId" TEXT NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE "SystemPrompt" (
 );
 
 -- CreateIndex
-CREATE INDEX "Message_chatId_position_idx" ON "Message"("chatId", "position");
+CREATE INDEX "Message_chatId_chronologicalId_idx" ON "Message"("chatId", "chronologicalId");
 
 -- AddForeignKey
-ALTER TABLE "Message" ADD CONSTRAINT "Message_chatId_fkey" FOREIGN KEY ("chatId") REFERENCES "Chat"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Message" ADD CONSTRAINT "Message_chatId_fkey" FOREIGN KEY ("chatId") REFERENCES "Chat"("id") ON DELETE CASCADE ON UPDATE CASCADE;

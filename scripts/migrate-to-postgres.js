@@ -46,10 +46,10 @@ async function migrate() {
                     id:         chat.id,
                     createdAt:  new Date(chat.created),
                     updatedAt:  new Date(chat.updated),
+                    forks:      forks,
                     activeFork: chat.active_fork,
                     stars:      chat.stars || [],
-                    highlights: chat.highlights || [],
-                    forks:      forks
+                    highlights: chat.highlights || []
                 }
             })
 
@@ -61,44 +61,44 @@ async function migrate() {
                 if (message.role === 'system') {
                     await prisma.message.create({
                         data: {
-                            position:            0,
-                            role:                'system',
-                            content:             message.content,
-                            is_default:          message.is_default,
-                            system_prompt_id:    message.system_prompt_id,
-                            system_prompt_title: message.system_prompt_title,
-                            createdAt:           new Date(chat.updated),
-                            updatedAt:           new Date(chat.updated),
-                            chatId:              newChat.id
+                            chronologicalId:       0,
+                            role:                  'system',
+                            content:               message.content,
+                            systemPromptId:        message.system_prompt_id,
+                            systemPromptTitle:     message.system_prompt_title,
+                            systemPromptIsDefault: message.is_default || false,
+                            createdAt:             new Date(chat.updated),
+                            updatedAt:             new Date(chat.updated),
+                            chatId:                newChat.id
                         }
                     })
                 } else if (message.role === 'user') {
                     await prisma.message.create({
                         data: {
-                            position:        i,
-                            parent_position: message.parent_id,
-                            role:            message.role,
-                            content:         message.content,
-                            createdAt:       new Date(chat.updated),
-                            updatedAt:       new Date(chat.updated),
-                            chatId:          newChat.id
+                            chronologicalId:       i,
+                            chronologicalParentId: message.parent_id,
+                            role:                  message.role,
+                            content:               message.content,
+                            createdAt:             new Date(chat.updated),
+                            updatedAt:             new Date(chat.updated),
+                            chatId:                newChat.id
                         }
                     })
                 } else if (message.role === 'assistant') {
                     await prisma.message.create({
                         data: {
-                            position:          i,
-                            parent_position:   message.parent_id,
-                            role:              message.role,
-                            content:           message.content,
-                            reasoning_content: message.reasoning_content,
-                            model:             message.model || {},
-                            temperature:       message.temperature,
-                            topP:              message.top_p,
-                            usage:             message.usage || {},
-                            createdAt:         new Date(message.timestamp || chat.updated),
-                            updatedAt:         new Date(message.timestamp || chat.updated),
-                            chatId:            newChat.id
+                            chronologicalId:       i,
+                            chronologicalParentId: message.parent_id,
+                            role:                  message.role,
+                            content:               message.content,
+                            reasoningContent:      message.reasoning_content,
+                            model:                 message.model || {},
+                            temperature:           message.temperature,
+                            topP:                  message.top_p,
+                            usage:                 message.usage || {},
+                            createdAt:             new Date(message.timestamp || chat.updated),
+                            updatedAt:             new Date(message.timestamp || chat.updated),
+                            chatId:                newChat.id
                         }
                     })
                 }
