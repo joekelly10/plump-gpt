@@ -9,9 +9,17 @@
 
     export let hovering = false
 
+    let animate_model_change = false
+
     $: prices            = getPrices($model)
     $: input_price_text  = prices.input  === 0 ? 'Free' : `$${(prices.input * 10000).toFixed(2)}`
     $: output_price_text = prices.output === 0 ? 'Free' : `$${(prices.output * 10000).toFixed(2)}`
+    $: modelChanged($model)
+
+    const modelChanged = (_) => {
+        animate_model_change = true
+        setTimeout(() => { animate_model_change = false }, 5)
+    }
 
     const keydown = (e) => {
         if (e.shiftKey && e.metaKey && e.key === 'm') {
@@ -51,6 +59,7 @@
 
 <button 
     class='model-switcher'
+    class:animate-model-change={animate_model_change}
     on:click={clicked}
     on:contextmenu={rightClicked}
     on:mouseenter={() => hovering = true}
@@ -97,8 +106,14 @@
         &:active
             background-color: color.adjust($background-darkest, $lightness: -1%)
 
+        &.animate-model-change
+            .icon
+                transform:  scale(1.2)
+                transition: none
+
     .icon
-        height: 24px
+        height:     24px
+        transition: transform easing.$quart-out 0.125s
     
     .name
         padding-left: 18px
