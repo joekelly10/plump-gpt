@@ -1,6 +1,8 @@
 <script>
     import { createEventDispatcher } from 'svelte'
 
+    import PageControls from '$lib/components/Loader/PageControls.svelte'
+
     const dispatch = createEventDispatcher()
 
     export let filter,
@@ -82,16 +84,13 @@
                 for “{searched_value}”
             {/if}
         </div>
-        <div class='page-controls'>
-            <button class='prev-page-button' class:disabled={active_page === 1} on:click={() => dispatch('prevPage')}>
-                <img class='arrow' src='/img/icons/chevron-off-white.png' alt='Prev page'>
-            </button>
-            <span class='current-page'>
-                Page {active_page} / {total_pages || 1}
-            </span>
-            <button class='next-page-button' class:disabled={!(active_page < total_pages)} on:click={() => dispatch('nextPage')}>
-                <img class='arrow' src='/img/icons/chevron-off-white.png' alt='Next page'>
-            </button>
+        <div class='page-controls-container'>
+            <PageControls
+                bind:active_page={active_page}
+                bind:total_pages={total_pages}
+                on:prevPage
+                on:nextPage
+            />
         </div>
     </div>
     <button class='close-button' on:click={() => dispatch('close')}>
@@ -197,39 +196,8 @@
         .total-chats
             font-weight: 600
 
-        .page-controls
+        .page-controls-container
             margin-right: -12px
-            text-align:   center
-            font-weight:  600
-        
-        .prev-page-button,
-        .next-page-button
-            margin:        0 8px
-            padding:       16px 24px
-            border-radius: 8px
-            cursor:        pointer
-
-            .arrow
-                height: 12px
-                filter: brightness(2)
-            
-            &:hover
-                background-color: black(0.05)
-            
-            &:active
-                background-color: black(0.1)
-
-                .arrow
-                    filter: brightness(0.8)
-
-            &.disabled
-                opacity:        0.25
-                cursor:         default
-                pointer-events: none
-
-        .prev-page-button
-            .arrow
-                transform: rotate(180deg)
     
     .close-button
         position:    fixed

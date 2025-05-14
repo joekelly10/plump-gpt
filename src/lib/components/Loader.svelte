@@ -10,6 +10,7 @@
 
     import Search from '$lib/components/Loader/Search.svelte'
     import LoaderChat from '$lib/components/Loader/LoaderChat.svelte'
+    import PageControls from '$lib/components/Loader/PageControls.svelte'
     
     const dispatch = createEventDispatcher()
     
@@ -352,6 +353,15 @@
                 />
             {/each}
         </div>
+
+        {#if chats.length > 1}
+            <PageControls
+                bind:active_page={active_page}
+                bind:total_pages={total_pages}
+                on:prevPage={prevPage}
+                on:nextPage={nextPage}
+            />
+        {/if}
     </div>
 </div>
 
@@ -369,11 +379,15 @@
         position:       relative
         height:         100%
         box-sizing:     border-box
-        padding-bottom: 128px
+        padding-bottom: 3 * space.$default-padding
         overflow-y:     scroll
         +shared.scrollbar
 
     .chats
-        margin: 0 auto
-        width:  800px
+        display:        flex
+        flex-direction: column
+        gap:            space.$default-padding
+        margin:         0 auto
+        padding-bottom: 3 * space.$default-padding
+        width:          800px
 </style>
