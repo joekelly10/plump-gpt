@@ -6,7 +6,7 @@
 
 - Frontend: [Svelte](https://svelte.dev/)
 - Backend: [SvelteKit](https://kit.svelte.dev/)
-- Database: [Postgres](https://postgresql.org/)
+- Database: [Postgres](https://postgresql.org/) / [Prisma ORM](https://github.com/prisma/prisma)
 
 It runs in your browser on `localhost:1337`.
 
