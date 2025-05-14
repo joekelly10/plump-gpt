@@ -90,7 +90,7 @@ It runs in your browser on `localhost:1337`.
     - Shows on tree
 - 💬 **Quote**
     - Quick-add the currently highlighted text to your next input
-    - Super-useful pattern, used a lot, for focusing on a specific part of the AI's reply
+    - Super-useful pattern, used a lot, for directing attention to a specific part of the AI's reply
 - 📝 **System prompt**
     - Control the `system_prompt`
     - Keep a library of prompts in the db and switch easily
@@ -106,7 +106,7 @@ It runs in your browser on `localhost:1337`.
     - See input + output token counts
     - See cache read + write (where the API provides prompt caching)
     - See total cost
-    - _^^ All of the above a) for each message, b) for whole conversation_
+    - _^ All of the above a) per message, b) for whole conversation_
 - 💵 **API pricing**
     - Pay as you go = much cheaper than all the various subscriptions
 
