@@ -214,7 +214,7 @@ Order all other functions in an intuitive way that maximises human readability a
 # Folder Structure
 
 - Follow common sense component co-location principles for better maintainability
-- Co-locate simple, feature-specific components (sub-components used only with a single page/feature) in a sub-directory of the `components` folder with the parent feature's name, e.g. `src/lib/components/Header.svelte` and `src/lib/components/Header/ModelSwitcher.svelte`
+- Co-locate simple, feature-specific components (sub-components used only with a single page/feature) in a sub-directory of the `components` folder with the parent feature's name, e.g. `src/lib/components/Input.svelte` and `src/lib/components/Input/ModelSettings.svelte`
 - For shared components, use a `Shared` folder (with sub-directories if needed).
 
 **Naming Conventions:**
