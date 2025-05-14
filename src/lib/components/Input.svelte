@@ -493,6 +493,11 @@
             e.preventDefault()
             return newChat()
         }
+
+        if (e.key === 'Escape') {
+            e.preventDefault()
+            return model_list_expanded = false
+        }
     }
 
     const openPromptEditor = () => {
