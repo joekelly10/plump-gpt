@@ -32,8 +32,8 @@
     {#if expanded}
         <div 
             class='models-by-family'
-            in:slide={{ axis: 'y', duration: 300, easing: quartOut }}
-            out:slide={{ axis: 'y', delay: 50, duration: 150, easing: quartOut }}
+            in:slide={{ axis: 'y', duration: 333, easing: quartOut }}
+            out:slide={{ axis: 'y', delay: 50, duration: 222, easing: quartOut }}
         >
             <button class='close-button' on:click={() => expanded = false }>
                 <img class='close-icon' src='/img/icons/close-white.png' alt='Close'>
