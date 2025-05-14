@@ -10,7 +10,7 @@
     import hljs from 'highlight.js'
 
     import ModelList from '$lib/components/Input/ModelList.svelte'
-    import ModelSwitcher from '$lib/components/Input/ModelSwitcher.svelte'
+    import ModelButton from '$lib/components/Input/ModelButton.svelte'
     import ModelSettings from '$lib/components/Input/ModelSettings.svelte'
     import ExpandButton from '$lib/components/Input/ExpandButton.svelte'
     import SystemPromptButton from '$lib/components/Input/SystemPromptButton.svelte'
@@ -552,7 +552,7 @@
     />
 
     <div class='container' class:nope-highlight={nope_highlight}>
-        <ModelSwitcher
+        <ModelButton
             on:focusInput={focus}
             on:toggleModelList={() => model_list_expanded = !model_list_expanded}
             bind:hovering={is_hovering_model_switcher}

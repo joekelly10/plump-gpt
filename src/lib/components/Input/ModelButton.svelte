@@ -58,7 +58,7 @@
 <svelte:document on:keydown={keydown} />
 
 <button 
-    class='model-switcher'
+    class='model-button'
     class:animate-model-change={animate_model_change}
     on:click={clicked}
     on:contextmenu={rightClicked}
@@ -83,7 +83,7 @@
 </button>
 
 <style lang='sass'>
-    .model-switcher
+    .model-button
         display:          flex
         flex-wrap:        nowrap
         align-items:      center
@@ -113,7 +113,7 @@
 
     .icon
         height:     24px
-        transition: transform easing.$quart-out 0.125s
+        transition: transform easing.$quart-out 0.25s
     
     .name
         padding-left: 18px
