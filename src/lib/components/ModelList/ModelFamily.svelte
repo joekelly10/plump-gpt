@@ -100,7 +100,7 @@
             justify-content: center
             align-items:     flex-end
             font-family:     font.$mono
-            font-size:       10.5px
+            font-size:       10px
             font-weight:     500
             color:           $blue-grey
             line-height:     16px
