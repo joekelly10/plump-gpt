@@ -480,7 +480,7 @@
                   last_rect  = all_rects[all_rects.length - 1]
             highlight_action_position = {
                 x: last_rect.right,
-                y: last_rect.top - 17
+                y: last_rect.top - 20
             }
         } else {
             const range      = selection.getRangeAt(0),
@@ -488,7 +488,7 @@
                   first_rect = all_rects[0]
             highlight_action_position = {
                 x: first_rect.left,
-                y: first_rect.top - 17
+                y: first_rect.top - 20
             }
         }
     }

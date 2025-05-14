@@ -54,7 +54,7 @@
             top:          100%
             left:         50%
             transform:    translateX(-50%)
-            border-width: 5px
+            border-width: 6px 9px
             border-style: solid
             border-color: $background-darkest transparent transparent
 
