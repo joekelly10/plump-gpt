@@ -30,8 +30,8 @@ export const fork_points = derived(forks, ($forks) => {
 })
 
 export const usage = derived(messages, ($messages) => {
-    const filtered       = $messages.filter(m => m.role === 'assistant')
-    const total_messages = filtered.length
+    const filtered        = $messages.filter(m => m.role === 'assistant')
+    const total_responses = filtered.length
 
     let input_tokens       = 0,
         output_tokens      = 0,
@@ -50,5 +50,5 @@ export const usage = derived(messages, ($messages) => {
         total_savings      += cost.cache_savings
     })
 
-    return { total_messages, input_tokens, output_tokens, cache_write_tokens, cache_read_tokens, total_cost, total_savings }
+    return { total_responses, input_tokens, output_tokens, cache_write_tokens, cache_read_tokens, total_cost, total_savings }
 })

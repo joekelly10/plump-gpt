@@ -22,7 +22,7 @@
             chat
         </div>
         <div class='total-messages'>
-            {$usage.total_messages} {$usage.total_messages === 1 ? 'message' : 'messages'}
+            {$usage.total_responses} {$usage.total_responses === 1 ? 'response' : 'responses'}
         </div>
         {#if $forks.length > 1}
             <div class='fork-count' transition:slide={{ axis: 'y', duration: 125, easing: quartOut }}>

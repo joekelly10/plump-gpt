@@ -535,7 +535,7 @@
     on:scroll={handleScroll}
     on:mouseup={mouseup}
 >
-    {#if $usage.total_messages > 0}
+    {#if $usage.total_responses > 0}
         <UsageStats/>
     {/if}
 

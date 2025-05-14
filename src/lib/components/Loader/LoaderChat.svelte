@@ -103,7 +103,7 @@
                 {/each}
             </div>
             <span class='message-count'>
-                {assistant_messages.length} {assistant_messages.length === 1 ? 'message' : 'messages'}
+                {assistant_messages.length} {assistant_messages.length === 1 ? 'response' : 'responses'}
             </span>
             {#if chat.forks.length > 1}
                 <span class='fork-count'>
