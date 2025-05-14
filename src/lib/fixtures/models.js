@@ -90,8 +90,8 @@ export default [
     },
     {
         type:           'google',
-        id:             'gemini-2.0-flash',
-        name:           'Gemini 2.0 Flash',
+        id:             'gemini-2.5-flash-preview-04-17',
+        name:           'Gemini 2.5 Flash Preview',
         short_name:     'Gemini',
         icon:           'gemini-flash.png',
         family:         'Google',
@@ -112,25 +112,14 @@ export default [
     },
     {
         type:           'google',
-        id:             'gemini-2.5-pro-exp-03-25',
-        name:           'Gemini 2.5 Pro',
+        id:             'gemini-2.5-pro-preview-05-06',
+        name:           'Gemini 2.5 Pro Preview',
         short_name:     'Gemini',
         icon:           'gemini-pro.png',
         family:         'Google',
         hosted_at:      'googleapis.com',
         context_window: 1000000,
         pricing_id:     'gemini-2.5-pro'
-    },
-    {
-        type:           'openrouter',
-        id:             'google/gemini-2.5-pro-exp-03-25:free',
-        name:           'Gemini 2.5 Pro (free)',
-        short_name:     'Gemini',
-        icon:           'gemini-pro.png',
-        family:         'Google',
-        hosted_at:      'openrouter.ai',
-        context_window: 1000000,
-        pricing_id:     'free'
     },
     {
         type:           'x',
@@ -245,13 +234,24 @@ export default [
     // },
     {
         type:           'mistral',
-        id:             'mistral-small',
+        id:             'mistral-small-latest',
         name:           'Mistral Small',
         short_name:     'Mistral',
         icon:           'mistral-small.png',
         family:         'Mistral',
         hosted_at:      'mistral.ai',
-        context_window: 32000,
+        context_window: 128000,
+        pricing_id:     'free'
+    },
+    {
+        type:           'mistral',
+        id:             'mistral-medium-latest',
+        name:           'Mistral Medium',
+        short_name:     'Mistral',
+        icon:           'mistral-medium.png',
+        family:         'Mistral',
+        hosted_at:      'mistral.ai',
+        context_window: 128000,
         pricing_id:     'free'
     },
     {
@@ -262,7 +262,7 @@ export default [
         icon:           'mistral-large.png',
         family:         'Mistral',
         hosted_at:      'mistral.ai',
-        context_window: 131000,
+        context_window: 128000,
         pricing_id:     'free'
     },
     {
