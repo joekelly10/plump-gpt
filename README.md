@@ -18,6 +18,7 @@ It runs in your browser on `localhost:1337`.
 - <img alt='GPT-4.1 nano' src='./static/img/icons/models/gpt-4.1-nano.png' width='21' height='21' valign='middle'>&nbsp; GPT-4.1 nano
 - <img alt='GPT-4.1 mini' src='./static/img/icons/models/gpt-4.1-mini.png' width='21' height='21' valign='middle'>&nbsp; GPT-4.1 mini
 - <img alt='GPT-4.1' src='./static/img/icons/models/gpt-4.1.png' width='21' height='21' valign='middle'>&nbsp; GPT-4.1
+- <img alt='o4-mini' src='./static/img/icons/models/o4-mini.png' width='21' height='21' valign='middle'>&nbsp; o4-mini
 
 **Anthropic**
 - <img alt='Claude Haiku' src='./static/img/icons/models/claude-3-haiku.png' width='21' height='21' valign='middle'>&nbsp; Claude 3.5 Haiku
@@ -26,7 +27,7 @@ It runs in your browser on `localhost:1337`.
 
 **Google**
 - <img alt='Gemini Flash' src='./static/img/icons/models/gemini-flash-lite.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.0 Flash Lite
-- <img alt='Gemini Flash' src='./static/img/icons/models/gemini-flash.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.0 Flash
+- <img alt='Gemini Flash' src='./static/img/icons/models/gemini-flash.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.5 Flash
 - <img alt='Gemini Flash Thinking' src='./static/img/icons/models/gemini-flash-thinking.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.0 Flash Thinking
 - <img alt='Gemini Pro' src='./static/img/icons/models/gemini-pro.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.5 Pro
 
