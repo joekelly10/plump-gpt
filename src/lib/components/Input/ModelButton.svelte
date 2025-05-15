@@ -90,7 +90,7 @@
         position:         absolute
         top:              -1px
         right:            100%
-        transform:        translateX(0 - space.$default-padding)
+        margin-right:     space.$default-padding
         height:           space.$input-initial-height
         padding:          0 16px
         border-radius:    8px
