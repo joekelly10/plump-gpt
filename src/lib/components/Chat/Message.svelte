@@ -238,7 +238,7 @@
                 &.delete-highlight
                     background-color: color.adjust($delete-highlight-bg, $alpha: -0.4)
                     text-decoration:  line-through
-                    color:            color.adjust($off-white, $alpha: -0.125)
+                    color:            color.adjust(color.adjust($coral, $lightness: 20%), $alpha: -0.33)
                 
                 &.add-reply-highlight
                     z-index:          999
@@ -295,7 +295,7 @@
                     border-radius:    1.5px 1.5px 8px 8px
                     background-color: $delete-highlight-bg
                     text-decoration:  line-through
-                    color:            color.adjust(color.adjust($coral, $lightness: 20%), $alpha: -0.5)
+                    color:            color.adjust(color.adjust($coral, $lightness: 20%), $alpha: -0.33)
                 
                 &.regenerate-highlight
                     box-shadow:       0 0 0 1.5px $blue
