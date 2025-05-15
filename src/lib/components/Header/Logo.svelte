@@ -29,7 +29,7 @@
 
         &:active
             cursor:    grabbing
-            transform: scale(0.98)
+            transform: scale(0.975)
 
     .logo
         height: 14px
@@ -41,7 +41,7 @@
     .text
         display:     inline-block
         font-size:   14px
-        font-weight: 450
+        font-weight: 600
         color:       $blue-grey
         white-space: nowrap
 </style>
