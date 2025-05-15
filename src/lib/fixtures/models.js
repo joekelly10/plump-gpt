@@ -91,7 +91,7 @@ export default [
     {
         type:           'google',
         id:             'gemini-2.5-flash-preview-04-17',
-        name:           'Gemini 2.5 Flash Preview',
+        name:           'Gemini 2.5 Flash',
         short_name:     'Gemini',
         icon:           'gemini-flash.png',
         family:         'Google',
@@ -113,7 +113,7 @@ export default [
     {
         type:           'google',
         id:             'gemini-2.5-pro-preview-05-06',
-        name:           'Gemini 2.5 Pro Preview',
+        name:           'Gemini 2.5 Pro',
         short_name:     'Gemini',
         icon:           'gemini-pro.png',
         family:         'Google',
