@@ -1,4 +1,4 @@
-import { ANTHROPIC_API_KEY } from '$env/static/private'
+import { env } from '$env/dynamic/private'
 
 export const POST = async ({ request }) => {
     let { messages, options } = await request.json()
@@ -36,7 +36,7 @@ export const POST = async ({ request }) => {
         'Content-Type':      'application/json',
         'anthropic-version': '2023-06-01',
         'anthropic-beta':    'prompt-caching-2024-07-31',
-        'x-api-key':         ANTHROPIC_API_KEY
+        'x-api-key':         env.ANTHROPIC_API_KEY
     })
 
     const body = JSON.stringify({

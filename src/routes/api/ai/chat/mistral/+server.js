@@ -1,4 +1,4 @@
-import { MISTRAL_API_KEY } from '$env/static/private'
+import { env } from '$env/dynamic/private'
 
 export const POST = async ({ request }) => {
     let { messages, options } = await request.json()
@@ -8,7 +8,7 @@ export const POST = async ({ request }) => {
 
     const headers = new Headers({
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + MISTRAL_API_KEY
+        Authorization: 'Bearer ' + env.MISTRAL_API_KEY
     })
 
     const body = JSON.stringify({

@@ -1,4 +1,4 @@
-import { GEMINI_API_KEY } from '$env/static/private'
+import { env } from '$env/dynamic/private'
 
 export const POST = async ({ request }) => {
     let { messages, options } = await request.json()
@@ -34,7 +34,7 @@ export const POST = async ({ request }) => {
         contents
     })
     
-    return fetch(`https://generativelanguage.googleapis.com/v1beta/models/${options.model}:streamGenerateContent?alt=sse&key=${GEMINI_API_KEY}`, {
+    return fetch(`https://generativelanguage.googleapis.com/v1beta/models/${options.model}:streamGenerateContent?alt=sse&key=${env.GEMINI_API_KEY}`, {
         method: 'POST',
         headers,
         body
