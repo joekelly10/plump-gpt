@@ -352,9 +352,14 @@
                     on:deleteChat={(event) => { deleteChat(event.detail.chat) }}
                 />
             {/each}
+            {#if filter === 'all' && chats.length === 0}
+                <div class='no-chats'>
+                    You haven't started any chats yet!
+                </div>
+            {/if}
         </div>
 
-        {#if chats.length > 1}
+        {#if chats.length}
             <PageControls
                 bind:active_page={active_page}
                 bind:total_pages={total_pages}
@@ -390,4 +395,10 @@
         margin:         0 auto
         padding-bottom: 3 * space.$default-padding
         width:          800px
+
+        .no-chats
+            padding-top: 192px
+            text-align:  center
+            font-weight: 450
+            color:       $background-lightest
 </style>
