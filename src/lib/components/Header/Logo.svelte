@@ -41,7 +41,7 @@
     .text
         display:     inline-block
         font-size:   14px
-        font-weight: 600
+        font-weight: 500
         color:       $blue-grey
         white-space: nowrap
 </style>

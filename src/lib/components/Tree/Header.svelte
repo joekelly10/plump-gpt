@@ -49,7 +49,7 @@
 
         .fork-text
             font-size:      14px
-            font-weight:    450
+            font-weight:    500
             color:          $blue-grey
             text-transform: none
 
