@@ -2,6 +2,7 @@
     import { slide, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { tree_active } from '$lib/stores/app'
+    import { forks, active_fork } from '$lib/stores/chat'
     import { is_idle } from '$lib/stores/api.js'
 
     import ForkIcon from '$lib/components/Icons/Fork.svelte'
@@ -18,7 +19,11 @@
 >
     <ForkIcon className='icon' />
     <div class='label'>
-        Tree View
+        Tree
+        <span class='bull'>
+            &bull;
+        </span>
+        {$active_fork + 1} / {$forks.length}
     </div>
 </button>
 
@@ -51,6 +56,10 @@
             text-align:  left
             line-height: space.$temperature-control-line-height
             white-space: nowrap
+
+            .bull
+                margin: 0 8px
+                color:  $blue
 
         &:hover,
         &:active
