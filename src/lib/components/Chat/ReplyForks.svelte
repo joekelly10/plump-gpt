@@ -1,6 +1,6 @@
 <script>
     import { createEventDispatcher } from 'svelte'
-    import { fly } from 'svelte/transition'
+    import { fly, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { is_idle } from '$lib/stores/api'
 
@@ -59,6 +59,11 @@
             </button>
         {/if}
     {/each}
+    {#if message.forks.some(fork => fork.provisional)}
+        <div class='provisional-fork-message' in:fade={{ delay: 250, duration: 75, easing: quartOut }}>
+            Write another message to fork here...
+        </div>
+    {/if}
 </div>
 
 <style lang='sass'>
@@ -130,4 +135,15 @@
 
                     .icon
                         fill: $background-darker
+
+        .provisional-fork-message
+            position:       relative
+            width:          100%
+            padding-top:    120px
+            padding-bottom: 20px
+            text-align:     center
+            font-size:      14px
+            font-weight:    450
+            color:          $background-lightest
+            line-height:    font.$line-height-14px
 </style>
