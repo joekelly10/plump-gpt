@@ -1,14 +1,25 @@
 <script>
+    import { createEventDispatcher, tick } from 'svelte'
     import { slide, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { tree_active } from '$lib/stores/app'
     import { forks, active_fork } from '$lib/stores/chat'
-    import { is_idle } from '$lib/stores/api.js'
+    import { is_provisionally_forking } from '$lib/stores/chat/interactions'
+    import { is_idle } from '$lib/stores/api'
 
     import ForkIcon from '$lib/components/Icons/Fork.svelte'
 
-    const clicked = () => {
-        if ($is_idle) $tree_active = true
+    const dispatch = createEventDispatcher()
+
+    const clicked = async () => {
+        if (!$is_idle) return
+
+        if ($is_provisionally_forking) {
+            dispatch('cancelProvisionalFork')
+            await tick()
+        }
+
+        $tree_active = true
     }
 </script>
 

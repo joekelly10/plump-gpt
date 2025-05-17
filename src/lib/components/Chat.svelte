@@ -113,6 +113,8 @@
         renderHighlights(active_highlights)
     }
 
+    export const cancelProvisionalFork = () => switchToFork(forking_from)
+
     const scrollToTop = () => {
         scroll_interrupted = true
         const distance = chat.scrollHeight - chat.clientHeight
@@ -394,8 +396,6 @@
         }
         $forks = $forks
     }
-
-    const cancelProvisionalFork = () => switchToFork(forking_from)
 
     const deselectText = () => {
         const selection = window.getSelection()

@@ -21,7 +21,9 @@
     </div>
     <div class='right'>
         {#if $messages.length > 1}
-            <TreeButton/>
+            <TreeButton
+                on:cancelProvisionalFork
+            />
         {/if}
     </div>
 </header>
