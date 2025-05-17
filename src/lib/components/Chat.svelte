@@ -70,7 +70,7 @@
                 const id_of_last = $active_messages[$active_messages.length - 1].id
                 message_refs[id_of_last]?.scrollReasoningToBottom()
             }
-        } else if (['scroll_down_button', 'keyboard_shortcut', 'chat_loaded'].includes(options.context)) {
+        } else if (['scroll_down_button', 'keyboard_shortcut', 'chat_loaded', 'new_fork'].includes(options.context)) {
             scroll_interrupted           = false
             scroll_reasoning_interrupted = false
             if (distance < 1000) {
@@ -229,6 +229,7 @@
         $forks       = $forks.concat([{ message_ids, forked_at, provisional: true }])
         $active_fork = $forks.length - 1
         dispatch('chatModified')
+        setTimeout(() => { scrollToBottom({ context: 'new_fork' }) }, 100)
     }
 
     const getForksAt = (message) => {
