@@ -192,7 +192,7 @@
 
                 &.fork
                     .icon
-                        height:    13.5px
+                        height:    13px
                         transform: rotate(45deg)
                     &:hover
                         border-color:     $blue
