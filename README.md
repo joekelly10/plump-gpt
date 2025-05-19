@@ -155,7 +155,7 @@ Or use the start script:
 ```
    - (You can also run in dev mode with `./start.sh dev`)
 
-8. Go to `http://localhost:1337` and start chatting.
+7. Go to `http://localhost:1337` and start chatting.
 
 
 **Tip:** Don't forget to replace `/static/img/avatar.png` with your avatar
@@ -180,27 +180,22 @@ MISTRAL_API_KEY=...
 DEEPSEEK_API_KEY=...
 ```
 
-3. Replace `/static/img/avatar.png` with your avatar
-
-4. Run the docker-start.sh script:
+3. Run the docker-start.sh script:
 ```
 ./docker-start.sh
 ```
 
-The Docker setup includes:
-- PostgreSQL database (data is persisted in a Docker volume)
-- Plump GPT app
-
-- To rebuild containers
+**To rebuild containers:**
 ```
 ./docker-start.sh rebuild
 ```
 
-- To completely remove the containers and data volume:
+**To completely remove the containers and data volume:**
 ```
 docker compose down -v
 ```
 
+Don't forget to replace `/static/img/avatar.png` with your avatar.
 
 
 # Note
