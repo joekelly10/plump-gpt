@@ -191,7 +191,12 @@ The Docker setup includes:
 - PostgreSQL database (data is persisted in a Docker volume)
 - Plump GPT app
 
-To completely remove the containers and data volume:
+- To rebuild containers
+```
+./docker-start.sh rebuild
+```
+
+- To completely remove the containers and data volume:
 ```
 docker compose down -v
 ```

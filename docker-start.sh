@@ -16,8 +16,17 @@ red_bold='\033[1;31m'
 yellow_bold='\033[1;33m'
 reset='\033[0m'
 
+# Check for rebuild argument
+REBUILD=false
 
-echo -e "\n${blue_bold}➜ ${white_bold}Launching Plump GPT...\n${reset}"
+echo
+if [ "$1" = "rebuild" ]; then
+    REBUILD=true
+    echo -e "${blue_bold}➜ ${white_bold}Rebuilding Plump GPT...${reset}"
+else
+    echo -e "${blue_bold}➜ ${white_bold}Launching Plump GPT...${reset}"
+fi
+echo
 
 
 sleep 0.1
@@ -25,20 +34,22 @@ sleep 0.1
 
 # Check if .env file exists
 if [ ! -f .env ]; then
-    echo -e "  ${red_bold}✗ ${white}No .env file found${reset}\n"
+    echo -e "  ${red_bold}✗ ${white}No .env file found${reset}"
     echo -e "  ${yellow_bold}• ${white}Creating one from .env.example...${reset}"
 
     if [ -f .env.example ]; then
         cp .env.example .env
         echo -e "  ${green_bold}✔ ${white}Created .env file from .env.example${reset}"
     else
-        echo -e "  ${red_bold}✗ ${white}No .env.example file found${reset}\n"
+        echo -e "  ${red_bold}✗ ${white}No .env.example file found${reset}"
+        echo
         echo -e "  ${yellow_bold}• ${white}Creating a blank .env file...${reset}"
         touch .env
         echo -e "  ${green_bold}✔ ${white}Created blank .env file${reset}"
     fi
     
-    echo -e "\n  ${yellow_bold}⚠️ ${white_bold}Please add your API keys to the .env file and run this script again${reset}"
+    echo
+    echo -e "  ${yellow_bold}⚠️ ${white_bold}Please add your API keys to the .env file and run this script again${reset}"
     echo -e "     ${white}OPENAI_API_KEY=your_key_here${reset}"
     echo -e "     ${white}ANTHROPIC_API_KEY=your_key_here${reset}"
     echo -e "     ${white}GEMINI_API_KEY=your_key_here${reset}"
@@ -56,18 +67,20 @@ sleep 0.1
 
 # Check if Docker and Docker Compose are installed
 if ! command -v docker &> /dev/null; then
-    echo -e "  ${red_bold}✗ ${white}Docker is not installed or not in PATH${reset}\n"
+    echo -e "  ${red_bold}✗ ${white}Docker is not installed or not in PATH${reset}"
+    echo
     echo -e "  ${yellow_bold}⚠️ ${white_bold}Please install Docker and Docker Compose before continuing${reset}"
-    echo -e "     ${white}Visit https://docs.docker.com/get-docker/ for installation instructions${reset}\n"
+    echo -e "     ${white}Visit https://docs.docker.com/get-docker/ for installation instructions${reset}"
     echo
 
     exit 1
 fi
 
 if ! command -v docker compose &> /dev/null; then
-    echo -e "  ${red_bold}✗ ${white}Docker Compose is not installed or not in PATH${reset}\n"
+    echo -e "  ${red_bold}✗ ${white}Docker Compose is not installed or not in PATH${reset}"
+    echo
     echo -e "  ${yellow_bold}⚠️ ${white_bold}Please install Docker Compose before continuing${reset}"
-    echo -e "     ${white}Visit https://docs.docker.com/compose/install/ for installation instructions${reset}\n"
+    echo -e "     ${white}Visit https://docs.docker.com/compose/install/ for installation instructions${reset}"
     echo
 
     exit 1
@@ -84,8 +97,9 @@ WE_JUST_STARTED_DOCKER=false
 
 # Check if Docker daemon is running
 if ! docker info &> /dev/null; then
-    echo -e "  ${red_bold}✗ ${white}Docker daemon is not running${reset}\n"
-    
+    echo -e "  ${red_bold}✗ ${white}Docker daemon is not running${reset}"
+    echo
+
     if [[ "$OSTYPE" == "darwin"* ]]; then
         echo -e "  ${yellow_bold}• ${white}Attempting to start Docker Desktop (macOS)...${reset}"
         open -a Docker -g
@@ -138,27 +152,52 @@ fi
 sleep 0.1
 
 
-# Check if Plump GPT containers are already running
-if docker compose ps | grep -q "plump-gpt"; then
-    if [ "$WE_JUST_STARTED_DOCKER" = true ]; then
-        echo -e "\n  ${green_bold}✔ ${white}Containers up${reset}"
-    else
-        echo -e "\n  ${green_bold}✔ ${white}Plump GPT containers are already running!${reset}"
-        echo -e "    ${white_bold}Restart containers? (y/n): ${reset}\c"
-        read -n 1 -r REPLY
-        echo -e "\n"
-
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            docker compose restart
-            echo -e "\n  ${green_bold}✔ ${white}Containers restarted${reset}"
-        else
-            echo -e "  ${green_bold}✔ ${white}Containers up${reset}"
-        fi
-    fi
-else
-    echo -e "\n  ${blue_bold}➜ ${white}Starting containers...\n${reset}"
+if [ "$REBUILD" = true ]; then
+    echo
+    echo -e "  ${yellow_bold}• ${white}Rebuilding containers...${reset}"
+    echo
+    docker compose down
+    COMPOSE_BAKE=true docker compose build --no-cache
     COMPOSE_BAKE=true docker compose up -d
-    echo -e "\n  ${green_bold}✔ ${white}Containers started${reset}"
+    echo
+    echo -e "  ${green_bold}✔ ${white}Containers started${reset}"
+else
+    # Check if Plump GPT containers are already running
+    if docker compose ps | grep -q "plump-gpt"; then
+        if [ "$WE_JUST_STARTED_DOCKER" = true ]; then
+            echo
+            echo -e "  ${green_bold}✔ ${white}Containers up${reset}"
+        else
+            echo
+            echo -e "  ${green_bold}✔ ${white}Plump GPT containers are already running!${reset}"
+            echo -e "    ${white_bold}Restart containers? (y/n): ${reset}\c"
+            read -n 1 -r REPLY
+            echo
+            echo
+
+            if [[ $REPLY =~ ^[Yy]$ ]]; then
+                docker compose restart
+                echo
+                echo -e "  ${green_bold}✔ ${white}Containers restarted${reset}"
+            else
+                echo -e "  ${green_bold}✔ ${white}Containers up${reset}"
+            fi
+        fi
+    else
+        if [ "$REBUILD" = true ]; then
+            echo
+            echo -e "  ${yellow_bold}• ${white}Rebuilding containers...${reset}"
+            echo
+            COMPOSE_BAKE=true docker compose build --no-cache
+        else
+            echo
+            echo -e "  ${yellow_bold}• ${white}Starting containers...${reset}"
+            echo
+        fi
+        COMPOSE_BAKE=true docker compose up -d
+        echo
+        echo -e "  ${green_bold}✔ ${white}Containers started${reset}"
+    fi
 fi
 
 
@@ -174,7 +213,9 @@ while true; do
 
     if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
         echo -e "  ${red_bold}✗ ${white}Timed out waiting for database migration and seeding${reset}"
-        echo -e "  ${yellow}⚠ ${white}Please check the logs with: ${cyan_bold}docker compose logs app${reset}\n"
+        echo -e "  ${yellow}⚠ ${white}Please check the logs with: ${cyan_bold}docker compose logs app${reset}"
+        echo
+
         exit 1
     fi
 
@@ -245,11 +286,17 @@ echo
 sleep 0.005
 echo
 sleep 0.005
-echo -e "\n  ${blue_bold}PLUMP GPT${blue} v${APP_VERSION}${reset}"
+echo
 sleep 0.005
-echo -e "  ${blue_bold}➜ ${white_bold}App: ${blue}http://localhost:${blue_bold}1337${blue}/${reset}\n"
+echo -e "  ${blue_bold}PLUMP GPT${blue} v${APP_VERSION}${reset}"
 sleep 0.005
-echo -e "  ${grey}Logs can be viewed with: ${cyan}docker compose logs -f${reset}\n" 
+echo -e "  ${blue_bold}➜ ${white_bold}App: ${blue}http://localhost:${blue_bold}1337${blue}/${reset}"
+sleep 0.005
+echo
+sleep 0.005
+echo -e "  ${grey}Logs can be viewed with: ${cyan}docker compose logs -f${reset}"
+sleep 0.005
+echo
 sleep 0.005
 echo
 
