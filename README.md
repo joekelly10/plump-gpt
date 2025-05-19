@@ -128,24 +128,22 @@ DEEPSEEK_API_KEY=...
 DATABASE_URL=postgresql://username:password@localhost:5432/plump_gpt
 ```
 
-3. Replace `/static/img/avatar.png` with your avatar
-
-4. Install dependencies
+3. Install dependencies
 ```
 npm install
 ```
 
-5. Initialize and migrate the database
+4. Initialize and migrate the database
 ```
 npx prisma migrate dev
 ```
 
-6. Compile the SvelteKit app:
+5. Compile the SvelteKit app:
 ```
 npm run build
 ```
 
-7. Start the application:
+6. Start the application:
 ```
 npm run preview
 ```
@@ -159,7 +157,10 @@ Or use the start script:
 
 8. Go to `http://localhost:1337` and start chatting.
 
-_(Tip: Use `git update-index --assume-unchanged static/img/avatar.png` to automatically ignore changes to avatar.png if you're developing)._
+
+**Tip:** Don't forget to replace `/static/img/avatar.png` with your avatar
+
+_(Use `git update-index --assume-unchanged static/img/avatar.png` to automatically ignore changes to avatar.png if you're developing)._
 
 
 
