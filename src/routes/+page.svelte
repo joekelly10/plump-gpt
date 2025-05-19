@@ -10,6 +10,7 @@
     import Tree from '$lib/components/Tree.svelte'
     import PromptEditor from '$lib/components/PromptEditor.svelte'
     import ScreenCover from '$lib/components/ScreenCover.svelte'
+    import FaviconChanger from '$lib/components/FaviconChanger.svelte'
 
     let header,
         chat,
@@ -97,6 +98,7 @@
 {/if}
 
 <ScreenCover/>
+<FaviconChanger/>
 
 <style lang='sass'>
     +shared.globals
