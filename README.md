@@ -118,34 +118,34 @@ It runs in your browser on `localhost:1337`.
 
 2. Create a `.env` file in the root directory (or rename the `.env.example` file to `.env`), and add your new database's URL and your API keys:
 ```
-OPENAI_API_KEY=sk-YoUrOpEnAiAcCeSsToKeNtHaTyOuGeTfRoMtHeIrWeBsItE
+OPENAI_API_KEY=your_api_key_here
 ANTHROPIC_API_KEY=...
 GEMINI_API_KEY=...
 GROK_API_KEY=...
-COHERE_API_KEY=...
 MISTRAL_API_KEY=...
-OPENROUTER_API_KEY=...
 DEEPSEEK_API_KEY=...
 
 DATABASE_URL=postgresql://username:password@localhost:5432/plump_gpt
 ```
 
-3. Install dependencies
+3. Replace `/static/img/avatar.png` with your avatar
+
+4. Install dependencies
 ```
 npm install
 ```
 
-4. Initialize and migrate the database
+5. Initialize and migrate the database
 ```
 npx prisma migrate dev
 ```
 
-5. Compile the SvelteKit app:
+6. Compile the SvelteKit app:
 ```
 npm run build
 ```
 
-6. Start the application:
+7. Start the application:
 ```
 npm run preview
 ```
@@ -157,15 +157,43 @@ Or use the start script:
 ```
    - (You can also run in dev mode with `./start.sh dev`)
 
-7. Go to `http://localhost:1337` and start chatting.
+8. Go to `http://localhost:1337` and start chatting.
+
+_(Tip: Use `git update-index --assume-unchanged static/img/avatar.png` to automatically ignore changes to avatar.png if you're developing)._
 
 
 
-# Customise
+# Docker Installation
 
-- Change `/static/img/avatar.png` to your own avatar
+You can also run Plump GPT using Docker:
 
-_(Tip: You can use `git update-index --assume-unchanged static/img/avatar.png` to ignore the change if you're developing)._
+1. Make sure you have [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) installed.
+
+2. Create a `.env` file in the root directory (or rename the `.env.example` file to `.env`), and add your API keys:
+```
+OPENAI_API_KEY=your_api_key_here
+ANTHROPIC_API_KEY=...
+GEMINI_API_KEY=...
+GROK_API_KEY=...
+MISTRAL_API_KEY=...
+DEEPSEEK_API_KEY=...
+```
+
+3. Replace `/static/img/avatar.png` with your avatar
+
+4. Run the docker-start.sh script:
+```
+./docker-start.sh
+```
+
+The Docker setup includes:
+- PostgreSQL database (data is persisted in a Docker volume)
+- Plump GPT app
+
+To completely remove the containers and data volume:
+```
+docker compose down -v
+```
 
 
 

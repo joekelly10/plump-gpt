@@ -1,0 +1,38 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '1337:1337'
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://plump_user:plump_password@db:5432/plump_gpt
+      # Add your API keys in the .env file
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GROK_API_KEY=${GROK_API_KEY}
+      - COHERE_API_KEY=${COHERE_API_KEY}
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY}
+      - AI21_API_KEY=${AI21_API_KEY}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+    volumes:
+      - ./.env:/app/.env
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_PASSWORD=plump_password
+      - POSTGRES_USER=plump_user
+      - POSTGRES_DB=plump_gpt
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

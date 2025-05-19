@@ -1,0 +1,31 @@
+# Git
+.git
+.gitignore
+
+# Node
+node_modules
+npm-debug.log
+
+# Build output
+build
+.svelte-kit
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# macOS
+.DS_Store
+
+# Misc
+.vscode
+.idea
+*.log
+README.md
+tests 
