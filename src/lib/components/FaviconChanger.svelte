@@ -2,6 +2,7 @@
     import { onMount } from 'svelte'
     import { browser } from '$app/environment'
     import { model } from '$lib/stores/ai'
+    import { messages } from '$lib/stores/chat'
 
     let favicon
 
@@ -18,8 +19,19 @@
     }
 
     $: modelChanged($model)
+    $: messagesChanged($messages)
 
     const modelChanged = (_) => {
-        setFavicon(`/img/icons/models/${$model.icon}`)
+        if ($messages.length > 1) {
+            setFavicon(`/img/icons/models/${$model.icon}`)
+        }
+    }
+
+    const messagesChanged = (_) => {
+        if ($messages.length > 1) {
+            setFavicon(`/img/icons/models/${$model.icon}`)
+        } else {
+            setFavicon(`/img/favicon.png`)
+        }
     }
 </script>
