@@ -80,6 +80,7 @@
         line-height: font.$line-height-14px
         text-align:  right
         font-size:   14px
+        font-weight: 450
         color:       $background-lightest
         white-space: nowrap
 
