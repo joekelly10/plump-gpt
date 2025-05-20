@@ -16,7 +16,7 @@
         chat,
         input
 
-    $: title = $messages.length > 1 ? $messages[1].content : 'Plump GPT - Fattens your thoughts'
+    $: title = $messages.length > 1 ? $messages[1].content : 'Plump GPT'
     $: blur  = $loader_active || $tree_active || $prompt_editor_active
 
     const focusInput            = () => input.focus()
