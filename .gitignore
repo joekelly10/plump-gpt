@@ -13,3 +13,4 @@ vite.config.ts.timestamp-*
 !/pocketbase/pb_migrations/
 /db
 /src/generated
+/static/img/avatars

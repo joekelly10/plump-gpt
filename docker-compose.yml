@@ -20,8 +20,10 @@ services:
       - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
       - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
       - GROQ_API_KEY=${GROQ_API_KEY}
+      - DOCKER_ENV=true
     volumes:
       - ./.env:/app/.env
+      - uploads_data:/app/uploads
     restart: unless-stopped
 
   db:
@@ -36,3 +38,4 @@ services:
 
 volumes:
   postgres_data:
+  uploads_data:

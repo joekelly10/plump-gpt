@@ -26,7 +26,8 @@
             
             if (response.ok) {
                 console.log('👤–✅ Avatar uploaded.')
-                refreshAvatar()
+                const result = await response.json()
+                $avatar_href = result.href
             } else {
                 console.log('👤–❌ Avatar upload failed.')
                 error = 'Avatar upload failed'
@@ -37,10 +38,6 @@
         } finally {
             is_uploading = false
         }
-    }
-
-    const refreshAvatar = () => {
-        $avatar_href = `/img/avatar.png?t=${Date.now()}`
     }
 </script>
 
