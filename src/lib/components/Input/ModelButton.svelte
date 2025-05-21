@@ -3,6 +3,7 @@
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { model } from '$lib/stores/ai'
+    import { model_list_active, user_settings_active } from '$lib/stores/app'
     import { getPrices } from '$lib/utils/prices'
 
     const dispatch = createEventDispatcher()
@@ -34,7 +35,8 @@
     }
 
     const clicked = () => {
-        dispatch('toggleModelList')
+        $user_settings_active = false
+        $model_list_active    = !$model_list_active
         dispatch('focusInput')
     }
 

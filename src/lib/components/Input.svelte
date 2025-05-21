@@ -1,7 +1,7 @@
 <script>
     import { tick, createEventDispatcher } from 'svelte'
     import { page } from '$app/stores'
-    import { loader_active, prompt_editor_active, config } from '$lib/stores/app'
+    import { loader_active, prompt_editor_active, user_settings_active, model_list_active, config } from '$lib/stores/app'
     import { chat_id, messages, forks, active_fork, active_messages, stars, highlights } from '$lib/stores/chat'
     import { is_hovering, is_adding_reply, is_scrolled_to_bottom } from '$lib/stores/chat/interactions'
     import { model, temperature, top_p } from '$lib/stores/ai'
@@ -12,6 +12,7 @@
     import ModelList from '$lib/components/Input/ModelList.svelte'
     import ModelButton from '$lib/components/Input/ModelButton.svelte'
     import ModelSettings from '$lib/components/Input/ModelSettings.svelte'
+    import UserSettings from '$lib/components/Input/UserSettings.svelte'
     import ExpandButton from '$lib/components/Input/ExpandButton.svelte'
     import SystemPromptButton from '$lib/components/Input/SystemPromptButton.svelte'
     import ScrollDownButton from '$lib/components/Input/ScrollDownButton.svelte'
@@ -26,8 +27,7 @@
     let input_overflowed           = false,
         input_expanded             = false,
         nope_highlight             = false,
-        is_hovering_model_switcher = false,
-        model_list_expanded        = false
+        is_hovering_model_switcher = false
 
     export const focus = () => input.focus()
 
@@ -496,7 +496,9 @@
 
         if (e.key === 'Escape') {
             e.preventDefault()
-            return model_list_expanded = false
+            $model_list_active    = false
+            $user_settings_active = false
+            return false
         }
     }
 
@@ -547,9 +549,10 @@
 <svelte:document on:keydown={keydownDocument} />
 
 <section class='user-input' class:expanded={input_expanded}>
+    <UserSettings/>
+
     <ModelList
         on:focusInput={focus}
-        bind:expanded={model_list_expanded}
     />
 
     <ModelSettings
@@ -559,7 +562,6 @@
     <div class='container' class:nope-highlight={nope_highlight}>
         <ModelButton
             on:focusInput={focus}
-            on:toggleModelList={() => model_list_expanded = !model_list_expanded}
             bind:hovering={is_hovering_model_switcher}
         />
         <!-- svelte-ignore a11y-no-static-element-interactions -->

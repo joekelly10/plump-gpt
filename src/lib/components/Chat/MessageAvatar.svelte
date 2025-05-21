@@ -1,6 +1,7 @@
 <script>
     import { fly, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
+    import { avatar_href } from '$lib/stores/app'
     import { model } from '$lib/stores/ai'
 
     export let message,
@@ -21,7 +22,7 @@
     {#if message.role === 'user'}
         <img
             class='avatar user'
-            src='/img/avatar.png'
+            src={$avatar_href}
             alt='You'
             on:dblclick={copyMessageToClipboard}
         >

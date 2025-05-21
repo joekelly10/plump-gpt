@@ -4,10 +4,9 @@
     import { onMount } from 'svelte'
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
+    import { model_list_active } from '$lib/stores/app'
 
     import ModelFamily from '$lib/components/ModelList/ModelFamily.svelte'
-
-    export let expanded = false
 
     let models_by_family = []
 
@@ -29,13 +28,13 @@
 </script>
 
 <section class='model-list-section'>
-    {#if expanded}
+    {#if $model_list_active}
         <div 
             class='models-by-family'
             in:slide={{ axis: 'y', duration: 333, easing: quartOut }}
             out:slide={{ axis: 'y', delay: 50, duration: 200, easing: quartOut }}
         >
-            <button class='close-button' on:click={() => expanded = false }>
+            <button class='close-button' on:click={() => $model_list_active = false }>
                 <img class='close-icon' src='/img/icons/close-white.png' alt='Close'>
             </button>
             <div class='list'>
@@ -44,7 +43,7 @@
                         family={family.family}
                         models={family.models}
                         on:focusInput
-                        on:closeModelList={() => expanded = false }
+                        on:closeModelList={() => $model_list_active = false }
                     />
                 {/each}
             </div>
