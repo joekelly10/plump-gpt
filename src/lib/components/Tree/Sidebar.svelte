@@ -2,6 +2,7 @@
     import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { marked } from 'marked'
+    import { avatar_href } from '$lib/stores/app'
 
     import MessageInfo from '$lib/components/Tree/MessageInfo.svelte'
     import SystemPromptIcon from '$lib/components/Icons/SystemPrompt.svelte'
@@ -23,7 +24,7 @@
             {:else if node.message.role === 'assistant'}
                 <img class='avatar ai' src='/img/icons/models/{node.message.model.icon}' alt='{node.message.model.name}' />
             {:else}
-                <img class='avatar user' src='/img/avatar.png' alt='You' />
+                <img class='avatar user' src={$avatar_href} alt='You' />
             {/if}
             {#if node.is_starred}
                 <StarIcon className='icon star-icon' />

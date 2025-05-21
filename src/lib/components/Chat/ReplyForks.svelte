@@ -3,6 +3,7 @@
     import { fly, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { is_idle } from '$lib/stores/api'
+    import { avatar_href } from '$lib/stores/app'
 
     import ForkIcon from '$lib/components/Icons/Fork.svelte'
 
@@ -44,7 +45,7 @@
                 {i + 1}
                 <div class='hover-info' class:above={show_hover_info_above}>
                     <div class='avatar-container'>
-                        <img class='avatar' src='/img/avatar.png' alt='You'/>
+                        <img class='avatar' src={$avatar_href} alt='You'/>
                         <span class='down-arrow'>
                             ↓
                         </span>

@@ -3,6 +3,7 @@
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { chat_id } from '$lib/stores/chat'
+    import { avatar_href } from '$lib/stores/app'
     import { formatDate } from '$lib/utils/helpers'
     import { marked } from 'marked'
 
@@ -79,7 +80,7 @@
 
         <div class='message'>
             <div class='author-container'>
-                <img class='avatar user' src='/img/avatar.png' alt='Joe'>
+                <img class='avatar user' src={$avatar_href} alt='User'>
             </div>
             {#if !chat.messages[0].is_default}
                 <div class='system-prompt'>
