@@ -8,7 +8,7 @@ export const temperature = writable(0.7)
 export const top_p       = writable(1)
 
 function createModel() {
-    const { subscribe, set, update } = writable(models[0])
+    const { subscribe, set, update } = writable(models[2])
 
     return {
         subscribe,
