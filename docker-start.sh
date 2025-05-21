@@ -101,17 +101,17 @@ if ! docker info &> /dev/null; then
     echo
 
     if [[ "$OSTYPE" == "darwin"* ]]; then
-        echo -e "  ${yellow_bold}• ${white}Attempting to start Docker Desktop (macOS)...${reset}"
+        echo -e "  ${yellow_bold}➜ ${white_bold}Attempting to start Docker Desktop (macOS)...${reset}"
         open -a Docker -g
     elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        echo -e "  ${yellow_bold}• ${white}Attempting to start Docker (Linux)...${reset}"
+        echo -e "  ${yellow_bold}➜ ${white_bold}Attempting to start Docker (Linux)...${reset}"
         if command -v systemctl &> /dev/null; then
             sudo systemctl start docker
         else
             sudo service docker start
         fi
     elif [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
-        echo -e "  ${yellow_bold}• ${white}Attempting to start Docker Desktop (Windows)...${reset}"
+        echo -e "  ${yellow_bold}➜ ${white_bold}Attempting to start Docker Desktop (Windows)...${reset}"
         if [ -f "C:\Program Files\Docker\Docker\Docker Desktop.exe" ]; then
             start "" "C:\Program Files\Docker\Docker\Docker Desktop.exe"
         else
@@ -154,7 +154,7 @@ sleep 0.1
 
 if [ "$REBUILD" = true ]; then
     echo
-    echo -e "  ${yellow_bold}• ${white}Rebuilding containers...${reset}"
+    echo -e "  ${yellow_bold}➜ ${white_bold}Rebuilding containers...${reset}"
     echo
     docker compose down
     COMPOSE_BAKE=true docker compose build --no-cache
@@ -186,12 +186,12 @@ else
     else
         if [ "$REBUILD" = true ]; then
             echo
-            echo -e "  ${yellow_bold}• ${white}Rebuilding containers...${reset}"
+            echo -e "  ${yellow_bold}➜ ${white_bold}Rebuilding containers...${reset}"
             echo
             COMPOSE_BAKE=true docker compose build --no-cache
         else
             echo
-            echo -e "  ${yellow_bold}• ${white}Starting containers...${reset}"
+            echo -e "  ${yellow_bold}➜ ${white_bold}Starting containers...${reset}"
             echo
         fi
         COMPOSE_BAKE=true docker compose up -d
