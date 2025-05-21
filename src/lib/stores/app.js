@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store'
+import { browser } from '$app/environment'
 
 export const initialising = writable(true)
 
@@ -13,4 +14,23 @@ export const config = writable({
     smooth_output: true
 })
 
-export const avatar_href = writable(`/img/avatar.png?t=${Date.now()}`)
+export const avatar_href = writable('/img/avatar.png')
+
+if (browser) {
+    const stored_avatar_href = localStorage.getItem('avatar_href')
+    const stored_config = localStorage.getItem('config')
+    
+    if (stored_avatar_href) avatar_href.set(stored_avatar_href)
+    
+    if (stored_config) {
+        try {
+            const parsed_config = JSON.parse(stored_config)
+            config.update(current => ({ ...current, ...parsed_config }))
+        } catch (err) {
+            console.error('Failed to parse stored config', err)
+        }
+    }
+
+    avatar_href.subscribe(value => localStorage.setItem('avatar_href', value))
+    config.subscribe(value => localStorage.setItem('config', JSON.stringify(value)))
+}
