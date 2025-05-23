@@ -113,7 +113,7 @@ It runs in your browser on `localhost:1337`.
 
 # Install
 
-1. With [PostgreSQL](https://www.postgresql.org/download/) installed and a server running, create a new database (e.g. called `plump_gpt`)
+1. With [PostgreSQL](https://www.postgresql.org/download/) installed and a server running, create a new database (e.g. called `plump_gpt`):
 ```
 psql -c "CREATE DATABASE plump_gpt"
 ```
@@ -130,7 +130,7 @@ MISTRAL_API_KEY=...
 DEEPSEEK_API_KEY=...
 ```
 
-3. Run the start script
+3. Run the start script:
 ```
 ./start
 ```
@@ -145,17 +145,17 @@ DEEPSEEK_API_KEY=...
 
 # Manual Steps
 
-3. Install dependencies
+3. Install dependencies:
 ```
 npm install
 ```
 
-4. Initialize the database
+4. Initialise the database:
 ```
 npx prisma migrate deploy
 ```
 
-5. Seed the database
+5. Seed the database:
 ```
 npm run db:seed
 ```
@@ -172,7 +172,7 @@ npm run preview
 
 
 
-# Docker Installation
+# Docker
 
 You can also run Plump GPT using Docker:
 
@@ -204,6 +204,6 @@ docker compose down -v
 ```
 
 
-# Note
+# Please Note
 
-This isn't meant to be production ready code - Plump GPT is a personal project that I originally had no intention of sharing. I use it a lot, and I could probably be persuaded to develop it properly, but it works for my needs as is, and I'm currently focused on other things!
+Plump GPT is a personal project I originally had no intention of sharing, so this isn't meant to be polished, production ready code. I use it a lot, and I could probably be persuaded to develop it properly, but it works for my needs as is, and I'm currently focused on other things!
