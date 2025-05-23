@@ -130,10 +130,26 @@ if [ ! -d node_modules ] || [ ! -f node_modules/.install-stamp ] || [ package.js
     fi
     
     echo -e "  ${green_bold}✔ ${white}Prisma client generated${reset}"
-else
+fi
+
+
+sleep 0.1
+
+
+# Check if app has already been built
+if [ "$DEV_MODE" = false ] && [ ! -d .svelte-kit/output ]; then
     echo
-    echo -e "  ${cyan_bold}➜ ${white_bold}Checking dependencies...${reset}"
-    echo -e "  ${green_bold}✔ ${white}Dependencies installed${reset}"
+    echo -e "  ${cyan_bold}➜ ${white_bold}Building app...${reset}"
+
+    npm run build > start.log 2>&1
+
+    if [ $? -ne 0 ]; then
+        echo -e "  ${yellow_bold}⚠️ ${white_bold}Build failed${reset}"
+        echo -e "     ${white}Please check ${cyan_bold}start.log${white} for details${reset}"
+        exit 1
+    fi
+
+    echo -e "  ${green_bold}✔ ${white}App built${reset}"
 fi
 
 
