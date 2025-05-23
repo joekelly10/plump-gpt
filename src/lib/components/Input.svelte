@@ -103,6 +103,9 @@
     export const sendMessage = async (is_regeneration = false) => {
         console.log('🤖 Sending message...')
 
+        $model_list_active    = false
+        $user_settings_active = false
+
         const getNextId = () => {
             return $messages[$messages.length - 1].id + 1
         }
