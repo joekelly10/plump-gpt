@@ -113,11 +113,14 @@ It runs in your browser on `localhost:1337`.
 
 # Install
 
-1. With [PostgreSQL](https://www.postgresql.org/download/) installed on your system, and a server running, create a new database via your preferred method (e.g. called `plump_gpt`)
+1. With [PostgreSQL](https://www.postgresql.org/download/) installed and a server running, create a new database (e.g. called `plump_gpt`)
+```
+psql -c "CREATE DATABASE plump_gpt"
+```
 
 2. Create a `.env` file in the root directory (or rename the `.env.example` file to `.env`), and add your database URL and API keys:
 ```
-DATABASE_URL=postgresql://username:password@localhost:5432/plump_gpt
+DATABASE_URL=postgresql://your_username:your_password@localhost:5432/plump_gpt
 
 OPENAI_API_KEY=your_api_key_here
 ANTHROPIC_API_KEY=...
@@ -131,11 +134,12 @@ DEEPSEEK_API_KEY=...
 ```
 ./start
 ```
-_Note: You can also run Plump GPT in dev mode, with live reloading, by running `./start dev`_
+_You can also run Plump GPT in dev mode, with live reloading, by running `./start dev`_
 
-----
 
-#### Manual steps
+
+# Manual Install Steps
+1 + 2 as above...
 
 3. Install dependencies
 ```
@@ -168,7 +172,7 @@ npm run preview
 
 You can also run Plump GPT using Docker:
 
-1. Make sure you have [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) installed.
+1. Make sure you have [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) installed
 
 2. Create a `.env` file in the root directory (or rename the `.env.example` file to `.env`), and add your API keys:
 ```
