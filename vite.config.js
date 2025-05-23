@@ -1,15 +1,14 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vitest/config';
-import { APP_PORT } from './src/lib/config';
 
 export default defineConfig({
 	plugins: [sveltekit()],
 	server: {
-		port: APP_PORT,
+		port: 1337,
 		strictPort: true
 	},
 	preview: {
-		port: APP_PORT,
+		port: 1337,
 		strictPort: true
 	},
 	test: {
