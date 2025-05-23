@@ -10,16 +10,17 @@ services:
     environment:
       - DATABASE_URL=postgresql://plump_user:plump_password@db:5432/plump_gpt
       # Add your API keys in the .env file
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
-      - GROK_API_KEY=${GROK_API_KEY}
-      - COHERE_API_KEY=${COHERE_API_KEY}
-      - MISTRAL_API_KEY=${MISTRAL_API_KEY}
-      - AI21_API_KEY=${AI21_API_KEY}
-      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
-      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
-      - GROQ_API_KEY=${GROQ_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - GROK_API_KEY=${GROK_API_KEY:-}
+      - COHERE_API_KEY=${COHERE_API_KEY:-}
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY:-}
+      - AI21_API_KEY=${AI21_API_KEY:-}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY:-}
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      - YOUR_NAME=${YOUR_NAME:-}
       - DOCKER_ENV=true
     volumes:
       - ./.env:/app/.env

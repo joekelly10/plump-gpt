@@ -101,17 +101,17 @@ if ! docker info &> /dev/null; then
     echo
 
     if [[ "$OSTYPE" == "darwin"* ]]; then
-        echo -e "  ${yellow_bold}➜ ${white_bold}Attempting to start Docker Desktop (macOS)...${reset}"
+        echo -e "  ${cyan_bold}➜ ${white_bold}Attempting to start Docker Desktop (macOS)...${reset}"
         open -a Docker -g
     elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        echo -e "  ${yellow_bold}➜ ${white_bold}Attempting to start Docker (Linux)...${reset}"
+        echo -e "  ${cyan_bold}➜ ${white_bold}Attempting to start Docker (Linux)...${reset}"
         if command -v systemctl &> /dev/null; then
             sudo systemctl start docker
         else
             sudo service docker start
         fi
     elif [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
-        echo -e "  ${yellow_bold}➜ ${white_bold}Attempting to start Docker Desktop (Windows)...${reset}"
+        echo -e "  ${cyan_bold}➜ ${white_bold}Attempting to start Docker Desktop (Windows)...${reset}"
         if [ -f "C:\Program Files\Docker\Docker\Docker Desktop.exe" ]; then
             start "" "C:\Program Files\Docker\Docker\Docker Desktop.exe"
         else
@@ -152,9 +152,27 @@ fi
 sleep 0.1
 
 
+# Check if containers exist - if not, this is the first run
+if ! docker compose ps -a | grep -q "plump-gpt"; then
+    echo
+    echo -e "  ${cyan_bold}➜ ${white_bold}First time setup...${reset}"
+    echo
+    echo -e "    ${cyan_bold}Please enter your name:${reset}"
+    echo -e "    ${white}(We'll add it to the default system prompt)${reset}"
+    echo -e "    ${cyan_bold}➜ ${white_bold}\c"
+    read YOUR_NAME
+
+    if [ -z "$YOUR_NAME" ]; then
+        echo
+        echo -e "  ${green_bold}✔ ${white}Ok, we'll use a nameless prompt${reset}"
+    else
+        export YOUR_NAME=$YOUR_NAME
+    fi
+fi
+
 if [ "$REBUILD" = true ]; then
     echo
-    echo -e "  ${yellow_bold}➜ ${white_bold}Rebuilding containers...${reset}"
+    echo -e "  ${cyan_bold}➜ ${white_bold}Rebuilding containers...${reset}"
     echo
     docker compose down
     COMPOSE_BAKE=true docker compose build --no-cache
@@ -186,12 +204,12 @@ else
     else
         if [ "$REBUILD" = true ]; then
             echo
-            echo -e "  ${yellow_bold}➜ ${white_bold}Rebuilding containers...${reset}"
+            echo -e "  ${cyan_bold}➜ ${white_bold}Rebuilding containers...${reset}"
             echo
             COMPOSE_BAKE=true docker compose build --no-cache
         else
             echo
-            echo -e "  ${yellow_bold}➜ ${white_bold}Starting containers...${reset}"
+            echo -e "  ${cyan_bold}➜ ${white_bold}Starting containers...${reset}"
             echo
         fi
         COMPOSE_BAKE=true docker compose up -d
@@ -213,7 +231,7 @@ while true; do
 
     if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
         echo -e "  ${red_bold}✗ ${white}Timed out waiting for database migration and seeding${reset}"
-        echo -e "  ${yellow}⚠ ${white}Please check the logs with: ${cyan_bold}docker compose logs app${reset}"
+        echo -e "    ${white}Please check the logs with: ${cyan_bold}docker compose logs app${reset}"
         echo
 
         exit 1
@@ -300,19 +318,18 @@ echo
 sleep 0.005
 echo
 
+
 sleep 0.25
 
+
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    # macOS
     open "http://localhost:1337"
+elif [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
+    start "http://localhost:1337"
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    # Linux with desktop environment
     if command -v xdg-open &> /dev/null; then
         xdg-open "http://localhost:1337" &>/dev/null &
     elif command -v sensible-browser &> /dev/null; then
         sensible-browser "http://localhost:1337" &>/dev/null &
     fi
-elif [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
-    # Windows
-    start "http://localhost:1337"
 fi
