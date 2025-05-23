@@ -14,3 +14,4 @@ vite.config.ts.timestamp-*
 /db
 /src/generated
 /static/img/avatars
+start.log
