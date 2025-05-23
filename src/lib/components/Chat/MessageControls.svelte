@@ -167,8 +167,8 @@
                             height:   90px
 
                     &:active
-                        border-color:     color.adjust($blue, $lightness: -3%)
-                        background-color: color.adjust($blue, $lightness: -3%)
+                        border-color:     color.mix($background, $blue, 5%)
+                        background-color: color.mix($background, $blue, 5%)
 
                 &.retry
                     .icon
@@ -177,8 +177,8 @@
                         border-color:     white
                         background-color: white
                     &:active
-                        border-color:     color.adjust($off-white, $lightness: -6%)
-                        background-color: color.adjust($off-white, $lightness: -6%)
+                        border-color:     color.mix($background, $off-white, 5%)
+                        background-color: color.mix($background, $off-white, 5%)
                     
                 &.delete
                     .icon
@@ -187,8 +187,8 @@
                         border-color:     $coral
                         background-color: $coral
                     &:active
-                        border-color:     color.adjust($coral, $lightness: -4%)
-                        background-color: color.adjust($coral, $lightness: -4%)
+                        border-color:     color.mix($background, $coral, 5%)
+                        background-color: color.mix($background, $coral, 5%)
 
                 &.fork
                     .icon
@@ -198,8 +198,8 @@
                         border-color:     $blue
                         background-color: $blue
                     &:active
-                        border-color:     color.adjust($blue, $lightness: -3%)
-                        background-color: color.adjust($blue, $lightness: -3%)
+                        border-color:     color.mix($background, $blue, 5%)
+                        background-color: color.mix($background, $blue, 5%)
 
                 &.star
                     height: 80px
@@ -221,6 +221,9 @@
                                 display: block
                                 height:  19px
                                 fill:    $yellow
+                    &:active
+                        border-color:     color.adjust($background-lightest, $lightness: -2%)
+                        background-color: color.adjust($background-lightest, $lightness: -2%)
                     &.starred
                         border-color:     $background-darker
                         background-color: $yellow
@@ -231,6 +234,6 @@
                                 display: block
                                 height:  19px
                                 fill:    $background-darker
-                        &:hover
-                            background-color: color.adjust($yellow, $lightness: -5%)
+                        &:active
+                            background-color: color.mix($background, $yellow, 5%)
 </style>
