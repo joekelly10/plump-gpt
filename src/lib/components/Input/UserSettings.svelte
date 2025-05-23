@@ -32,7 +32,6 @@
             </div>
         {/if}
         <div class='label'>
-            Your<br>
             Settings
         </div>
     </button>
