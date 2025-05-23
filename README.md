@@ -116,51 +116,52 @@ It runs in your browser on `localhost:1337`.
 
 1. With [PostgreSQL](https://www.postgresql.org/download/) installed on your system, and a server running, create a new database via your preferred method (e.g. called `plump_gpt`)
 
-2. Create a `.env` file in the root directory (or rename the `.env.example` file to `.env`), and add your new database's URL and your API keys:
+2. Create a `.env` file in the root directory (or rename the `.env.example` file to `.env`), and add your database URL and API keys:
 ```
+DATABASE_URL=postgresql://username:password@localhost:5432/plump_gpt
+
 OPENAI_API_KEY=your_api_key_here
 ANTHROPIC_API_KEY=...
 GEMINI_API_KEY=...
 GROK_API_KEY=...
 MISTRAL_API_KEY=...
 DEEPSEEK_API_KEY=...
-
-DATABASE_URL=postgresql://username:password@localhost:5432/plump_gpt
 ```
+
+3. Run the start script
+```
+./start
+```
+_Note: You can also run Plump GPT in dev mode, with live reloading, by running `./start dev`_
+
+----
+
+#### Manual steps
 
 3. Install dependencies
 ```
 npm install
 ```
 
-4. Initialize and migrate the database
+4. Initialize the database
 ```
-npx prisma migrate dev
+npx prisma migrate deploy
 ```
 
-5. Compile the SvelteKit app:
+5. Seed the database
+```
+npm run db:seed
+```
+
+6. Compile the SvelteKit app:
 ```
 npm run build
 ```
 
-6. Start the application:
+7. Start the app:
 ```
 npm run preview
 ```
-   - (Note: You can also run Plump GPT in dev mode, with live reloading, by running `npm run dev`)
-
-Or use the start script:
-```
-./start.sh
-```
-   - (You can also run in dev mode with `./start.sh dev`)
-
-7. Go to `http://localhost:1337` and start chatting.
-
-
-**Tip:** Don't forget to replace `/static/img/avatar.png` with your avatar
-
-_(Use `git update-index --assume-unchanged static/img/avatar.png` to automatically ignore changes to avatar.png if you're developing)._
 
 
 
@@ -180,22 +181,20 @@ MISTRAL_API_KEY=...
 DEEPSEEK_API_KEY=...
 ```
 
-3. Run the docker-start.sh script:
+3. Run the start script:
 ```
-./docker-start.sh
+./docker-start
 ```
 
 **To rebuild containers:**
 ```
-./docker-start.sh rebuild
+./docker-start rebuild
 ```
 
 **To completely remove the containers and data volume:**
 ```
 docker compose down -v
 ```
-
-Don't forget to replace `/static/img/avatar.png` with your avatar.
 
 
 # Note
