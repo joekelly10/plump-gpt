@@ -138,8 +138,7 @@ _You can also run Plump GPT in dev mode, with live reloading, by running `./star
 
 
 
-# Manual Install Steps
-1 + 2 as above...
+# Manual Steps
 
 3. Install dependencies
 ```
