@@ -21,14 +21,13 @@ It runs in your browser on `localhost:1337`.
 - <img alt='o4-mini' src='./static/img/icons/models/o4-mini.png' width='21' height='21' valign='middle'>&nbsp; o4-mini
 
 **Anthropic**
-- <img alt='Claude Haiku' src='./static/img/icons/models/claude-3-haiku.png' width='21' height='21' valign='middle'>&nbsp; Claude 3.5 Haiku
-- <img alt='Claude Sonnet' src='./static/img/icons/models/claude-3-sonnet.png' width='21' height='21' valign='middle'>&nbsp; Claude 3.7 Sonnet
-- <img alt='Claude Opus' src='./static/img/icons/models/claude-3-opus.png' width='21' height='21' valign='middle'>&nbsp; Claude 3 Opus
+- <img alt='Claude Haiku' src='./static/img/icons/models/claude-haiku.png' width='21' height='21' valign='middle'>&nbsp; Claude Haiku 3.5
+- <img alt='Claude Sonnet' src='./static/img/icons/models/claude-sonnet.png' width='21' height='21' valign='middle'>&nbsp; Claude Sonnet 4
+- <img alt='Claude Opus' src='./static/img/icons/models/claude-opus.png' width='21' height='21' valign='middle'>&nbsp; Claude Opus 4
 
 **Google**
-- <img alt='Gemini Flash' src='./static/img/icons/models/gemini-flash-lite.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.0 Flash Lite
+- <img alt='Gemini Flash Lite' src='./static/img/icons/models/gemini-flash-lite.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.0 Flash Lite
 - <img alt='Gemini Flash' src='./static/img/icons/models/gemini-flash.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.5 Flash
-- <img alt='Gemini Flash Thinking' src='./static/img/icons/models/gemini-flash-thinking.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.0 Flash Thinking
 - <img alt='Gemini Pro' src='./static/img/icons/models/gemini-pro.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.5 Pro
 
 **X**
