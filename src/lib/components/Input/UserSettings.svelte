@@ -32,7 +32,7 @@
             </div>
         {/if}
         <div class='label'>
-            Settings
+            Menu
         </div>
     </button>
 
