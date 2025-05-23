@@ -134,7 +134,12 @@ DEEPSEEK_API_KEY=...
 ```
 ./start
 ```
-💡 Run Plump GPT in dev mode, with live reloading, using `./start dev`
+
+💡 You can run Plump GPT in dev mode, with live reloading:
+
+```
+./start dev
+```
 
 
 
