@@ -14,7 +14,7 @@ export const config = writable({
     smooth_output: true
 })
 
-export const avatar_href = writable('/img/avatar.png')
+export const avatar_href = writable('/img/default_avatar.png')
 
 if (browser) {
     const stored_avatar_href = localStorage.getItem('avatar_href')
