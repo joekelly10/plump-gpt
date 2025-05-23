@@ -221,6 +221,7 @@
         box-sizing:   border-box
         padding:      space.$default-padding
         padding-left: space.$avatar-container-width
+        box-shadow:   0 0 0 1.5px transparent
         border:       0px solid transparent
         transition:   padding-bottom easing.$quart-out 0.25s, border-bottom easing.$quart-out 0.25s, background-color easing.$quart-out 0.125s, box-shadow easing.$quart-out 0.125s
         +shared.code_block_styles
