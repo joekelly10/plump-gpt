@@ -5,6 +5,7 @@
     import { loader_active } from '$lib/stores/app'
     import { chat_id, messages, forks, active_fork, stars, highlights } from '$lib/stores/chat'
     import { is_provisionally_forking } from '$lib/stores/chat/interactions'
+    import { migrateIfNeeded } from '$lib/utils/migrate'
     import { smoothScroll } from '$lib/utils/helpers'
     import hljs from 'highlight.js'
 
@@ -70,7 +71,7 @@
         if (response.ok) {
             const json = await response.json()
 
-            chats          = json.items
+            chats          = migrateIfNeeded(json.items)
             total_chats    = json.total_items
             total_pages    = json.total_pages
             searched_value = search_value
@@ -164,9 +165,6 @@
     }
 
     const loadChat = async (chat) => {
-        // temp hack
-        migrateIfNeeded(chat)
-
         await unload() // reset all stores (to prevent out of range errors)
 
         // allow time for the unpainting of highlights (tick doesn't work here)
@@ -194,54 +192,6 @@
         $chat_id                  = null
         $is_provisionally_forking = false
         await tick()
-    }
-
-    const migrateIfNeeded = (chat) => {
-        chat.messages.forEach(message => {
-            // usage is missing from old chats
-            if (message.role === 'assistant' && !message.usage) {
-                if (message.model.startsWith('claude')) {
-                    message.model = {
-                        type:           'anthropic',
-                        id:             'claude-3-5-sonnet-20240620',
-                        name:           'Claude 3.5 Sonnet',
-                        short_name:     'Claude',
-                        icon:           'claude-3-sonnet.png',
-                        context_window: 200000
-                    }
-                } else {
-                    message.model = {
-                        type:           'open-ai',
-                        id:             'gpt-4o-2024-08-06',
-                        name:           'GPT-4o',
-                        short_name:     'GPT-4o',
-                        icon:           'gpt-4o.png',
-                        context_window: 128000
-                    }
-                }
-                message.temperature = 0.4
-                message.top_p = 1
-                message.usage = {
-                    cache_write_tokens: 0,
-                    cache_read_tokens:  0,
-                    input_tokens:       0,
-                    output_tokens:      0
-                }
-                message.timestamp = new Date(chat.updatedAt).toISOString()
-            }
-            // cache_write_tokens and cache_read_tokens are missing from old usage objects
-            if (message.role === 'assistant' && message.usage.cache_write_tokens === undefined) {
-                message.usage = {
-                    ...message.usage,
-                    cache_write_tokens: 0,
-                    cache_read_tokens:  0
-                }
-            }
-        })
-        // stars are missing from old chats
-        if (!chat.stars) chat.stars = []
-        // highlights are missing from old chats
-        if (!chat.highlights) chat.highlights = []
     }
 
     const deleteChat = async (chat) => {
