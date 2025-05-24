@@ -90,14 +90,14 @@ export default [
     },
     {
         type:           'google',
-        id:             'gemini-2.5-flash-preview-04-17',
+        id:             'gemini-2.5-flash-preview-05-20',
         name:           'Gemini 2.5 Flash',
         short_name:     'Gemini',
         icon:           'gemini-flash.png',
         family:         'Google',
         hosted_at:      'googleapis.com',
         context_window: 1000000,
-        pricing_id:     'gemini-2.0-flash'
+        pricing_id:     'gemini-2.5-flash'
     },
     {
         type:           'google',

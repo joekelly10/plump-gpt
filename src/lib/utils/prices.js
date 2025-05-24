@@ -89,19 +89,19 @@ const model_prices = {
             }
         }
     },
-    'gemini-2.0-flash': {
+    'gemini-2.5-flash': {
         price: {
             cents: {
-                input_token:   10/1000000, // $0.10/mTok
-                output_token:  40/1000000
+                input_token:   15/1000000, // $0.15/mTok
+                output_token:  60/1000000
             }
         }
     },
-    'gemini-2.0-flash-thinking': {
+    'gemini-2.5-flash-thinking': {
         price: {
             cents: {
-                input_token:  0, // Free (for now)
-                output_token: 0 
+                input_token:   15/1000000, // $0.15/mTok
+                output_token: 350/1000000
             }
         }
     },
