@@ -46,15 +46,9 @@
                 <img class='close-icon' src='/img/icons/close-white.png' alt='Close'>
             </button>
             <div class='settings-item avatar'>
-                <div class='title'>
-                    Avatar
-                </div>
                 <AvatarSetter/>
             </div>
             <div class='settings-item smooth-output'>
-                <div class='title'>
-                    Smooth Output
-                </div>
                 <SmoothOutputSwitch/>
             </div>
         </div>
@@ -71,6 +65,13 @@
             .settings-button
                 .label
                     opacity: 0
+        
+        :global(.setting-description)
+            margin-top:  20px
+            font-size:   14px
+            font-weight: 450
+            line-height: font.$line-height-14px
+            color:       $background-lightest
 
     .settings-button
         display:         flex
@@ -159,7 +160,7 @@
         background-color: color.adjust(color.adjust($background, $lightness: -1%), $alpha: -0.05)
         backdrop-filter:  blur(4px)
 
-        .title
+        :global(.setting-title)
             margin-bottom:  20px
             font-size:      12px
             font-weight:    600
@@ -184,5 +185,4 @@
             &:hover
                 .close-icon
                     filter: brightness(0.8)
-            
 </style>

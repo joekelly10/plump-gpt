@@ -42,6 +42,9 @@
 </script>
 
 <div class='avatar-setter'>
+    <div class='setting-title'>
+        Avatar
+    </div>
     <div class='input-container'>
         <label for='file-input' class='input-label'>
             <div class='avatar-container'>

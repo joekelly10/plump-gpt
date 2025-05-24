@@ -3,6 +3,9 @@
 </script>
 
 <div class='smooth-output-switch'>
+    <div class='setting-title'>
+        Smooth Output
+    </div>
     <div class='switch-container'>
         <button
             class='button off-button'
@@ -19,7 +22,7 @@
             On
         </button>
     </div>
-    <div class='description'>
+    <div class='setting-description'>
         Smoothly write the AI's output onto the screen, even if it gets delivered in irregular chunks
     </div>
 </div>
@@ -60,11 +63,4 @@
                 
                 &:active
                     background-color: color.mix($background, $off-white, 7.5%)
-        
-    .description
-        margin-top:  20px
-        font-size:   14px
-        font-weight: 450
-        line-height: font.$line-height-14px
-        color:       $background-lightest
 </style>
