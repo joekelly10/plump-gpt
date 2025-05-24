@@ -339,11 +339,9 @@
         +shared.scrollbar
 
     .chats
-        display:        flex
-        flex-direction: column
-        gap:            space.$default-padding
+        // don't use flexbox here, it messes up delete animations
         margin:         0 auto
-        padding-bottom: 3 * space.$default-padding
+        padding-bottom: 2 * space.$default-padding
         width:          800px
 
         .no-chats

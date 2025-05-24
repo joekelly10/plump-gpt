@@ -130,7 +130,8 @@
 
 <style lang='sass'>
     .chat-container
-        position: relative
+        position:      relative
+        margin-bottom: space.$default-padding
 
     .chat
         width:            100%
