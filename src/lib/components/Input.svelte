@@ -91,10 +91,14 @@
     export const addReply        = async () => sendMessage(true)
 
     export const chatLoaded = async (options = {}) => {
+        $user_settings_active = false
+        $model_list_active    = false
+
         focus()
         await tick()
         hljs.highlightAll()
         addCopyButtons()
+
         if (options.switch_model) {
             const last_used_model = $active_messages[$active_messages.length - 1].model?.id
             if (last_used_model) model.setById(last_used_model)
