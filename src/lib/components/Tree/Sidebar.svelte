@@ -2,7 +2,7 @@
     import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { marked } from 'marked'
-    import { avatar_href } from '$lib/stores/app'
+    import { avatar_href } from '$lib/stores/user'
 
     import MessageInfo from '$lib/components/Tree/MessageInfo.svelte'
     import SystemPromptIcon from '$lib/components/Icons/SystemPrompt.svelte'

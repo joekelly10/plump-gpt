@@ -3,7 +3,7 @@
     import { fly, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { is_idle } from '$lib/stores/api'
-    import { avatar_href } from '$lib/stores/app'
+    import { avatar_href } from '$lib/stores/user'
 
     import ForkIcon from '$lib/components/Icons/Fork.svelte'
 

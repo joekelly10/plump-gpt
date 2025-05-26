@@ -3,7 +3,7 @@
 
     import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { config } from '$lib/stores/app'
+    import { config } from '$lib/stores/user'
 
     $: default_model = all_models.find(m => m.id === $config.default_model_id)
 </script>

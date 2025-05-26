@@ -1,7 +1,7 @@
 <script>
     import { fly, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { avatar_href } from '$lib/stores/app'
+    import { avatar_href } from '$lib/stores/user'
     import { model } from '$lib/stores/ai'
 
     export let message,

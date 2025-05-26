@@ -3,7 +3,7 @@
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { chat_id } from '$lib/stores/chat'
-    import { avatar_href } from '$lib/stores/app'
+    import { avatar_href } from '$lib/stores/user'
     import { formatDate } from '$lib/utils/helpers'
     import { marked } from 'marked'
 

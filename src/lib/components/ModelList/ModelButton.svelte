@@ -2,7 +2,7 @@
     import { createEventDispatcher } from 'svelte'
     import { scale } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { config } from '$lib/stores/app'
+    import { config } from '$lib/stores/user'
     import { model as store_model } from '$lib/stores/ai'
     import { getPrices } from '$lib/utils/prices'
 

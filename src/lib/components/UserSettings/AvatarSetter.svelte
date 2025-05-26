@@ -1,7 +1,7 @@
 <script>
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { avatar_href } from '$lib/stores/app'
+    import { avatar_href } from '$lib/stores/user'
 
     let is_uploading = false,
         error        = null

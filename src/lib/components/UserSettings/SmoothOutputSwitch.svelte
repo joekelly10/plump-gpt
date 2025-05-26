@@ -1,5 +1,5 @@
 <script>
-    import { config } from '$lib/stores/app'
+    import { config } from '$lib/stores/user'
 </script>
 
 <div class='smooth-output-switch'>
