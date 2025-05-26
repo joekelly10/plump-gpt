@@ -32,7 +32,8 @@
             </div>
         {/if}
         <div class='label'>
-            Menu
+            User<br>
+            Settings
         </div>
     </button>
 
@@ -42,14 +43,21 @@
             in:slide={{ axis: 'y', duration: 250, easing: quartOut }}
             out:slide={{ axis: 'y', delay: 50, duration: 150, easing: quartOut }}
         >
-            <button class='close-button' on:click={() => $user_settings_active = false }>
-                <img class='close-icon' src='/img/icons/close-white.png' alt='Close'>
-            </button>
-            <div class='settings-item avatar'>
-                <AvatarSetter/>
+            <div class='header'>
+                <div class='title'>
+                    User Settings
+                </div>
+                <button class='close-button' on:click={() => $user_settings_active = false }>
+                    <img class='close-icon' src='/img/icons/close-white.png' alt='Close'>
+                </button>
             </div>
-            <div class='settings-item smooth-output'>
-                <SmoothOutputSwitch/>
+            <div class='body'>
+                <div class='settings-item avatar'>
+                    <AvatarSetter/>
+                </div>
+                <div class='settings-item smooth-output'>
+                    <SmoothOutputSwitch/>
+                </div>
             </div>
         </div>
     {/if}
@@ -144,45 +152,61 @@
             background-color: color.adjust($background-lightest, $lightness: -2%)
     
     .settings-list
-        display:          flex
-        flex-direction:   column
-        gap:              48px
-        position:         absolute
-        bottom:           0
-        left:             16px
-        width:            480px
-        box-sizing:       border-box
-        padding:          space.$default-padding
-        padding-bottom:   space.$default-padding + 40px + 48px
-        border-radius:    8px 8px 0 0
-        border:           1px solid $background-darkest
-        border-bottom:    none
-        background-color: color.adjust(color.adjust($background, $lightness: -1%), $alpha: -0.05)
-        backdrop-filter:  blur(4px)
+        position: absolute
+        bottom:   0
+        left:     16px
+        width:    480px
 
-        :global(.setting-title)
-            margin-bottom:  20px
-            font-size:      12px
-            font-weight:    600
-            line-height:    font.$line-height-14px
-            text-transform: uppercase
-            color:          $blue-grey
-        
-        .close-button
-            display:         flex
-            align-items:     center
-            justify-content: center
-            position:        absolute
-            top:             0
-            right:           0
-            width:           space.$header-height
-            height:          space.$header-height
-            cursor:          pointer
+        .header
+            display:          flex
+            align-items:      center
+            position:         relative
+            width:            100%
+            height:           space.$header-height
+            box-sizing:       border-box
+            border-radius:    12px 12px 0 0
+            background-color: $background-darker
+
+            .title
+                padding:     0 space.$default-padding
+                font-size:   14px
+                font-weight: 600
             
-            .close-icon
-                height: 14px
-            
-            &:hover
+            .close-button
+                display:         flex
+                align-items:     center
+                justify-content: center
+                position:        absolute
+                top:             0
+                right:           0
+                z-index:         10
+                width:           space.$header-height + 12px
+                height:          space.$header-height
+                cursor:          pointer
+                
                 .close-icon
-                    filter: brightness(0.8)
+                    height: 14px
+                
+                &:hover
+                    .close-icon
+                        filter: brightness(0.8)
+        
+        .body
+            display:          flex
+            flex-direction:   column
+            gap:              48px
+            padding:          space.$default-padding
+            padding-bottom:   space.$default-padding + 40px + 48px
+            border-left:      1px solid $background-darker
+            border-right:     1px solid $background-darker
+            background-color: color.adjust(color.adjust($background, $lightness: -1%), $alpha: -0.05)
+            backdrop-filter:  blur(4px)
+
+            :global(.setting-title)
+                margin-bottom:  20px
+                font-size:      12px
+                font-weight:    600
+                line-height:    font.$line-height-14px
+                text-transform: uppercase
+                color:          $blue-grey
 </style>

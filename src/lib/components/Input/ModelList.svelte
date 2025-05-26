@@ -2,13 +2,17 @@
     import all_models from '$lib/fixtures/models'
 
     import { onMount } from 'svelte'
-    import { slide } from 'svelte/transition'
+    import { slide, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { model_list_active } from '$lib/stores/app'
 
     import ModelFamily from '$lib/components/ModelList/ModelFamily.svelte'
+    import HoverInfoDefaultModel from '$lib/components/ModelList/HoverInfoDefaultModel.svelte'
+    import HoverInfoPrices from '$lib/components/ModelList/HoverInfoPrices.svelte'
 
-    let models_by_family = []
+    let models_by_family    = [],
+        is_hovering_default = false,
+        is_hovering_prices  = false
 
     const setModelsByFamily = () => {
         all_models.forEach(model => {
@@ -34,18 +38,37 @@
             in:slide={{ axis: 'y', duration: 333, easing: quartOut }}
             out:slide={{ axis: 'y', delay: 50, duration: 200, easing: quartOut }}
         >
-            <button class='close-button' on:click={() => $model_list_active = false }>
-                <img class='close-icon' src='/img/icons/close-white.png' alt='Close'>
-            </button>
+            <div class='header'>
+                <div class='title'>
+                    Models
+                    <span class='bull'>
+                        &bull;
+                    </span>
+                    {all_models.length}
+                </div>
+                <button class='close-button' on:click={() => $model_list_active = false }>
+                    <img class='close-icon' src='/img/icons/close-white.png' alt='Close'>
+                </button>
+            </div>
             <div class='list'>
                 {#each models_by_family as family}
                     <ModelFamily
                         family={family.family}
                         models={family.models}
+                        bind:is_hovering_default
+                        bind:is_hovering_prices
                         on:focusInput
                         on:closeModelList={() => $model_list_active = false }
                     />
                 {/each}
+            </div>
+            <div class='hover-info'>
+                {#if is_hovering_default}
+                    <HoverInfoDefaultModel/>
+                {/if}
+                {#if is_hovering_prices}
+                    <HoverInfoPrices/>
+                {/if}
             </div>
         </div>
     {/if}
@@ -65,7 +88,47 @@
         width:          100%
 
     .models-by-family
-        position: relative
+        display:        flex
+        flex-direction: column
+        align-items:    center
+        position:       relative
+        
+        .header
+            display:          flex
+            align-items:      center
+            width:            100%
+            height:           space.$header-height
+            box-sizing:       border-box
+            border-radius:    12px 12px 0 0
+            background-color: $background-darker
+
+            .title
+                padding:     0 space.$default-padding
+                font-size:   14px
+                font-weight: 600
+
+                .bull
+                    margin: 0 8px
+                    color:  $blue
+            
+            .close-button
+                display:         flex
+                align-items:     center
+                justify-content: center
+                position:        absolute
+                top:             0
+                right:           0
+                z-index:         10
+                width:           space.$header-height + 12px
+                height:          space.$header-height
+                cursor:          pointer
+                
+                .close-icon
+                    height: 14px
+                
+                &:hover
+                    .close-icon
+                        filter: brightness(0.8)
 
         .list
             display:          flex
@@ -77,30 +140,16 @@
             height:           640px
             box-sizing:       border-box
             padding:          space.$header-height
-            border-radius:    8px 8px 0 0
-            border:           1px solid $background-darkest
-            border-bottom:    none
+            border-left:      1px solid $background-darker
+            border-right:     1px solid $background-darker
             background-color: color.adjust(color.adjust($background, $lightness: -1%), $alpha: -0.05)
             backdrop-filter:  blur(4px)
             overflow-y:       scroll
             +shared.scrollbar
-
-        .close-button
-            display:         flex
-            align-items:     center
-            justify-content: center
-            position:        absolute
-            top:             0
-            right:           7px
-            z-index:         10
-            width:           space.$header-height
-            height:          space.$header-height
-            cursor:          pointer
-            
-            .close-icon
-                height: 14px
-            
-            &:hover
-                .close-icon
-                    filter: brightness(0.8)
+        
+        .hover-info
+            position: absolute
+            bottom:   32px
+            right:    32px
+            z-index:  1000
 </style>

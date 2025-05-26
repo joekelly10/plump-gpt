@@ -9,9 +9,10 @@ export const prompt_editor_active = writable(false)
 export const user_settings_active = writable(false)
 export const model_list_active    = writable(false)
 
-export const config = writable({ 
-    autosave:      true,
-    smooth_output: true
+export const config = writable({
+    default_model_id: 'gpt-4.1',
+    autosave:         true,
+    smooth_output:    true
 })
 
 export const avatar_href = writable('/img/default_avatar.png')
