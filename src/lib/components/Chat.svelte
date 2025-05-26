@@ -599,6 +599,7 @@
         font-size:       14px
         font-weight:     450
         color:           $blue-grey
+        user-select:     none
         animation:       pulse 2s linear infinite
 
         .model-icon
