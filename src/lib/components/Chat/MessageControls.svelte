@@ -211,7 +211,8 @@
                             display: none
                             height: 19px
                             fill:   $yellow
-                    &:hover
+                    &:hover,
+                    &:active
                         border-color:     $background-lightest
                         background-color: $background-lightest
                         .icon
