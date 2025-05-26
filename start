@@ -308,7 +308,8 @@ sleep 0.25
 
 
 open_in_browser() {
-    sleep 0.5
+    # give the app a second to start up
+    sleep 1
 
     if [[ "$OSTYPE" == "darwin"* ]]; then
         open "http://localhost:1337"
