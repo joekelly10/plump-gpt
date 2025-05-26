@@ -5,12 +5,9 @@
     let show_text = false
 </script>
 
-<!-- svelte-ignore a11y-no-static-element-interactions -->
-<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <div class='container' on:mouseover={() => { show_text = true }} on:mouseleave={() => { show_text = false }}>
     <img class='logo' src='/img/logo.png' alt='Plump GPT'>
     {#if show_text}
-        <!-- separate padding block improves animation vs. padding-left on .text -->
         <div class='padding' transition:slide={{ axis: 'x', duration: 125, easing: quartOut }} />
         <div class='text' in:slide={{ axis: 'x', duration: 250, easing: quartOut }} out:slide={{ axis: 'x', duration: 150, easing: quartOut }}>
             Fattens your thoughts

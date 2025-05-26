@@ -67,7 +67,6 @@
         </div>
     </div>
     <div class='search-container'>
-        <!-- svelte-ignore a11y-positive-tabindex -->
         <input
             type='text'
             class='search-input'

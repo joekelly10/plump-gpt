@@ -114,7 +114,6 @@
             {/if}
         </div>
     </button>
-    <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div class='actions'>
         <button
             class='action-button delete'

@@ -31,7 +31,11 @@ const config = {
 		postcss: {
 			plugins: [autoprefixer()]
 		}
-	})
+	}),
+	onwarn: (warning, handler) => {
+		if (warning.code.startsWith('a11y-')) return
+		handler(warning)
+	}
 }
 
 export default config

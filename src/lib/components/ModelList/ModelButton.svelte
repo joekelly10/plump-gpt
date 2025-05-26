@@ -61,7 +61,6 @@
 >
     <img class='model-icon' src='img/icons/models/{model.icon}' alt={model.name} />
     {#if is_default}
-        <!-- svelte-ignore a11y-no-static-element-interactions -->
         <div
             class='default-icon-container'
             on:mouseenter={hoveredDefault}
@@ -74,7 +73,6 @@
     <div class='model-name'>
         {model.name}
     </div>
-    <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div
         class='model-prices'
         on:mouseenter={hoveredPrices}

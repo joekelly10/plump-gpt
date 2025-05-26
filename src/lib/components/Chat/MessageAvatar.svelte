@@ -27,8 +27,6 @@
             on:dblclick={copyMessageToClipboard}
         >
     {:else}
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
         <img
             class='avatar ai'
             src='/img/icons/models/{message.model.icon}'

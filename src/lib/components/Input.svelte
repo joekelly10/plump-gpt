@@ -567,7 +567,6 @@
             on:focusInput={focus}
             bind:hovering={is_hovering_model_switcher}
         />
-        <!-- svelte-ignore a11y-no-static-element-interactions -->
         <div
             class='input'
             contenteditable='true'

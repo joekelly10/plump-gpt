@@ -526,8 +526,6 @@
 
 <svelte:document on:keydown={keydown} on:mousedown={mousedown} on:selectionchange={selectionchange}/>
 
-<!-- svelte-ignore a11y-no-static-element-interactions -->
-<!-- svelte-ignore a11y-click-events-have-key-events -->
 <section
     class='chat'
     class:frozen={$loader_active || $prompt_editor_active}
