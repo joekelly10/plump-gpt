@@ -3,6 +3,8 @@
     import { quartOut } from 'svelte/easing'
     import { model_list_active, user_settings_active } from '$lib/stores/app'
 
+    import SettingsIcon from '$lib/components/Icons/Settings.svelte'
+
     const clicked = () => {
         $model_list_active    = false
         $user_settings_active = !$user_settings_active
@@ -15,7 +17,7 @@
             &darr;
         </div>
     {:else}
-        <img src='/img/icons/settings-grey.png' alt='User Settings' class='settings-icon'>
+        <SettingsIcon className='settings-icon' />
     {/if}
     <div class='label'>
         User<br>
@@ -46,8 +48,8 @@
             background-color: $background-lightest
             transition:       none
 
-            .settings-icon
-                filter: brightness(10)
+            :global(.settings-icon)
+                fill: $off-white
 
             .label
                 padding-left: 20px
@@ -62,8 +64,9 @@
             .label
                 opacity: 0
     
-    .settings-icon
-        height: 14px
+    :global(.settings-icon)
+        height: 17.5px
+        fill:   $background-lightest
         
     .arrow-icon
         font-size: 20px
