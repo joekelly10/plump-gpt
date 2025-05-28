@@ -310,17 +310,6 @@ export default [
         pricing_id:     'qwen-max'
     },
     {
-        type:           'openrouter',
-        id:             'deepseek/deepseek-chat-v3-0324:free',
-        name:           'DeepSeek V3 (free)',
-        short_name:     'V3',
-        icon:           'deepseek-chat.png',
-        family:         'DeepSeek',
-        hosted_at:      'openrouter.ai',
-        context_window: 64000,
-        pricing_id:     'free'
-    },
-    {
         type:           'deepseek',
         id:             'deepseek-chat',
         name:           'DeepSeek V3',
@@ -328,8 +317,19 @@ export default [
         icon:           'deepseek-chat.png',
         family:         'DeepSeek',
         hosted_at:      'deepseek.com',
-        context_window: 64000,
+        context_window: 164000,
         pricing_id:     'deepseek-chat'
+    },
+    {
+        type:           'openrouter',
+        id:             'deepseek/deepseek-chat-v3-0324:free',
+        name:           'DeepSeek V3 (free)',
+        short_name:     'V3',
+        icon:           'deepseek-chat.png',
+        family:         'DeepSeek',
+        hosted_at:      'openrouter.ai',
+        context_window: 164000,
+        pricing_id:     'free'
     },
     {
         type:           'deepseek',
@@ -339,7 +339,18 @@ export default [
         icon:           'deepseek-reasoner.png',
         family:         'DeepSeek',
         hosted_at:      'deepseek.com',
-        context_window: 64000,
+        context_window: 164000,
         pricing_id:     'deepseek-reasoner'
-    }
+    },
+    {
+        type:           'openrouter',
+        id:             'deepseek/deepseek-r1:free',
+        name:           'DeepSeek R1 (free)',
+        short_name:     'R1',
+        icon:           'deepseek-reasoner.png',
+        family:         'DeepSeek',
+        hosted_at:      'openrouter.ai',
+        context_window: 164000,
+        pricing_id:     'free'
+    },
 ]
