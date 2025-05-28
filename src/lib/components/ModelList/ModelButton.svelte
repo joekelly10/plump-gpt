@@ -11,7 +11,7 @@
     const dispatch = createEventDispatcher()
 
     export let model,
-               is_hovering,
+               is_hovering_body,
                is_hovering_default,
                is_hovering_prices
 
@@ -45,8 +45,8 @@
         hold_triggered = false
     }
 
-    const hovered          = () => is_hovering         = true,
-          unhovered        = () => is_hovering         = false,
+    const hovered          = () => is_hovering_body    = true,
+          unhovered        = () => is_hovering_body    = false,
           hoveredDefault   = () => is_hovering_default = true,
           unhoveredDefault = () => is_hovering_default = false,
           hoveredPrices    = () => is_hovering_prices  = true,
@@ -79,7 +79,7 @@
         <div class='name'>
             {model.name}
         </div>
-        {#if is_hovering}
+        {#if is_hovering_body && !is_hovering_default && !is_hovering_prices}
             <div
                 class='host'
                 in:slide={{ axis: 'y', delay: 500, duration: 125, easing: quartOut }}
