@@ -4,7 +4,7 @@
     import { quartOut } from 'svelte/easing'
     import { stars } from '$lib/stores/chat'
     import { is_hovering, is_deleting, is_provisionally_forking } from '$lib/stores/chat/interactions'
-    import { is_streaming } from '$lib/stores/api'
+    import { is_sending, is_streaming } from '$lib/stores/api'
     import { smoothScroll } from '$lib/utils/helpers'
     import { deleteHighlight } from '$lib/utils/highlighter'
     import { marked } from 'marked'
@@ -165,7 +165,7 @@
         />
     {/if}
 
-    {#if message.role === 'assistant' && !$is_streaming && !$is_provisionally_forking}
+    {#if message.role === 'assistant' && !($is_sending || $is_streaming || $is_provisionally_forking)}
         <MessageControls
             bind:message
             starred={starred}

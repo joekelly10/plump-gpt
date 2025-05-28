@@ -3,7 +3,6 @@
     import { slide, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { is_hovering } from '$lib/stores/chat/interactions'
-    import { model } from '$lib/stores/ai'
 
     import AddIcon from '$lib/components/Icons/Add.svelte'
     import RetryIcon from '$lib/components/Icons/Retry.svelte'
