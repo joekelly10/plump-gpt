@@ -95,7 +95,7 @@
             background-color: color.adjust($background-darkest, $lightness: -1%)
             transition:       none
     
-    @media (max-width: 1480px)
+    @media (max-width: 1484px)
         .top_p-button
             display: none
 </style>
