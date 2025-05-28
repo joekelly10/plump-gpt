@@ -1,6 +1,6 @@
 <script>
     import { createEventDispatcher } from 'svelte'
-    import { scale } from 'svelte/transition'
+    import { scale, slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { config } from '$lib/stores/user'
     import { model as store_model } from '$lib/stores/ai'
@@ -11,6 +11,7 @@
     const dispatch = createEventDispatcher()
 
     export let model,
+               is_hovering,
                is_hovering_default,
                is_hovering_prices
 
@@ -44,7 +45,9 @@
         hold_triggered = false
     }
 
-    const hoveredDefault   = () => is_hovering_default = true,
+    const hovered          = () => is_hovering         = true,
+          unhovered        = () => is_hovering         = false,
+          hoveredDefault   = () => is_hovering_default = true,
           unhoveredDefault = () => is_hovering_default = false,
           hoveredPrices    = () => is_hovering_prices  = true,
           unhoveredPrices  = () => is_hovering_prices  = false
@@ -58,6 +61,8 @@
     on:pointerup={pointerUp}
     on:pointerleave={pointerUp}
     on:pointercancel={pointerUp}
+    on:mouseenter={hovered}
+    on:mouseleave={unhovered}
 >
     <img class='model-icon' src='img/icons/models/{model.icon}' alt={model.name} />
     {#if is_default}
@@ -70,11 +75,22 @@
             <StarIcon className='default-icon' />
         </div>
     {/if}
-    <div class='model-name'>
-        {model.name}
+    <div class='name-and-host'>
+        <div class='name'>
+            {model.name}
+        </div>
+        {#if is_hovering}
+            <div
+                class='host'
+                in:slide={{ axis: 'y', delay: 500, duration: 125, easing: quartOut }}
+                out:slide={{ axis: 'y', duration: 75, easing: quartOut }}
+            >
+                {model.hosted_at}
+            </div>
+        {/if}
     </div>
     <div
-        class='model-prices'
+        class='prices'
         on:mouseenter={hoveredPrices}
         on:mouseleave={unhoveredPrices}
     >
@@ -142,14 +158,23 @@
                 fill:     $yellow
                 filter:   drop-shadow(0 0 1.5px $background-darker)
         
-        .model-name
-            flex-grow:   1
-            font-size:   14px
-            font-weight: 600
-            line-height: 21px
-            text-align:  left
+        .name-and-host
+            flex-grow:  1
+            margin:     -8px 0
+            text-align: left
+
+            .name
+                font-size:   14px
+                font-weight: 600
+                line-height: 21px
+
+            .host
+                font-size:   12px
+                font-weight: 450
+                line-height: 18px
+                color:       $blue-grey
         
-        .model-prices
+        .prices
             display:         flex
             flex-direction:  column
             justify-content: center
