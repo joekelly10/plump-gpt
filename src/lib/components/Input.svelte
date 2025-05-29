@@ -450,11 +450,15 @@
 
         if (e.ctrlKey && e.shiftKey && e.key === 'ArrowUp') {
             e.preventDefault()
+            $user_settings_active = false
+            $model_list_active    = false
             return input_expanded = true
         }
         
         if (e.ctrlKey && e.shiftKey && e.key === 'ArrowDown') {
             e.preventDefault()
+            $user_settings_active = false
+            $model_list_active    = false
             return input_expanded = false
         }
 
@@ -557,7 +561,9 @@
 <svelte:document on:keydown={keydownDocument} />
 
 <section class='user-input' class:expanded={input_expanded}>
-    <UserSettings/>
+    {#if !input_expanded}
+        <UserSettings/>
+    {/if}
 
     <ModelList
         on:focusInput={focus}

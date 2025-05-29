@@ -1,13 +1,18 @@
 <script>
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
+    import { user_settings_active, model_list_active } from '$lib/stores/app'
 
     export let input_overflowed = false,
                input_expanded = false
 
     $: show = input_overflowed || input_expanded
 
-    const toggleExpanded = () => input_expanded = !input_expanded
+    const toggleExpanded = () => {
+        $user_settings_active = false
+        $model_list_active    = false
+        input_expanded        = !input_expanded
+    }
 </script>
 
 {#if show}
