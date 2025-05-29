@@ -132,10 +132,10 @@ DEEPSEEK_API_KEY=...
 
 3. Run the start script:
 ```
-./start
+./go
 ```
 
-💡 You can run Plump GPT in dev mode, with live reloading, using `./start dev`
+💡 You can run Plump GPT in dev mode, with live reloading, using `./go dev`
 
 
 
@@ -186,12 +186,12 @@ DEEPSEEK_API_KEY=...
 
 3. Run the start script:
 ```
-./docker-start
+./go-docker
 ```
 
 **To rebuild containers:**
 ```
-./docker-start rebuild
+./go-docker rebuild
 ```
 
 **To completely remove the containers and data volume:**
@@ -202,4 +202,4 @@ docker compose down -v
 
 # Please Note
 
-Plump GPT is a personal project I originally had no intention of sharing, so this isn't meant to be polished, production ready code. I use it a lot, and I could probably be persuaded to develop it properly, but it works for my needs as is, and I'm currently focused on other things!
+Plump GPT is a personal project I originally had no intention of sharing, so this isn't meant to be polished, production ready code. I use it a lot, and I could probably be persuaded to develop it properly, but it works for my needs as is, and I'm currently focusing on other things!

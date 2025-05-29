@@ -14,7 +14,7 @@ on run {input, parameters}
 				create tab with default profile
 				tell current session
 					write text "cd ~/Projects/plump-gpt"
-					write text "./start dev"
+					write text "./go dev"
 					delay 1.5
 					set name to "Plump GPT"
 				end tell

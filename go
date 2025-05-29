@@ -107,11 +107,11 @@ if [ ! -d node_modules ] || [ ! -f node_modules/.install-stamp ] || [ package.js
     echo
     echo -e "  ${cyan_bold}➜ ${white_bold}Installing dependencies...${reset}"
 
-    npm install > start.log 2>&1
+    npm install > go.log 2>&1
 
     if [ $? -ne 0 ]; then
         echo -e "  ${yellow_bold}⚠️ ${white_bold}Installation failed${reset}"
-        echo -e "     ${white}Please check ${cyan_bold}start.log${white} for details${reset}"
+        echo -e "     ${white}Please check ${cyan_bold}go.log${white} for details${reset}"
         exit 1
     fi
 
@@ -121,11 +121,11 @@ if [ ! -d node_modules ] || [ ! -f node_modules/.install-stamp ] || [ package.js
     echo
     echo -e "  ${cyan_bold}➜ ${white_bold}Generating Prisma client...${reset}"
 
-    npx prisma generate > start.log 2>&1
+    npx prisma generate > go.log 2>&1
 
     if [ $? -ne 0 ]; then
         echo -e "  ${yellow_bold}⚠️ ${white_bold}Failed to generate Prisma client${reset}"
-        echo -e "     ${white}Please check ${cyan_bold}start.log${white} for details${reset}"
+        echo -e "     ${white}Please check ${cyan_bold}go.log${white} for details${reset}"
         exit 1
     fi
     
@@ -141,11 +141,11 @@ if [ "$DEV_MODE" = false ] && [ ! -d .svelte-kit/output ]; then
     echo
     echo -e "  ${cyan_bold}➜ ${white_bold}Building app...${reset}"
 
-    npm run build > start.log 2>&1
+    npm run build > go.log 2>&1
 
     if [ $? -ne 0 ]; then
         echo -e "  ${yellow_bold}⚠️ ${white_bold}Build failed${reset}"
-        echo -e "     ${white}Please check ${cyan_bold}start.log${white} for details${reset}"
+        echo -e "     ${white}Please check ${cyan_bold}go.log${white} for details${reset}"
         exit 1
     fi
 
@@ -233,14 +233,14 @@ else
 
     echo
     echo -e "  ${cyan_bold}➜ ${white_bold}Running migrations...${reset}"
-    npx prisma migrate dev > start.log 2>&1
+    npx prisma migrate dev > go.log 2>&1
     echo -e "  ${green_bold}✔ ${white}Migrations done${reset}"
 
     sleep 0.1
 
     echo
     echo -e "  ${cyan_bold}➜ ${white_bold}Seeding database...${reset}"
-    npm run db:seed > start.log 2>&1
+    npm run db:seed > go.log 2>&1
     echo -e "  ${green_bold}✔ ${white}Seeds planted${reset}"
 
     sleep 0.1
@@ -297,7 +297,7 @@ echo -e "  ${blue_bold}➜ ${white_bold}App: ${blue}http://localhost:${blue_bold
 sleep 0.005
 echo
 sleep 0.005
-echo -e "  ${grey}Logs for this script: ${cyan}start.log${reset}"
+echo -e "  ${grey}Logs for this script: ${cyan}go.log${reset}"
 sleep 0.005
 echo
 sleep 0.005
