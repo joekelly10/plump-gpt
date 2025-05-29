@@ -189,12 +189,12 @@ DEEPSEEK_API_KEY=...
 ./go-docker
 ```
 
-**To rebuild containers:**
+💡 To rebuild containers:
 ```
 ./go-docker rebuild
 ```
 
-**To completely remove the containers and data volume:**
+💡 To completely remove the containers and data volume:
 ```
 docker compose down -v
 ```
@@ -202,4 +202,6 @@ docker compose down -v
 
 # Please Note
 
-Plump GPT is a personal project I originally had no intention of sharing, so this isn't meant to be polished, production ready code. I use it a lot, and I could probably be persuaded to develop it properly, but it works for my needs as is, and I'm currently focusing on other things!
+Plump GPT is a personal project and I originally had no intention of sharing it, so this isn't meant to be polished, production ready code. I use it a lot, as a daily thinking tool, and I could probably be persuaded to develop it properly, but it works for my needs as is and I'm currently focusing on other things!
+
+Responsive design would be a start... 😂
