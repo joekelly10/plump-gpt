@@ -4,7 +4,8 @@ import { browser } from '$app/environment'
 export const config = writable({
     default_model_id: 'gpt-4.1',
     autosave:         true,
-    smooth_output:    true
+    smooth_output:    true,
+    change_favicon:   false
 })
 
 export const avatar_href = writable('/img/default_avatar.png')

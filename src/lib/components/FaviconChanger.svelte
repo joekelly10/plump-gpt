@@ -3,6 +3,7 @@
     import { browser } from '$app/environment'
     import { model } from '$lib/stores/ai'
     import { messages } from '$lib/stores/chat'
+    import { config } from '$lib/stores/user'
 
     let favicon
 
@@ -12,26 +13,15 @@
         }
     })
 
-    export const setFavicon = (href) => {
+    $: setFavicon($model, $messages, $config)
+
+    const setFavicon = () => {
         if (browser && favicon) {
-            favicon.setAttribute('href', href)
-        }
-    }
-
-    $: modelChanged($model)
-    $: messagesChanged($messages)
-
-    const modelChanged = (_) => {
-        if ($messages.length > 1) {
-            setFavicon(`/img/icons/models/${$model.icon}`)
-        }
-    }
-
-    const messagesChanged = (_) => {
-        if ($messages.length > 1) {
-            setFavicon(`/img/icons/models/${$model.icon}`)
-        } else {
-            setFavicon(`/img/favicon.png`)
+            if ($config.change_favicon && $messages.length > 1) {
+                favicon.setAttribute('href', `/img/icons/models/${$model.icon}`)
+            } else {
+                favicon.setAttribute('href', `/img/favicon.png`)
+            }
         }
     }
 </script>
