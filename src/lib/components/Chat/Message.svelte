@@ -1,6 +1,6 @@
 <script>
     import { createEventDispatcher } from 'svelte'
-    import { slide } from 'svelte/transition'
+    import { slide, fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { stars } from '$lib/stores/chat'
     import { is_hovering, is_deleting, is_provisionally_forking } from '$lib/stores/chat/interactions'
@@ -34,9 +34,10 @@
         temp_highlight = false,
         temp_timer     = null
 
-    $: starred    = $stars.includes(message.id)
-    $: streaming  = message.is_last && message.role === 'assistant' && $is_streaming
-    $: no_message = !message.content && !message.reasoning_content
+    $: starred                = $stars.includes(message.id)
+    $: streaming              = message.is_last && message.role === 'assistant' && $is_streaming
+    $: no_message             = !message.content && !message.reasoning_content
+    $: has_finished_reasoning = message.content.length > 0
 
     // Match < or > that's not inside `inline code` or ``` code blocks
     $: content = message.content.replace(/(?<!^|\n)[<>](?![^`]*`)(?![^```]*```)/g,char => ({ '<': '&lt;', '>': '&gt;' }[char]))
@@ -147,7 +148,19 @@
                     bind:this={reasoning_div}
                     on:wheel={handleWheel}
                 >
+                    <p class='reasoning-title'>
+                        Thinking...
+                    </p>
                     {@html marked(message.reasoning_content)}
+                    {#if has_finished_reasoning}
+                        <div class='reasoning-summary' in:fly={{ x: -4, duration: 125, easing: quartOut }}>
+                            Thought for
+                            <span class='reasoning-token-count'>
+                                {streaming ? '~' : ''}{message.usage.reasoning_tokens}
+                            </span>
+                            tokens
+                        </div>
+                    {/if}
                 </div>
             {/if}
             {@html marked(content)}
@@ -335,7 +348,7 @@
     
     .reasoning-content
         margin-bottom:    32px
-        padding:          math.round(0.75 * space.$default-padding) space.$default-padding
+        padding:          24px space.$default-padding
         max-height:       290px
         overflow-y:       auto
         border-radius:    8px
@@ -360,6 +373,23 @@
 
             &:last-child
                 margin-bottom: 0
+    
+        .reasoning-title
+            font-weight: 600
+
+        .reasoning-summary
+            display:          inline-block
+            margin:           12px 0
+            padding:          12px 24px
+            border-radius:    99px
+            background-color: color.adjust($off-white, $alpha: -0.5)
+            font-size:        12px
+            font-weight:      450
+            text-align:       center
+            color:            $background-darker
+
+            .reasoning-token-count
+                font-weight: 600
     
     .content
         transition: filter easing.$quart-out 0.1s
