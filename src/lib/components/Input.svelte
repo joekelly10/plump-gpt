@@ -251,7 +251,7 @@
                     const json_string = buffer.slice(start_index, end_index)
                     try {
                         const data = JSON.parse(json_string)
-                        if (['open-ai', 'x', 'mistral', 'openrouter', 'ai21'].includes($model.type)) {
+                        if (['open-ai', 'x', 'mistral', 'ai21'].includes($model.type)) {
                             await processOpenAIObject(data, gpt_message)
                         } else if ($model.type === 'anthropic') {
                             await processAnthropicObject(data, gpt_message)
@@ -261,6 +261,8 @@
                             await processDeepSeekObject(data, gpt_message)
                         } else if ($model.type === 'groq') {
                             await processGroqObject(data, gpt_message)
+                        } else if ($model.type === 'openrouter') {
+                            await processOpenRouterObject(data, gpt_message)
                         } else if ($model.type === 'cohere') {
                             await processCohereObject(data, gpt_message)
                         }
@@ -338,6 +340,19 @@
             if (reasoning_tokens) {
                 gpt_message.usage.reasoning_tokens = reasoning_tokens
             }
+        }
+    }
+
+    const processOpenRouterObject = async (data, gpt_message) => {
+        const reasoning_content = data.choices[0]?.delta.reasoning ?? '',
+              content           = data.choices[0]?.delta.content ?? ''
+        await append(gpt_message, reasoning_content, { is_reasoning: true })
+        await append(gpt_message, content)
+        if (data.usage) {
+            const cache_read_tokens = data.usage.prompt_tokens_details?.cached_tokens ?? 0
+            gpt_message.usage.cache_read_tokens = cache_read_tokens
+            gpt_message.usage.input_tokens      = data.usage.prompt_tokens - cache_read_tokens
+            gpt_message.usage.output_tokens     = data.usage.completion_tokens
         }
     }
 
