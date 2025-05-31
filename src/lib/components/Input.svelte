@@ -366,10 +366,10 @@
             } else if (content === '</think>') {
                 gpt_message.reasoning_finished = true
             } else {
-                await append(gpt_message, content, { is_reasoning: true, speed_limit: 1 })
+                await append(gpt_message, content, { is_reasoning: true, speed_limit: 0 })
             }
         } else {
-            await append(gpt_message, content, { speed_limit: 2 })
+            await append(gpt_message, content, { speed_limit: 0 })
         }
         if (data.usage) {
             const cache_read_tokens = data.usage.prompt_tokens_details?.cached_tokens ?? 0
@@ -391,7 +391,7 @@
 
     const append = async(gpt_message, new_text, options = { is_reasoning: false, speed_limit: 10 }) => {
         if (!new_text) return
-        if ($config.smooth_output) {
+        if ($config.smooth_output && options.speed_limit > 0) {
             //  Smooth out + speed limit the API output stream for a nicer UX.
             //  The Google API in particular bazookas out fat chunks of text at a time,
             //  which in terms of UX is a formidable scent that stings the nostrils.
@@ -413,7 +413,7 @@
         } else {
             if (options.is_reasoning) {
                 gpt_message.reasoning_content += new_text
-                if (word.trim().length > 0) {
+                if (new_text.trim().length > 0) {
                     gpt_message.usage.reasoning_tokens = (gpt_message.usage?.reasoning_tokens || 0) + 1
                 }
             } else {
