@@ -56,11 +56,11 @@
             <button class='search-option-button all-button' class:active={filter === 'all'} on:click={clickedAll}>
                 All
             </button>
-            <div class='separator'/>
+            <div class='separator'></div>
             <button class='search-option-button starred-button' class:active={filter === 'starred'} on:click={clickedStarred}>
                 Starred
             </button>
-            <div class='separator'/>
+            <div class='separator'></div>
             <button class='search-option-button non-default-button' class:active={filter === 'non-default'} on:click={clickedNonDefault}>
                 Non-default
             </button>

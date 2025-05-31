@@ -141,14 +141,14 @@
                         style='grid-row: {node.connector.grid_row}; grid-column: {node.connector.grid_column};'
                     >
                         {#if node.connector.child_positions.length === 1}
-                            <div class='connector-simple-vertical'/>
+                            <div class='connector-simple-vertical'></div>
                         {:else}
                             <div class='connector-horizontal'>
-                                <div class='connector-parent' style='left: {node.connector.parent_position}'/>
-                                <div class='connector-left'/>
-                                <div class='connector-right'/>
+                                <div class='connector-parent' style='left: {node.connector.parent_position}'></div>
+                                <div class='connector-left'></div>
+                                <div class='connector-right'></div>
                                 {#each node.connector.child_positions.slice(1, -1) as position}
-                                    <div class='connector-child' style='left: {position}'/>
+                                    <div class='connector-child' style='left: {position}'></div>
                                 {/each}
                             </div>
                         {/if}
