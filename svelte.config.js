@@ -1,5 +1,5 @@
 import adapter from '@sveltejs/adapter-auto'
-import preprocess from 'svelte-preprocess'
+import { sveltePreprocess } from 'svelte-preprocess'
 import autoprefixer from 'autoprefixer'
 
 const sassPrependString = () => {
@@ -24,7 +24,7 @@ const config = {
 	kit: {
 		adapter: adapter()
 	},
-	preprocess: preprocess({
+	preprocess: sveltePreprocess({
 		sass: {
 			prependData: sassPrependString()
 		},
@@ -32,9 +32,13 @@ const config = {
 			plugins: [autoprefixer()]
 		}
 	}),
-	onwarn: (warning, handler) => {
-		if (warning.code.startsWith('a11y-')) return
-		handler(warning)
+	compilerOptions: {
+		warningFilter: (warning) => {
+			if (warning.code?.includes('a11y')) {
+				return false
+			}
+			return true
+		}
 	}
 }
 
