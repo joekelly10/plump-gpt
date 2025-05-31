@@ -2,19 +2,20 @@
     import { fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { marked } from 'marked'
+    import DOMPurify from 'dompurify'
 
     export let message,
                is_streaming,
                has_finished_reasoning
     
-    $: reasoning_content = message.reasoning_content.replace(/(?<!^|\n)[<>](?![^`]*`)(?![^```]*```)/g,char => ({ '<': '&lt;', '>': '&gt;' }[char]))
+    $: reasoning_content = DOMPurify.sanitize(marked(message.reasoning_content))
 </script>
 
 <div class='reasoning-content'>
     <p class='reasoning-title'>
         Thinking...
     </p>
-    {@html marked(reasoning_content)}
+    {@html reasoning_content}
     {#if has_finished_reasoning}
         <div class='reasoning-summary' in:fly={{ x: -4, duration: 125, easing: quartOut }}>
             Thought for

@@ -24,6 +24,7 @@
 	"type": "module",
 	"dependencies": {
 		"@prisma/client": "^6.7.0",
+		"dompurify": "^3.2.6",
 		"highlight.js": "^11.8.0",
 		"marked": "^15.0.6",
 		"prisma": "^6.7.0",

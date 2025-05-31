@@ -8,6 +8,7 @@
     import { smoothScroll } from '$lib/utils/helpers'
     import { deleteHighlight } from '$lib/utils/highlighter'
     import { marked } from 'marked'
+    import DOMPurify from 'dompurify'
 
     import MessageAvatar from '$lib/components/Chat/MessageAvatar.svelte'
     import MessageInfo from '$lib/components/Chat/MessageInfo.svelte'
@@ -40,8 +41,7 @@
     $: no_message             = !message.content && !message.reasoning_content
     $: has_finished_reasoning = message.content.length > 0
 
-    // Match < or > that's not inside `inline code` or ``` code blocks
-    $: content = message.content.replace(/(?<!^|\n)[<>](?![^`]*`)(?![^```]*```)/g,char => ({ '<': '&lt;', '>': '&gt;' }[char]))
+    $: message_content = DOMPurify.sanitize(marked(message.content))
 
     $: add_reply_highlight  = $is_hovering.add_reply.includes(message.id)
     $: regenerate_highlight = $is_hovering.regenerate.includes(message.id)
@@ -156,7 +156,7 @@
                     />
                 </div>
             {/if}
-            {@html marked(content)}
+            {@html message_content}
         {/if}
     </div>
 
