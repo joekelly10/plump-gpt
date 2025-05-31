@@ -14,7 +14,7 @@
     const dispatch = createEventDispatcher()
 
     export let message,
-               starred,
+               is_starred,
                showing_message_info
 
     const hoveredDelete = async () => {
@@ -84,7 +84,7 @@
 
 {#if !showing_message_info}
     <div class='message-controls-left' in:slide={{ axis: 'x', duration: 250, easing: quartOut }} out:fade={{ duration: 250, easing: quartOut }}>
-        <button class='message-control-button star' class:starred={starred} on:click={clickedStar} on:mouseenter={hoveredStar} on:mouseleave={unhoveredStar}>
+        <button class='message-control-button star' class:starred={is_starred} on:click={clickedStar} on:mouseenter={hoveredStar} on:mouseleave={unhoveredStar}>
             <StarIcon className='icon full' />
             <StarEmptyIcon className='icon empty' />
         </button>

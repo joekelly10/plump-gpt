@@ -4,20 +4,22 @@
     import { marked } from 'marked'
 
     export let message,
-               streaming,
+               is_streaming,
                has_finished_reasoning
+    
+    $: reasoning_content = message.reasoning_content.replace(/(?<!^|\n)[<>](?![^`]*`)(?![^```]*```)/g,char => ({ '<': '&lt;', '>': '&gt;' }[char]))
 </script>
 
 <div class='reasoning-content'>
     <p class='reasoning-title'>
         Thinking...
     </p>
-    {@html marked(message.reasoning_content)}
+    {@html marked(reasoning_content)}
     {#if has_finished_reasoning}
         <div class='reasoning-summary' in:fly={{ x: -4, duration: 125, easing: quartOut }}>
             Thought for
             <span class='reasoning-token-count'>
-                {streaming ? '~' : ''}{message.usage.reasoning_tokens}
+                {is_streaming ? '~' : ''}{message.usage.reasoning_tokens}
             </span>
             tokens
         </div>

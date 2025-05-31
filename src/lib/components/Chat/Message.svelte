@@ -4,7 +4,7 @@
     import { quartOut } from 'svelte/easing'
     import { stars } from '$lib/stores/chat'
     import { is_hovering, is_deleting, is_provisionally_forking } from '$lib/stores/chat/interactions'
-    import { is_sending, is_streaming } from '$lib/stores/api'
+    import { is_sending, is_streaming as api_is_streaming } from '$lib/stores/api'
     import { smoothScroll } from '$lib/utils/helpers'
     import { deleteHighlight } from '$lib/utils/highlighter'
     import { marked } from 'marked'
@@ -35,8 +35,8 @@
         temp_highlight = false,
         temp_timer     = null
 
-    $: starred                = $stars.includes(message.id)
-    $: streaming              = message.is_last && message.role === 'assistant' && $is_streaming
+    $: is_starred             = $stars.includes(message.id)
+    $: is_streaming           = message.is_last && message.role === 'assistant' && $api_is_streaming
     $: no_message             = !message.content && !message.reasoning_content
     $: has_finished_reasoning = message.content.length > 0
 
@@ -51,7 +51,7 @@
     export const getOffsetTop = () => element.offsetTop
 
     export const scrollReasoningToBottom = () => {
-        if (streaming && reasoning_div && !scroll_reasoning_interrupted) {
+        if (is_streaming && reasoning_div && !scroll_reasoning_interrupted) {
             const bottom   = reasoning_div.scrollHeight - reasoning_div.clientHeight,
                   distance = bottom - reasoning_div.scrollTop
             if (distance < 300) {
@@ -69,7 +69,7 @@
     }
 
     const toggleStar = () => {
-        if (starred) {
+        if (is_starred) {
             $stars = $stars.filter(id => id !== message.id)
             console.log(`⭐️ Unstarred ${message.id}...`)
         } else {
@@ -120,8 +120,8 @@
     id='message-{message.id}'
     data-message_id={message.id}
     class='message {message.role}'
-    class:starred={starred}
-    class:streaming={streaming}
+    class:starred={is_starred}
+    class:streaming={is_streaming}
     class:no-message={no_message}
     class:delete-highlight={delete_highlight}
     class:regenerate-highlight={regenerate_highlight}
@@ -136,7 +136,7 @@
     <div class='content'>
         {#if no_message}
             <p class='status-text'>
-                {#if streaming}
+                {#if is_streaming}
                     Waiting for {message.model.short_name} to speak<WaitingDots/>
                 {:else}
                     <span class='status-text-emoji'>❌</span> No message received
@@ -151,7 +151,7 @@
                 >
                     <ReasoningContent
                         message={message}
-                        streaming={streaming}
+                        is_streaming={is_streaming}
                         has_finished_reasoning={has_finished_reasoning}
                     />
                 </div>
@@ -171,10 +171,10 @@
         />
     {/if}
 
-    {#if message.role === 'assistant' && !($is_sending || $is_streaming || $is_provisionally_forking)}
+    {#if message.role === 'assistant' && !($is_sending || $api_is_streaming || $is_provisionally_forking)}
         <MessageControls
             bind:message
-            starred={starred}
+            is_starred={is_starred}
             showing_message_info={show_info}
             on:addReply
             on:regenerateReply
@@ -198,7 +198,7 @@
     {:else if message.role === 'assistant' && delete_highlight}
         <HoverInfoDelete small={element.clientHeight < 140} />
     {:else if message.role === 'assistant' && star_highlight}
-        <HoverInfoStar starred={starred} small={element.clientHeight < 140} />
+        <HoverInfoStar is_starred={is_starred} small={element.clientHeight < 140} />
     {/if}
 </div>
 

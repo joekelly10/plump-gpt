@@ -2,12 +2,12 @@
     import { fly, fade, slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
 
-    export let starred = false,
-               small   = false
+    export let is_starred = false,
+               small      = false
 </script>
 
-<div class='hover-info-star' class:starred={starred} class:small={small} in:fly={{ x: -4, duration: 125, easing: quartOut }} out:fade={{ duration: 75, easing: quartOut }}>
-    {#if !starred}
+<div class='hover-info-star' class:starred={is_starred} class:small={small} in:fly={{ x: -4, duration: 125, easing: quartOut }} out:fade={{ duration: 75, easing: quartOut }}>
+    {#if !is_starred}
         <span class='text' in:slide={{ axis: 'x', delay: 25, duration: 75, easing: quartOut }} out:slide={{ axis: 'x', duration: 25, easing: quartOut }}>
             Add Star
         </span>
