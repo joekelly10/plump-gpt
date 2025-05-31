@@ -291,11 +291,34 @@
                     background-color: $regenerate-highlight-bg
                     text-decoration:  line-through
                     color:            color.adjust($blue-grey, $alpha: -0.25)
+
+                    :global
+                        blockquote
+                            background-color: color.mix($background, color.adjust($regenerate-highlight-bg), 33%)
+                            color:            color.adjust($blue-grey, $alpha: -0.25)
+
+                            blockquote
+                                background-color: color.mix($background, color.adjust($regenerate-highlight-bg), 50%)
+
+                        code, pre code, .copy-code-button
+                            background-color: color.mix($background-darker, color.adjust($regenerate-highlight-bg), 25%)
+                            color:            color.adjust($blue-grey, $alpha: -0.25)
+                            text-decoration:  line-through
                 
                 &.star-highlight
-                    background-color: color.adjust($yellow, $alpha: -0.7)
+                    background-color: $star-highlight-bg
                     box-shadow:       0 0 0 1.5px $yellow
                     border-radius:    1.5px 1.5px 8px 8px
+
+                    :global
+                        blockquote
+                            background-color: color.mix($background, color.adjust($star-highlight-bg), 85%)
+
+                            blockquote
+                                background-color: color.mix($background, color.adjust($star-highlight-bg), 90%)
+
+                        code, pre code
+                            background-color: color.mix($background-darker, color.adjust($star-highlight-bg), 85%)
                 
                 &.temp-highlight
                     background-color: color.adjust($background-lighter, $lightness: -2.5%)
@@ -322,6 +345,27 @@
 
         &.starred
             background-color: color.adjust($yellow, $alpha: -0.6)
+
+            :global
+                blockquote
+                    background-color: color.mix($background, color.adjust($star-highlight-bg), 85%)
+
+                    blockquote
+                        background-color: color.mix($background, color.adjust($star-highlight-bg), 90%)
+
+                code, pre code
+                    background-color: color.mix($background-darker, color.adjust($star-highlight-bg), 85%)
+
+        &.delete-highlight
+            :global
+                blockquote
+                    background-color: color.mix($background, color.adjust($delete-highlight-bg, $alpha: -0.4), 25%)
+                    color:            color.adjust(color.adjust($coral, $lightness: 20%), $alpha: -0.33)
+                
+                code, pre code, .copy-code-button
+                    background-color: color.mix($background-darker, color.adjust($delete-highlight-bg, $alpha: -0.4), 25%)
+                    color:            color.adjust(color.adjust($coral, $lightness: 20%), $alpha: -0.33)
+                    text-decoration:  line-through
     
     .content
         transition: filter easing.$quart-out 0.1s
