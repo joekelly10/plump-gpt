@@ -12,6 +12,7 @@
     import MessageAvatar from '$lib/components/Chat/MessageAvatar.svelte'
     import MessageInfo from '$lib/components/Chat/MessageInfo.svelte'
     import MessageControls from '$lib/components/Chat/MessageControls.svelte'
+    import ReasoningContent from '$lib/components/Chat/ReasoningContent.svelte'
     import ProvisionalForkControls from '$lib/components/Chat/ProvisionalForkControls.svelte'
     import HoverInfoAddReply from '$lib/components/Chat/HoverInfoAddReply.svelte'
     import HoverInfoRegenerate from '$lib/components/Chat/HoverInfoRegenerate.svelte'
@@ -78,9 +79,9 @@
         dispatch('save')
     }
 
-    const handleWheel = (e) => {
+    const handleWheelReasoning = (e) => {
         const scrolled_down = e.deltaY > 0,
-              on_reasoning  = e.target.closest('.reasoning-content')
+              on_reasoning  = e.target.closest('.reasoning-container')
         if (scrolled_down && on_reasoning) {
             const threshold = 100,
                   bottom    = reasoning_div.scrollHeight - reasoning_div.clientHeight
@@ -144,23 +145,15 @@
         {:else}
             {#if message.reasoning_content}
                 <div
-                    class='reasoning-content'
+                    class='reasoning-container'
                     bind:this={reasoning_div}
-                    on:wheel={handleWheel}
+                    on:wheel={handleWheelReasoning}
                 >
-                    <p class='reasoning-title'>
-                        Thinking...
-                    </p>
-                    {@html marked(message.reasoning_content)}
-                    {#if has_finished_reasoning}
-                        <div class='reasoning-summary' in:fly={{ x: -4, duration: 125, easing: quartOut }}>
-                            Thought for
-                            <span class='reasoning-token-count'>
-                                {streaming ? '~' : ''}{message.usage.reasoning_tokens}
-                            </span>
-                            tokens
-                        </div>
-                    {/if}
+                    <ReasoningContent
+                        message={message}
+                        streaming={streaming}
+                        has_finished_reasoning={has_finished_reasoning}
+                    />
                 </div>
             {/if}
             {@html marked(content)}
@@ -346,7 +339,7 @@
         &.starred
             background-color: color.adjust($yellow, $alpha: -0.6)
     
-    .reasoning-content
+    .reasoning-container
         margin-bottom:    32px
         padding:          24px space.$default-padding
         max-height:       290px
@@ -373,23 +366,6 @@
 
             &:last-child
                 margin-bottom: 0
-    
-        .reasoning-title
-            font-weight: 600
-
-        .reasoning-summary
-            display:          inline-block
-            margin:           12px 0
-            padding:          12px 24px
-            border-radius:    99px
-            background-color: color.adjust($off-white, $alpha: -0.5)
-            font-size:        12px
-            font-weight:      450
-            text-align:       center
-            color:            $background-darker
-
-            .reasoning-token-count
-                font-weight: 600
     
     .content
         transition: filter easing.$quart-out 0.1s
