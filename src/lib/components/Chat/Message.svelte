@@ -10,17 +10,17 @@
     import { marked } from 'marked'
     import DOMPurify from 'dompurify'
 
-    import MessageAvatar from '$lib/components/Chat/MessageAvatar.svelte'
-    import MessageInfo from '$lib/components/Chat/MessageInfo.svelte'
-    import MessageControls from '$lib/components/Chat/MessageControls.svelte'
-    import ReasoningContent from '$lib/components/Chat/ReasoningContent.svelte'
-    import ProvisionalForkControls from '$lib/components/Chat/ProvisionalForkControls.svelte'
-    import HoverInfoAddReply from '$lib/components/Chat/HoverInfoAddReply.svelte'
-    import HoverInfoRegenerate from '$lib/components/Chat/HoverInfoRegenerate.svelte'
-    import HoverInfoDelete from '$lib/components/Chat/HoverInfoDelete.svelte'
-    import HoverInfoStar from '$lib/components/Chat/HoverInfoStar.svelte'
-    import PromptForks from '$lib/components/Chat/PromptForks.svelte'
-    import ReplyForks from '$lib/components/Chat/ReplyForks.svelte'
+    import ReasoningContent from '$lib/components/Message/ReasoningContent.svelte'
+    import Avatar from '$lib/components/Message/Avatar.svelte'
+    import Info from '$lib/components/Message/Info.svelte'
+    import Controls from '$lib/components/Message/Controls.svelte'
+    import ProvisionalForkControls from '$lib/components/Message/ProvisionalForkControls.svelte'
+    import HoverInfoAddReply from '$lib/components/Message/HoverInfoAddReply.svelte'
+    import HoverInfoRegenerate from '$lib/components/Message/HoverInfoRegenerate.svelte'
+    import HoverInfoDelete from '$lib/components/Message/HoverInfoDelete.svelte'
+    import HoverInfoStar from '$lib/components/Message/HoverInfoStar.svelte'
+    import PromptForks from '$lib/components/Message/PromptForks.svelte'
+    import ReplyForks from '$lib/components/Message/ReplyForks.svelte'
     import WaitingDots from '$lib/components/Chat/WaitingDots.svelte'
 
     marked.use({ breaks: true, mangle: false, headerIds: false })
@@ -144,19 +144,19 @@
         {/if}
     </div>
 
-    <MessageAvatar
+    <Avatar
         bind:show_info
         message={message}
     />
 
     {#if show_info}
-        <MessageInfo
+        <Info
             message={message}
         />
     {/if}
 
     {#if message.role === 'assistant' && !($is_sending || $api_is_streaming || $is_provisionally_forking)}
-        <MessageControls
+        <Controls
             message={message}
             is_starred={is_starred}
             showing_message_info={show_info}
