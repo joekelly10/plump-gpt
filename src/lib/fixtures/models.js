@@ -136,7 +136,7 @@ export default [
         type:           'openrouter',
         id:             'meta-llama/llama-4-scout:free',
         name:           'Llama 4 Scout (free)',
-        short_name:     'Llama 4 Scout',
+        short_name:     'Scout',
         icon:           'llama-light.png',
         family:         'Meta',
         hosted_at:      'openrouter.ai',
@@ -147,7 +147,7 @@ export default [
         type:           'openrouter',
         id:             'meta-llama/llama-4-maverick:free',
         name:           'Llama 4 Maverick (free)',
-        short_name:     'Llama 4 Maverick',
+        short_name:     'Maverick',
         icon:           'llama-medium.png',
         family:         'Meta',
         hosted_at:      'openrouter.ai',
@@ -321,25 +321,37 @@ export default [
     },
     {
         type:           'groq',
+        id:             'qwen-qwq-32b',
+        name:           'QwQ 32b',
+        short_name:     'QwQ',
+        icon:           'groq-qwen.png',
+        family:         'Groq',
+        hosted_at:      'groq.com',
+        context_window: 128000,
+        is_reasoner:    true,
+        pricing_id:     'groq-qwq-32b'
+    },
+    {
+        type:           'groq',
         id:             'meta-llama/llama-4-maverick-17b-128e-instruct',
-        name:           'Groq Llama 4 Maverick',
-        short_name:     'R1',
+        name:           'Llama 4 Maverick',
+        short_name:     'Maverick',
         icon:           'groq-llama.png',
         family:         'Groq',
-        hosted_at:      'Groq',
+        hosted_at:      'groq.com',
         context_window: 128000,
-        pricing_id:     'free'
+        pricing_id:     'groq-llama-4-maverick'
     },
     {
         type:           'groq',
         id:             'deepseek-r1-distill-llama-70b',
-        name:           'Groq R1 Distill 70b',
+        name:           'R1 Distill 70b',
         short_name:     'R1',
         icon:           'groq-deepseek.png',
         family:         'Groq',
-        hosted_at:      'Groq',
+        hosted_at:      'groq.com',
         context_window: 128000,
         is_reasoner:    true,
-        pricing_id:     'free'
+        pricing_id:     'groq-r1-distill-70b'
     }
 ]

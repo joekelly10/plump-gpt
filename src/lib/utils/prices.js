@@ -226,6 +226,30 @@ const model_prices = {
                 output_token: 800/1000000
             }
         }
+    },
+    'groq-qwq-32b': {
+        price: {
+            cents: {
+                input_token:  29/1000000, // $0.29/mTok
+                output_token: 39/1000000
+            }
+        }
+    },
+    'groq-llama-4-maverick': {
+        price: {
+            cents: {
+                input_token:  20/1000000, // $0.20/mTok
+                output_token: 60/1000000
+            }
+        }
+    },
+    'groq-r1-distill-70b': {
+        price: {
+            cents: {
+                input_token:  75/1000000, // $0.75/mTok
+                output_token: 99/1000000
+            }
+        }
     }
 }
 
