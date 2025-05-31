@@ -62,6 +62,7 @@
         border-radius:    8px
         background-color: $background-darker
         font-size:        14px
+        line-height:      28px
         color:            color.adjust($off-white, $alpha: -0.5)
 
         &::-webkit-scrollbar
@@ -114,12 +115,13 @@
     .reasoning-summary
         display:          inline-block
         margin:           12px 0
-        padding:          12px 24px
+        padding:          0 24px
         border-radius:    99px
         background-color: color.adjust($off-white, $alpha: -0.5)
         font-size:        12px
         font-weight:      450
         text-align:       center
+        line-height:      40px
         color:            $background-darker
 
         .reasoning-token-count
