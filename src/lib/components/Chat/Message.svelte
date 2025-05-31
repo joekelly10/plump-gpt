@@ -173,7 +173,7 @@
 
     {#if message.role === 'assistant' && !($is_sending || $api_is_streaming || $is_provisionally_forking)}
         <MessageControls
-            bind:message
+            message={message}
             is_starred={is_starred}
             showing_message_info={show_info}
             on:addReply
@@ -185,7 +185,7 @@
         />
     {:else if $is_provisionally_forking && message.is_last}
         <ProvisionalForkControls
-            bind:message
+            message={message}
             on:addReply
             on:cancelProvisionalFork
         />
