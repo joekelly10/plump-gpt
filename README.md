@@ -62,8 +62,8 @@ It runs in your browser on `localhost:1337`.
 - <img alt='Jamba Large' src='./static/img/icons/models/jamba-large.png' width='21' height='21' valign='middle'>&nbsp; Jamba 1.6 Large
 
 **Groq** (Fast inference)
-- <img alt='Llama 70b Versatile' src='./static/img/icons/models/groq-medium.png' width='21' height='21' valign='middle'>&nbsp; Llama 70b Versatile
-- <img alt='R1 Distill 70b' src='./static/img/icons/models/groq-heavy.png' width='21' height='21' valign='middle'>&nbsp; R1 Distill 70b
+- <img alt='Llama 4 Maverick' src='./static/img/icons/models/groq-llama.png' width='21' height='21' valign='middle'>&nbsp; Llama 4 Maverick
+- <img alt='R1 Distill 70b' src='./static/img/icons/models/groq-deepseek.png' width='21' height='21' valign='middle'>&nbsp; R1 Distill 70b
 
 
 
