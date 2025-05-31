@@ -138,6 +138,10 @@
                     message={message}
                     is_streaming={is_streaming}
                     has_finished_reasoning={has_finished_reasoning}
+                    delete_highlight={delete_highlight}
+                    regenerate_highlight={regenerate_highlight}
+                    star_highlight={star_highlight}
+                    is_starred={is_starred}
                 />
             {/if}
             {@html message_content}

@@ -8,7 +8,11 @@
                is_streaming,
                has_finished_reasoning,
                scroll_reasoning_interrupted,
-               reasoning_div
+               reasoning_div,
+               delete_highlight,
+               regenerate_highlight,
+               star_highlight,
+               is_starred
 
     $: reasoning_content = DOMPurify.sanitize(marked(message.reasoning_content))
 
@@ -27,6 +31,10 @@
 
 <div
     class='reasoning-content'
+    class:delete-highlight={delete_highlight}
+    class:regenerate-highlight={regenerate_highlight}
+    class:star-highlight={star_highlight}
+    class:starred={is_starred}
     bind:this={reasoning_div}
     on:wheel={handleWheel}
 >
@@ -52,7 +60,7 @@
         max-height:       290px
         overflow-y:       auto
         border-radius:    8px
-        background-color: black(0.46)
+        background-color: $background-darker
         font-size:        14px
         color:            color.adjust($off-white, $alpha: -0.5)
 
@@ -73,6 +81,32 @@
 
             &:last-child
                 margin-bottom: 0
+        
+        &.delete-highlight
+            background-color: color.mix($background-darker, color.adjust($delete-highlight-bg, $alpha: -0.4), 25%)
+            color:            color.adjust(color.adjust($coral, $lightness: 20%), $alpha: -0.33)
+
+            &::-webkit-scrollbar-thumb
+                background: color.adjust(color.adjust($coral, $lightness: 20%), $alpha: -0.33)
+
+            .reasoning-summary
+                background-color: color.adjust(color.adjust($coral, $lightness: 20%), $alpha: -0.33)
+                text-decoration:  line-through
+        
+        &.regenerate-highlight
+            background-color: color.mix($background-darker, color.adjust($regenerate-highlight-bg), 25%)
+            color:            color.adjust($blue-grey, $alpha: -0.25)
+
+            &::-webkit-scrollbar-thumb
+                background: color.adjust($blue-grey, $alpha: -0.25)
+
+            .reasoning-summary
+                background-color: color.adjust($blue-grey, $alpha: -0.25)
+                text-decoration:  line-through
+        
+        &.star-highlight,
+        &.starred
+            background-color: color.mix($background-darker, color.adjust($star-highlight-bg), 85%)
 
     .reasoning-title
         font-weight: 600
