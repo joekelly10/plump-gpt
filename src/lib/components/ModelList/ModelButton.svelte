@@ -11,7 +11,6 @@
     const dispatch = createEventDispatcher()
 
     export let model,
-               is_hovering_body,
                is_hovering_default,
                is_hovering_prices
 
@@ -20,8 +19,9 @@
     $: output_price_text = prices.output === 0 ? 'Free' : `$${(prices.output * 10000).toFixed(2)}`
     $: is_default        = model.id === $config.default_model_id
 
-    let hold_timer     = null,
-        hold_triggered = false
+    let hold_timer       = null,
+        hold_triggered   = false,
+        is_hovering_body = false
 
     const pointerDown = () => {
         hold_triggered = false
