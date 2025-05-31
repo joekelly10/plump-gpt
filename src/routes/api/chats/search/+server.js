@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit'
 import { prisma } from '$lib/db/prisma'
+import { formatForAPI } from '$lib/db/tools'
 
 export const GET = async ({ url }) => {
     try {
@@ -86,26 +87,7 @@ export const GET = async ({ url }) => {
             take:    per_page
         })
         
-        // standardise to API format
-        items = items.map(chat => ({
-            ...chat,
-            active_fork: chat.activeFork,
-            messages:    chat.messages.map(message => ({
-                ...message,
-                db_id:     message.id,
-                id:        message.chronologicalId,
-                parent_id: message.chronologicalParentId,
-                timestamp: message.updatedAt,
-                ...(message.role === 'system' && {
-                    system_prompt_id:    message.systemPromptId,
-                    system_prompt_title: message.systemPromptTitle,
-                    is_default:          message.systemPromptIsDefault
-                }),
-                ...(message.role === 'assistant' && {
-                    top_p: message.topP
-                })
-            }))
-        }))
+        items = items.map(chat => formatForAPI(chat))
 
         const data = {
             items,

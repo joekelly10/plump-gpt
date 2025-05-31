@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit'
 import { prisma } from '$lib/db/prisma'
+import { formatForAPI } from '$lib/db/tools'
 
 export const POST = async ({ request }) => {
     try {
@@ -89,26 +90,7 @@ export const POST = async ({ request }) => {
             }
         })
 
-        // standardise to API format
-        saved_chat = {
-            ...saved_chat,
-            active_fork: saved_chat.activeFork,
-            messages:    saved_chat.messages.map(message => ({
-                ...message,
-                db_id:     message.id,
-                id:        message.chronologicalId,
-                parent_id: message.chronologicalParentId,
-                timestamp: message.updatedAt,
-                ...(message.role === 'system' && {
-                    system_prompt_id:    message.systemPromptId,
-                    system_prompt_title: message.systemPromptTitle,
-                    is_default:          message.systemPromptIsDefault
-                }),
-                ...(message.role === 'assistant' && {
-                    top_p: message.topP
-                })
-            }))
-        }
+        saved_chat = formatForAPI(saved_chat)
 
         return json({ saved_chat }, { status: 201 })
     } catch (error) {
