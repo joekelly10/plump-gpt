@@ -79,18 +79,6 @@
         dispatch('save')
     }
 
-    const handleWheelReasoning = (e) => {
-        const scrolled_down = e.deltaY > 0,
-              on_reasoning  = e.target.closest('.reasoning-container')
-        if (scrolled_down && on_reasoning) {
-            const threshold = 100,
-                  bottom    = reasoning_div.scrollHeight - reasoning_div.clientHeight
-            if (reasoning_div.scrollTop >= bottom - threshold) {
-                scroll_reasoning_interrupted = false
-            }
-        }
-    }
-
     const handleClick = (e) => {
         const text_highlight = e.target.closest('._text-highlight')
         if (text_highlight) {
@@ -144,17 +132,13 @@
             </p>
         {:else}
             {#if message.reasoning_content}
-                <div
-                    class='reasoning-container'
-                    bind:this={reasoning_div}
-                    on:wheel={handleWheelReasoning}
-                >
-                    <ReasoningContent
-                        message={message}
-                        is_streaming={is_streaming}
-                        has_finished_reasoning={has_finished_reasoning}
-                    />
-                </div>
+                <ReasoningContent
+                    bind:reasoning_div
+                    bind:scroll_reasoning_interrupted
+                    message={message}
+                    is_streaming={is_streaming}
+                    has_finished_reasoning={has_finished_reasoning}
+                />
             {/if}
             {@html message_content}
         {/if}
@@ -338,34 +322,6 @@
 
         &.starred
             background-color: color.adjust($yellow, $alpha: -0.6)
-    
-    .reasoning-container
-        margin-bottom:    32px
-        padding:          24px space.$default-padding
-        max-height:       290px
-        overflow-y:       auto
-        border-radius:    8px
-        background-color: black(0.46)
-        font-size:        14px
-        color:            color.adjust($off-white, $alpha: -0.5)
-        
-        &::-webkit-scrollbar
-            width:      6px
-            height:     6px
-            background: transparent
-
-        &::-webkit-scrollbar-thumb
-            background:    color.adjust($off-white, $alpha: -0.5)
-            border-radius: 99px
-            cursor:        grab
-
-        :global(p)
-            margin-bottom: 20px
-            font-size:     14px
-            line-height:   28px
-
-            &:last-child
-                margin-bottom: 0
     
     .content
         transition: filter easing.$quart-out 0.1s
