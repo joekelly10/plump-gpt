@@ -198,29 +198,6 @@ export default [
         context_window: 131000,
         pricing_id:     'llama-3-405b'
     },
-    // {
-    //     type:           'groq',
-    //     id:             'llama-3.3-70b-versatile',
-    //     name:           'Groq Llama 70b Versatile',
-    //     short_name:     'Llama',
-    //     icon:           'groq-llama.png',
-    //     family:         'Groq',
-    //     hosted_at:      'Groq',
-    //     context_window: 128000,
-    //     pricing_id:     'free'
-    // },
-    // {
-    //     type:           'groq',
-    //     id:             'deepseek-r1-distill-llama-70b',
-    //     name:           'Groq R1 Distill 70b',
-    //     short_name:     'R1',
-    //     icon:           'groq-r1.png',
-    //     family:         'Groq',
-    //     hosted_at:      'Groq',
-    //     context_window: 128000,
-    //     is_reasoner:    true,
-    //     pricing_id:     'free'
-    // },
     {
         type:           'mistral',
         id:             'mistral-small-latest',
@@ -353,4 +330,27 @@ export default [
         context_window: 164000,
         pricing_id:     'free'
     },
+    {
+        type:           'groq',
+        id:             'llama-3.3-70b-versatile',
+        name:           'Groq Llama 70b Versatile',
+        short_name:     'Llama',
+        icon:           'groq-medium.png',
+        family:         'Groq',
+        hosted_at:      'Groq',
+        context_window: 128000,
+        pricing_id:     'free'
+    },
+    {
+        type:           'groq',
+        id:             'deepseek-r1-distill-llama-70b',
+        name:           'Groq R1 Distill 70b',
+        short_name:     'R1',
+        icon:           'groq-heavy.png',
+        family:         'Groq',
+        hosted_at:      'Groq',
+        context_window: 128000,
+        is_reasoner:    true,
+        pricing_id:     'free'
+    }
 ]

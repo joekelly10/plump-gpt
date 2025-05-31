@@ -366,10 +366,10 @@
             } else if (content === '</think>') {
                 gpt_message.reasoning_finished = true
             } else {
-                await append(gpt_message, content, { is_reasoning: true, speed_limit: 2 })
+                await append(gpt_message, content, { is_reasoning: true, speed_limit: 1 })
             }
         } else {
-            await append(gpt_message, content, { speed_limit: 4 })
+            await append(gpt_message, content, { speed_limit: 2 })
         }
         if (data.usage) {
             const cache_read_tokens = data.usage.prompt_tokens_details?.cached_tokens ?? 0
