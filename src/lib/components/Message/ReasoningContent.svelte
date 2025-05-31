@@ -83,30 +83,30 @@
                 margin-bottom: 0
         
         &.delete-highlight
-            background-color: color.mix($background-darker, color.adjust($delete-highlight-bg, $alpha: -0.4), 25%)
-            color:            color.adjust(color.adjust($coral, $lightness: 20%), $alpha: -0.33)
+            background-color: color.mix($background-darker, $delete-highlight-bg, 25%)
+            color:            $delete-highlight-color
 
             &::-webkit-scrollbar-thumb
-                background: color.adjust(color.adjust($coral, $lightness: 20%), $alpha: -0.33)
+                background: $delete-highlight-color
 
             .reasoning-summary
-                background-color: color.adjust(color.adjust($coral, $lightness: 20%), $alpha: -0.33)
+                background-color: $delete-highlight-color
                 text-decoration:  line-through
         
         &.regenerate-highlight
-            background-color: color.mix($background-darker, color.adjust($regenerate-highlight-bg), 25%)
-            color:            color.adjust($blue-grey, $alpha: -0.25)
+            background-color: color.mix($background-darker, $regenerate-highlight-bg, 25%)
+            color:            $regenerate-highlight-color
 
             &::-webkit-scrollbar-thumb
-                background: color.adjust($blue-grey, $alpha: -0.25)
+                background: $regenerate-highlight-color
 
             .reasoning-summary
-                background-color: color.adjust($blue-grey, $alpha: -0.25)
+                background-color: $regenerate-highlight-color
                 text-decoration:  line-through
         
         &.star-highlight,
         &.starred
-            background-color: color.mix($background-darker, color.adjust($star-highlight-bg), 85%)
+            background-color: color.mix($background-darker, $star-highlight-bg, 85%)
 
     .reasoning-title
         font-weight: 600

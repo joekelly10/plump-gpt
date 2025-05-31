@@ -34,7 +34,9 @@ $gpt4-purple:         #ab68ff
     @return rgba(255,255,255,$opacity)
 
 
-$delete-highlight-bg:     color.mix($coral, $background-lighter, 27.5%)
-$regenerate-highlight-bg: color.mix($blue, $background-lighter, 10%)
-$star-highlight-bg:       color.adjust($yellow, $alpha: -0.7)
-$prompt-forks-bg:         color.adjust($blue, $alpha: -0.805)
+$delete-highlight-bg:        color.mix($coral, $background-lighter, 27.5%)
+$delete-highlight-color:     color.adjust(color.adjust($coral, $lightness: 20%), $alpha: -0.33)
+$regenerate-highlight-bg:    color.mix($blue, $background-lighter, 10%)
+$regenerate-highlight-color: color.adjust($blue-grey, $alpha: -0.25)
+$star-highlight-bg:          color.adjust($yellow, $alpha: -0.7)
+$prompt-forks-bg:            color.adjust($blue, $alpha: -0.805)
