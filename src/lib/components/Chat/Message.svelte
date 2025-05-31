@@ -1,6 +1,6 @@
 <script>
     import { createEventDispatcher } from 'svelte'
-    import { slide, fly } from 'svelte/transition'
+    import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { stars } from '$lib/stores/chat'
     import { is_hovering, is_deleting, is_provisionally_forking } from '$lib/stores/chat/interactions'
