@@ -133,28 +133,6 @@ export default [
         pricing_id:     'grok-3'
     },
     {
-        type:           'cohere',
-        id:             'command-r',
-        name:           'Command R',
-        short_name:     'Command R',
-        icon:           'command-r.png',
-        family:         'Cohere',
-        hosted_at:      'cohere.com',
-        context_window: 128000,
-        pricing_id:     'command-r'
-    },
-    {
-        type:           'cohere',
-        id:             'command-r-plus-08-2024',
-        name:           'Command R+',
-        short_name:     'Command R+',
-        icon:           'command-r-plus.png',
-        family:         'Cohere',
-        hosted_at:      'cohere.com',
-        context_window: 128000,
-        pricing_id:     'command-r-plus'
-    },
-    {
         type:           'openrouter',
         id:             'meta-llama/llama-4-scout:free',
         name:           'Llama 4 Scout (free)',
@@ -186,105 +164,6 @@ export default [
         hosted_at:      'openrouter.ai',
         context_window: 33000,
         pricing_id:     'llama-3-405b'
-    },
-    {
-        type:           'openrouter',
-        id:             'nousresearch/hermes-3-llama-3.1-405b',
-        name:           'Nous Hermes 3 405b',
-        short_name:     'Hermes',
-        icon:           'nous-hermes.png',
-        family:         'Nous',
-        hosted_at:      'openrouter.ai',
-        context_window: 131000,
-        pricing_id:     'llama-3-405b'
-    },
-    {
-        type:           'mistral',
-        id:             'mistral-small-latest',
-        name:           'Mistral Small',
-        short_name:     'Mistral',
-        icon:           'mistral-small.png',
-        family:         'Mistral',
-        hosted_at:      'mistral.ai',
-        context_window: 128000,
-        pricing_id:     'free'
-    },
-    {
-        type:           'mistral',
-        id:             'mistral-medium-latest',
-        name:           'Mistral Medium',
-        short_name:     'Mistral',
-        icon:           'mistral-medium.png',
-        family:         'Mistral',
-        hosted_at:      'mistral.ai',
-        context_window: 128000,
-        pricing_id:     'free'
-    },
-    {
-        type:           'mistral',
-        id:             'mistral-large-latest',
-        name:           'Mistral Large',
-        short_name:     'Mistral',
-        icon:           'mistral-large.png',
-        family:         'Mistral',
-        hosted_at:      'mistral.ai',
-        context_window: 128000,
-        pricing_id:     'free'
-    },
-    {
-        type:           'ai21',
-        id:             'jamba-mini',
-        name:           'Jamba 1.6 Mini',
-        short_name:     'Jamba',
-        icon:           'jamba-mini.png',
-        family:         'AI21',
-        hosted_at:      'ai21.com',
-        context_window: 256000,
-        pricing_id:     'jamba-1.6-mini'
-    },
-    {
-        type:           'ai21',
-        id:             'jamba-large',
-        name:           'Jamba 1.6 Large',
-        short_name:     'Jamba',
-        icon:           'jamba-large.png',
-        family:         'AI21',
-        hosted_at:      'ai21.com',
-        context_window: 256000,
-        pricing_id:     'jamba-1.6-large'
-    },
-    {
-        type:           'openrouter',
-        id:             'qwen/qwen-turbo',
-        name:           'Qwen 2.5 Turbo',
-        short_name:     'Qwen',
-        icon:           'qwen-turbo.png',
-        family:         'Qwen',
-        hosted_at:      'openrouter.ai',
-        context_window: 1000000,
-        pricing_id:     'qwen-turbo'
-    },
-    {
-        type:           'openrouter',
-        id:             'qwen/qwen-plus',
-        name:           'Qwen 2.5 Plus',
-        short_name:     'Qwen',
-        icon:           'qwen-plus.png',
-        family:         'Qwen',
-        hosted_at:      'openrouter.ai',
-        context_window: 1000000,
-        pricing_id:     'qwen-plus'
-    },
-    {
-        type:           'openrouter',
-        id:             'qwen/qwen-max',
-        name:           'Qwen 2.5 Max',
-        short_name:     'Qwen',
-        icon:           'qwen-max.png',
-        family:         'Qwen',
-        hosted_at:      'openrouter.ai',
-        context_window: 32000,
-        pricing_id:     'qwen-max'
     },
     {
         type:           'deepseek',
@@ -329,6 +208,116 @@ export default [
         hosted_at:      'openrouter.ai',
         context_window: 164000,
         pricing_id:     'free'
+    },
+    {
+        type:           'openrouter',
+        id:             'qwen/qwen-turbo',
+        name:           'Qwen 2.5 Turbo',
+        short_name:     'Qwen',
+        icon:           'qwen-turbo.png',
+        family:         'Qwen',
+        hosted_at:      'openrouter.ai',
+        context_window: 1000000,
+        pricing_id:     'qwen-turbo'
+    },
+    {
+        type:           'openrouter',
+        id:             'qwen/qwen-plus',
+        name:           'Qwen 2.5 Plus',
+        short_name:     'Qwen',
+        icon:           'qwen-plus.png',
+        family:         'Qwen',
+        hosted_at:      'openrouter.ai',
+        context_window: 1000000,
+        pricing_id:     'qwen-plus'
+    },
+    {
+        type:           'openrouter',
+        id:             'qwen/qwen-max',
+        name:           'Qwen 2.5 Max',
+        short_name:     'Qwen',
+        icon:           'qwen-max.png',
+        family:         'Qwen',
+        hosted_at:      'openrouter.ai',
+        context_window: 32000,
+        pricing_id:     'qwen-max'
+    },
+    {
+        type:           'mistral',
+        id:             'mistral-small-latest',
+        name:           'Mistral Small',
+        short_name:     'Mistral',
+        icon:           'mistral-small.png',
+        family:         'Mistral',
+        hosted_at:      'mistral.ai',
+        context_window: 128000,
+        pricing_id:     'free'
+    },
+    {
+        type:           'mistral',
+        id:             'mistral-medium-latest',
+        name:           'Mistral Medium',
+        short_name:     'Mistral',
+        icon:           'mistral-medium.png',
+        family:         'Mistral',
+        hosted_at:      'mistral.ai',
+        context_window: 128000,
+        pricing_id:     'free'
+    },
+    {
+        type:           'mistral',
+        id:             'mistral-large-latest',
+        name:           'Mistral Large',
+        short_name:     'Mistral',
+        icon:           'mistral-large.png',
+        family:         'Mistral',
+        hosted_at:      'mistral.ai',
+        context_window: 128000,
+        pricing_id:     'free'
+    },
+    {
+        type:           'cohere',
+        id:             'command-r',
+        name:           'Command R',
+        short_name:     'Command R',
+        icon:           'command-r.png',
+        family:         'Cohere',
+        hosted_at:      'cohere.com',
+        context_window: 128000,
+        pricing_id:     'command-r'
+    },
+    {
+        type:           'cohere',
+        id:             'command-r-plus-08-2024',
+        name:           'Command R+',
+        short_name:     'Command R+',
+        icon:           'command-r-plus.png',
+        family:         'Cohere',
+        hosted_at:      'cohere.com',
+        context_window: 128000,
+        pricing_id:     'command-r-plus'
+    },
+    {
+        type:           'ai21',
+        id:             'jamba-mini',
+        name:           'Jamba 1.6 Mini',
+        short_name:     'Jamba',
+        icon:           'jamba-mini.png',
+        family:         'AI21',
+        hosted_at:      'ai21.com',
+        context_window: 256000,
+        pricing_id:     'jamba-1.6-mini'
+    },
+    {
+        type:           'ai21',
+        id:             'jamba-large',
+        name:           'Jamba 1.6 Large',
+        short_name:     'Jamba',
+        icon:           'jamba-large.png',
+        family:         'AI21',
+        hosted_at:      'ai21.com',
+        context_window: 256000,
+        pricing_id:     'jamba-1.6-large'
     },
     {
         type:           'groq',
