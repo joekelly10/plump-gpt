@@ -68,46 +68,41 @@ It runs in your browser on `localhost:1337`.
 
 
 
-# Why?
+# Features
 
 - 🤖 **All models**
     - Switch freely between models + providers
-    - Send the same prompt to multiple models
-    - Switch models mid-chat, e.g. start with `gpt-4o-mini` then switch to `Claude 3.5 Sonnet`
+    - E.g. Send the same prompt to multiple models, or switch mid-chat
 - 📐 **Forks**
-    - Branched conversations
-    - No-one had done this, and I needed it, so I did it
-    - Should be a fundamental feature of any LLM interface, imo
+    - Create multiple branches of the conversation
+    - (No-one had done this, and I needed it, so I did it — should be a fundamental feature of any LLM interface, imo)
 - 🌴 **Tree view**
     - Get a birds-eye view of the chat (all forks)
-    - Easily navigate to specific messages
+    - Jump to specific messages
 - ⭐️ **Stars**
-    - Mark (whole) messages as starred
-    - Searchable later
-    - Shows on tree
+    - Mark messages worth remembering as starred
+    - (Searchable later + shows on tree)
 - 🟨 **Highlights**
     - Add highlights on specific text within messages
-    - Searchable later
-    - Shows on tree
+    - (Searchable later + shows on tree)
 - 💬 **Quote**
     - Quick-add the currently highlighted text to your next input
-    - Super-useful pattern, used a lot, for directing attention to a specific part of the AI's reply
+    - Super-useful pattern for directing attention to a specific part of the AI's reply
 - 📝 **System prompt**
-    - Control the `system_prompt`
+    - Set the `system_prompt`
     - Keep a library of prompts in the db and switch easily
 - 🔧 **Model settings**
     - Set `temperature`, `top_p`, etc.
 - 🚀 **Quick launch**
     - Start a new chat 'from anywhere' via a keyboard launcher (e.g. [Alfred](https://www.alfredapp.com/) on MacOS)
     - Model + prompt are passed via URL query parameters, `http://localhost:1337/?model=gpt-4o&prompt=wake+up+gpt`
-    - No-one had done this either, and I needed it
+    - (No-one had done this either, and I needed it)
 - 🔍 **Chat history**
-    - Browse + search your past conversations
-- 💰 **Usage**
-    - See input + output token counts
-    - See cache read + write (where the API provides prompt caching)
-    - See total cost
-    - _^ All of the above a) per message, b) for whole conversation_
+    - Search your past conversations
+- 📊 **Usage**
+    - See input + output token counts, cache read + write (where the API provides prompt caching), and total cost
+    - Per message
+    - For the whole chat
 - 💵 **API pricing**
     - Pay as you go = much cheaper than all the various subscriptions
 
@@ -202,8 +197,18 @@ docker compose down -v
 ```
 
 
-# Please Note
 
-Plump GPT is a personal project and I originally had no intention of sharing it, so this isn't meant to be polished, production ready code. I use it a lot, as a daily thinking tool, and I could probably be persuaded to develop it properly, but it works for my needs as is and I'm currently focusing on other things!
+# y tho?
 
-Svelte 5 and responsive design would be a start... 😂
+Two high-level goals:
+
+1. **Understanding**: Develop procedural knowledge of LLM technology through play ("Feel the AGI")
+2. **Utility**: Use Plump GPT as an everyday thinking tool ("Fatten your thoughts")
+
+
+
+# Notes
+
+Plump GPT is a personal project that I originally had no intention of sharing, so this isn't meant to be polished, production ready code. I use it a lot as a daily thinking tool, and I could probably be persuaded to develop it properly, but it works for my needs as is, and I'm currently focusing on other things!
+
+Svelte 5 and some responsive design would be a start... 😂
