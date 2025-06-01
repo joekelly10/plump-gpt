@@ -95,7 +95,7 @@ It runs in your browser on `localhost:1337`.
     - Set `temperature`, `top_p`, etc.
 - 🚀 **Quick launch**
     - Start a new chat 'from anywhere' via a keyboard launcher (e.g. [Alfred](https://www.alfredapp.com/) on MacOS)
-    - Model + prompt are passed via URL query parameters, `http://localhost:1337/?model=gpt-4o&prompt=wake+up+gpt`
+    - Model + prompt are passed via URL query parameters, `http://localhost:1337/?model=gpt-3.5&prompt=wake+up+gpt`
     - (No-one had done this either, and I needed it)
 - 🔍 **Chat history**
     - Search your past conversations
@@ -105,6 +105,8 @@ It runs in your browser on `localhost:1337`.
     - For the whole chat
 - 💵 **API pricing**
     - Pay as you go = much cheaper than all the various subscriptions
+- 🎨 **UI/UX**
+    - No-nonsense design for power users
 
 
 
