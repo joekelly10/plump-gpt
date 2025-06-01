@@ -360,7 +360,7 @@
         const content = data.choices[0]?.delta.content ?? ''
         if ($model.is_reasoner) {
             if (gpt_message.reasoning_finished) {
-                await append(gpt_message, content, { speed_limit: 4 })
+                await append(gpt_message, content, { speed_limit: 0 })
             } else if (content === '<think>') {
                 gpt_message.reasoning_content = ''
             } else if (content === '</think>') {
