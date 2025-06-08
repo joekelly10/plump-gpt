@@ -276,11 +276,6 @@
                     break
                 }
             }
-
-            if (!rate_limiter) {
-                dispatch('scrollChatToBottom', { context: 'streaming_message' })
-                rate_limiter = setTimeout(() => { rate_limiter = null }, 200)
-            }
         }
 
         gpt_message.timestamp = new Date().toISOString()
@@ -408,6 +403,10 @@
                 $messages = [...$messages.slice(0, -1), gpt_message]
                 await tick()
                 hljs.highlightAll()
+                if (!rate_limiter) {
+                    dispatch('scrollChatToBottom', { context: 'streaming_message' })
+                    rate_limiter = setTimeout(() => { rate_limiter = null }, 200)
+                }
                 await new Promise(resolve => setTimeout(resolve, options.speed_limit))
             }
         } else {
@@ -422,6 +421,10 @@
             $messages = [...$messages.slice(0, -1), gpt_message]
             await tick()
             hljs.highlightAll()
+            if (!rate_limiter) {
+                dispatch('scrollChatToBottom', { context: 'streaming_message' })
+                rate_limiter = setTimeout(() => { rate_limiter = null }, 200)
+            }
         }
     }
 
