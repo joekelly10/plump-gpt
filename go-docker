@@ -3,18 +3,20 @@
 # Colors
 white='\033[0;37m'
 grey='\033[0;90m'
-blue='\033[0;34m'
-cyan='\033[0;36m'
-green='\033[0;32m'
 red='\033[0;31m'
 yellow='\033[0;33m'
+green='\033[0;32m'
+blue='\033[0;34m'
+cyan='\033[0;36m'
 white_bold='\033[1;37m'
-blue_bold='\033[1;34m'
-cyan_bold='\033[1;36m'
-green_bold='\033[1;32m'
+grey_bold='\033[1;90m'
 red_bold='\033[1;31m'
 yellow_bold='\033[1;33m'
+green_bold='\033[1;32m'
+blue_bold='\033[1;34m'
+cyan_bold='\033[1;36m'
 reset='\033[0m'
+
 
 # Check for rebuild argument
 REBUILD=false
@@ -101,17 +103,17 @@ if ! docker info &> /dev/null; then
     echo
 
     if [[ "$OSTYPE" == "darwin"* ]]; then
-        echo -e "  ${cyan_bold}➜ ${white_bold}Attempting to start Docker Desktop (macOS)...${reset}"
+        echo -e "  ${blue_bold}➜ ${white_bold}Attempting to start Docker Desktop (macOS)...${reset}"
         open -a Docker -g
     elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        echo -e "  ${cyan_bold}➜ ${white_bold}Attempting to start Docker (Linux)...${reset}"
+        echo -e "  ${blue_bold}➜ ${white_bold}Attempting to start Docker (Linux)...${reset}"
         if command -v systemctl &> /dev/null; then
             sudo systemctl start docker
         else
             sudo service docker start
         fi
     elif [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
-        echo -e "  ${cyan_bold}➜ ${white_bold}Attempting to start Docker Desktop (Windows)...${reset}"
+        echo -e "  ${blue_bold}➜ ${white_bold}Attempting to start Docker Desktop (Windows)...${reset}"
         if [ -f "C:\Program Files\Docker\Docker\Docker Desktop.exe" ]; then
             start "" "C:\Program Files\Docker\Docker\Docker Desktop.exe"
         else
@@ -152,8 +154,8 @@ fi
 sleep 0.1
 
 
-# Check if containers exist - if not, this is the first run
-if ! docker compose ps -a | grep -q "plump-gpt"; then
+# Check if a plump-gpt volume exists - if not, this is the first run
+if ! docker volume ls | grep -q "plump-gpt"; then
     echo
     echo -e "  ${cyan_bold}➜ ${white_bold}First time setup...${reset}"
     echo
@@ -172,7 +174,7 @@ fi
 
 if [ "$REBUILD" = true ]; then
     echo
-    echo -e "  ${cyan_bold}➜ ${white_bold}Rebuilding containers...${reset}"
+    echo -e "  ${blue_bold}➜ ${white_bold}Rebuilding containers...${reset}"
     echo
     docker compose down
     COMPOSE_BAKE=true docker compose build --no-cache
@@ -204,12 +206,12 @@ else
     else
         if [ "$REBUILD" = true ]; then
             echo
-            echo -e "  ${cyan_bold}➜ ${white_bold}Rebuilding containers...${reset}"
+            echo -e "  ${blue_bold}➜ ${white_bold}Rebuilding containers...${reset}"
             echo
             COMPOSE_BAKE=true docker compose build --no-cache
         else
             echo
-            echo -e "  ${cyan_bold}➜ ${white_bold}Starting containers...${reset}"
+            echo -e "  ${blue_bold}➜ ${white_bold}Starting containers...${reset}"
             echo
         fi
         COMPOSE_BAKE=true docker compose up -d
@@ -269,7 +271,7 @@ sleep 0.1
 
 
 # Great success
-echo -e "  ${green_bold}✔ ...🚀"
+echo -e "  ${green_bold}✔ ...🚀${reset}"
 
 
 sleep 0.25

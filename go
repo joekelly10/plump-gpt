@@ -26,7 +26,6 @@ if [ "$1" = "dev" ]; then
 else
     echo -e "${blue_bold}➜ ${white_bold}Starting Plump GPT...${reset}"
 fi
-echo
 
 
 sleep 0.1
@@ -34,6 +33,7 @@ sleep 0.1
 
 # Check if .env file exists
 if [ ! -f .env ]; then
+    echo
     echo -e "  ${red_bold}✗ ${white}No .env file found${reset}"
     echo -e "  ${yellow_bold}• ${white}Creating one from .env.example...${reset}"
 
@@ -59,14 +59,10 @@ if [ ! -f .env ]; then
     exit 1
 fi
 
-echo -e "  ${green_bold}✔ ${white}.env file found${reset}"
-
-
-sleep 0.1
-
 
 # Check if Node.js is installed
 if ! command -v node &> /dev/null; then
+    echo
     echo -e "  ${red_bold}✗ ${white}Node.js is not installed or not in PATH${reset}"
     echo
     echo -e "  ${yellow_bold}⚠️ ${white_bold}Please install Node.js before continuing${reset}"
@@ -78,6 +74,7 @@ fi
 
 # Check if npm is installed
 if ! command -v npm &> /dev/null; then
+    echo
     echo -e "  ${red_bold}✗ ${white}npm is not installed or not in PATH${reset}"
     echo
     echo -e "  ${yellow_bold}⚠️ ${white_bold}Please install npm before continuing${reset}"
@@ -88,6 +85,7 @@ fi
 
 # Check if Postgres is installed
 if ! command -v psql &> /dev/null; then
+    echo
     echo -e "  ${red_bold}✗ ${white}PostgreSQL is not installed or not in PATH${reset}"
     echo
     echo -e "  ${yellow_bold}⚠️ ${white_bold}Please install PostgreSQL before continuing${reset}"
@@ -96,16 +94,11 @@ if ! command -v psql &> /dev/null; then
     exit 1
 fi
 
-echo -e "  ${green_bold}✔ ${white}Node.js and PostgreSQL are installed${reset}"
-
-
-sleep 0.1
-
 
 # Check if dependencies are installed
 if [ ! -d node_modules ] || [ ! -f node_modules/.install-stamp ] || [ package.json -nt node_modules/.install-stamp ]; then
     echo
-    echo -e "  ${cyan_bold}➜ ${white_bold}Installing dependencies...${reset}"
+    echo -e "  ${blue_bold}➜ ${white_bold}Installing dependencies...${reset}"
 
     npm install > go.log 2>&1
 
@@ -119,7 +112,7 @@ if [ ! -d node_modules ] || [ ! -f node_modules/.install-stamp ] || [ package.js
     
     echo -e "  ${green_bold}✔ ${white}Dependencies installed${reset}"
     echo
-    echo -e "  ${cyan_bold}➜ ${white_bold}Generating Prisma client...${reset}"
+    echo -e "  ${blue_bold}➜ ${white_bold}Generating Prisma client...${reset}"
 
     npx prisma generate > go.log 2>&1
 
@@ -139,7 +132,7 @@ sleep 0.1
 # Check if app has already been built
 if [ "$DEV_MODE" = false ] && [ ! -d .svelte-kit/output ]; then
     echo
-    echo -e "  ${cyan_bold}➜ ${white_bold}Building app...${reset}"
+    echo -e "  ${blue_bold}➜ ${white_bold}Building app...${reset}"
 
     npm run build > go.log 2>&1
 
@@ -173,7 +166,7 @@ else
     DB_NAME="${BASH_REMATCH[6]}"
 
     echo
-    echo -e "  ${cyan_bold}➜ ${white_bold}Checking database...${reset}"
+    echo -e "  ${blue_bold}➜ ${white_bold}Checking database...${reset}"
 
     if ! nc -z $DB_HOST $DB_PORT 2>/dev/null; then
         echo -e "  ${red_bold}✗ ${white}PostgreSQL is not running on ${DB_HOST}:${DB_PORT}${reset}"
@@ -232,14 +225,14 @@ else
     fi
 
     echo
-    echo -e "  ${cyan_bold}➜ ${white_bold}Running migrations...${reset}"
+    echo -e "  ${blue_bold}➜ ${white_bold}Running migrations...${reset}"
     npx prisma migrate dev > go.log 2>&1
     echo -e "  ${green_bold}✔ ${white}Migrations done${reset}"
 
     sleep 0.1
 
     echo
-    echo -e "  ${cyan_bold}➜ ${white_bold}Seeding database...${reset}"
+    echo -e "  ${blue_bold}➜ ${white_bold}Seeding database...${reset}"
     npm run db:seed > go.log 2>&1
     echo -e "  ${green_bold}✔ ${white}Seeds planted${reset}"
 
@@ -254,7 +247,7 @@ sleep 0.1
 
 
 # Great success
-echo -e "  ${green_bold}✔ ...🚀"
+echo -e "  ${green_bold}✔ ...🚀${reset}"
 
 
 sleep 0.25
@@ -327,7 +320,9 @@ open_in_browser() {
 
 if [ "$DEV_MODE" = true ]; then
     open_in_browser &
-    npm run dev
+    if ! lsof -i :1337 > /dev/null 2>&1; then
+        npm run dev
+    fi
 else
     open_in_browser &
     npm run preview
