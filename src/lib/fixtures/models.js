@@ -97,18 +97,20 @@ export default [
         family:         'Google',
         hosted_at:      'googleapis.com',
         context_window: 1000000,
-        pricing_id:     'gemini-2.5-flash'
+        pricing_id:     'gemini-2.5-flash',
+        is_reasoner:    true
     },
     {
         type:           'google',
-        id:             'gemini-2.5-pro-preview-05-06',
+        id:             'gemini-2.5-pro-preview-06-05',
         name:           'Gemini 2.5 Pro',
         short_name:     'Gemini',
         icon:           'gemini-pro.png',
         family:         'Google',
         hosted_at:      'googleapis.com',
         context_window: 1000000,
-        pricing_id:     'gemini-2.5-pro'
+        pricing_id:     'gemini-2.5-pro',
+        is_reasoner:    true
     },
     {
         type:           'x',

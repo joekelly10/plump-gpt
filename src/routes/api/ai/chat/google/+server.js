@@ -17,6 +17,9 @@ export const POST = async ({ request }) => {
 
     const body = JSON.stringify({
         generationConfig: {
+            thinkingConfig: {
+                includeThoughts: true
+            },
             temperature: options.temperature,
             topP:        options.top_p
         },

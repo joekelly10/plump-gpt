@@ -319,8 +319,8 @@
             console.log('🤖-❌ Error:', data.error)
             gpt_message.content += `\n\n**🚨 Error: ${data.error.message}**`
         } else {
-            const text = data.candidates[0].content.parts[0].text ?? ''
-            await append(gpt_message, text, { speed_limit: 8 })
+            const part = data.candidates[0].content.parts[0]
+            await append(gpt_message, part.text, { is_reasoning: part.thought, speed_limit: 8 })
             gpt_message.usage.input_tokens = data.usageMetadata.promptTokenCount
             gpt_message.usage.output_tokens = data.usageMetadata.candidatesTokenCount
         }
