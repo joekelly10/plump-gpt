@@ -101,8 +101,8 @@
                     <button
                         class='system-prompt'
                         style='grid-area: 1 / {node.column}'
-                        on:mouseenter={mouseenter(node)}
-                        on:mouseleave={mouseleave(node)}
+                        on:mouseenter={() => mouseenter(node)}
+                        on:mouseleave={mouseleave}
                     >
                         <div class='inner-content'>
                             System prompt
@@ -119,9 +119,9 @@
                         class:starred={node.is_starred}
                         class:highlighted={node.highlights.length > 0}
                         style='grid-area: {node.row} / {node.column}'
-                        on:click={clicked(node)}
-                        on:mouseenter={mouseenter(node)}
-                        on:mouseleave={mouseleave(node)}
+                        on:click={() => clicked(node)}
+                        on:mouseenter={() => mouseenter(node)}
+                        on:mouseleave={mouseleave}
                     >
                         {node.id}
                         {#if node.message.role === 'assistant'}
