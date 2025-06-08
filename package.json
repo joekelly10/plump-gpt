@@ -8,6 +8,7 @@
 		"preview": "vite preview",
 		"test": "playwright test",
 		"test:unit": "vitest",
+		"test:headed": "playwright test --headed",
 		"db:seed": "node prisma/seed.js"
 	},
 	"devDependencies": {

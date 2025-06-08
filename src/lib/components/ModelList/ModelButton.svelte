@@ -5,6 +5,7 @@
     import { config } from '$lib/stores/user'
     import { model as store_model } from '$lib/stores/ai'
     import { getPrices } from '$lib/utils/prices'
+    import { cssSanitised } from '$lib/utils/helpers'
 
     import StarIcon from '$lib/components/Icons/Star.svelte'
 
@@ -54,6 +55,7 @@
 </script>
 
 <button 
+    id={`model-button-${cssSanitised(model.id)}`}
     class='model-button' 
     class:active={model.id === $store_model.id} 
     on:click={clicked}
@@ -64,7 +66,7 @@
     on:mouseenter={hovered}
     on:mouseleave={unhovered}
 >
-    <img class='model-icon' src='img/icons/models/{model.icon}' alt={model.name} />
+    <img class='model-icon' src='/img/icons/models/{model.icon}' alt={model.name} />
     {#if is_default}
         <div
             class='default-icon-container'

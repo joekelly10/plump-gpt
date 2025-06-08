@@ -1,14 +1,16 @@
 import { writable } from 'svelte/store'
 import { browser } from '$app/environment'
-
+import defaults from '$lib/fixtures/defaults'
 import models from '$lib/fixtures/models'
 
 export const model       = createModel()
-export const temperature = writable(0.7)
-export const top_p       = writable(1)
+export const temperature = writable(defaults.temperature)
+export const top_p       = writable(defaults.top_p)
 
 function createModel() {
-    const { subscribe, set, update } = writable(models[2])
+    const default_index = models.findIndex(m => m.id === defaults.model)
+
+    const { subscribe, set, update } = writable(models[default_index])
 
     return {
         subscribe,

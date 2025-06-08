@@ -11,7 +11,7 @@
     import hljs from 'highlight.js'
 
     import ModelList from '$lib/components/Input/ModelList.svelte'
-    import ModelButton from '$lib/components/Input/ModelButton.svelte'
+    import ActiveModelButton from '$lib/components/Input/ActiveModelButton.svelte'
     import ModelSettings from '$lib/components/Input/ModelSettings.svelte'
     import UserSettings from '$lib/components/Input/UserSettings.svelte'
     import ExpandButton from '$lib/components/Input/ExpandButton.svelte'
@@ -588,7 +588,7 @@
 
 <svelte:document on:keydown={keydownDocument} />
 
-<section class='user-input' class:expanded={input_expanded}>
+<section class='primary-input-section' class:expanded={input_expanded}>
     {#if !input_expanded}
         <UserSettings/>
     {/if}
@@ -602,7 +602,7 @@
     />
 
     <div class='container' class:nope-highlight={nope_highlight}>
-        <ModelButton
+        <ActiveModelButton
             on:focusInput={focus}
             bind:hovering={is_hovering_model_switcher}
         />
@@ -631,7 +631,7 @@
 </section>
 
 <style lang='sass'>
-    .user-input
+    .primary-input-section
         flex-grow:        0
         position:         relative
         width:            100%

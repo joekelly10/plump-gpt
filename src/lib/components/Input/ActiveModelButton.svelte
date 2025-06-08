@@ -60,7 +60,7 @@
 <svelte:document on:keydown={keydown} />
 
 <button 
-    class='model-button'
+    class='active-model-button'
     class:animate-model-change={animate_model_change}
     on:click={clicked}
     on:contextmenu={rightClicked}
@@ -68,7 +68,7 @@
     on:mouseleave={() => hovering = false}
     on:wheel={handleWheel}
 >
-    <img class='icon' src='img/icons/models/{$model.icon}' alt='{$model.name}'>
+    <img class='icon' src='/img/icons/models/{$model.icon}' alt='{$model.name}'>
     {#if hovering}
         <div class='name' in:slide={{ axis: 'x', duration: 250, easing: quartOut }} out:slide={{ axis: 'x', duration: 125, easing: quartOut }}>
             {$model.name}
@@ -85,7 +85,7 @@
 </button>
 
 <style lang='sass'>
-    .model-button
+    .active-model-button
         display:          flex
         flex-wrap:        nowrap
         align-items:      center

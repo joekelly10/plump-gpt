@@ -1,27 +1,27 @@
 services:
-  db:
+  test-db:
     image: postgres:16-alpine
     environment:
-      - POSTGRES_PASSWORD=plump_password
-      - POSTGRES_USER=plump_user
-      - POSTGRES_DB=plump_gpt
+      - POSTGRES_PASSWORD=test_password
+      - POSTGRES_USER=test_user
+      - POSTGRES_DB=plump_gpt_test
+    tmpfs:
+      - /var/lib/postgresql/data  # In-memory for speed
     networks:
-      - plump-gpt
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    restart: unless-stopped
-
-  app:
+      - test
+    
+  test-app:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - '1337:1337'
+      - '1336:1337'
     depends_on:
-      - db
+      test-db:
+        condition: service_started
     environment:
-      - DATABASE_URL=postgresql://plump_user:plump_password@db:5432/plump_gpt
-      # Add your API keys in the .env file
+      - DATABASE_URL=postgresql://test_user:test_password@test-db:5432/plump_gpt_test
+      # API keys from .env (for testing with real APIs if needed)
       - OPENAI_API_KEY=${OPENAI_API_KEY:-}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
       - GEMINI_API_KEY=${GEMINI_API_KEY:-}
@@ -32,19 +32,16 @@ services:
       - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
       - OPENROUTER_API_KEY=${OPENROUTER_API_KEY:-}
       - GROQ_API_KEY=${GROQ_API_KEY:-}
-      - YOUR_NAME=${YOUR_NAME:-}
+      - YOUR_NAME=Conrad Poohs
+      - NODE_ENV=test
       - DOCKER_ENV=true
-    networks:
-      - plump-gpt
     volumes:
       - ./.env:/app/.env
-      - uploads_data:/app/uploads
-    restart: unless-stopped
+      - ./docker/entrypoint-test.sh:/app/docker/entrypoint-test.sh
+    entrypoint: ["/app/docker/entrypoint-test.sh"]
+    networks:
+      - test
 
 networks:
-  plump-gpt:
+  test:
     driver: bridge
-
-volumes:
-  postgres_data:
-  uploads_data:

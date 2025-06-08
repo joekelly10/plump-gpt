@@ -150,3 +150,13 @@ export const smoothScroll = (element, target_scrollTop, duration = 500, easing =
 
     animation_frame = requestAnimationFrame(animateScroll)
 }
+
+export const cssSanitised = (string) => {
+    const sanitised_string = string.replace(/[^\w-]/g, '_')
+
+    // Check if it starts with a character sequence that isn't
+    // allowed at the beginning of a CSS class name
+    if (/^(\d|--|-\d)/.test(sanitised_string)) return `_${sanitised_string}`
+
+    return sanitised_string
+}

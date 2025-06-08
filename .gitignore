@@ -9,5 +9,8 @@ node_modules
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 /db
-/static/img/avatars
+/uploads
 go.log
+/playwright-report
+/tests/output
+/tests/.html_report

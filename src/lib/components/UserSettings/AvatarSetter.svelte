@@ -46,7 +46,7 @@
         Avatar
     </div>
     <div class='input-container'>
-        <label for='file-input' class='input-label'>
+        <label for='avatar-file-input' class='input-label'>
             <div class='avatar-container'>
                 <img class='avatar' alt='Avatar' src={$avatar_href} />
                 <div class='icon-layer'>
@@ -57,7 +57,7 @@
                 Choose file...
             </div>
             <input 
-                id='file-input'
+                id='avatar-file-input'
                 class='file-input'
                 type='file' 
                 accept='image/*'

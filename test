@@ -1,0 +1,243 @@
+#!/bin/bash
+
+# Colors
+white='\033[0;37m'
+grey='\033[0;90m'
+red='\033[0;31m'
+yellow='\033[0;33m'
+green='\033[0;32m'
+blue='\033[0;34m'
+cyan='\033[0;36m'
+white_bold='\033[1;37m'
+grey_bold='\033[1;90m'
+red_bold='\033[1;31m'
+yellow_bold='\033[1;33m'
+green_bold='\033[1;32m'
+blue_bold='\033[1;34m'
+cyan_bold='\033[1;36m'
+reset='\033[0m'
+
+up_one_line='\033[1A'
+carriage_return='\r'
+clear_line='\033[K'
+
+
+# Tell Playwright to skip cleanup
+export WAS_RUN_VIA_TEST_SCRIPT=true
+
+# Check for --cached flag
+export USE_CACHE=false
+
+for arg in "$@"
+do
+    if [ "$arg" = "--cached" ]; then
+        USE_CACHE=true
+        break
+    fi
+done
+
+
+suspend_input() {
+    ORIGINAL_STTY=$(stty -g)
+    stty -echo
+}
+
+restore_input() {
+    if [ -n "$ORIGINAL_STTY" ]; then
+        stty "$ORIGINAL_STTY"
+    fi
+}
+
+handle_interrupt() {
+    echo
+    echo -e "  ${yellow_bold}⚠️ User interrupt (Ctrl+C)${reset}"
+    echo
+
+    # kill Playwright process
+    if [ -n "$PLAYWRIGHT_PID" ] && kill -0 "$PLAYWRIGHT_PID" 2>/dev/null; then
+        kill -SIGINT -- "-$PLAYWRIGHT_PID" 2>/dev/null
+        sleep 0.25
+    fi
+
+    restore_input
+}
+
+teardown() {
+    echo -e "${grey}————————————————————————————————————————————${reset}"
+    echo
+    echo -e "  🏁 ${white_bold}Cleaning up...${reset}"
+
+    if docker ps -a | grep -q "plump-gpt-test"; then
+        echo -e "  ${blue_bold}➜ ${white}Removing test containers...${reset}"
+        echo
+        docker compose -f docker-compose.test.yml down
+    fi
+
+    echo
+    echo -e "${grey}————————————————————————————————————————————${reset}"
+    echo
+}
+
+kill_reporter() {
+    local reporter_port=9323
+
+    # lsof -t outputs only PIDs, -i TCP selects network files
+    REPORTER_PID=$(lsof -t -i TCP:"$reporter_port" 2>/dev/null)
+
+    if [ -n "$REPORTER_PID" ]; then
+        kill -SIGTERM "$REPORTER_PID" 2>/dev/null
+    fi
+}
+
+
+trap handle_interrupt INT
+trap restore_input EXIT TERM
+
+
+suspend_input
+
+
+echo                                                                                                                      
+echo -e "${white_bold} _____ __    _____ _____ _____    _____ _____ _____   ${blue_bold} _____ __ __ _____ _____ _____ _____    _____ _____ _____ _____ "
+echo -e "${white_bold}|  _  |  |  |  |  |     |  _  |  |   __|  _  |_   _|  ${blue_bold}|   __|  |  |   __|_   _|   __|     |  |_   _|   __|   __|_   _|"
+echo -e "${white_bold}|   __|  |__|  |  | | | |   __|  |  |  |   __| | |    ${blue_bold}|__   |_   _|__   | | | |   __| | | |    | | |   __|__   | | |  "
+echo -e "${white_bold}|__|  |_____|_____|_|_|_|__|     |_____|__|    |_|    ${blue_bold}|_____| |_| |_____| |_| |_____|_|_|_|    |_| |_____|_____| |_|  "
+echo -e "${reset}"
+                                                                                                                      
+
+sleep 0.1
+
+
+# check Node.js is installed
+if ! command -v node &> /dev/null; then
+    echo
+    echo -e "  ${red_bold}❌ ${white}Node.js is not installed or not in PATH${reset}"
+    echo
+    echo -e "  ${yellow_bold}⚠️ ${white_bold}Please install Node.js before continuing${reset}"
+    echo -e "     ${white}Visit https://nodejs.org/ for installation instructions${reset}"
+    echo
+
+    exit 1
+fi
+
+# check npm is installed
+if ! command -v npm &> /dev/null; then
+    echo
+    echo -e "  ${red_bold}❌ ${white}npm is not installed or not in PATH${reset}"
+    echo
+    echo -e "  ${yellow_bold}⚠️ ${white_bold}Please install npm before continuing${reset}"
+    echo
+
+    exit 1
+fi
+
+
+# check Docker is installed
+if ! command -v docker &> /dev/null; then
+    echo
+    echo -e "  ${red_bold}❌ ${white}Docker is not installed or not in PATH${reset}"
+    echo
+    echo -e "  ${yellow_bold}⚠️ ${white_bold}Please install Docker and Docker Compose before continuing${reset}"
+    echo -e "     ${white}Visit https://docs.docker.com/get-docker/ for installation instructions${reset}"
+    echo
+
+    exit 1
+fi
+
+# check Docker Compose is installed
+if ! command -v docker compose &> /dev/null; then
+    echo
+    echo -e "  ${red_bold}❌ ${white}Docker Compose is not installed or not in PATH${reset}"
+    echo
+    echo -e "  ${yellow_bold}⚠️ ${white_bold}Please install Docker Compose before continuing${reset}"
+    echo -e "     ${white}Visit https://docs.docker.com/compose/install/ for installation instructions${reset}"
+    echo
+
+    exit 1
+fi
+
+
+# flag to track if this script starts Docker
+WE_JUST_STARTED_DOCKER=false
+
+# check Docker is running
+if ! docker info &> /dev/null; then
+    echo
+    echo -e "  ${grey_bold}✗ ${grey}Docker daemon isn't running${reset}"
+    echo
+
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        echo -e "  ${blue_bold}➜ ${white_bold}Attempting to start Docker Desktop (macOS)...${reset}"
+        open -a Docker -g
+    elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        echo -e "  ${blue_bold}➜ ${white_bold}Attempting to start Docker (Linux)...${reset}"
+        if command -v systemctl &> /dev/null; then
+            sudo systemctl start docker
+        else
+            sudo service docker start
+        fi
+    elif [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
+        echo -e "  ${blue_bold}➜ ${white_bold}Attempting to start Docker Desktop (Windows)...${reset}"
+        if [ -f "C:\Program Files\Docker\Docker\Docker Desktop.exe" ]; then
+            start "" "C:\Program Files\Docker\Docker\Docker Desktop.exe"
+        else
+            echo -e "  ${red_bold}❌ ${white}Could not locate Docker Desktop executable${reset}"
+            echo -e "  ${yellow_bold}⚠️ ${white_bold}Please start Docker Desktop manually and try again${reset}"
+            echo
+            exit 1
+        fi
+    else
+        echo -e "  ${red_bold}❌ ${white}Unsupported operating system${reset}"
+        echo -e "  ${yellow_bold}⚠️ ${white_bold}Please start Docker manually and try again${reset}"
+        echo
+        exit 1
+    fi
+    
+    MAX_DOCKER_RETRIES=120
+    DOCKER_RETRY_COUNT=0
+    
+    while ! docker info &> /dev/null; do
+        DOCKER_RETRY_COUNT=$((DOCKER_RETRY_COUNT+1))
+        
+        if [ $DOCKER_RETRY_COUNT -eq $MAX_DOCKER_RETRIES ]; then
+            echo -e "  ${red_bold}❌ ${white}Timed out waiting for Docker daemon to start${reset}"
+            echo -e "  ${yellow_bold}⚠️ ${white_bold}Please start Docker manually and try again${reset}"
+            echo
+            exit 1
+        fi
+        
+        echo -ne "  ${yellow_bold}• ${white}Waiting for Docker daemon... $((MAX_DOCKER_RETRIES / 2 - DOCKER_RETRY_COUNT))s${reset}\033[K\r"
+        sleep 0.5
+    done
+    
+    echo -e "  ${green_bold}✔ ${white}Docker started${reset}\033[K\r"
+
+    WE_JUST_STARTED_DOCKER=true
+fi
+
+
+kill_reporter
+
+if [ "$HEADED_MODE" = true ]; then
+    npm run test:headed &
+else
+    npm run test &
+fi
+
+# get pid of the last background process
+PLAYWRIGHT_PID=$!
+
+wait "$PLAYWRIGHT_PID"
+
+EXIT_CODE=$?
+
+# 130 = Ctrl + C -> ensure Playwright process is killed
+if [ "$EXIT_CODE" = 130 ]; then
+    kill -s SIGINT "$PLAYWRIGHT_PID" 2>/dev/null
+    kill_reporter
+fi
+
+teardown
+restore_input
+
+exit $EXIT_CODE
