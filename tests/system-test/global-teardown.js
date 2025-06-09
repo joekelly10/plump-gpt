@@ -1,6 +1,6 @@
 import { exec } from 'child_process'
 import { promisify } from 'util'
-import { white, white_bold, blue_bold, green_bold, red_bold, reset, up_one_line, carriage_return, clear_line } from '../helpers/terminal-output'
+import { white, white_bold, blue_bold, green_bold, red_bold, grey, reset, up_one_line, carriage_return, clear_line } from '../helpers/terminal-output'
 import { checkInterruption, sleep } from '../helpers/tools'
 
 const execAsync = promisify(exec)
@@ -15,6 +15,10 @@ export default async function globalTeardown() {
     // finish removing containers before reviewing the html report
 
     if (process.env.WAS_RUN_VIA_TEST_SCRIPT === 'true') {
+        setTimeout(() => {
+            process.stdout.write(`\n  ${grey}Cleaning up test containers in the background...${reset}\n`)
+            exec('docker compose -f docker-compose.test.yml down')
+        }, 2000)
         return
     } else {
         process.stdout.write(`\n  🏁 ${white_bold}Cleaning up...${reset}\n`)

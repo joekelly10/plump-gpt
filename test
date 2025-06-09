@@ -49,9 +49,13 @@ restore_input() {
 }
 
 handle_interrupt() {
-    echo
-    echo -e "  ${yellow_bold}⚠️ User interrupt (Ctrl+C)${reset}"
-    echo
+    restore_input
+
+    if docker ps -a | grep -q "plump-gpt-test"; then
+        echo
+        echo -e "  ${yellow_bold}⚠️ User interrupt (Ctrl+C)${reset}"
+        echo
+    fi
 
     # kill Playwright process
     if [ -n "$PLAYWRIGHT_PID" ] && kill -0 "$PLAYWRIGHT_PID" 2>/dev/null; then
@@ -59,23 +63,23 @@ handle_interrupt() {
         sleep 0.25
     fi
 
-    restore_input
+    kill_reporter
 }
 
 teardown() {
-    echo -e "${grey}————————————————————————————————————————————${reset}"
-    echo
-    echo -e "  🏁 ${white_bold}Cleaning up...${reset}"
-
     if docker ps -a | grep -q "plump-gpt-test"; then
+        echo -e "${grey}————————————————————————————————————————————${reset}"
+        echo
+        echo -e "  🏁 ${white_bold}Cleaning up...${reset}"
         echo -e "  ${blue_bold}➜ ${white}Removing test containers...${reset}"
         echo
         docker compose -f docker-compose.test.yml down
+        echo
+        echo -e "${grey}————————————————————————————————————————————${reset}"
+        echo
     fi
 
-    echo
-    echo -e "${grey}————————————————————————————————————————————${reset}"
-    echo
+    kill_reporter
 }
 
 kill_reporter() {
@@ -104,6 +108,9 @@ echo -e "${white_bold}|   __|  |__|  |  | | | |   __|  |  |  |   __| | |    ${bl
 echo -e "${white_bold}|__|  |_____|_____|_|_|_|__|     |_____|__|    |_|    ${blue_bold}|_____| |_| |_____| |_| |_____|_|_|_|    |_| |_____|_____| |_|  "
 echo -e "${reset}"
                                                                                                                       
+
+kill_reporter
+
 
 sleep 0.1
 
@@ -216,7 +223,6 @@ if ! docker info &> /dev/null; then
 fi
 
 
-kill_reporter
 
 if [ "$HEADED_MODE" = true ]; then
     npm run test:headed &
