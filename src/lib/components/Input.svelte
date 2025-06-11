@@ -283,13 +283,19 @@
     }
 
     const processOpenAIObject = async (data, gpt_message) => {
-        const content = data.choices[0]?.delta.content ?? ''
+        const reasoning_content = data.choices[0]?.delta.reasoning_content ?? '',
+              content           = data.choices[0]?.delta.content ?? ''
+        await append(gpt_message, reasoning_content, { is_reasoning: true })
         await append(gpt_message, content)
         if (data.usage) {
             const cache_read_tokens = data.usage.prompt_tokens_details?.cached_tokens ?? 0
             gpt_message.usage.cache_read_tokens = cache_read_tokens
             gpt_message.usage.input_tokens      = data.usage.prompt_tokens - cache_read_tokens
             gpt_message.usage.output_tokens     = data.usage.completion_tokens
+            const reasoning_tokens = data.usage.completion_tokens_details?.reasoning_tokens
+            if (reasoning_tokens) {
+                gpt_message.usage.reasoning_tokens = reasoning_tokens
+            }
         }
     }
 
