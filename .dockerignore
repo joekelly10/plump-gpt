@@ -10,6 +10,9 @@ npm-debug.log
 build
 .svelte-kit
 
+# Test output
+tests/output
+
 # Environment variables
 .env
 .env.*
@@ -28,4 +31,4 @@ docker-compose.yml
 .idea
 *.log
 README.md
-tests 
+scripts
