@@ -66,7 +66,7 @@ const waitForApp = async (timeout = 30) => {
     process.stdout.write(`  ${blue_bold}•${reset} Waiting for app at localhost:1336...\n`)
 
     await checkInterruption()
-    await execAsync('docker compose -f docker-compose.test.yml up -d')
+    exec('docker compose -f docker-compose.test.yml up -d && docker compose -f docker-compose.test.yml logs -f > test-containers.log 2>&1')
 
     for (let i = 0; i < timeout; i++) {
         await checkInterruption()

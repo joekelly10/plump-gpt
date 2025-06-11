@@ -55,6 +55,8 @@ handle_interrupt() {
         echo
         echo -e "  ${yellow_bold}⚠️ User interrupt (Ctrl+C)${reset}"
         echo
+    else
+        echo
     fi
 
     # kill Playwright process
@@ -70,10 +72,11 @@ teardown() {
     if docker ps -a | grep -q "plump-gpt-test"; then
         echo -e "${grey}————————————————————————————————————————————${reset}"
         echo
-        echo -e "  🏁 ${white_bold}Cleaning up...${reset}"
-        echo -e "  ${blue_bold}➜ ${white}Removing test containers...${reset}"
+        echo -e "  ${blue_bold}➜ ${white_bold}Removing test containers...${reset}"
         echo
         docker compose -f docker-compose.test.yml down
+        echo
+        echo -e "  ${grey}Logs saved to ${cyan}test-containers.log${reset}"
         echo
         echo -e "${grey}————————————————————————————————————————————${reset}"
         echo
