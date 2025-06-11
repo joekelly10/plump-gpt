@@ -3,7 +3,6 @@ import { Tiktoken } from 'tiktoken/lite'
 import cl100k_base from 'tiktoken/encoders/cl100k_base.json'
 import { startObject, deltaObject, finishObject, usageObject } from '$tests/mock/open-ai'
 
-
 export const POST = async ({ request }) => {
     const { model, messages } = await request.json()
 
