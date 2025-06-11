@@ -147,7 +147,9 @@ class CleanListReporter {
             '🪄  You’re a wizard, Harry.',
             '👑  Crowning achievement.',
             '🏆  This is a triumph.',
-            '🏆  I’d like to thank the academy.'
+            '🏆  I’d like to thank the academy.',
+            '⏱️  New fastest lap.',
+            '🕺  Very shagadelic.',
         ]
         return messages[Math.floor(Math.random() * messages.length)]
     }
@@ -168,7 +170,8 @@ class CleanListReporter {
             '❌ You lose.',
             '❌ Why did you do that?',
             '❌ You broke everything.',
-            '❌ You just accidentally the whole thing.'
+            '❌ You just accidentally the app. The whole thing.',
+            '❌ Appmageddon.'
         ]
         return messages[Math.floor(Math.random() * messages.length)]
     }
