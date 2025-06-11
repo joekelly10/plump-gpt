@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test'
 import { fastExpect } from '../helpers/tools'
 import { cssSanitised } from '../../src/lib/utils/helpers'
-import defaults from '../../src/lib/fixtures/defaults.js'
-import models from '../../src/lib/fixtures/models.js'
+import defaults from '../../src/lib/fixtures/defaults'
+import models from '../../src/lib/fixtures/models'
 
 test.describe('Model List', () => {
 
