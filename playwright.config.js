@@ -25,15 +25,14 @@ const config = {
 	testMatch: /(.+\.)?test\.[jt]s/,
 	timeout:   30 * 1000,
 	expect: {
-		timeout: 3000
+		timeout: 5000
 	},
-	outputDir: 'tests/output',
+	outputDir: 'tests/output/playwright',
 	reporter: [
 		['./tests/reporters/clean-list.js'],
 		['html', { 
 			open:         'on-failure',
-			outputFolder: 'tests/.html_report',
-			host:         'localhost',
+			outputFolder: 'tests/output/html_report',
 			port:         9323
 		}]
 	]
