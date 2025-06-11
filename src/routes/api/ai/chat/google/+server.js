@@ -1,6 +1,9 @@
 import { env } from '$env/dynamic/private'
-
-export const POST = async ({ request }) => {
+//
+//  use SvelteKit's `fetch` (as `internal_fetch`) for mock endpoints in tests
+//  use `fetch` for external API calls, otherwise you can get CORS errors
+//
+export const POST = async ({ request, fetch: internal_fetch }) => {
     let { messages, options } = await request.json()
 
     let contents = []
@@ -36,6 +39,17 @@ export const POST = async ({ request }) => {
         ],
         contents
     })
+
+    if (env.NODE_ENV === 'test') {
+        //
+        //  Playwright doesn't support streaming endpoints
+        //  so we need to mock this ourselves :/
+        //
+        return internal_fetch('/mock/ai/chat/google', {
+            method: 'POST',
+            body
+        })
+    }
     
     return fetch(`https://generativelanguage.googleapis.com/v1beta/models/${options.model}:streamGenerateContent?alt=sse&key=${env.GEMINI_API_KEY}`, {
         method: 'POST',

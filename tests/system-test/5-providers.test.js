@@ -74,4 +74,39 @@ test.describe('Providers', () => {
         await expect(ai_message).toHaveCount(1)
         await fastExpect(ai_message.locator('.content')).toHaveText('What the hell?')
     })
+
+    test('we should be able to stream a response from Google', async ({ page }) => {
+        await page.goto('/')
+
+        const default_model = models.find(m => m.id === defaults.model),
+              input         = page.locator('.primary-input-section .input'),
+              user_message  = page.locator('.chat .messages .message.user'),
+              ai_message    = page.locator('.chat .messages .message.assistant')
+
+        if (default_model.type !== 'google') {
+            const model_list_button   = page.locator('.active-model-button'),
+                  model_list          = page.locator('.models-by-family'),
+                  google_model        = models.find(m => m.type === 'google' && !m.is_reasoner),
+                  google_model_button = model_list.locator(`#model-button-${cssSanitised(google_model.id)}`),
+                  active_model_icon   = model_list_button.locator('.icon')
+
+            await model_list_button.click()
+            await fastExpect(model_list).toBeVisible()
+            await fastExpect(google_model_button).toBeVisible()
+
+            await google_model_button.click()
+            await fastExpect(model_list).toBeHidden()
+            await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${google_model.icon}`)
+        }
+
+        await input.fill('Wake up, Gemini')
+        await page.keyboard.press('Enter')
+
+        await fastExpect(input).toHaveText('')
+        await fastExpect(user_message).toHaveCount(1)
+        await fastExpect(user_message.locator('.content')).toHaveText('Wake up, Gemini')
+
+        await expect(ai_message).toHaveCount(1)
+        await fastExpect(ai_message.locator('.content')).toHaveText('What the hell?')
+    })
 })
