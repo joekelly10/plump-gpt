@@ -1,7 +1,7 @@
 export const messageStartObject = (model, input_tokens = 0) => ({
     type: "message_start",
     message: {
-        id:            "msg_01TSXcVxpTHXx2msB1fthiif",
+        id:            "msg_1337",
         type:          "message",
         role:          "assistant",
         model:         model,
