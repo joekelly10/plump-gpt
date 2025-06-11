@@ -55,7 +55,7 @@ const getAIResponse = (messages) => {
     return ai_response
 }
 
-const getUsage = (messages, reply) => {
+const getUsage = (messages, ai_response) => {
     let input_tokens  = 0,
         output_tokens = 0
 
@@ -65,7 +65,7 @@ const getUsage = (messages, reply) => {
         cl100k_base.pat_str
     )
 
-    output_tokens = encoding.encode(reply).length
+    output_tokens = encoding.encode(ai_response).length
 
     for (const message of messages) {
         input_tokens += encoding.encode(message.content).length
