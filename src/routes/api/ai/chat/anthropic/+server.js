@@ -1,6 +1,9 @@
 import { env } from '$env/dynamic/private'
-
-export const POST = async ({ request }) => {
+//
+//  use SvelteKit's `fetch` (as `internal_fetch`) for mock endpoints in tests
+//  use `fetch` for external API calls, otherwise you can get CORS errors
+//
+export const POST = async ({ request, fetch: internal_fetch }) => {
     let { messages, options } = await request.json()
 
     let long_first_message = messages[1]?.content.length > 2000
@@ -52,6 +55,17 @@ export const POST = async ({ request }) => {
         messages:    messages.slice(1),
         max_tokens:  4096
     })
+
+    if (env.NODE_ENV === 'test') {
+        //
+        //  Playwright doesn't support streaming endpoints
+        //  so we need to mock this ourselves :/
+        //
+        return internal_fetch('/mock/ai/chat/anthropic', {
+            method: 'POST',
+            body
+        })
+    }
 
     return fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
