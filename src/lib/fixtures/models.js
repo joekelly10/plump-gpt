@@ -121,7 +121,8 @@ export default [
         family:         'X',
         hosted_at:      'x.ai',
         context_window: 131072,
-        pricing_id:     'grok-3-mini'
+        pricing_id:     'grok-3-mini',
+        is_reasoner:    true
     },
     {
         type:           'x',
