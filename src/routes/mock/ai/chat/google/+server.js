@@ -1,7 +1,7 @@
 import { sleep } from '$tests/helpers/tools'
 import { Tiktoken } from 'tiktoken/lite'
 import cl100k_base from 'tiktoken/encoders/cl100k_base.json'
-import { startObject, partObject, finishObject } from '$tests/mock/google'
+import { startObject, partObject, finishObject } from '$tests/mock/stream_objects/google'
 
 export const POST = async ({ request }) => {
     const { model, contents } = await request.json()

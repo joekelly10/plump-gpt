@@ -1,7 +1,7 @@
 import { sleep } from '$tests/helpers/tools'
 import { Tiktoken } from 'tiktoken/lite'
 import cl100k_base from 'tiktoken/encoders/cl100k_base.json'
-import { messageStartObject, contentStartObject, contentDeltaObject, contentStopObject, messageDeltaObject, messageStopObject } from '$tests/mock/anthropic'
+import { messageStartObject, contentStartObject, contentDeltaObject, contentStopObject, messageDeltaObject, messageStopObject } from '$tests/mock/stream_objects/anthropic'
 
 export const POST = async ({ request }) => {
     const { model, messages } = await request.json()

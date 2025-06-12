@@ -1,7 +1,7 @@
 import { sleep } from '$tests/helpers/tools'
 import { Tiktoken } from 'tiktoken/lite'
 import cl100k_base from 'tiktoken/encoders/cl100k_base.json'
-import { messageStartObject, contentStartObject, contentDeltaObject, contentEndObject, messageEndObject } from '$tests/mock/cohere'
+import { messageStartObject, contentStartObject, contentDeltaObject, contentEndObject, messageEndObject } from '$tests/mock/stream_objects/cohere'
 
 export const POST = async ({ request }) => {
     const { model, messages } = await request.json()
