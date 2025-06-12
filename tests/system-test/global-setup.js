@@ -52,9 +52,10 @@ const waitForBuild = async (timeout = 60) => {
         countdown_active = false
 
         if (error.message.includes('timed out')) {
-            process.stdout.write(`  ${red_bold}❌ Build timed out after ${timeout}s${reset}\n`)
+            process.stdout.write(`\n  ${red_bold}❌ ${white_bold}Build timed out after ${timeout}s${reset}\n`)
         } else {
-            process.stdout.write(`  ${red_bold}❌ Build failed: ${error.message}${reset}\n`)
+            process.stdout.write(`\n  ${red_bold}❌ Build failed:${reset}\n`)
+            process.stdout.write(`     ${white_bold}${error.message}${reset}\n`)
         }
 
         throw error
@@ -115,7 +116,7 @@ export default async function globalSetup() {
         if (global.isSetupInterrupted) process.exit(130)
 
         process.stdout.write(`\n  ${red_bold}❌ Test setup failed${reset}\n`)
-        process.stdout.write(`     ${error.message}\n`)
+        process.stdout.write(`     ${white_bold}${error.message}${reset}\n`)
 
         await execAsync('docker compose -f docker-compose.test.yml down').catch(() => {})
         throw error
