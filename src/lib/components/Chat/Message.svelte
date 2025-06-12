@@ -144,7 +144,9 @@
                     is_starred={is_starred}
                 />
             {/if}
-            {@html message_content}
+            <div class='message-content'>
+                {@html message_content}
+            </div>
         {/if}
     </div>
 

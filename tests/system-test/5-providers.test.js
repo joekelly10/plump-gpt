@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test'
 import { fastExpect } from '../helpers/tools'
 import { cssSanitised } from '../../src/lib/utils/helpers'
+import { prompt, response } from '../mock/prompts/basic_response'
+
 import defaults from '../../src/lib/fixtures/defaults'
 import models from '../../src/lib/fixtures/models'
 
@@ -29,15 +31,15 @@ test.describe('Providers', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${openai_model.icon}`)
         }
 
-        await input.fill('Wake up, GPT')
+        await input.fill(prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.content')).toHaveText('Wake up, GPT')
+        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.content')).toHaveText('What the hell?')
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
     })
 
     test('we should be able to stream a response from Anthropic', async ({ page }) => {
@@ -64,15 +66,15 @@ test.describe('Providers', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${anthropic_model.icon}`)
         }
 
-        await input.fill('Wake up, Claude')
+        await input.fill(prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.content')).toHaveText('Wake up, Claude')
+        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.content')).toHaveText('What the hell?')
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
     })
 
     test('we should be able to stream a response from Google', async ({ page }) => {
@@ -99,15 +101,15 @@ test.describe('Providers', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${google_model.icon}`)
         }
 
-        await input.fill('Wake up, Gemini')
+        await input.fill(prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.content')).toHaveText('Wake up, Gemini')
+        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.content')).toHaveText('What the hell?')
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
     })
 
     test('we should be able to stream a response from X', async ({ page }) => {
@@ -134,15 +136,15 @@ test.describe('Providers', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${x_model.icon}`)
         }
 
-        await input.fill('Wake up, Grok')
+        await input.fill(prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.content')).toHaveText('Wake up, Grok')
+        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.content')).toHaveText('What the hell?')
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
     })
 
     test('we should be able to stream a response from DeepSeek', async ({ page }) => {
@@ -169,15 +171,15 @@ test.describe('Providers', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${deepseek_model.icon}`)
         }
 
-        await input.fill('Wake up, DeepSeek')
+        await input.fill(prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.content')).toHaveText('Wake up, DeepSeek')
+        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.content')).toHaveText('What the hell?')
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
     })
 
     test('we should be able to stream a response from Mistral', async ({ page }) => {
@@ -204,15 +206,15 @@ test.describe('Providers', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${mistral_model.icon}`)
         }
 
-        await input.fill('Wake up, Mistral')
+        await input.fill(prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.content')).toHaveText('Wake up, Mistral')
+        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.content')).toHaveText('What the hell?')
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
     })
 
     test('we should be able to stream a response from AI21', async ({ page }) => {
@@ -239,15 +241,15 @@ test.describe('Providers', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${ai21_model.icon}`)
         }
 
-        await input.fill('Wake up, AI21')
+        await input.fill(prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.content')).toHaveText('Wake up, AI21')
+        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.content')).toHaveText('What the hell?')
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
     })
 
     test('we should be able to stream a response from Cohere', async ({ page }) => {
@@ -274,15 +276,15 @@ test.describe('Providers', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${cohere_model.icon}`)
         }
 
-        await input.fill('Wake up, CommandR')
+        await input.fill(prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.content')).toHaveText('Wake up, CommandR')
+        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.content')).toHaveText('What the hell?')
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
     })
 
     test('we should be able to stream a response from Groq', async ({ page }) => {
@@ -309,15 +311,15 @@ test.describe('Providers', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${groq_model.icon}`)
         }
 
-        await input.fill('Wake up, Groq')
+        await input.fill(prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.content')).toHaveText('Wake up, Groq')
+        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.content')).toHaveText('What the hell?')
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
     })
 
     test('we should be able to stream a response from OpenRouter', async ({ page }) => {
@@ -344,14 +346,14 @@ test.describe('Providers', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${openrouter_model.icon}`)
         }
 
-        await input.fill('Wake up, OpenRouter')
+        await input.fill(prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.content')).toHaveText('Wake up, OpenRouter')
+        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.content')).toHaveText('What the hell?')
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
     })
 })

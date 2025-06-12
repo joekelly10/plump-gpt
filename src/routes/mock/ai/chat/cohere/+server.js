@@ -1,6 +1,7 @@
 import { sleep } from '$tests/helpers/tools'
 import { Tiktoken } from 'tiktoken/lite'
 import cl100k_base from 'tiktoken/encoders/cl100k_base.json'
+import { prompt as basic_prompt, response as basic_response } from '$tests/mock/prompts/basic_response'
 import { messageStartObject, contentStartObject, contentDeltaObject, contentEndObject, messageEndObject } from '$tests/mock/stream_objects/cohere'
 
 export const POST = async ({ request }) => {
@@ -49,8 +50,8 @@ const getAIResponse = (messages) => {
 
     const prompt = messages[messages.length - 1].content
 
-    if (prompt === 'Wake up, CommandR') {
-        ai_response = 'What the hell?'
+    if (prompt === basic_prompt) {
+        ai_response = basic_response
     } else {
         ai_response = '💩'
     }
