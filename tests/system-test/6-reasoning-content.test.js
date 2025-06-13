@@ -6,7 +6,7 @@ import { basic_reasoning_prompt, basic_reasoning, basic_reasoning_reply } from '
 import defaults from '../../src/lib/fixtures/defaults'
 import models from '../../src/lib/fixtures/models'
 
-test.describe('Reasoning', () => {
+test.describe('Reasoning Content', () => {
     test('we should see the reasoning from Google models', async ({ page }) => {
         await page.goto('/')
 
