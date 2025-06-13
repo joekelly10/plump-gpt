@@ -152,4 +152,42 @@ test.describe('Reasoning Content', () => {
         await fastExpect(ai_message.locator('.reasoning-content')).toContainText(basic_reasoning)
         await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reasoning_reply)
     })
+
+    test('we should see the reasoning from Groq models', async ({ page }) => {
+        await page.goto('/')
+
+        const default_model = models.find(m => m.id === defaults.model),
+              input         = page.locator('.primary-input-section .input'),
+              user_message  = page.locator('.chat .messages .message.user'),
+              ai_message    = page.locator('.chat .messages .message.assistant')
+        
+        if (default_model.type !== 'groq') {
+            const model_list_button = page.locator('.active-model-button'),
+                  model_list        = page.locator('.models-by-family'),
+                  groq_model        = models.find(m => m.type === 'groq' && m.is_reasoner),
+                  groq_model_button = model_list.locator(`#model-button-${cssSanitised(groq_model.id)}`),
+                  active_model_icon = model_list_button.locator('.icon')
+            
+            if (!groq_model) test.skip()
+
+            await model_list_button.click()
+            await fastExpect(model_list).toBeVisible()
+            await fastExpect(groq_model_button).toBeVisible()
+
+            await groq_model_button.click()
+            await fastExpect(model_list).toBeHidden()
+            await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${groq_model.icon}`)
+        }
+
+        await input.fill(basic_reasoning_prompt)
+        await page.keyboard.press('Enter')
+
+        await fastExpect(input).toHaveText('')
+        await fastExpect(user_message).toHaveCount(1)
+        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_reasoning_prompt)
+
+        await expect(ai_message).toHaveCount(1)
+        await fastExpect(ai_message.locator('.reasoning-content')).toContainText(basic_reasoning)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reasoning_reply)
+    })
 })
