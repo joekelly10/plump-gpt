@@ -18,6 +18,22 @@ export const startObject = (model) => ({
     usage: null
 })
 
+export const deltaReasoningObject = (model, reasoning_content) => ({
+    id:                 'chatcmpl-123',
+    object:             'chat.completion.chunk',
+    created:            Date.now(),
+    model:              model,
+    service_tier:       'default',
+    system_fingerprint: 'fp_1337',
+    choices: [{
+        index:         0,
+        delta:         { reasoning_content },
+        logprobs:      null,
+        finish_reason: null
+    }],
+    usage: null
+})
+
 export const deltaObject = (model, content) => ({
     id:                 'chatcmpl-123',
     object:             'chat.completion.chunk',
@@ -50,7 +66,7 @@ export const finishObject = (model, finish_reason = 'stop') => ({
     usage: null
 })
 
-export const usageObject = (model, input_tokens, output_tokens, cached_tokens = 0, reasoning_tokens = 0) => ({
+export const usageObject = (model, input_tokens, output_tokens, reasoning_tokens = 0, cached_tokens = 0) => ({
     id:                 'chatcmpl-123',
     object:             'chat.completion.chunk',
     created:            Date.now(),
