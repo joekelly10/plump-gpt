@@ -1,7 +1,5 @@
-import { sleep } from '$tests/helpers/tools'
-import { Tiktoken } from 'tiktoken/lite'
-import cl100k_base from 'tiktoken/encoders/cl100k_base.json'
-import { prompt as basic_prompt, response as basic_response } from '$tests/mock/prompts/basic_response'
+import { sleep, wordsFrom, getUsage } from '$tests/helpers/tools'
+import { basic_prompt, basic_response } from '$tests/mock/prompts/basic_response'
 import { startObject, deltaObject, finishObject, usageObject } from '$tests/mock/stream_objects/open-ai'
 
 export const POST = async ({ request }) => {
@@ -9,11 +7,13 @@ export const POST = async ({ request }) => {
 
     const ai_response = getAIResponse(messages)
 
+    const { input_tokens, output_tokens } = getUsage(messages, ai_response)
+
     const stream = new ReadableStream({
         async start(controller) {
             const encoder = new TextEncoder(),
                   enqueue = (data) => controller.enqueue(encoder.encode(`data: ${data}\n\n`)),
-                  words   = ai_response.split(' ').map((word, i, arr) => word + (i === arr.length - 1 ? '' : ' '))
+                  words   = wordsFrom(ai_response)
 
             let json = JSON.stringify(startObject(model))
             enqueue(json)
@@ -27,7 +27,6 @@ export const POST = async ({ request }) => {
             json = JSON.stringify(finishObject(model))
             enqueue(json)
 
-            const { input_tokens, output_tokens } = getUsage(messages, ai_response)
             json = JSON.stringify(usageObject(model, input_tokens, output_tokens))
             enqueue(json)
 
@@ -53,25 +52,4 @@ const getAIResponse = (messages) => {
     }
 
     return ai_response
-}
-
-const getUsage = (messages, ai_response) => {
-    let input_tokens  = 0,
-        output_tokens = 0
-
-    const encoding = new Tiktoken(
-        cl100k_base.bpe_ranks,
-        cl100k_base.special_tokens,
-        cl100k_base.pat_str
-    )
-
-    output_tokens = encoding.encode(ai_response).length
-
-    for (const message of messages) {
-        input_tokens += encoding.encode(message.content).length
-    }
-
-    encoding.free()
-
-    return { input_tokens, output_tokens }
 }

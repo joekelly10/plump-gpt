@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { fastExpect } from '../helpers/tools'
 import { cssSanitised } from '../../src/lib/utils/helpers'
-import { prompt, response } from '../mock/prompts/basic_response'
+import { basic_prompt, basic_response } from '../mock/prompts/basic_response'
 
 import defaults from '../../src/lib/fixtures/defaults'
 import models from '../../src/lib/fixtures/models'
@@ -31,18 +31,20 @@ test.describe('Providers', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${openai_model.icon}`)
         }
 
-        await input.fill(prompt)
+        await input.fill(basic_prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
+        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_response)
     })
 
     test('we should be able to stream a response from Anthropic', async ({ page }) => {
+        page.on('console', msg => console.log(msg.text()))
+
         await page.goto('/')
 
         const default_model = models.find(m => m.id === defaults.model),
@@ -66,15 +68,15 @@ test.describe('Providers', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${anthropic_model.icon}`)
         }
 
-        await input.fill(prompt)
+        await input.fill(basic_prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
+        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_response)
     })
 
     test('we should be able to stream a response from Google', async ({ page }) => {
@@ -101,15 +103,15 @@ test.describe('Providers', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${google_model.icon}`)
         }
 
-        await input.fill(prompt)
+        await input.fill(basic_prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
+        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_response)
     })
 
     test('we should be able to stream a response from X', async ({ page }) => {
@@ -136,15 +138,15 @@ test.describe('Providers', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${x_model.icon}`)
         }
 
-        await input.fill(prompt)
+        await input.fill(basic_prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
+        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_response)
     })
 
     test('we should be able to stream a response from DeepSeek', async ({ page }) => {
@@ -171,15 +173,15 @@ test.describe('Providers', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${deepseek_model.icon}`)
         }
 
-        await input.fill(prompt)
+        await input.fill(basic_prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
+        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_response)
     })
 
     test('we should be able to stream a response from Mistral', async ({ page }) => {
@@ -206,15 +208,15 @@ test.describe('Providers', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${mistral_model.icon}`)
         }
 
-        await input.fill(prompt)
+        await input.fill(basic_prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
+        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_response)
     })
 
     test('we should be able to stream a response from AI21', async ({ page }) => {
@@ -241,18 +243,20 @@ test.describe('Providers', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${ai21_model.icon}`)
         }
 
-        await input.fill(prompt)
+        await input.fill(basic_prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
+        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_response)
     })
 
     test('we should be able to stream a response from Cohere', async ({ page }) => {
+        page.on('console', msg => console.log(msg.text()))
+
         await page.goto('/')
 
         const default_model = models.find(m => m.id === defaults.model),
@@ -276,15 +280,15 @@ test.describe('Providers', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${cohere_model.icon}`)
         }
 
-        await input.fill(prompt)
+        await input.fill(basic_prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
+        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_response)
     })
 
     test('we should be able to stream a response from Groq', async ({ page }) => {
@@ -311,15 +315,15 @@ test.describe('Providers', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${groq_model.icon}`)
         }
 
-        await input.fill(prompt)
+        await input.fill(basic_prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
+        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_response)
     })
 
     test('we should be able to stream a response from OpenRouter', async ({ page }) => {
@@ -346,14 +350,14 @@ test.describe('Providers', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${openrouter_model.icon}`)
         }
 
-        await input.fill(prompt)
+        await input.fill(basic_prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
+        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_response)
     })
 })

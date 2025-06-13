@@ -1,16 +1,16 @@
 import { sleep, wordsFrom, getUsage } from '$tests/helpers/tools'
-import { prompt as basic_prompt, response as basic_response } from '$tests/mock/prompts/basic_response'
-import { prompt as basic_reasoning_prompt, reasoning as basic_reasoning, response as basic_reasoning_response } from '$tests/mock/prompts/basic_reasoning'
+import { basic_prompt, basic_response } from '$tests/mock/prompts/basic_response'
+import { basic_reasoning_prompt, basic_reasoning, basic_reasoning_response } from '$tests/mock/prompts/basic_reasoning'
 import { startObject, partObject, partThoughtObject, finishObject } from '$tests/mock/stream_objects/google'
 
 export const POST = async ({ request }) => {
     const { model, contents } = await request.json()
 
-    const ai_reasoning = getAIReasoning(contents),
-          ai_response  = getAIResponse(contents),
-          messages     = contents.map(c => ({ content: c.parts[0].text })) // map to OpenAI format for getUsage()
+    const ai_reasoning    = getAIReasoning(contents),
+          ai_response     = getAIResponse(contents),
+          mapped_messages = contents.map(c => ({ content: c.parts[0].text })) // map to OpenAI format for getUsage()
 
-    const { input_tokens, output_tokens, reasoning_tokens } = getUsage(messages, ai_reasoning, ai_response)
+    const { input_tokens, output_tokens, reasoning_tokens } = getUsage(mapped_messages, ai_response, ai_reasoning)
 
     const stream = new ReadableStream({
         async start(controller) {

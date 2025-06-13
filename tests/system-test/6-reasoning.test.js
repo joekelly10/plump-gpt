@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { fastExpect } from '../helpers/tools'
 import { cssSanitised } from '../../src/lib/utils/helpers'
-import { prompt, reasoning, response } from '../mock/prompts/basic_reasoning'
+import { basic_reasoning_prompt, basic_reasoning, basic_reasoning_response } from '../mock/prompts/basic_reasoning'
 
 import defaults from '../../src/lib/fixtures/defaults'
 import models from '../../src/lib/fixtures/models'
@@ -31,16 +31,16 @@ test.describe('Reasoning', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${google_model.icon}`)
         }
 
-        await input.fill(prompt)
+        await input.fill(basic_reasoning_prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
+        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_reasoning_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.reasoning-content')).toContainText(reasoning)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
+        await fastExpect(ai_message.locator('.reasoning-content')).toContainText(basic_reasoning)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reasoning_response)
     })
 
     test('we should see the reasoning from X models', async ({ page }) => {
@@ -67,15 +67,15 @@ test.describe('Reasoning', () => {
             await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${x_model.icon}`)
         }
 
-        await input.fill(prompt)
+        await input.fill(basic_reasoning_prompt)
         await page.keyboard.press('Enter')
 
         await fastExpect(input).toHaveText('')
         await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(prompt)
+        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_reasoning_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.reasoning-content')).toContainText(reasoning)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(response)
+        await fastExpect(ai_message.locator('.reasoning-content')).toContainText(basic_reasoning)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reasoning_response)
     })
 })

@@ -1,6 +1,6 @@
 import { sleep, wordsFrom, getUsage } from '$tests/helpers/tools'
-import { prompt as basic_prompt, response as basic_response } from '$tests/mock/prompts/basic_response'
-import { prompt as basic_reasoning_prompt, reasoning as basic_reasoning, response as basic_reasoning_response } from '$tests/mock/prompts/basic_reasoning'
+import { basic_prompt, basic_response } from '$tests/mock/prompts/basic_response'
+import { basic_reasoning_prompt, basic_reasoning, basic_reasoning_response } from '$tests/mock/prompts/basic_reasoning'
 import { startObject, deltaReasoningObject, deltaObject, finishObject, usageObject } from '$tests/mock/stream_objects/open-ai'
 
 export const POST = async ({ request }) => {

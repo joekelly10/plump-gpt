@@ -14,10 +14,10 @@ export const wordsFrom = (text) => {
     return text.split(' ').map((word, i, arr) => word + (i === arr.length - 1 ? '' : ' '))
 }
 
-export const getUsage = (messages, ai_reasoning, ai_response) => {
+export const getUsage = (messages, ai_response, ai_reasoning = '') => {
     let input_tokens     = 0,
-        output_tokens    = 0,
-        reasoning_tokens = 0
+        reasoning_tokens = 0,
+        output_tokens    = 0
 
     const encoding = new Tiktoken(
         cl100k_base.bpe_ranks,

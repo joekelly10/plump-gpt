@@ -1,3 +1,3 @@
-export const prompt = `Wake up, GPT`
+export const basic_prompt = `Wake up, GPT`
 
-export const response = `What the hell?`
+export const basic_response = `What the hell?`
