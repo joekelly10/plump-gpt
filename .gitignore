@@ -13,3 +13,4 @@ vite.config.ts.timestamp-*
 /tests/output
 go.log
 test-containers.log
+test-containers-build.log

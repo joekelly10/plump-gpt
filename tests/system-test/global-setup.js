@@ -1,6 +1,6 @@
 import { exec } from 'child_process'
 import { promisify } from 'util'
-import { white, grey, blue, white_bold, blue_bold, green_bold, red_bold, reset, up_one_line, carriage_return, clear_line } from '../helpers/terminal-output'
+import { white, grey, blue, white_bold, blue_bold, cyan_bold, green_bold, red_bold, reset, up_one_line, carriage_return, clear_line } from '../helpers/terminal-output'
 import { checkInterruption, sleep } from '../helpers/tools'
 
 const execAsync = promisify(exec)
@@ -22,7 +22,7 @@ const waitForBuild = async (timeout = 60) => {
     let remaining        = timeout,
         countdown_active = true
 
-    const build_process = execAsync('docker compose -f docker-compose.test.yml build --no-cache test-app').then(() => { countdown_active = false })
+    const build_process = execAsync('COMPOSE_BAKE=true docker compose -f docker-compose.test.yml build --no-cache test-app > test-containers-build.log 2>&1').then(() => { countdown_active = false })
 
     const start_countdown = async () => {
         while (countdown_active && remaining > 0) {
@@ -56,6 +56,7 @@ const waitForBuild = async (timeout = 60) => {
         } else {
             process.stdout.write(`\n  ${red_bold}❌ Build failed:${reset}\n`)
             process.stdout.write(`     ${white_bold}${error.message}${reset}\n`)
+            process.stdout.write(`\n     ${white}Build logs saved to ${cyan_bold}test-containers-build.log${reset}\n`)
         }
 
         throw error
