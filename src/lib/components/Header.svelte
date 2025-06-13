@@ -35,7 +35,7 @@
         z-index:          9
         height:           space.$header-height
         box-sizing:       border-box
-        background-color: $background-darker
+        background-color: $background-700
         text-align:       center
         user-select:      none
     

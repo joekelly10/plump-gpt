@@ -62,10 +62,10 @@
         box-sizing:    border-box
         padding:       0
         border-radius: 8px
-        border:        1px solid $background-lighter
+        border:        1px solid $background-300
         font-size:     14px
         font-weight:   450
-        color:         $background-lightest
+        color:         $background-200
         white-space:   nowrap
         cursor:        pointer
 
@@ -83,12 +83,12 @@
             :global(.icon)
                 height:    11px
                 transform: rotate(45deg)
-                fill:      $background-lightest
+                fill:      $background-200
 
             &:hover
                 border-color:     $blue
                 background-color: $blue
-                color:            $background-darker
+                color:            $background-700
 
                 //  hack/fix: when adding a 6th reply, the forks container
                 //  expands on hover, moving the button down, causing the hover
@@ -106,38 +106,38 @@
                     height:   100px
                 
                 :global(.icon)
-                    fill: $background-darker
+                    fill: $background-700
 
             &:active
                 border-color:     color.adjust($blue, $lightness: -3%)
                 background-color: color.adjust($blue, $lightness: -3%)
-                color:            $background-darkest
+                color:            $background-800
 
                 :global(.icon)
-                    fill: $background-darkest
+                    fill: $background-800
 
         &.cancel-fork
             border-color:     $coral
             background-color: $coral
-            color:            $background-darker
+            color:            $background-700
 
             :global(.icon)
                 height: 19px
-                fill:   $background-darker
+                fill:   $background-700
 
             &:hover
                 border-color:     color.adjust($coral, $alpha: -0.075)
                 background-color: color.adjust($coral, $alpha: -0.075)
-                color:            $background-darkest
+                color:            $background-800
 
                 :global(.icon)
-                    fill: $background-darkest
+                    fill: $background-800
 
             &:active
                 border-color:     color.adjust($coral, $alpha: -0.125)
                 background-color: color.adjust($coral, $alpha: -0.125)
-                color:            $background-darkest
+                color:            $background-800
 
                 :global(.icon)
-                    fill: $background-darkest
+                    fill: $background-800
 </style>

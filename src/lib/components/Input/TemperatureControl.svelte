@@ -52,7 +52,7 @@
         padding:         0 space.$default-padding
         border-radius:   8px
         font-size:       12px
-        color:           $background-lightest
+        color:           $background-200
         transition:      background-color easing.$quart-out 0.1s, color easing.$quart-out 0.1s
         cursor:          pointer
 
@@ -60,7 +60,7 @@
             margin-right: 9px
             margin-left:  -5px
             height:       18px
-            fill:         $background-lightest
+            fill:         $background-200
             transition:   fill easing.$quart-out 0.1s
 
         .label
@@ -76,7 +76,7 @@
                 font-weight: 450
         
         &:hover
-            background-color: $background-darkest
+            background-color: $background-800
             color:            $off-white
             transition:       none
 
@@ -85,6 +85,6 @@
                 transition: none
 
         &:active
-            background-color: color.adjust($background-darkest, $lightness: -1%)
+            background-color: color.adjust($background-800, $lightness: -1%)
             transition:       none
 </style>

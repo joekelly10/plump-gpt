@@ -74,7 +74,7 @@
         box-sizing:       border-box
         padding:          30px space.$default-padding
         border-radius:    8px
-        background-color: $background-lighter
+        background-color: $background-300
         color:            $off-white
         text-align:       left
         line-height:      1.6
@@ -103,7 +103,7 @@
                 font-weight:      700
                 text-transform:   uppercase
                 line-height:      17px
-                color:            $background-darkest
+                color:            $background-800
 
                 &.default-tag
                     background-color: $blue-grey
@@ -128,7 +128,7 @@
 
         &:active
             box-shadow:       0 0 0 1.5px $off-white
-            background-color: color.adjust($background-lighter, $lightness: -1%)
+            background-color: color.adjust($background-300, $lightness: -1%)
 
         &.selected
             box-shadow: 0 0 0 2px $blue

@@ -173,7 +173,7 @@
         z-index:          99
         width:            100vw
         height:           100vh
-        background-color: color.adjust($background-darker, $alpha: -0.125)
+        background-color: color.adjust($background-700, $alpha: -0.125)
 
     .inner
         display:         flex

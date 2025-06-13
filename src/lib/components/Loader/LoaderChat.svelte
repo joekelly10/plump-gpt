@@ -138,8 +138,8 @@
         padding:          space.$default-padding
         box-shadow:       0 0 0 0 transparent
         border-radius:    8px
-        border:           1px solid $background-lighter
-        background-color: $background-lighter
+        border:           1px solid $background-300
+        background-color: $background-300
         text-align:       left
         cursor:           pointer
         transition:       box-shadow easing.$quart-out 0.125s, background-color easing.$quart-out 0.125s
@@ -151,7 +151,7 @@
                 transition: none
         
         &:active
-            background-color: color.adjust($background-lighter, $lightness: -1.25%)
+            background-color: color.adjust($background-300, $lightness: -1.25%)
         
         &.keyboard-highlight
             box-shadow: 0 0 0 2px $blue
@@ -278,15 +278,15 @@
 
         .star-count
             background-color: $yellow
-            color:            $background-darker
+            color:            $background-700
 
             :global
                 .icon
                     height: 19px
-                    fill:   $background-darker
+                    fill:   $background-700
         
         .highlight-count
-            background-color: $background-lighter
+            background-color: $background-300
             color:            $yellow
 
             :global
@@ -312,7 +312,7 @@
                 height:          40px
                 box-sizing:      border-box
                 border-radius:   8px
-                border:          1px solid $background-lighter
+                border:          1px solid $background-300
                 transition:      background-color easing.$quart-out 0.1s, border-color easing.$quart-out 0.1s
                 cursor:          pointer
 
@@ -320,7 +320,7 @@
                     margin-bottom: 0
                 
                 .icon
-                    fill:       $background-lightest
+                    fill:       $background-200
                     transition: fill easing.$quart-out 0.1s
                     
                 &.delete
@@ -333,7 +333,7 @@
                         transition:       none
                         
                         .icon
-                            fill:       $background-darker
+                            fill:       $background-700
                             transition: none
 
                     &:active
@@ -342,9 +342,9 @@
                         transition:       none
                         
                         .icon
-                            fill:       $background-darker
+                            fill:       $background-700
                             transition: none
     
     :global(.chat.keyboard-highlight.selected)
-        background-color: color.adjust($background-lighter, $lightness: -2%)
+        background-color: color.adjust($background-300, $lightness: -2%)
 </style>

@@ -61,7 +61,7 @@
         padding-top:      space.$header-height
         padding-left:     16px
         padding-right:    16px
-        background-image: linear-gradient(to right, color.adjust($background-darkest, $lightness: -2%), transparent)
+        background-image: linear-gradient(to right, color.adjust($background-800, $lightness: -2%), transparent)
         pointer-events:   none
 
     .inner
@@ -102,7 +102,7 @@
             height:           32px
             padding:          0 12px
             border-radius:    6px
-            background-color: $background-lighter
+            background-color: $background-300
             font-size:        16px
             font-weight:      600
             color:            $yellow

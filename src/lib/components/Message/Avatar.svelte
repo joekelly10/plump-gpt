@@ -84,7 +84,7 @@
         transform:        translate(-50%, 4px)
         padding:          12px 24px
         border-radius:    8px
-        background-color: $background-darker
+        background-color: $background-700
         font-size:        14px
         font-weight:      500
         line-height:      font.$line-height-14px
@@ -99,5 +99,5 @@
             transform:      translateX(-50%)
             border-width:   8px
             border-style:   solid
-            border-color:   $background-darker transparent transparent
+            border-color:   $background-700 transparent transparent
 </style>

@@ -74,9 +74,9 @@
 
         &:hover,
         &:active
-            background-color: $background-darkest
+            background-color: $background-800
             transition:       none
         
         &:active
-            background-color: color.adjust($background-darkest, $lightness: -1%)
+            background-color: color.adjust($background-800, $lightness: -1%)
 </style>

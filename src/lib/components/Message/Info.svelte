@@ -111,7 +111,7 @@
         font-size:   14px
         line-height: font.$line-height-14px
         text-align:  right
-        color:       $background-lightest
+        color:       $background-200
         white-space: nowrap
 
         .inner
@@ -126,17 +126,17 @@
                     width:          4px
                     height:         13px
                     border-radius:  3px
-                    border:         1px solid $background-lightest
+                    border:         1px solid $background-200
 
                     .fill
-                        background-color: $background-lightest
+                        background-color: $background-200
                 
                 .temperature-icon
                     display:        inline-block
                     vertical-align: middle
                     margin:         -3px 2px 0 8px
                     height:         16px
-                    fill:           $background-lightest
+                    fill:           $background-200
 
     .streaming
         margin-top:  $vertical-margin

@@ -30,17 +30,17 @@
         height:          space.$header-height
         font-size:       14px
         font-weight:     450
-        color:           $background-lightest
+        color:           $background-200
         cursor:          pointer
         transition:      background-color easing.$quart-out 0.1s, color easing.$quart-out 0.1s
 
         &:hover
-            background-color: $background-darkest
+            background-color: $background-800
             font-weight:      600
             color:            $off-white
             transition:       none
 
         &:active
-            background-color: color.adjust($background-darkest, $lightness: -1%)
+            background-color: color.adjust($background-800, $lightness: -1%)
             transition:       none
 </style>

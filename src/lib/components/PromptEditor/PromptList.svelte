@@ -74,7 +74,7 @@
         box-sizing:       border-box
         padding:          20px space.$default-padding
         border-radius:    8px 8px 0 0
-        background-color: $background-darkest
+        background-color: $background-800
         font-weight:      600
         color:            $off-white
 
@@ -86,8 +86,8 @@
                 width:           40px
                 height:          40px
                 border-radius:   8px
-                border:          1px solid $background-lighter
-                color:           $background-lightest
+                border:          1px solid $background-300
+                color:           $background-200
                 cursor:          pointer
                 transition:      border-color easing.$quart-out 0.125s, background-color easing.$quart-out 0.125s, color easing.$quart-out 0.125s
 
@@ -98,13 +98,13 @@
                 &:hover
                     border-color:     $yellow
                     background-color: $yellow
-                    color:            $background-darkest
+                    color:            $background-800
                     transition:       none
             
                 &:active
                     border-color:     color.adjust($yellow, $lightness: -10%)
                     background-color: color.adjust($yellow, $lightness: -10%)
-                    color:            $background-darkest
+                    color:            $background-800
                     transition:       none
 
     .list
@@ -117,8 +117,8 @@
         padding:          space.$default-padding
         padding-bottom:   space.$default-padding * 3
         border-radius:    0 0 8px 8px
-        border:           1px solid $background-darkest
-        background-color: color.adjust($background-darkest, $alpha: -0.67)
+        border:           1px solid $background-800
+        background-color: color.adjust($background-800, $alpha: -0.67)
         overflow-y:       auto
         overflow-x:       hidden
         &::-webkit-scrollbar

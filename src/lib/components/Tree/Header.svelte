@@ -33,7 +33,7 @@
         z-index:          100
         width:            100%
         height:           space.$tree-view-header-height
-        background-color: color.adjust($background-darkest, $lightness: -2%)
+        background-color: color.adjust($background-800, $lightness: -2%)
 
     .title
         font-size:      18.5px

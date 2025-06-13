@@ -109,7 +109,7 @@
         height:           100vh
         min-width:        breakpoint.$cover-at-width
         box-sizing:       border-box
-        background-color: $background
+        background-color: $background-500
         transform:        scale(0.99)
         filter:           blur(4px)
         transition:       transform easing.$quart-out 0.1s, filter easing.$quart-out 0.1s

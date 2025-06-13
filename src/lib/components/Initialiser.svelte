@@ -157,7 +157,7 @@
         border-radius: 6px
         font-size:     14px
         line-height:   font.$line-height-14px
-        color:         $background-lightest
+        color:         $background-200
         white-space:   nowrap
 
     .fetch-error

@@ -102,11 +102,11 @@
 
         &:hover
             padding:          20px space.$default-padding
-            background-color: $background-darkest
+            background-color: $background-800
             transition:       padding easing.$quart-out 0.25s
         
         &:active
-            background-color: color.adjust($background-darkest, $lightness: -1%)
+            background-color: color.adjust($background-800, $lightness: -1%)
 
         &.animate-model-change
             .icon

@@ -73,7 +73,7 @@
         transition:       background-color easing.$quart-out 0.125s
 
         &.delete-fork-highlight
-            background-color: color.mix($coral, $background-lighter, 10%)
+            background-color: color.mix($coral, $background-300, 10%)
             transition:       none
 
             .prompt-fork-button
@@ -97,31 +97,31 @@
                 width:            space.$load-save-button-width
                 box-sizing:       border-box
                 padding:          6px 0
-                border-top:       1px solid $background
-                border-bottom:    1px solid $background
-                background-color: $background
+                border-top:       1px solid $background-500
+                border-bottom:    1px solid $background-500
+                background-color: $background-500
                 font-size:        14px
                 font-weight:      450
-                color:            $background-lightest
+                color:            $background-200
                 cursor:           pointer
                 transition:       border-radius easing.$quart-out 0.125s
 
                 &:nth-child(5n+1)
                     border-top-left-radius:    8px
                     border-bottom-left-radius: 8px
-                    border-left:               1px solid $background
+                    border-left:               1px solid $background-500
                 
                 &:nth-child(5n),
                 &:last-child
                     border-top-right-radius:    8px
                     border-bottom-right-radius: 8px
-                    border-right:               1px solid $background
+                    border-right:               1px solid $background-500
 
                 .icon
                     margin-right: 11px
                     margin-left:  -1px
                     height:       15px
-                    fill:         $background-lightest
+                    fill:         $background-200
 
                 .hover-info
                     +shared.fork-hover-info
@@ -131,7 +131,7 @@
                         margin:          -3px -6px
 
                 &:hover
-                    background-color: $background-darker
+                    background-color: $background-700
                     color:            $off-white
 
                     .icon
@@ -143,20 +143,20 @@
                             transition: opacity easing.$quart-out 100ms 333ms
 
                 &:active
-                    background-color: color.adjust($background-darker, $lightness: -1%)
+                    background-color: color.adjust($background-700, $lightness: -1%)
 
                 &.active
                     font-weight:      450
-                    color:            $background-darkest
+                    color:            $background-800
                     border-color:     $blue
                     background-color: $blue
 
                     .icon
-                        fill: $background-darkest
+                        fill: $background-800
                 
                 &.temporary
-                    border-left:      1px solid $background-darker
-                    background-color: $background
+                    border-left:      1px solid $background-700
+                    background-color: $background-500
                     color:            white
 
                     .icon

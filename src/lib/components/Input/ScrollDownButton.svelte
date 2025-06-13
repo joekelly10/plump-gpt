@@ -34,7 +34,7 @@
         width:            $button-size
         height:           $button-size
         border-radius:    99px
-        background-color: $background-lighter
+        background-color: $background-300
         color:            $off-white
         font-size:        22px
         transition:       padding-top 150ms easing.$quart-out
@@ -42,11 +42,11 @@
 
         &:hover
             padding-top:      5px
-            background-color: color.adjust($background-lighter, $lightness: 2%)
+            background-color: color.adjust($background-300, $lightness: 2%)
             transition:       none
         
         &:active
-            background-color: color.adjust($background-lighter, $lightness: 1%)
+            background-color: color.adjust($background-300, $lightness: 1%)
         
         &.streaming
             &:after

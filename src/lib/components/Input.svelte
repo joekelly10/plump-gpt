@@ -643,7 +643,7 @@
         width:            100%
         box-sizing:       border-box
         padding:          space.$default-padding 0
-        background-color: $background-darker
+        background-color: $background-700
         user-select:      none
 
         &.expanded
@@ -661,7 +661,7 @@
         padding:          16px
         border:           1px solid $blue-grey
         border-radius:    12px
-        background-color: $background-lighter
+        background-color: $background-300
         transition:       box-shadow easing.$quart-out 500ms, border-color easing.$quart-out 500ms
 
         &.nope-highlight

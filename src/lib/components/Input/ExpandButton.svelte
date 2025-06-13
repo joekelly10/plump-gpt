@@ -46,20 +46,20 @@
         height:           56px
         padding-bottom:   12px
         border-radius:    8px 8px 0 0
-        background-color: $background-darkest
-        background-color: color.adjust($background-darker, $lightness: -1.75%)
+        background-color: $background-800
+        background-color: color.adjust($background-700, $lightness: -1.75%)
         color:            $off-white
         font-size:        19px
         cursor:           pointer
 
         &:hover
-            background-color: $background-darkest
+            background-color: $background-800
 
             .up-arrow
                 color: $off-white
 
         &:active
-            background-color: color.adjust($background-darkest, $lightness: -1%)
+            background-color: color.adjust($background-800, $lightness: -1%)
 
         .up-arrow
             display: block

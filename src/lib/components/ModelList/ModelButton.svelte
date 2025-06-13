@@ -121,17 +121,17 @@
         transition:    background-color easing.$quart-out 0.1s
 
         &:hover
-            background-color: $background-darker
+            background-color: $background-700
             transition:       none
             
         &:active
-            background-color: $background-darkest
+            background-color: $background-800
             transform:        scale(0.99)
             transition:       none
             
         &.active
             border:           1px solid $blue
-            background-color: $background-darker
+            background-color: $background-700
 
         .model-icon
             width: 24px
@@ -158,7 +158,7 @@
             :global(.default-icon)
                 height:   14px
                 fill:     $yellow
-                filter:   drop-shadow(0 0 1.5px $background-darker)
+                filter:   drop-shadow(0 0 1.5px $background-700)
         
         .name-and-host
             flex-grow:  1

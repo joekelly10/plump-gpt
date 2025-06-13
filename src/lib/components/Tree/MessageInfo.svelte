@@ -30,5 +30,5 @@
         font-size:   14px
         font-weight: 450
         line-height: font.$line-height-14px
-        color:       $background-lightest
+        color:       $background-200
 </style>

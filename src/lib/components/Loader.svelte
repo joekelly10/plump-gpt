@@ -328,7 +328,7 @@
         z-index:          99
         width:            100vw
         height:           100vh
-        background-color: color.adjust($background-darker, $alpha: -0.125)
+        background-color: color.adjust($background-700, $alpha: -0.125)
     
     .inner
         position:       relative
@@ -348,5 +348,5 @@
             padding-top: 192px
             text-align:  center
             font-weight: 450
-            color:       $background-lightest
+            color:       $background-200
 </style>

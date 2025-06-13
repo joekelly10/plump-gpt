@@ -48,7 +48,7 @@
             font-size:   14px
             font-weight: 450
             line-height: font.$line-height-14px
-            color:       $background-lightest
+            color:       $background-200
     
     .settings-list
         position: absolute
@@ -64,7 +64,7 @@
             height:           space.$header-height
             box-sizing:       border-box
             border-radius:    12px 12px 0 0
-            background-color: $background-darker
+            background-color: $background-700
 
             .title
                 padding:     0 space.$default-padding
@@ -96,9 +96,9 @@
             gap:              48px
             padding:          space.$default-padding
             padding-bottom:   space.$default-padding + 40px + 48px
-            border-left:      1px solid $background-darker
-            border-right:     1px solid $background-darker
-            background-color: color.adjust(color.adjust($background, $lightness: -1%), $alpha: -0.05)
+            border-left:      1px solid $background-700
+            border-right:     1px solid $background-700
+            background-color: color.adjust(color.adjust($background-500, $lightness: -1%), $alpha: -0.05)
             backdrop-filter:  blur(4px)
 
             :global(.setting-title)

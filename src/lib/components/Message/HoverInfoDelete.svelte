@@ -23,7 +23,7 @@
         padding:          16px 24px
         border-radius:    8px
         background-color: $coral
-        color:            $background-darkest
+        color:            $background-800
 
         &.small
             bottom:    50%

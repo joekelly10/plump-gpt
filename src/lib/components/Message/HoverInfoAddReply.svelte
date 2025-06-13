@@ -26,7 +26,7 @@
         padding:          24px 48px 24px 24px
         border-radius:    8px
         background-color: $blue
-        color:            $background-darkest
+        color:            $background-800
 
     .model-icon
         height: 32px
@@ -39,5 +39,5 @@
         .model-name
             font-size:   14px
             font-weight: 450
-            color:       color.adjust($background-darkest, $alpha: -0.5)
+            color:       color.adjust($background-800, $alpha: -0.5)
 </style>

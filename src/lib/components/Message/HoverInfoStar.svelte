@@ -30,10 +30,10 @@
         padding:          16px 24px
         border-radius:    8px
         background-color: $yellow
-        color:            $background-darkest
+        color:            $background-800
 
         &.starred
-            background-color: $background
+            background-color: $background-500
             color:            $yellow
 
         &.small

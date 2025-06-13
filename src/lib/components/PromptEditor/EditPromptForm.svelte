@@ -202,13 +202,13 @@
         box-sizing:       border-box
         padding:          space.$default-padding
         border-radius:    8px
-        background-color: $background-darkest
+        background-color: $background-800
 
         &.read-only
             .title-input,
             .prompt-input
-                border-color:     $background-lighter
-                background-color: $background
+                border-color:     $background-300
+                background-color: $background-500
                 color:            color.adjust($off-white, $alpha: -0.5)
                 cursor:           not-allowed
 
@@ -230,7 +230,7 @@
         padding:          16px 24px
         border-radius:    8px
         border:           1px solid $blue-grey
-        background-color: $background-lighter
+        background-color: $background-300
         line-height:      font.$line-height-20px
         font-family:      font.$sans-serif
         font-size:        20px
@@ -250,7 +250,7 @@
         padding:          24px
         border-radius:    8px
         border:           1px solid $blue-grey
-        background-color: $background-lighter
+        background-color: $background-300
         line-height:      font.$line-height-paragraph
         font-family:      font.$sans-serif
         font-size:        16px
@@ -281,7 +281,7 @@
         .token-count
             margin-left: 16px
             font-size:   14px
-            color:       $background-lightest
+            color:       $background-200
 
         .buttons
             display: flex
@@ -302,35 +302,35 @@
                 padding-right:    space.$default-padding + 1px
                 background-color: transparent
                 font-weight:      400
-                color:            $background-lightest
+                color:            $background-200
                 &:hover
                     padding-right:    space.$default-padding
                     background-color: $coral
                     font-weight:      600
-                    color:            $background-darkest
+                    color:            $background-800
                     transition:       none
                 &:active
                     padding-right:    space.$default-padding
                     background-color: color.adjust($coral, $lightness: -4%)
                     font-weight:      600
-                    color:            $background-darkest
+                    color:            $background-800
                     transition:       none
 
             .cancel-button,
             .close-button
-                background-color: $background
+                background-color: $background-500
                 color:            $off-white
                 &:hover
-                    background-color: color.adjust($background, $lightness: 4%)
+                    background-color: color.adjust($background-500, $lightness: 4%)
                     color:            $off-white
                     transition:       none
                 &:active
-                    background-color: color.adjust($background, $lightness: 2%)
+                    background-color: color.adjust($background-500, $lightness: 2%)
                     transition:       none
 
             .copy-button
                 background-color: color.adjust($off-white, $alpha: -0.04)
-                color:            $background-darkest
+                color:            $background-800
                 &:hover
                     background-color: color.adjust($off-white, $alpha: -0.08)
                     transition:       none
@@ -341,7 +341,7 @@
             .save-button
                 position:         relative
                 background-color: $blue
-                color:            $background-darkest
+                color:            $background-800
 
                 .spinner
                     position:  absolute

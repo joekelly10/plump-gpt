@@ -224,7 +224,7 @@
 
         &.user
             border-radius:    8px 8px 0 0
-            background-color: $background-lighter
+            background-color: $background-300
 
             &:not(.streaming)
                 transition: background-color easing.$quart-out 0.075s, box-shadow easing.$quart-out 0.075s, top easing.$quart-out 0.125s
@@ -236,7 +236,7 @@
                 
                 &.add-reply-highlight
                     z-index:          999
-                    box-shadow:       0 0 0 1.5px $blue, 0 1.5px 9px 1.5px color.adjust($background-darker, $alpha: -0.75)
+                    box-shadow:       0 0 0 1.5px $blue, 0 1.5px 9px 1.5px color.adjust($background-700, $alpha: -0.75)
                     border-radius:    8px 8px 1.5px 1.5px
                     background-color: $regenerate-highlight-bg
 
@@ -249,14 +249,14 @@
 
                 &.temp-highlight
                     z-index:          999
-                    background-color: color.adjust($background-lighter, $lightness: -2.5%)
+                    background-color: color.adjust($background-300, $lightness: -2.5%)
                     box-shadow:       0 0 0 1.5px $off-white
                     border-radius:    8px 8px 1.5px 1.5px
 
         &.assistant
             margin-bottom:    space.$default-padding
             border-radius:    0 0 8px 8px
-            background-color: $background-lighter
+            background-color: $background-300
 
             &:after
                 content:          ''
@@ -267,7 +267,7 @@
                 height:           100%
                 box-sizing:       border-box
                 border-radius:    1.5px 1.5px 8px 8px
-                background-image: linear-gradient(to bottom, color.adjust($background, $alpha: -0.5), color.adjust($background, $alpha: -0.75))
+                background-image: linear-gradient(to bottom, color.adjust($background-500, $alpha: -0.5), color.adjust($background-500, $alpha: -0.75))
                 opacity:          0
                 transition:       opacity easing.$quart-out 0.1s
                 pointer-events:   none
@@ -300,14 +300,14 @@
 
                     :global
                         blockquote
-                            background-color: color.mix($background, $regenerate-highlight-bg, 33%)
+                            background-color: color.mix($background-500, $regenerate-highlight-bg, 33%)
                             color:            $regenerate-highlight-color
 
                             blockquote
-                                background-color: color.mix($background, $regenerate-highlight-bg, 50%)
+                                background-color: color.mix($background-500, $regenerate-highlight-bg, 50%)
 
                         code, pre code, .copy-code-button
-                            background-color: color.mix($background-darker, $regenerate-highlight-bg, 25%)
+                            background-color: color.mix($background-700, $regenerate-highlight-bg, 25%)
                             color:            $regenerate-highlight-color
                             text-decoration:  line-through
                 
@@ -318,16 +318,16 @@
 
                     :global
                         blockquote
-                            background-color: color.mix($background, $star-highlight-bg, 85%)
+                            background-color: color.mix($background-500, $star-highlight-bg, 85%)
 
                             blockquote
-                                background-color: color.mix($background, $star-highlight-bg, 90%)
+                                background-color: color.mix($background-500, $star-highlight-bg, 90%)
 
                         code, pre code
-                            background-color: color.mix($background-darker, $star-highlight-bg, 85%)
+                            background-color: color.mix($background-700, $star-highlight-bg, 85%)
                 
                 &.temp-highlight
-                    background-color: color.adjust($background-lighter, $lightness: -2.5%)
+                    background-color: color.adjust($background-300, $lightness: -2.5%)
                     box-shadow:       0 0 0 1.5px $off-white
                     border-radius:    1.5px 1.5px 8px 8px
                 
@@ -354,22 +354,22 @@
 
             :global
                 blockquote
-                    background-color: color.mix($background, $star-highlight-bg, 85%)
+                    background-color: color.mix($background-500, $star-highlight-bg, 85%)
 
                     blockquote
-                        background-color: color.mix($background, $star-highlight-bg, 90%)
+                        background-color: color.mix($background-500, $star-highlight-bg, 90%)
 
                 code, pre code
-                    background-color: color.mix($background-darker, $star-highlight-bg, 85%)
+                    background-color: color.mix($background-700, $star-highlight-bg, 85%)
 
         &.delete-highlight
             :global
                 blockquote
-                    background-color: color.mix($background, $delete-highlight-bg, 25%)
+                    background-color: color.mix($background-500, $delete-highlight-bg, 25%)
                     color:            $delete-highlight-color
                 
                 code, pre code, .copy-code-button
-                    background-color: color.mix($background-darker, $delete-highlight-bg, 25%)
+                    background-color: color.mix($background-700, $delete-highlight-bg, 25%)
                     color:            $delete-highlight-color
                     text-decoration:  line-through
     
@@ -409,21 +409,21 @@
 
     @keyframes streaming
         0%
-            border-bottom: 8px solid $background-lighter
+            border-bottom: 8px solid $background-300
         67%
             border-bottom: 8px solid white(0.5)
         75%
             border-bottom: 8px solid white(0.5)
         100%
-            border-bottom: 8px solid $background-lighter
+            border-bottom: 8px solid $background-300
 
     @keyframes streaming-no-message
         0%
-            border-bottom: 8px solid $background-lighter
+            border-bottom: 8px solid $background-300
         67%
             border-bottom: 8px solid color.adjust($pale-blue, $alpha: -0.5)
         75%
             border-bottom: 8px solid color.adjust($pale-blue, $alpha: -0.5)
         100%
-            border-bottom: 8px solid $background-lighter
+            border-bottom: 8px solid $background-300
 </style>

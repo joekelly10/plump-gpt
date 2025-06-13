@@ -97,7 +97,7 @@
             &:active
                 .avatar-container
                     .icon-layer
-                        background-color: color.adjust($background, $alpha: -0.225)
+                        background-color: color.adjust($background-500, $alpha: -0.225)
             
             .avatar-container
                 position:      relative
@@ -120,7 +120,7 @@
                 left:             0
                 width:            100%
                 height:           100%
-                background-color: color.adjust($background, $alpha: -0.25)
+                background-color: color.adjust($background-500, $alpha: -0.25)
                 opacity:          0
                 transition:       opacity easing.$quart-out 100ms
 
@@ -137,15 +137,15 @@
                 background-color: $off-white
                 font-size:        14px
                 font-weight:      600
-                color:            $background-darker
+                color:            $background-700
 
                 &:hover,
                 &:active
-                    background-color: color.mix($background, $off-white, 5%)
-                    color:            $background-darkest
+                    background-color: color.mix($background-500, $off-white, 5%)
+                    color:            $background-800
                 
                 &:active
-                    background-color: color.mix($background, $off-white, 7.5%)
+                    background-color: color.mix($background-500, $off-white, 7.5%)
 
             .file-input
                 display: none

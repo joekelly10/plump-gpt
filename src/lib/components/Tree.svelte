@@ -162,7 +162,7 @@
 <style lang='sass'>
     $cell-height:                      33px
     $cell-width:                       44px
-    $connector-color:                  $background-lighter
+    $connector-color:                  $background-300
     $simple-vertical-connector-height: 16px
     $horizontal-nipple-height:         10px
 
@@ -175,7 +175,7 @@
         height:           100vh
         box-sizing:       border-box
         padding-top:      space.$header-height
-        background-color: color.adjust($background-darkest, $alpha: -0.025)
+        background-color: color.adjust($background-800, $alpha: -0.025)
 
     .inner
         display:        flex
@@ -221,7 +221,7 @@
                 border-radius: 1px 1px 6px 6px
 
             &.active
-                background-color: $background-lightest
+                background-color: $background-200
                 color:            $off-white
 
             &.starred,
@@ -231,19 +231,19 @@
 
                 &.active
                     background-color: $yellow
-                    color:            $background-darkest
+                    color:            $background-800
 
                 &:hover
                     background-color: $off-white
 
             &:hover
                 background-color: $off-white
-                color:            $background-darkest
+                color:            $background-800
                 transform:        scale(1.1)
                 transition:       none
             
             &:active
-                color:            $background-darkest
+                color:            $background-800
                 background-color: color.adjust($off-white, $lightness: -2.5%)
 
             .model-icon
@@ -253,7 +253,7 @@
                 transform:     translateX(50%)
                 height:        21px
                 border-radius: 4px
-                box-shadow:    0 0 0 1px $background-darkest
+                box-shadow:    0 0 0 1px $background-800
 
         .you-are-here
             position:       relative

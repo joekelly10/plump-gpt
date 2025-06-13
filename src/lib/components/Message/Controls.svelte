@@ -123,13 +123,13 @@
                 height:          $button-size
                 box-sizing:      border-box
                 border-radius:   8px
-                border:          1px solid $background-lighter
+                border:          1px solid $background-300
                 cursor:          pointer
                 transition:      background-color easing.$quart-out 0.1s, border-color easing.$quart-out 0.1s
 
                 .icon
-                    fill:       $background-lightest
-                    color:      $background-lightest
+                    fill:       $background-200
+                    color:      $background-200
                     transition: fill easing.$quart-out 0.1s, color easing.$quart-out 0.1s
 
                 &:hover,
@@ -137,8 +137,8 @@
                     transition: none
 
                     .icon
-                        fill:       $background-darker
-                        color:      $background-darker
+                        fill:       $background-700
+                        color:      $background-700
                         transition: none
 
                 &.add
@@ -166,8 +166,8 @@
                             height:   90px
 
                     &:active
-                        border-color:     color.mix($background, $blue, 5%)
-                        background-color: color.mix($background, $blue, 5%)
+                        border-color:     color.mix($background-500, $blue, 5%)
+                        background-color: color.mix($background-500, $blue, 5%)
 
                 &.retry
                     .icon
@@ -176,8 +176,8 @@
                         border-color:     white
                         background-color: white
                     &:active
-                        border-color:     color.mix($background, $off-white, 5%)
-                        background-color: color.mix($background, $off-white, 5%)
+                        border-color:     color.mix($background-500, $off-white, 5%)
+                        background-color: color.mix($background-500, $off-white, 5%)
                     
                 &.delete
                     .icon
@@ -186,8 +186,8 @@
                         border-color:     $coral
                         background-color: $coral
                     &:active
-                        border-color:     color.mix($background, $coral, 5%)
-                        background-color: color.mix($background, $coral, 5%)
+                        border-color:     color.mix($background-500, $coral, 5%)
+                        background-color: color.mix($background-500, $coral, 5%)
 
                 &.fork
                     .icon
@@ -197,23 +197,23 @@
                         border-color:     $blue
                         background-color: $blue
                     &:active
-                        border-color:     color.mix($background, $blue, 5%)
-                        background-color: color.mix($background, $blue, 5%)
+                        border-color:     color.mix($background-500, $blue, 5%)
+                        background-color: color.mix($background-500, $blue, 5%)
 
                 &.star
                     height: 80px
                     .icon
                         &.empty
                             height: 19px
-                            fill:   $background-lightest
+                            fill:   $background-200
                         &.full
                             display: none
                             height: 19px
                             fill:   $yellow
                     &:hover,
                     &:active
-                        border-color:     $background-lightest
-                        background-color: $background-lightest
+                        border-color:     $background-200
+                        background-color: $background-200
                         .icon
                             &.empty
                                 display: none
@@ -222,10 +222,10 @@
                                 height:  19px
                                 fill:    $yellow
                     &:active
-                        border-color:     color.adjust($background-lightest, $lightness: -2%)
-                        background-color: color.adjust($background-lightest, $lightness: -2%)
+                        border-color:     color.adjust($background-200, $lightness: -2%)
+                        background-color: color.adjust($background-200, $lightness: -2%)
                     &.starred
-                        border-color:     $background-darker
+                        border-color:     $background-700
                         background-color: $yellow
                         .icon
                             &.empty
@@ -233,7 +233,7 @@
                             &.full
                                 display: block
                                 height:  19px
-                                fill:    $background-darker
+                                fill:    $background-700
                         &:active
-                            background-color: color.mix($background, $yellow, 5%)
+                            background-color: color.mix($background-500, $yellow, 5%)
 </style>

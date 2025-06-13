@@ -103,7 +103,7 @@
     .search-header
         margin-bottom:    space.$default-padding
         padding:          space.$default-padding 0 12px
-        background-color: $background-darkest
+        background-color: $background-800
         text-align:       center
         user-select:      none
 
@@ -135,7 +135,7 @@
 
             &.active
                 font-weight: 600
-                color:       $background-darkest
+                color:       $background-800
 
                 &.all-button
                     background-color: $off-white
@@ -153,7 +153,7 @@
         padding:          16px 20px
         border:           1px solid $blue-grey
         border-radius:    12px
-        background-color: $background-lighter
+        background-color: $background-300
 
         &:focus-within
             border-color: $blue

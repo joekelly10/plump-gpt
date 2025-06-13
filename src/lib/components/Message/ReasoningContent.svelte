@@ -60,7 +60,7 @@
         max-height:       290px
         overflow-y:       auto
         border-radius:    8px
-        background-color: $background-darker
+        background-color: $background-700
         font-size:        14px
         line-height:      28px
         color:            color.adjust($off-white, $alpha: -0.5)
@@ -84,7 +84,7 @@
                 margin-bottom: 0
         
         &.delete-highlight
-            background-color: color.mix($background-darker, $delete-highlight-bg, 25%)
+            background-color: color.mix($background-700, $delete-highlight-bg, 25%)
             color:            $delete-highlight-color
 
             &::-webkit-scrollbar-thumb
@@ -95,7 +95,7 @@
                 text-decoration:  line-through
         
         &.regenerate-highlight
-            background-color: color.mix($background-darker, $regenerate-highlight-bg, 25%)
+            background-color: color.mix($background-700, $regenerate-highlight-bg, 25%)
             color:            $regenerate-highlight-color
 
             &::-webkit-scrollbar-thumb
@@ -107,7 +107,7 @@
         
         &.star-highlight,
         &.starred
-            background-color: color.mix($background-darker, $star-highlight-bg, 85%)
+            background-color: color.mix($background-700, $star-highlight-bg, 85%)
 
     .reasoning-title
         font-weight: 600
@@ -122,7 +122,7 @@
         font-weight:      450
         text-align:       center
         line-height:      40px
-        color:            $background-darker
+        color:            $background-700
 
         .reasoning-token-count
             font-weight: 600

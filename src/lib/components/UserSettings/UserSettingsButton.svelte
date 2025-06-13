@@ -37,15 +37,15 @@
         width:           40px
         height:          40px
         border-radius:   8px
-        border:          1px solid $background-lightest
-        color:           $background-lightest
+        border:          1px solid $background-200
+        color:           $background-200
         cursor:          pointer
         transition:      border-color easing.$quart-out 100ms, background-color easing.$quart-out 100ms
 
         &:hover,
         &:active
-            border-color:     $background-lightest
-            background-color: $background-lightest
+            border-color:     $background-200
+            background-color: $background-200
             transition:       none
 
             :global(.settings-icon)
@@ -57,8 +57,8 @@
                 transition:   opacity easing.$quart-out 100ms, padding-left easing.$quart-out 100ms
 
         &:active
-            border-color:     color.adjust($background-lightest, $lightness: -2%)
-            background-color: color.adjust($background-lightest, $lightness: -2%)
+            border-color:     color.adjust($background-200, $lightness: -2%)
+            background-color: color.adjust($background-200, $lightness: -2%)
         
         &.active
             .label
@@ -66,7 +66,7 @@
     
     :global(.settings-icon)
         height: 17px
-        fill:   $background-lightest
+        fill:   $background-200
         
     .arrow-icon
         font-size: 20px

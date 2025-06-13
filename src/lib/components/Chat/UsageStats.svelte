@@ -81,7 +81,7 @@
         text-align:  right
         font-size:   14px
         font-weight: 450
-        color:       $background-lightest
+        color:       $background-200
         white-space: nowrap
 
         &.tree-view

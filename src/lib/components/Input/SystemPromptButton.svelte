@@ -51,7 +51,7 @@
         line-height:   font.$line-height-14px
         font-size:     14px
         font-weight:   450
-        color:         $background-lightest
+        color:         $background-200
         text-align:    right
         cursor:        pointer
         transition:    background-color easing.$quart-out 0.1s, color easing.$quart-out 0.1s
@@ -71,7 +71,7 @@
                 color:     $yellow
 
         &:hover
-            border:     1px solid $background-lightest
+            border:     1px solid $background-200
             color:      $blue-grey
             transition: none
 
@@ -79,7 +79,7 @@
                 transition: font-size easing.$quart-out 0.25s
         
         &:active
-            background-color: color.adjust($background-darker, $lightness: -1%)
+            background-color: color.adjust($background-700, $lightness: -1%)
             color:            $blue-grey
             transition:       none
 
@@ -87,6 +87,6 @@
                 transition: none
 
         &.editor-active
-            border: 1px solid $background-lightest
+            border: 1px solid $background-200
             color:  $blue-grey
 </style>

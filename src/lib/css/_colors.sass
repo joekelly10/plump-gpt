@@ -6,25 +6,23 @@
 //
 // -------------------- */
 
-$background:          #282b34
-$background-darker:   #21242b
-$background-darkest:  color.adjust($background-darker, $lightness: -2.5%)
-$background-lighter:  color.adjust($background, $lightness: 10%)
-$background-lightest: color.adjust($background-lighter, $lightness: 5%)
-$mid-grey:            #8999ad
-$blue-grey:           #93a6be
-$coral:               #fe6b6b
-$orange:              #f78c6c
-$yellow:              #ffcb6b
-$green:               #43ae7c
-$turquoise:           #a5d6ff
-$blue:                #82aaff
-$purple:              #9499ff
-$pale-blue:           #c9def1
-$off-white:           #f8fbff
 
-$openai-green:        #74aa9c
-$gpt4-purple:         #ab68ff
+$background-200: #494f5f
+$background-300: #3e4351
+$background-500: #282b34
+$background-700: #21242b
+$background-800: color.adjust($background-700, $lightness: -2.75%)
+$mid-grey:       #8999ad
+$blue-grey:      #93a6be
+$coral:          #fe6b6b
+$orange:         #f78c6c
+$yellow:         #ffcb6b
+$green:          #43ae7c
+$turquoise:      #a5d6ff
+$blue:           #82aaff
+$purple:         #9499ff
+$pale-blue:      #c9def1
+$off-white:      #f8fbff
 
 
 @function black($opacity)
@@ -34,9 +32,9 @@ $gpt4-purple:         #ab68ff
     @return rgba(255,255,255,$opacity)
 
 
-$delete-highlight-bg:        color.mix($coral, $background-lighter, 27.5%)
+$delete-highlight-bg:        color.mix($coral, $background-300, 27.5%)
 $delete-highlight-color:     color.adjust(color.adjust($coral, $lightness: 20%), $alpha: -0.33)
-$regenerate-highlight-bg:    color.mix($blue, $background-lighter, 10%)
+$regenerate-highlight-bg:    color.mix($blue, $background-300, 10%)
 $regenerate-highlight-color: color.adjust($blue-grey, $alpha: -0.25)
 $star-highlight-bg:          color.adjust($yellow, $alpha: -0.7)
 $prompt-forks-bg:            color.adjust($blue, $alpha: -0.805)

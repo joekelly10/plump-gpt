@@ -45,7 +45,7 @@
         width:            100%
         box-sizing:       border-box
         padding:          24px 0
-        background-color: $background-darkest
+        background-color: $background-800
         user-select:      none
     
     .title

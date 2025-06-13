@@ -25,7 +25,7 @@
         padding:          24px 48px 24px 24px
         border-radius:    8px
         background-color: $off-white
-        color:            $background-darkest
+        color:            $background-800
         pointer-events:   none
         
         .icon
@@ -39,5 +39,5 @@
             .description
                 font-size:   14px
                 font-weight: 450
-                color:       color.adjust($background-darkest, $alpha: -0.5)
+                color:       color.adjust($background-800, $alpha: -0.5)
 </style>
