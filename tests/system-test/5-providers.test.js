@@ -7,7 +7,7 @@ import defaults from '../../src/lib/fixtures/defaults'
 import models from '../../src/lib/fixtures/models'
 
 test.describe('Providers', () => {
-    test('we should be able to stream a response from Open AI', async ({ page }) => {
+    test('we should be able to stream a reply from Open AI', async ({ page }) => {
         await page.goto('/')
 
         const default_model = models.find(m => m.id === defaults.model),
@@ -42,7 +42,7 @@ test.describe('Providers', () => {
         await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
-    test('we should be able to stream a response from Anthropic', async ({ page }) => {
+    test('we should be able to stream a reply from Anthropic', async ({ page }) => {
         page.on('console', msg => console.log(msg.text()))
 
         await page.goto('/')
@@ -79,7 +79,7 @@ test.describe('Providers', () => {
         await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
-    test('we should be able to stream a response from Google', async ({ page }) => {
+    test('we should be able to stream a reply from Google', async ({ page }) => {
         await page.goto('/')
 
         const default_model = models.find(m => m.id === defaults.model),
@@ -114,7 +114,7 @@ test.describe('Providers', () => {
         await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
-    test('we should be able to stream a response from X', async ({ page }) => {
+    test('we should be able to stream a reply from X', async ({ page }) => {
         await page.goto('/')
 
         const default_model = models.find(m => m.id === defaults.model),
@@ -149,7 +149,7 @@ test.describe('Providers', () => {
         await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
-    test('we should be able to stream a response from DeepSeek', async ({ page }) => {
+    test('we should be able to stream a reply from DeepSeek', async ({ page }) => {
         await page.goto('/')
 
         const default_model = models.find(m => m.id === defaults.model),
@@ -184,7 +184,7 @@ test.describe('Providers', () => {
         await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
-    test('we should be able to stream a response from Mistral', async ({ page }) => {
+    test('we should be able to stream a reply from Mistral', async ({ page }) => {
         await page.goto('/')
 
         const default_model = models.find(m => m.id === defaults.model),
@@ -219,7 +219,7 @@ test.describe('Providers', () => {
         await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
-    test('we should be able to stream a response from AI21', async ({ page }) => {
+    test('we should be able to stream a reply from AI21', async ({ page }) => {
         await page.goto('/')
 
         const default_model = models.find(m => m.id === defaults.model),
@@ -254,7 +254,7 @@ test.describe('Providers', () => {
         await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
-    test('we should be able to stream a response from Cohere', async ({ page }) => {
+    test('we should be able to stream a reply from Cohere', async ({ page }) => {
         page.on('console', msg => console.log(msg.text()))
 
         await page.goto('/')
@@ -291,7 +291,7 @@ test.describe('Providers', () => {
         await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
-    test('we should be able to stream a response from Groq', async ({ page }) => {
+    test('we should be able to stream a reply from Groq', async ({ page }) => {
         await page.goto('/')
 
         const default_model = models.find(m => m.id === defaults.model),
@@ -326,7 +326,7 @@ test.describe('Providers', () => {
         await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
-    test('we should be able to stream a response from OpenRouter', async ({ page }) => {
+    test('we should be able to stream a reply from OpenRouter', async ({ page }) => {
         await page.goto('/')
 
         const default_model = models.find(m => m.id === defaults.model),
