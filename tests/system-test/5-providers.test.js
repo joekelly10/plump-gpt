@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { fastExpect } from '../helpers/tools'
 import { cssSanitised } from '../../src/lib/utils/helpers'
-import { basic_prompt, basic_response } from '../mock/prompts/basic_response'
+import { basic_prompt, basic_reply } from '../mock/prompts/basic_reply'
 
 import defaults from '../../src/lib/fixtures/defaults'
 import models from '../../src/lib/fixtures/models'
@@ -39,7 +39,7 @@ test.describe('Providers', () => {
         await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_response)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
     test('we should be able to stream a response from Anthropic', async ({ page }) => {
@@ -76,7 +76,7 @@ test.describe('Providers', () => {
         await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_response)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
     test('we should be able to stream a response from Google', async ({ page }) => {
@@ -111,7 +111,7 @@ test.describe('Providers', () => {
         await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_response)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
     test('we should be able to stream a response from X', async ({ page }) => {
@@ -146,7 +146,7 @@ test.describe('Providers', () => {
         await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_response)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
     test('we should be able to stream a response from DeepSeek', async ({ page }) => {
@@ -181,7 +181,7 @@ test.describe('Providers', () => {
         await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_response)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
     test('we should be able to stream a response from Mistral', async ({ page }) => {
@@ -216,7 +216,7 @@ test.describe('Providers', () => {
         await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_response)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
     test('we should be able to stream a response from AI21', async ({ page }) => {
@@ -251,7 +251,7 @@ test.describe('Providers', () => {
         await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_response)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
     test('we should be able to stream a response from Cohere', async ({ page }) => {
@@ -288,7 +288,7 @@ test.describe('Providers', () => {
         await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_response)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
     test('we should be able to stream a response from Groq', async ({ page }) => {
@@ -323,7 +323,7 @@ test.describe('Providers', () => {
         await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_response)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
     test('we should be able to stream a response from OpenRouter', async ({ page }) => {
@@ -358,6 +358,6 @@ test.describe('Providers', () => {
         await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_response)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 })

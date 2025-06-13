@@ -1,23 +1,23 @@
 import { sleep, wordsFrom, getUsage } from '$tests/helpers/tools'
-import { basic_prompt, basic_response } from '$tests/mock/prompts/basic_response'
-import { basic_reasoning_prompt, basic_reasoning, basic_reasoning_response } from '$tests/mock/prompts/basic_reasoning'
+import { getAIReply, getAIReasoning } from '$tests/helpers/prompt-map'
 import { startObject, partObject, partThoughtObject, finishObject } from '$tests/mock/stream_objects/google'
 
 export const POST = async ({ request }) => {
     const { model, contents } = await request.json()
 
-    const ai_reasoning    = getAIReasoning(contents),
-          ai_response     = getAIResponse(contents),
-          mapped_messages = contents.map(c => ({ content: c.parts[0].text })) // map to OpenAI format for getUsage()
+    const mapped_messages = contents.map(c => ({ content: c.parts[0].text })),   // map to OpenAI format for getUsage()
+          prompt          = mapped_messages[mapped_messages.length - 1].content,
+          reasoning       = getAIReasoning(prompt),
+          reply           = getAIReply(prompt)
 
-    const { input_tokens, output_tokens, reasoning_tokens } = getUsage(mapped_messages, ai_response, ai_reasoning)
+    const { input_tokens, output_tokens, reasoning_tokens } = getUsage(mapped_messages, reply, reasoning)
 
     const stream = new ReadableStream({
         async start(controller) {
             const encoder         = new TextEncoder(),
                   enqueue         = (data) => controller.enqueue(encoder.encode(`data: ${data}\n\n`)),
-                  reasoning_words = wordsFrom(ai_reasoning),
-                  response_words  = wordsFrom(ai_response)
+                  reasoning_words = wordsFrom(reasoning),
+                  reply_words     = wordsFrom(reply)
 
             let json = JSON.stringify(startObject(model, input_tokens))
             enqueue(json)
@@ -31,9 +31,9 @@ export const POST = async ({ request }) => {
                 await sleep(25)
             }
 
-            for (let i = 0; i < response_words.length; i += chunk_size) {
-                const chunk = response_words.slice(i, i + chunk_size).join(' ')
-                if (i + chunk_size >= response_words.length) {
+            for (let i = 0; i < reply_words.length; i += chunk_size) {
+                const chunk = reply_words.slice(i, i + chunk_size).join(' ')
+                if (i + chunk_size >= reply_words.length) {
                     json = JSON.stringify(finishObject(model, chunk, input_tokens, output_tokens, reasoning_tokens))
                 } else {
                     json = JSON.stringify(partObject(model, chunk, input_tokens))
@@ -50,32 +50,4 @@ export const POST = async ({ request }) => {
     return new Response(stream, {
         headers: { 'Content-Type': 'text/event-stream' }
     })
-}
-
-const getAIReasoning = (contents) => {
-    let reasoning = ''
-
-    const prompt = contents[contents.length - 1]?.parts[0]?.text
-
-    if (prompt === basic_reasoning_prompt) {
-        reasoning = basic_reasoning
-    }
-
-    return reasoning
-}
-
-const getAIResponse = (contents) => {
-    let response
-
-    const prompt = contents[contents.length - 1]?.parts[0]?.text
-
-    if (prompt === basic_prompt) {
-        response = basic_response
-    } else if (prompt === basic_reasoning_prompt) {
-        response = basic_reasoning_response
-    } else {
-        response = '💩'
-    }
-
-    return response
 }
