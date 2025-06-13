@@ -78,4 +78,40 @@ test.describe('Reasoning', () => {
         await fastExpect(ai_message.locator('.reasoning-content')).toContainText(basic_reasoning)
         await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reasoning_reply)
     })
+
+    test('we should see the reasoning from DeepSeek models', async ({ page }) => {
+        await page.goto('/')
+
+        const default_model = models.find(m => m.id === defaults.model),
+              input         = page.locator('.primary-input-section .input'),
+              user_message  = page.locator('.chat .messages .message.user'),
+              ai_message    = page.locator('.chat .messages .message.assistant')
+        
+        if (default_model.type !== 'deepseek') {
+            const model_list_button     = page.locator('.active-model-button'),
+                  model_list            = page.locator('.models-by-family'),
+                  deepseek_model        = models.find(m => m.type === 'deepseek' && m.is_reasoner),
+                  deepseek_model_button = model_list.locator(`#model-button-${cssSanitised(deepseek_model.id)}`),
+                  active_model_icon     = model_list_button.locator('.icon')
+
+            await model_list_button.click()
+            await fastExpect(model_list).toBeVisible()
+            await fastExpect(deepseek_model_button).toBeVisible()
+
+            await deepseek_model_button.click()
+            await fastExpect(model_list).toBeHidden()
+            await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${deepseek_model.icon}`)
+        }
+
+        await input.fill(basic_reasoning_prompt)
+        await page.keyboard.press('Enter')
+
+        await fastExpect(input).toHaveText('')
+        await fastExpect(user_message).toHaveCount(1)
+        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_reasoning_prompt)
+
+        await expect(ai_message).toHaveCount(1)
+        await fastExpect(ai_message.locator('.reasoning-content')).toContainText(basic_reasoning)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reasoning_reply)
+    })
 })

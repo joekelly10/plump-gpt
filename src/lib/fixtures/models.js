@@ -199,6 +199,7 @@ export default [
         family:         'DeepSeek',
         hosted_at:      'deepseek.com',
         context_window: 164000,
+        is_reasoner:    true,
         pricing_id:     'deepseek-reasoner'
     },
     {
@@ -210,6 +211,7 @@ export default [
         family:         'DeepSeek',
         hosted_at:      'openrouter.ai',
         context_window: 164000,
+        is_reasoner:    true,
         pricing_id:     'free'
     },
     {
