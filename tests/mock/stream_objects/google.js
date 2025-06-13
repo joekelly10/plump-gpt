@@ -98,7 +98,7 @@ export const partObject = (model, text = '', input_tokens = 0, output_tokens = 0
     responseId:   'goog-1337'
 })
 
-export const finishObject = (model, text = '', input_tokens = 0, output_tokens = 0) => ({
+export const finishObject = (model, text = '', input_tokens = 0, output_tokens = 0, reasoning_tokens = 0) => ({
     candidates: [{
         content: {
             parts: [{
@@ -129,7 +129,7 @@ export const finishObject = (model, text = '', input_tokens = 0, output_tokens =
     usageMetadata: {
         promptTokenCount:     input_tokens,
         candidatesTokenCount: output_tokens,
-        totalTokenCount:      input_tokens + output_tokens,
+        totalTokenCount:      input_tokens + output_tokens + reasoning_tokens,
         promptTokensDetails: [{
             modality:   'TEXT',
             tokenCount: input_tokens
@@ -137,7 +137,8 @@ export const finishObject = (model, text = '', input_tokens = 0, output_tokens =
         candidatesTokensDetails: [{
             modality:   'TEXT',
             tokenCount: output_tokens
-        }]
+        }],
+        thoughtsTokenCount: reasoning_tokens
     },
     modelVersion: model,
     responseId:   'goog-1337'

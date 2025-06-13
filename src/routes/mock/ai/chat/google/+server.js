@@ -1,6 +1,4 @@
-import { sleep } from '$tests/helpers/tools'
-import { Tiktoken } from 'tiktoken/lite'
-import cl100k_base from 'tiktoken/encoders/cl100k_base.json'
+import { sleep, wordsFrom, getUsage } from '$tests/helpers/tools'
 import { prompt as basic_prompt, response as basic_response } from '$tests/mock/prompts/basic_response'
 import { prompt as basic_reasoning_prompt, reasoning as basic_reasoning, response as basic_reasoning_response } from '$tests/mock/prompts/basic_reasoning'
 import { startObject, partObject, partThoughtObject, finishObject } from '$tests/mock/stream_objects/google'
@@ -9,9 +7,10 @@ export const POST = async ({ request }) => {
     const { model, contents } = await request.json()
 
     const ai_reasoning = getAIReasoning(contents),
-          ai_response  = getAIResponse(contents)
+          ai_response  = getAIResponse(contents),
+          messages     = contents.map(c => ({ content: c.parts[0].text })) // map to OpenAI format for getUsage()
 
-    const { input_tokens, output_tokens } = getUsage(contents, ai_response)
+    const { input_tokens, output_tokens, reasoning_tokens } = getUsage(messages, ai_reasoning, ai_response)
 
     const stream = new ReadableStream({
         async start(controller) {
@@ -35,7 +34,7 @@ export const POST = async ({ request }) => {
             for (let i = 0; i < response_words.length; i += chunk_size) {
                 const chunk = response_words.slice(i, i + chunk_size).join(' ')
                 if (i + chunk_size >= response_words.length) {
-                    json = JSON.stringify(finishObject(model, chunk, input_tokens, output_tokens))
+                    json = JSON.stringify(finishObject(model, chunk, input_tokens, output_tokens, reasoning_tokens))
                 } else {
                     json = JSON.stringify(partObject(model, chunk, input_tokens))
                 }
@@ -79,29 +78,4 @@ const getAIResponse = (contents) => {
     }
 
     return response
-}
-
-const wordsFrom = (text) => {
-    return text.split(' ').map((word, i, arr) => word + (i === arr.length - 1 ? '' : ' '))
-}
-
-const getUsage = (contents, ai_response) => {
-    let input_tokens  = 0,
-        output_tokens = 0
-
-    const encoding = new Tiktoken(
-        cl100k_base.bpe_ranks,
-        cl100k_base.special_tokens,
-        cl100k_base.pat_str
-    )
-
-    output_tokens = encoding.encode(ai_response).length
-
-    for (const content of contents) {
-        input_tokens += encoding.encode(content.parts[0].text).length
-    }
-
-    encoding.free()
-
-    return { input_tokens, output_tokens }
 }
