@@ -8,6 +8,7 @@ export default [
         family:         'Open AI',
         hosted_at:      'openai.com',
         context_window: 1000000,
+        is_reasoner:    false,
         pricing_id:     'gpt-4.1-nano'
     },
     {
@@ -19,6 +20,7 @@ export default [
         family:         'Open AI',
         hosted_at:      'openai.com',
         context_window: 1000000,
+        is_reasoner:    false,
         pricing_id:     'gpt-4.1-mini'
     },
     {
@@ -30,6 +32,7 @@ export default [
         family:         'Open AI',
         hosted_at:      'openai.com',
         context_window: 1000000,
+        is_reasoner:    false,
         pricing_id:     'gpt-4.1'
     },
     {
@@ -41,8 +44,8 @@ export default [
         family:         'Open AI',
         hosted_at:      'openai.com',
         context_window: 128000,
-        pricing_id:     'o4-mini',
-        is_reasoner:    true
+        is_reasoner:    true,
+        pricing_id:     'o4-mini'
     },
     {
         type:           'anthropic',
@@ -53,6 +56,7 @@ export default [
         family:         'Anthropic',
         hosted_at:      'anthropic.com',
         context_window: 200000,
+        is_reasoner:    false,
         pricing_id:     'claude-haiku'
     },
     {
@@ -64,6 +68,7 @@ export default [
         family:         'Anthropic',
         hosted_at:      'anthropic.com',
         context_window: 200000,
+        is_reasoner:    false,
         pricing_id:     'claude-sonnet'
     },
     {
@@ -75,6 +80,7 @@ export default [
         family:         'Anthropic',
         hosted_at:      'anthropic.com',
         context_window: 200000,
+        is_reasoner:    false,
         pricing_id:     'claude-opus'
     },
     {
@@ -86,6 +92,7 @@ export default [
         family:         'Google',
         hosted_at:      'googleapis.com',
         context_window: 1000000,
+        is_reasoner:    false,
         pricing_id:     'gemini-2.0-flash-lite'
     },
     {
@@ -97,8 +104,8 @@ export default [
         family:         'Google',
         hosted_at:      'googleapis.com',
         context_window: 1000000,
-        pricing_id:     'gemini-2.5-flash',
-        is_reasoner:    true
+        is_reasoner:    true,
+        pricing_id:     'gemini-2.5-flash'
     },
     {
         type:           'google',
@@ -109,8 +116,8 @@ export default [
         family:         'Google',
         hosted_at:      'googleapis.com',
         context_window: 1000000,
-        pricing_id:     'gemini-2.5-pro',
-        is_reasoner:    true
+        is_reasoner:    true,
+        pricing_id:     'gemini-2.5-pro'
     },
     {
         type:           'x',
@@ -121,8 +128,8 @@ export default [
         family:         'X',
         hosted_at:      'x.ai',
         context_window: 131072,
-        pricing_id:     'grok-3-mini',
-        is_reasoner:    true
+        is_reasoner:    true,
+        pricing_id:     'grok-3-mini'
     },
     {
         type:           'x',
@@ -133,6 +140,7 @@ export default [
         family:         'X',
         hosted_at:      'x.ai',
         context_window: 131072,
+        is_reasoner:    false,
         pricing_id:     'grok-3'
     },
     {
@@ -144,6 +152,7 @@ export default [
         family:         'Meta',
         hosted_at:      'openrouter.ai',
         context_window: 512000,
+        is_reasoner:    false,
         pricing_id:     'free'
     },
     {
@@ -155,6 +164,7 @@ export default [
         family:         'Meta',
         hosted_at:      'openrouter.ai',
         context_window: 128000,
+        is_reasoner:    false,
         pricing_id:     'free'
     },
     {
@@ -166,6 +176,7 @@ export default [
         family:         'Meta',
         hosted_at:      'openrouter.ai',
         context_window: 33000,
+        is_reasoner:    false,
         pricing_id:     'llama-3-405b'
     },
     {
@@ -177,6 +188,7 @@ export default [
         family:         'DeepSeek',
         hosted_at:      'deepseek.com',
         context_window: 164000,
+        is_reasoner:    false,
         pricing_id:     'deepseek-chat'
     },
     {
@@ -188,6 +200,7 @@ export default [
         family:         'DeepSeek',
         hosted_at:      'openrouter.ai',
         context_window: 164000,
+        is_reasoner:    false,
         pricing_id:     'free'
     },
     {
@@ -223,6 +236,7 @@ export default [
         family:         'Qwen',
         hosted_at:      'openrouter.ai',
         context_window: 1000000,
+        is_reasoner:    false,
         pricing_id:     'qwen-turbo'
     },
     {
@@ -234,6 +248,7 @@ export default [
         family:         'Qwen',
         hosted_at:      'openrouter.ai',
         context_window: 1000000,
+        is_reasoner:    false,
         pricing_id:     'qwen-plus'
     },
     {
@@ -245,6 +260,7 @@ export default [
         family:         'Qwen',
         hosted_at:      'openrouter.ai',
         context_window: 32000,
+        is_reasoner:    false,
         pricing_id:     'qwen-max'
     },
     {
@@ -256,6 +272,7 @@ export default [
         family:         'Mistral',
         hosted_at:      'mistral.ai',
         context_window: 128000,
+        is_reasoner:    false,
         pricing_id:     'free'
     },
     {
@@ -267,6 +284,7 @@ export default [
         family:         'Mistral',
         hosted_at:      'mistral.ai',
         context_window: 128000,
+        is_reasoner:    false,
         pricing_id:     'free'
     },
     {
@@ -278,6 +296,7 @@ export default [
         family:         'Mistral',
         hosted_at:      'mistral.ai',
         context_window: 128000,
+        is_reasoner:    false,
         pricing_id:     'free'
     },
     {
@@ -289,6 +308,7 @@ export default [
         family:         'Cohere',
         hosted_at:      'cohere.com',
         context_window: 128000,
+        is_reasoner:    false,
         pricing_id:     'command-r'
     },
     {
@@ -300,6 +320,7 @@ export default [
         family:         'Cohere',
         hosted_at:      'cohere.com',
         context_window: 128000,
+        is_reasoner:    false,
         pricing_id:     'command-r-plus'
     },
     {
@@ -311,6 +332,7 @@ export default [
         family:         'AI21',
         hosted_at:      'ai21.com',
         context_window: 256000,
+        is_reasoner:    false,
         pricing_id:     'jamba-1.6-mini'
     },
     {
@@ -322,6 +344,7 @@ export default [
         family:         'AI21',
         hosted_at:      'ai21.com',
         context_window: 256000,
+        is_reasoner:    false,
         pricing_id:     'jamba-1.6-large'
     },
     {
@@ -345,6 +368,7 @@ export default [
         family:         'Groq',
         hosted_at:      'groq.com',
         context_window: 128000,
+        is_reasoner:    false,
         pricing_id:     'groq-llama-4-maverick'
     },
     {
