@@ -567,8 +567,8 @@
     {#if highlight_action_visible}
         <HighlightAction
             bind:highlight_action_position
-            on:clickedQuoteButton={clickedQuoteButton}
-            on:clickedHighlightButton={clickedHighlightButton}
+            onClickQuoteButton={clickedQuoteButton}
+            onClickHighlightButton={clickedHighlightButton}
         />
     {/if}
 </section>

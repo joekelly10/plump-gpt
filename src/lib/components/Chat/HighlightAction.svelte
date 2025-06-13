@@ -1,21 +1,14 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
     import { fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
 
     import HighlightIcon from '$lib/components/Icons/Highlight.svelte'
 
-    const dispatch = createEventDispatcher()
-
-    export let highlight_action_position
-
-    const clickedQuoteButton = () => {
-        dispatch('clickedQuoteButton')
-    }
-
-    const clickedHighlightButton = () => {
-        dispatch('clickedHighlightButton')
-    }
+    const {
+        onClickQuoteButton,
+        onClickHighlightButton,
+        highlight_action_position = $bindable({ x: 0, y: 0 })
+    } = $props()
 </script>
 
 <div
@@ -24,10 +17,10 @@
     in:fly={{ y: 8, duration: 100, easing: quartOut }}
     out:fly={{ y: 8, duration: 50 }}
 >
-    <button  class='highlight-action-button quote-button' on:click={clickedQuoteButton}>
+    <button class='highlight-action-button quote-button' onclick={onClickQuoteButton}>
         <span class='quote-icon'>”</span>
     </button>
-    <button class='highlight-action-button add-highlight-button' on:click={clickedHighlightButton}>
+    <button class='highlight-action-button add-highlight-button' onclick={onClickHighlightButton}>
         <HighlightIcon className='add-highlight-icon' />
     </button>
 </div>
