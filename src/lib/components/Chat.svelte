@@ -87,7 +87,10 @@
         }
     }
 
-    export const goToMessage = (options = { delay: 0, message_id: null }) => {
+    export const goToMessage = (options = { message_id: null, delay: 0 }) => {
+        if (!$forks[$active_fork].message_ids.includes(options.message_id)) {
+            $active_fork = $forks.findIndex(fork => fork.message_ids.includes(options.message_id))
+        }
         setTimeout(() => {
             const element     = message_refs[options.message_id],
                   element_top = element?.getOffsetTop(),

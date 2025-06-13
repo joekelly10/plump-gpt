@@ -2,7 +2,7 @@
     import { messages } from '$lib/stores/chat'
     import { formatDate } from '$lib/utils/helpers'
 
-    export let message
+    const { message } = $props()
 
     const getUserTimestamp = () => {
         const i = $messages.findIndex(m => m.id === message.id)

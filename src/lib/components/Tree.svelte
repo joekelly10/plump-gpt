@@ -1,5 +1,5 @@
 <script>
-    import { createEventDispatcher, onMount, onDestroy } from 'svelte'
+    import { onMount, onDestroy } from 'svelte'
     import { scale } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { tree_active } from '$lib/stores/app.js'
@@ -11,17 +11,16 @@
     import Sidebar from '$lib/components/Tree/Sidebar.svelte'
     import UsageStats from '$lib/components/Chat/UsageStats.svelte'
 
-    const dispatch = createEventDispatcher()
+    const { onClickedNode } = $props()
 
-    let nodes,
-        hovered_node,
-        debounce_timer,
-        pending_node,
-        container_el
-    
-    const leaf_spacing = 2 // # of columns
+    let hovered_node   = $state(),
+        debounce_timer = $state(),
+        pending_node   = $state()
 
-    $: nodes = buildTree($forks, $active_fork, $messages, $stars, $highlights, leaf_spacing)
+    const leaf_spacing = 2, // # of columns
+          nodes        = $derived(buildTree($forks, $active_fork, $messages, $stars, $highlights, leaf_spacing))
+
+    let container_el
 
     onMount(() => {
         document.addEventListener('keydown', keydown)
@@ -31,6 +30,10 @@
     onDestroy(() => {
         document.removeEventListener('keydown', keydown)
     })
+
+    const keydown = (e) => {
+        if (e.key === 'Escape') return close()
+    }
 
     const scrollToActiveNode = () => {
         const active_node    = nodes.find(node => node.is_active && node.children.length === 0),
@@ -47,7 +50,7 @@
         }
     }
 
-    const mouseenter = (node) => {
+    const mouseenterNode = (node) => {
         if (debounce_timer) {
             pending_node = node
         } else {
@@ -63,36 +66,35 @@
         }, 150)
     }
 
-    const mouseleave = () => {
+    const mouseleaveNode = () => {
         hovered_node = null
         pending_node = null
     }
 
-    const clicked = (node) => {
-        if (!$forks[$active_fork].message_ids.includes(node.id)) {
-            $active_fork = $forks.findIndex(fork => fork.message_ids.includes(node.id))
-        }
-        dispatch('goToMessage', { message_id: node.id })
+    const clickedNode = (node) => {
+        onClickedNode(node.id)
         close()
     }
 
     const close = () => {
         $tree_active = false
     }
-
-    const keydown = (e) => {
-        if (e.key === 'Escape') return close()
-    }
 </script>
 
 <div class='tree' in:scale={{ start: 1.02, opacity: 0, duration: 200, easing: quartOut }} out:scale={{ start: 1.02, opacity: 0, duration: 100, easing: quartOut }}>
-    <Header on:close={close} />
+    <Header
+        onClickClose={close}
+    />
 
     {#if hovered_node}
-        <Sidebar node={hovered_node} />
+        <Sidebar
+            node={hovered_node}
+        />
     {/if}
 
-    <UsageStats tree_view={true} />
+    <UsageStats
+        tree_view={true}
+    />
 
     <div class='inner' bind:this={container_el}>
         <div class='chat-tree'>
@@ -101,8 +103,8 @@
                     <button
                         class='system-prompt'
                         style='grid-area: 1 / {node.column}'
-                        on:mouseenter={() => mouseenter(node)}
-                        on:mouseleave={mouseleave}
+                        onmouseenter={() => mouseenterNode(node)}
+                        onmouseleave={mouseleaveNode}
                     >
                         <div class='inner-content'>
                             System prompt
@@ -119,9 +121,9 @@
                         class:starred={node.is_starred}
                         class:highlighted={node.highlights.length > 0}
                         style='grid-area: {node.row} / {node.column}'
-                        on:click={() => clicked(node)}
-                        on:mouseenter={() => mouseenter(node)}
-                        on:mouseleave={mouseleave}
+                        onclick={() => clickedNode(node)}
+                        onmouseenter={() => mouseenterNode(node)}
+                        onmouseleave={mouseleaveNode}
                     >
                         {node.id}
                         {#if node.message.role === 'assistant'}

@@ -43,8 +43,8 @@
         setTimeout(() => { chat.scrollToBottom({ context: 'chat_loaded' }) }, 250) // allow forks to load
     }
 
-    const goToMessage = (e) => {
-        chat.goToMessage({ delay: 50, message_id: e.detail?.message_id })
+    const goToMessage = (message_id) => {
+        chat.goToMessage({ message_id, delay: 50 })
         input.chatLoaded({ switch_model: true })
     }
 </script>
@@ -89,7 +89,7 @@
 
 {#if $tree_active}
     <Tree
-        on:goToMessage={goToMessage}
+        onClickedNode={goToMessage}
     />
 {/if}
 

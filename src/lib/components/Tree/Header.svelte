@@ -1,10 +1,7 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
     import { forks, active_fork } from '$lib/stores/chat'
 
-    const dispatch = createEventDispatcher()
-
-    const close = () => dispatch('close')
+    const { onClickClose } = $props()
 </script>
 
 <div class='header'>
@@ -17,7 +14,7 @@
             Fork {$active_fork + 1} / {$forks.length}
         </span>
     </div>
-    <button class='close-button' on:click={close}>
+    <button class='close-button' onclick={onClickClose}>
         <img class='close-icon' src='/img/icons/close-white.png' alt='Close'>
     </button>
 </div>

@@ -11,12 +11,17 @@
 
     marked.use({ breaks: true, mangle: false, headerIds: false })
 
-    export let node
+    const { node } = $props()
 
-    $: preview = node?.message?.content.slice(0, 500) + (node?.message?.content.length > 500 ? ' [...]' : '')
+    const preview = $derived(node?.message?.content.slice(0, 500) + (node?.message?.content.length > 500 ? ' [...]' : ''))
 </script>
 
-<div class='tree-sidebar' class:starred={node.is_starred} in:fade={{ duration: 250, easing: quartOut }} out:fade={{ duration: 125, easing: quartOut }}>
+<div
+    class='tree-sidebar'
+    class:starred={node.is_starred}
+    in:fade={{ duration: 250, easing: quartOut }}
+    out:fade={{ duration: 10, easing: quartOut }}
+>
     <div class='inner'>
         <div class='avatar-container'>
             {#if node.message.role === 'system'}
