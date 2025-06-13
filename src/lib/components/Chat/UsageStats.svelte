@@ -3,11 +3,11 @@
     import { quartOut } from 'svelte/easing'
     import { usage, forks } from '$lib/stores/chat'
 
-    export let tree_view = false
+    const { tree_view = false } = $props()
 
-    $: cache_used     = $usage.cache_read_tokens > 0 || $usage.cache_write_tokens > 0
-    $: cost_string    = '$' + ($usage.total_cost / 100).toFixed(5)
-    $: savings_string = '$' + ($usage.total_savings / 100).toFixed(5)
+    const cache_used     = $derived($usage.cache_read_tokens > 0 || $usage.cache_write_tokens > 0),
+          cost_string    = $derived('$' + ($usage.total_cost / 100).toFixed(5)),
+          savings_string = $derived('$' + ($usage.total_savings / 100).toFixed(5))
 </script>
 
 <div
