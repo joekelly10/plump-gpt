@@ -13,27 +13,26 @@ test.describe('Init', () => {
     test('system prompt should be set to the personalised seed prompt', async ({ page }) => {
         await page.goto('/')
 
-        const system_prompt_button = page.locator('.system-prompt-button')
+        const system_prompt_button = page.locator('.system-prompt-button'),
+              prompt_editor        = page.locator('.prompt-editor'),
+              prompt_input         = prompt_editor.locator('.prompt-input')
+
         await expect(system_prompt_button).toContainText('Assistant')
 
         await system_prompt_button.click()
-        const prompt_editor = page.locator('.prompt-editor')
         await fastExpect(prompt_editor).toBeVisible()
-
-        const prompt_input = prompt_editor.locator('.prompt-input')
         await fastExpect(prompt_input).toHaveValue(/You are a good friend and mentor to the user, who is called Conrad Poohs/)
     })
 
     test('chat history should be empty', async ({ page }) => {
         await page.goto('/')
 
-        const load_button = page.locator('.load-button')
+        const load_button      = page.locator('.load-button'),
+              loader           = page.locator('.loader'),
+              no_chats_message = loader.locator('.chats .no-chats')
+
         await load_button.click()
-
-        const loader = page.locator('.loader')
         await fastExpect(loader).toBeVisible()
-
-        const no_chats_message = loader.locator('.chats .no-chats')
         await fastExpect(no_chats_message).toBeVisible()
     })
 
