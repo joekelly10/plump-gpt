@@ -46,8 +46,8 @@
     const outDuration = () => chat.deleting ? 250 : 0
 </script>
 
-<div class='chat-container' out:slide={{ duration: outDuration(), easing: quartOut }}>
-    <button class='chat'
+<div class='loader-chat-container' out:slide={{ duration: outDuration(), easing: quartOut }}>
+    <button class='loader-chat'
         class:keyboard-highlight={index === keyboard_index}
         class:delete-highlight={chat.deleting}
         class:suspend-mouse-highlight={suspend_mouse}
@@ -128,11 +128,11 @@
 </div>
 
 <style lang='sass'>
-    .chat-container
+    .loader-chat-container
         position:      relative
         margin-bottom: space.$default-padding
 
-    .chat
+    .loader-chat
         width:            100%
         box-sizing:       border-box
         padding:          space.$default-padding
@@ -345,6 +345,6 @@
                             fill:       $background-700
                             transition: none
     
-    :global(.chat.keyboard-highlight.selected)
+    :global(.loader-chat.keyboard-highlight.selected)
         background-color: color.adjust($background-300, $lightness: -2%)
 </style>
