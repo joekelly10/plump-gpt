@@ -22,18 +22,47 @@ carriage_return='\r'
 clear_line='\033[K'
 
 
-# Tell Playwright to skip cleanup
+# tells Playwright to skip cleanup (always true)
 export WAS_RUN_VIA_TEST_SCRIPT=true
 
-# Check for --cached flag
+# tells Docker to use cached build of the app (set via --cached)
 export USE_CACHE=false
 
-for arg in "$@"
-do
-    if [ "$arg" = "--cached" ]; then
-        USE_CACHE=true
-        break
-    fi
+# only run tests that match the grep pattern (set via --grep "<pattern>")
+GREP_PATTERN=""
+
+# tells Playwright to run tests in headed mode (set via --headed)
+HEADED_MODE=false
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --cached)
+            USE_CACHE=true
+            ;;
+        --grep)
+            shift
+            if [ $# -eq 0 ]; then
+                echo
+                echo -e "  ${red_bold}❌ ${white}--grep requires a value${reset}"
+                echo
+
+                exit 1
+            fi
+            GREP_PATTERN="$1"
+            ;;
+        --headed)
+            HEADED_MODE=true
+            ;;
+        *)
+            echo
+            echo -e "  ${yellow}Unknown argument: ${yellow_bold}$1${reset}"
+            echo -e "  ${white}Available arguments: ${white_bold}--cached${reset}, ${white_bold}--grep \"<pattern>\"${reset}, ${white_bold}--headed${reset}"
+            echo
+
+            exit 1
+            ;;
+    esac
+    shift
 done
 
 
@@ -227,10 +256,18 @@ fi
 
 
 
+ARGS=()
+
+if [ -n "$GREP_PATTERN" ]; then
+    echo
+    echo -e "  ${white}✂️ Only tests that match: ${yellow_bold}\"${GREP_PATTERN}\"${reset}"
+    ARGS+=("--" "--grep" "$GREP_PATTERN")
+fi
+
 if [ "$HEADED_MODE" = true ]; then
-    npm run test:headed &
+    npm run test:headed "${ARGS[@]}" &
 else
-    npm run test &
+    npm run test "${ARGS[@]}" &
 fi
 
 # get pid of the last background process
