@@ -12,12 +12,12 @@
     import ScreenCover from '$lib/components/ScreenCover.svelte'
     import FaviconChanger from '$lib/components/FaviconChanger.svelte'
 
+    const title = $derived($messages.length > 1 ? $messages[1].content : 'Plump GPT'),
+          blur  = $derived($loader_active || $tree_active || $prompt_editor_active)
+    
     let header,
         chat,
         input
-
-    $: title = $messages.length > 1 ? $messages[1].content : 'Plump GPT'
-    $: blur  = $loader_active || $tree_active || $prompt_editor_active
 
     const focusInput            = () => input.focus()
     const sendImmediately       = () => input.sendMessage()
