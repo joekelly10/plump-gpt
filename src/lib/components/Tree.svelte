@@ -13,14 +13,14 @@
 
     const { onClickedNode } = $props()
 
-    let hovered_node   = $state(),
-        debounce_timer = $state(),
-        pending_node   = $state()
+    let hovered_node = $state(null),
+        pending_node = $state(null)
 
     const leaf_spacing = 2, // # of columns
           nodes        = $derived(buildTree($forks, $active_fork, $messages, $stars, $highlights, leaf_spacing))
 
-    let container_el
+    let container_el,
+        debounce_timer
 
     onMount(() => {
         document.addEventListener('keydown', keydown)
