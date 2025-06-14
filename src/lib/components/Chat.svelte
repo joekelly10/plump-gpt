@@ -116,7 +116,10 @@
         renderHighlights(active_highlights)
     }
 
-    export const cancelProvisionalFork = () => switchToFork(forking_from)
+    export const cancelProvisionalFork = () => {
+        if (!$is_provisionally_forking) return
+        switchToFork(forking_from)
+    }
 
     const scrollToTop = () => {
         scroll_interrupted = true
@@ -199,7 +202,7 @@
             $highlights = $highlights.filter(hl => !deleted.includes(hl.message_id))
             updateForksAfterDelete()
             dispatch('chatModified') 
-            dispatch('save')
+            dispatch('saveChat')
 
             await tick()
             $is_deleting = false
@@ -522,7 +525,7 @@
 
         if (highlight) {
             deselectText()
-            dispatch('save')
+            dispatch('saveChat')
         }
     }
 </script>
@@ -554,7 +557,7 @@
                 on:forkFrom={(event) => forkFrom(event.detail.message_id)}
                 on:switchToFork={(event) => switchToFork(event.detail.fork_index)}
                 on:cancelProvisionalFork={cancelProvisionalFork}
-                on:save
+                on:saveChat
             />
         {/each}
         {#if $is_sending}

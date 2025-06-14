@@ -6,9 +6,11 @@
     import TreeButton from '$lib/components/Header/TreeButton.svelte'
     import Logo from '$lib/components/Header/Logo.svelte'
 
-    let save_button
+    export const saveChat = () => save_button.saveChat()
 
-    export const save = () => save_button.save()
+    const { onClickTreeButton } = $props()
+
+    let save_button
 </script>
 
 <header class='header'>
@@ -22,7 +24,7 @@
     <div class='right'>
         {#if $messages.length > 1}
             <TreeButton
-                on:cancelProvisionalFork
+                onClick={onClickTreeButton}
             />
         {/if}
     </div>

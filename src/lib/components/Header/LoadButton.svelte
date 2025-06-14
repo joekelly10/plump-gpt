@@ -2,7 +2,7 @@
     import { loader_active } from '$lib/stores/app.js'
     import { is_idle } from '$lib/stores/api.js'
 
-    const clickedLoad = () => {
+    const clicked = () => {
         if ($is_idle) $loader_active = true
     }
 
@@ -16,7 +16,7 @@
 
 <svelte:document on:keydown={keydown} />
 
-<button class='load-button' title='Open chat (⌘+O)' on:click={clickedLoad}>
+<button class='load-button' title='Open chat (⌘+O)' onclick={clicked}>
     Load
 </button>
 

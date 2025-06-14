@@ -25,7 +25,7 @@
     const chatModified          = () => input.chatLoaded()
     const regenerateReply       = () => input.regenerateReply()
     const addReply              = () => input.addReply()
-    const save                  = () => header.save()
+    const saveChat              = () => header.saveChat()
     const sendingMessage        = () => chat.sendingMessage()
     const cancelProvisionalFork = () => chat.cancelProvisionalFork()
 
@@ -57,7 +57,7 @@
 <main class='plump-gpt' class:blur={blur}>
     <Header
         bind:this={header}
-        on:cancelProvisionalFork={cancelProvisionalFork}
+        onClickTreeButton={cancelProvisionalFork}
     />
     <Chat
         bind:this={chat}
@@ -65,13 +65,13 @@
         on:quoteSelectedText={quoteSelectedText}
         on:regenerateReply={regenerateReply}
         on:addReply={addReply}
-        on:save={save}
+        on:saveChat={saveChat}
     />
     <Input
         bind:this={input}
         on:sendingMessage={sendingMessage}
         on:scrollChatToBottom={scrollChatToBottom}
-        on:save={save}
+        on:saveChat={saveChat}
     />
 </main>
 

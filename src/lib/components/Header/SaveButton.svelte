@@ -1,11 +1,12 @@
 <script>
     import { chat_id, messages, forks, active_fork, stars, highlights } from '$lib/stores/chat'
 
-    let timer
-    let status = 'idle'
-    let queued = false
+    let status = $state('idle'),
+        queued = $state(false)
 
-    export const save = async () => {
+    let timer
+
+    export const saveChat = async () => {
         if ($messages.length === 1) return
 
         // queue up save if another save is already in flight
@@ -42,7 +43,7 @@
                 if (queued) {
                     queued = false
                     console.log('💾–⚙️ Unqueuing save')
-                    save()
+                    saveChat()
                     return
                 }
                 timer = setTimeout(() => {
@@ -60,14 +61,14 @@
     const keydown = (e) => {
         if ((e.ctrlKey && e.key === 's') || (e.metaKey && e.key === 's')) {
             e.preventDefault()
-            save()
+            saveChat()
         }
     }
 </script>
 
 <svelte:document on:keydown={keydown} />
 
-<button class='save-button {status}' title='Save chat (⌘+S)' on:click={save}>
+<button class='save-button {status}' title='Save chat (⌘+S)' onclick={saveChat}>
     <span class='save-text'>
         Save
     </span>

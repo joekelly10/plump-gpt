@@ -2,10 +2,10 @@
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
 
-    let show_text = false
+    let show_text = $state(false)
 </script>
 
-<div class='container' on:mouseover={() => { show_text = true }} on:mouseleave={() => { show_text = false }}>
+<div class='container' onmouseover={() => { show_text = true }} onmouseleave={() => { show_text = false }}>
     <img class='logo' src='/img/logo.png' alt='Plump GPT'>
     {#if show_text}
         <div class='padding' transition:slide={{ axis: 'x', duration: 125, easing: quartOut }}></div>

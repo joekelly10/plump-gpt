@@ -202,7 +202,7 @@
         await tick()
         dispatch('scrollChatToBottom', { context: 'streaming_finished' })
 
-        if ($config.autosave) dispatch('save')
+        if ($config.autosave) dispatch('saveChat')
     }
 
     const streamGPTResponse = async (reader, gpt_message) => {

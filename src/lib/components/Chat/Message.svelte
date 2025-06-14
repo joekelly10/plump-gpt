@@ -76,7 +76,7 @@
             $stars = [...$stars, message.id]
             console.log(`⭐️ Starred ${message.id}...`)
         }
-        dispatch('save')
+        dispatch('saveChat')
     }
 
     const handleClick = (e) => {
@@ -96,7 +96,7 @@
 
         if (confirm(`Delete this highlight?  Press OK to confirm.`)) {
             deleteHighlight(highlight_id)
-            dispatch('save')
+            dispatch('saveChat')
         } else {
             all_spans.forEach(span => { span.classList.remove('deleting') })
         }
