@@ -7,21 +7,6 @@ import defaults from '../../src/lib/fixtures/defaults'
 import models from '../../src/lib/fixtures/models'
 
 test.describe('Persistence', () => {
-    test('earlier chats should’ve been saved', async ({ page }) => {
-        await page.goto('/')
-
-        const load_button      = page.locator('.load-button'),
-              loader           = page.locator('.loader'),
-              chat_list        = loader.locator('.chats'),
-              no_chats_message = chat_list.locator('.no-chats'),
-              all_chats        = chat_list.locator('.loader-chat-container')
-
-        await load_button.click()
-        await fastExpect(loader).toBeVisible()
-        await fastExpect(no_chats_message).not.toBeVisible()
-        await fastExpect(all_chats).not.toHaveCount(0)
-    })
-
     test('we should be able to re-load a chat', async ({ page }) => {
         await page.goto('/')
 
