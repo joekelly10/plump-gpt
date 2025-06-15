@@ -1,20 +1,20 @@
 <script>
-    import { onMount, createEventDispatcher, tick } from 'svelte'
+    import { onMount, tick } from 'svelte'
     import { fade, slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { page } from '$app/stores'
-    import { initialising } from '$lib/stores/app'
+    import { is_initialising } from '$lib/stores/app'
     import { messages } from '$lib/stores/chat'
     import { model } from '$lib/stores/ai'
     import { config } from '$lib/stores/user'
 
-    const dispatch = createEventDispatcher()
+    const { sendImmediately, setInputText, onReady } = $props()
 
-    let has_fetched_prompt = false,
-        has_set_model      = false,
-        has_set_message    = false,
-        fetch_error        = false,
-        error_message      = ''
+    let has_fetched_prompt = $state(false),
+        has_set_model      = $state(false),
+        has_set_message    = $state(false),
+        fetch_error        = $state(false),
+        error_message      = $state('')
 
     onMount(async () => {
         const send_immediately = $page.url.searchParams.get('send_immediately')
@@ -32,14 +32,14 @@
             setMessage()
 
             if (send_immediately) {
-                dispatch('sendImmediately')
+                sendImmediately()
                 removeSendImmediatelyFromURL()
             }
 
             await tick()
 
-            dispatch('focusInput')
-            $initialising = false
+            onReady()
+            $is_initialising = false
         }
     })
 
@@ -96,7 +96,8 @@
 
     const setMessage = async () => {
         if ($messages.length === 1 && $page.url.searchParams.has('user_message')) {
-            dispatch('setInputText', { text: $page.url.searchParams.get('user_message') })
+            const user_message = $page.url.searchParams.get('user_message')
+            setInputText(user_message)
             $page.url.searchParams.delete('user_message')
             window.history.replaceState(null, '', $page.url.toString())
             has_set_message = true
@@ -109,7 +110,7 @@
     }
 </script>
 
-{#if $initialising}
+{#if $is_initialising}
     <div class='initialising' in:fade={{ duration: 100, easing: quartOut }} out:fade={{ delay: 500, duration: 250, easing: quartOut }}>
         <div class='inner'>
             {#if fetch_error}

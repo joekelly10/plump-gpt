@@ -29,8 +29,8 @@
     const sendingMessage        = () => chat.sendingMessage()
     const cancelProvisionalFork = () => chat.cancelProvisionalFork()
 
-    const setInputText = (e) => {
-        input.setText(e.detail?.text)
+    const setInputText = (text) => {
+        input.setText(text)
     }
 
     const scrollChatToBottom = (e) => {
@@ -76,9 +76,9 @@
 </main>
 
 <Initialiser
-    on:sendImmediately={sendImmediately}
-    on:setInputText={setInputText}
-    on:focusInput={focusInput}
+    sendImmediately={sendImmediately}
+    setInputText={setInputText}
+    onReady={focusInput}
 />
 
 {#if $loader_active}
