@@ -1,5 +1,5 @@
 <script>
-    import { onMount, onDestroy, tick, createEventDispatcher } from 'svelte'
+    import { onMount, onDestroy, tick } from 'svelte'
     import { scale } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { loader_active } from '$lib/stores/app'
@@ -12,23 +12,34 @@
     import Search from '$lib/components/Loader/Search.svelte'
     import LoaderChat from '$lib/components/Loader/LoaderChat.svelte'
     import PageControls from '$lib/components/Loader/PageControls.svelte'
-    
-    const dispatch = createEventDispatcher()
-    
-    let filter         = 'all',
-        chats          = [],
-        keyboard_index = null,
-        total_chats    = 0,
-        total_pages    = 0,
-        active_page    = 1,
-        suspend_mouse  = false,
-        scrolling_div  = null
-    
-    let search,
-        search_value,
-        searched_value
 
-    const close = () => $loader_active = false
+    const { onChatLoaded } = $props()
+    
+    let filter         = $state('all'),
+        search_value   = $state(''),
+        searched_value = $state(''),
+        chats          = $state([]),
+        total_chats    = $state(0),
+        total_pages    = $state(0),
+        active_page    = $state(1),
+        keyboard_index = $state(null),
+        suspend_mouse  = $state(false)
+
+    let search,
+        scrolling_div
+
+    onMount(() => {
+        document.addEventListener('keydown', keydown)
+        document.addEventListener('mousemove', mousemove)
+        fetchChats()
+        search.focus()
+        search.clear_timer() // prevents search from being triggered on load
+    })
+
+    onDestroy(() => {
+        document.removeEventListener('keydown', keydown)
+        document.removeEventListener('mousemove', mousemove)
+    })
 
     const keydown = (e) => {
         if (e.key === 'Escape') return close()
@@ -49,6 +60,10 @@
         if (e.key === 'ArrowLeft') return prevPage()
         if (e.key === 'ArrowRight') return nextPage()
         if (e.metaKey && e.key === 'Backspace') return keyboardDelete()
+    }
+
+    const mousemove = () => {
+        suspend_mouse = false
     }
 
     const fetchChats = async () => {
@@ -179,7 +194,7 @@
 
         await tick()
         close()
-        dispatch('chatLoaded')
+        onChatLoaded()
     }
 
     const unload = async () => {
@@ -259,20 +274,9 @@
         scrollToHighlighted()
     }
 
-    const mousemove = () => suspend_mouse = false
-
-    onMount(() => {
-        document.addEventListener('keydown', keydown)
-        document.addEventListener('mousemove', mousemove)
-        fetchChats()
-        search.focus()
-        search.clear_timer() // prevents search from being triggered on load
-    })
-
-    onDestroy(() => {
-        document.removeEventListener('keydown', keydown)
-        document.removeEventListener('mousemove', mousemove)
-    })
+    const close = () => {
+        $loader_active = false
+    }
 </script>
 
 <div class='loader' in:scale={{ start: 1.02, opacity: 0, duration: 200, easing: quartOut }} out:scale={{ start: 1.02, opacity: 0, duration: 100, easing: quartOut }}>
@@ -285,10 +289,10 @@
             bind:active_page={active_page}
             total_chats={total_chats}
             total_pages={total_pages}
-            on:fetchChats={fetchChats}
-            on:nextPage={nextPage}
-            on:prevPage={prevPage}
-            on:close={close}
+            fetchChats={fetchChats}
+            nextPage={nextPage}
+            prevPage={prevPage}
+            close={close}
         />
 
         <div class='chats'>
@@ -298,8 +302,8 @@
                     index={i}
                     keyboard_index={keyboard_index}
                     suspend_mouse={suspend_mouse}
-                    on:loadChat={(event) => { loadChat(event.detail.chat) }}
-                    on:deleteChat={(event) => { deleteChat(event.detail.chat) }}
+                    loadChat={loadChat}
+                    deleteChat={deleteChat}
                 />
             {/each}
             {#if filter === 'all' && chats.length === 0}
@@ -311,10 +315,10 @@
 
         {#if chats.length}
             <PageControls
-                bind:active_page={active_page}
-                bind:total_pages={total_pages}
-                on:prevPage={prevPage}
-                on:nextPage={nextPage}
+                active_page={active_page}
+                total_pages={total_pages}
+                prevPage={prevPage}
+                nextPage={nextPage}
             />
         {/if}
     </div>

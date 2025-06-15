@@ -1,20 +1,23 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
+    let {
+        // actions
+        prevPage,
+        nextPage,
 
-    const dispatch = createEventDispatcher()
-
-    export let active_page,
-               total_pages
+        // passive
+        active_page,
+        total_pages
+    } = $props()
 </script>
 
 <div class='page-controls'>
-    <button class='prev-page-button' class:disabled={active_page === 1} on:click={() => dispatch('prevPage')}>
+    <button class='prev-page-button' class:disabled={active_page === 1} onclick={prevPage}>
         <img class='arrow' src='/img/icons/chevron-off-white.png' alt='Prev page'>
     </button>
     <span class='current-page'>
         Page {active_page} / {total_pages || 1}
     </span>
-    <button class='next-page-button' class:disabled={!(active_page < total_pages)} on:click={() => dispatch('nextPage')}>
+    <button class='next-page-button' class:disabled={!(active_page < total_pages)} onclick={nextPage}>
         <img class='arrow' src='/img/icons/chevron-off-white.png' alt='Next page'>
     </button>
 </div>

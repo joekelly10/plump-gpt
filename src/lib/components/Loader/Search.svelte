@@ -1,67 +1,75 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
-
     import PageControls from '$lib/components/Loader/PageControls.svelte'
 
-    const dispatch = createEventDispatcher()
+    export const focus          = () => search_input.focus(),
+                 unfocus        = () => search_input.blur(),
+                 is_focused     = () => document.activeElement === search_input,
+                 scrollIntoView = () => search_input.scrollIntoView({ behavior: 'smooth', block: 'end' }),
+                 clear_timer    = () => clearTimeout(search_timer),
+                 set_searched   = (value) => search_value = value
 
-    export let filter,
-               search_input,
-               search_value,
-               searched_value,
-               search_timer,
-               total_chats,
-               total_pages,
-               active_page
+    let {
+        // actions
+        fetchChats,
+        nextPage,
+        prevPage,
+        close,
 
-    export const focus          = () => search_input.focus()
-    export const unfocus        = () => search_input.blur()
-    export const is_focused     = () => document.activeElement === search_input
-    export const scrollIntoView = () => search_input.scrollIntoView({ behavior: 'smooth', block: 'end' })
-    export const clear_timer    = () => clearTimeout(search_timer)
-    export const set_searched   = (value) => search_value = value
+        // bindable
+        filter         = $bindable('all'),
+        search_value   = $bindable(''),
+        searched_value = $bindable(''),
+        active_page    = $bindable(1),
 
-    $: searchValueChanged(search_value)
+        // passive
+        total_chats,
+        total_pages
+    } = $props()
+
+    let search_input,
+        search_timer
+
+    $effect(() => searchValueChanged(search_value))
 
     const searchValueChanged = (_) => {
         clearTimeout(search_timer)
         search_timer = setTimeout(() => {
             active_page = 1
-            dispatch('fetchChats')
+            fetchChats()
         }, 250)
     }
 
     const clickedAll = () => {
         filter      = 'all'
         active_page = 1
-        dispatch('fetchChats')
+        fetchChats()
     }
 
     const clickedStarred = () => {
         filter      = 'starred'
         active_page = 1
-        dispatch('fetchChats')
+        fetchChats()
     }
 
     const clickedNonDefault = () => {
         filter      = 'non-default'
         active_page = 1
-        dispatch('fetchChats')
+        fetchChats()
     }
 </script>
 
 <div class='search-header'>
     <div class='search-options'>
         <div class='search-option-buttons-container'>
-            <button class='search-option-button all-button' class:active={filter === 'all'} on:click={clickedAll}>
+            <button class='search-option-button all-button' class:active={filter === 'all'} onclick={clickedAll}>
                 All
             </button>
             <div class='separator'></div>
-            <button class='search-option-button starred-button' class:active={filter === 'starred'} on:click={clickedStarred}>
+            <button class='search-option-button starred-button' class:active={filter === 'starred'} onclick={clickedStarred}>
                 Starred
             </button>
             <div class='separator'></div>
-            <button class='search-option-button non-default-button' class:active={filter === 'non-default'} on:click={clickedNonDefault}>
+            <button class='search-option-button non-default-button' class:active={filter === 'non-default'} onclick={clickedNonDefault}>
                 Non-default
             </button>
         </div>
@@ -85,14 +93,14 @@
         </div>
         <div class='page-controls-container'>
             <PageControls
-                bind:active_page={active_page}
-                bind:total_pages={total_pages}
-                on:prevPage
-                on:nextPage
+                active_page={active_page}
+                total_pages={total_pages}
+                prevPage={prevPage}
+                nextPage={nextPage}
             />
         </div>
     </div>
-    <button class='close-button' on:click={() => dispatch('close')}>
+    <button class='close-button' onclick={close}>
         <img class='close-icon' src='/img/icons/close-white.png' alt='Close'>
     </button>
 </div>

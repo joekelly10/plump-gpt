@@ -1,5 +1,4 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { chat_id } from '$lib/stores/chat'
@@ -13,46 +12,54 @@
 
     marked.use({ mangle: false, headerIds: false })
 
-    const dispatch = createEventDispatcher()
+    let {
+        // actions
+        loadChat,
+        deleteChat,
 
-    export let chat,
-               index,
-               keyboard_index,
-               suspend_mouse,
-               content
+        // passive
+        chat,
+        index,
+        keyboard_index,
+        suspend_mouse
+    } = $props()
 
-    let assistant_messages = [],
-        models_used        = []
+    const content            = $derived(chat.messages[1].content.length < 500 ? chat.messages[1].content : chat.messages[1].content.substring(0, 500) + '...'),
+          assistant_messages = $derived(chat.messages.filter(m => m.role === 'assistant')),
+          models_used        = $derived(getModelsUsed(assistant_messages)),
+          out_duration       = $derived(chat.deleting ? 250 : 0)
 
-    $: {
-        content            = chat.messages[1].content.length < 500 ? chat.messages[1].content : chat.messages[1].content.substring(0, 500) + '...'
-        assistant_messages = chat.messages.filter(m => m.role === 'assistant')
-        models_used        = getModelsUsed(assistant_messages)
-    }
+    const getModelsUsed = (assistant_messages) => {
+        let models = []
 
-    const getModelsUsed = (messages) => {
-        let mdls_used = []
-        messages.forEach(message => {
-            const index = mdls_used.findIndex(m => m.id === message.model.id)
+        assistant_messages.forEach(message => {
+            const index = models.findIndex(m => m.id === message.model.id)
             if (index === -1) {
-                mdls_used.push({ ...message.model, count: 1 })
+                models.push({ ...message.model, count: 1 })
             } else {
-                mdls_used[index].count++
+                models[index].count++
             }
         })
-        return mdls_used
+
+        return models
     }
 
-    const outDuration = () => chat.deleting ? 250 : 0
+    const onmouseenterDeleteButton = () => {
+        chat.deleting = true
+    }
+
+    const onmouseleaveDeleteButton = () => {
+        chat.deleting = false
+    }
 </script>
 
-<div class='loader-chat-container' out:slide={{ duration: outDuration(), easing: quartOut }}>
+<div class='loader-chat-container' out:slide={{ duration: out_duration, easing: quartOut }}>
     <button class='loader-chat'
         class:keyboard-highlight={index === keyboard_index}
         class:delete-highlight={chat.deleting}
         class:suspend-mouse-highlight={suspend_mouse}
         class:selected={chat.selected}
-        on:click={() => dispatch('loadChat', { chat })}
+        onclick={() => loadChat(chat)}
     >
         <div class='date'>
             {@html formatDate(chat.updated_at)}
@@ -118,9 +125,9 @@
         <button
             class='action-button delete'
             title='Delete chat'
-            on:mouseenter={() => { chat.deleting = true }}
-            on:mouseleave={() => { chat.deleting = false }}
-            on:click={() => dispatch('deleteChat', { chat } )}
+            onmouseenter={onmouseenterDeleteButton}
+            onmouseleave={onmouseleaveDeleteButton}
+            onclick={() => deleteChat(chat)}
         >
             <DeleteIcon className='icon' />
         </button>
@@ -156,6 +163,9 @@
         &.keyboard-highlight
             box-shadow: 0 0 0 2px $blue
             transition: none
+    
+        &.selected
+            background-color: color.adjust($background-300, $lightness: -2%)
 
         &.delete-highlight
             box-shadow:       0 0 0 1.5px $coral
@@ -344,7 +354,4 @@
                         .icon
                             fill:       $background-700
                             transition: none
-    
-    :global(.loader-chat.keyboard-highlight.selected)
-        background-color: color.adjust($background-300, $lightness: -2%)
 </style>

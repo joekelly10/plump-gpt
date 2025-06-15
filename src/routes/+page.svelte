@@ -83,7 +83,7 @@
 
 {#if $loader_active}
     <Loader
-        on:chatLoaded={chatLoaded}
+        onChatLoaded={chatLoaded}
     />
 {/if}
 
