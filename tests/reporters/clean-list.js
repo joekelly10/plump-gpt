@@ -87,6 +87,9 @@ class CleanListReporter {
             process.stdout.write(`\n  ${green_bold}${this.success_message()}${reset}\n`)
             process.stdout.write(`\n      ${white_bold}All tests passed${reset}\n`)
             process.stdout.write(`      ${white}Ran for ${duration}${reset}\n`)
+            if (this.skipped > 0) {
+                process.stdout.write(`\n      ${grey}${yellow_bold}${this.skipped} skipped${reset}\n`)
+            }
         } else if (result.status === 'timedout') {
             process.stdout.write(`\n  ${red_bold}❌ Timed out${reset}\n`)
             process.stdout.write(`     ${white}Ran for ${duration}${reset}\n`)
