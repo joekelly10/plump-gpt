@@ -13,15 +13,17 @@
         }
     })
 
-    $: setFavicon($model, $messages, $config)
+    $effect(() => {
+        if (favicon) {
+            setFavicon()
+        }
+    })
 
     const setFavicon = () => {
-        if (browser && favicon) {
-            if ($config.change_favicon && $messages.length > 1) {
-                favicon.setAttribute('href', `/img/icons/models/${$model.icon}`)
-            } else {
-                favicon.setAttribute('href', `/img/favicon.png`)
-            }
+        if ($config.change_favicon && $messages.length > 1) {
+            favicon.setAttribute('href', `/img/icons/models/${$model.icon}`)
+        } else {
+            favicon.setAttribute('href', `/img/favicon.png`)
         }
     }
 </script>
