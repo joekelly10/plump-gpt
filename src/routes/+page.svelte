@@ -89,7 +89,7 @@
 
 {#if $tree_active}
     <Tree
-        onClickedNode={goToMessage}
+        onClickNode={goToMessage}
     />
 {/if}
 

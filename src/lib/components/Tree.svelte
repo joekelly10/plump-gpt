@@ -11,7 +11,7 @@
     import Sidebar from '$lib/components/Tree/Sidebar.svelte'
     import UsageStats from '$lib/components/Chat/UsageStats.svelte'
 
-    const { onClickedNode } = $props()
+    const { onClickNode } = $props()
 
     let hovered_node = $state(null),
         pending_node = $state(null)
@@ -72,7 +72,7 @@
     }
 
     const clickedNode = (node) => {
-        onClickedNode(node.id)
+        onClickNode(node.id)
         close()
     }
 
