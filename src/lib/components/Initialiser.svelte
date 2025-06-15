@@ -111,7 +111,7 @@
 </script>
 
 {#if $is_initialising}
-    <div class='initialising' in:fade={{ duration: 100, easing: quartOut }} out:fade={{ delay: 500, duration: 250, easing: quartOut }}>
+    <div class='initialiser' in:fade={{ duration: 100, easing: quartOut }} out:fade={{ delay: 500, duration: 250, easing: quartOut }}>
         <div class='inner'>
             {#if fetch_error}
                 <div class='fetch-error' in:fade={{ delay: 500, duration: 75, easing: quartOut }}>
@@ -145,7 +145,7 @@
 {/if}
 
 <style lang='sass'>
-    .initialising
+    .initialiser
         position:       absolute
         top:            50%
         left:           50%
