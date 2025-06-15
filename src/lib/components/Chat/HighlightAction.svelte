@@ -4,9 +4,12 @@
 
     import HighlightIcon from '$lib/components/Icons/Highlight.svelte'
 
-    const {
+    let {
+        // events
         onClickQuoteButton,
         onClickHighlightButton,
+
+        // bindable variables
         highlight_action_position = $bindable({ x: 0, y: 0 })
     } = $props()
 </script>
