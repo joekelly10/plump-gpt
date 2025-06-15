@@ -1,6 +1,7 @@
 import { basic_prompt, basic_reply } from '$tests/mock/prompts/basic_reply'
 import { basic_reasoning_prompt, basic_reasoning, basic_reasoning_reply } from '$tests/mock/prompts/basic_reasoning'
 import { persistence_prompt, persistence_reply } from '$tests/mock/prompts/persistence'
+import { send_immediately_prompt, send_immediately_reply } from '$tests/mock/prompts/send_immediately'
 
 export const getAIReply = (prompt) => {
     let reply
@@ -14,6 +15,9 @@ export const getAIReply = (prompt) => {
             break
         case persistence_prompt:
             reply = persistence_reply
+            break
+        case send_immediately_prompt:
+            reply = send_immediately_reply
             break
         default:
             reply = '💩'
