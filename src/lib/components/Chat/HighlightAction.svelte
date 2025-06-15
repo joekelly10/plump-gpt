@@ -9,7 +9,7 @@
         onClickQuoteButton,
         onClickHighlightButton,
 
-        // bindable variables
+        // bindable
         highlight_action_position = $bindable({ x: 0, y: 0 })
     } = $props()
 </script>
