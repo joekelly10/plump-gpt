@@ -1,22 +1,19 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
     import { messages } from '$lib/stores/chat'
     import { system_prompts } from '$lib/stores/prompt_editor'
 
     import PromptListButton from '$lib/components/PromptEditor/PromptListButton.svelte'
     import AddIcon from '$lib/components/Icons/Add.svelte'
 
-    const dispatch = createEventDispatcher()
-
-    export let current_prompt_index
+    let { selectPrompt, current_prompt_index } = $props()
 
     let list
 
-    $: new_prompt_already_created = !$system_prompts[0]?.id
+    const new_prompt_already_created = $derived(!$system_prompts[0]?.id)
 
     const createPrompt = async () => {
         if (new_prompt_already_created) {
-            dispatch('selectPrompt', { index: 0 })
+            selectPrompt(0)
             return
         }
 
@@ -32,7 +29,7 @@
             ...$system_prompts
         ]
 
-        dispatch('selectPrompt', { index: 0 })
+        selectPrompt(0)
         list.scrollTo({ top: 0, behavior: 'smooth' })
     }
 </script>
@@ -40,7 +37,7 @@
 <div class='prompt-list'>
     <div class='header'>
         {$system_prompts.length} prompts
-        <button class='create-button' on:click={createPrompt}>
+        <button class='create-button' onclick={createPrompt}>
             <AddIcon className='icon' />
         </button>
     </div>
@@ -51,7 +48,7 @@
                 index={i}
                 selected={i === current_prompt_index}
                 active={prompt.id === $messages[0].system_prompt_id}
-                on:selectPrompt
+                selectPrompt={selectPrompt}
             />
         {/each}
     </div>

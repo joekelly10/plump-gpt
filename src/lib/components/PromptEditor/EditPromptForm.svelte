@@ -1,40 +1,44 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
+    import { onDestroy } from 'svelte'
     import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { messages } from '$lib/stores/chat'
     import { system_prompts, save_status } from '$lib/stores/prompt_editor'
 
-    const dispatch = createEventDispatcher()
+    export const focusTitle = () => title_input.focus(),
+                 savePrompt = async () => save()
 
-    export let read_only,
-               current_prompt_index,
-               input_title,
-               input_message
-    
+    let {
+        // actions
+        deletePrompt,
+        close,
+
+        // bindable
+        input_title,
+        input_message,
+
+        // passive
+        read_only,
+        current_prompt_index
+    } = $props()
+
     let title_input,
-        token_count,
         update_timer,
         token_timer,
         copy_timer
 
-    let copy_button_text = 'Copy',
-        save_button_text = 'Save'
-
-    $: prompt = $system_prompts[current_prompt_index]
-    $: is_currently_active = prompt?.id === $messages[0].system_prompt_id
-    $: titleChanged(input_title)
-    $: messageChanged(input_message)
+    let token_count      = $state(0),
+        copy_button_text = $state('Copy')
     
-    $: if (is_currently_active) {
-        save_button_text = prompt.modified ? 'Save Changes' : 'Keep Using'
-    } else {
-        save_button_text = prompt?.modified ? 'Save & Use' : 'Use Prompt'
-    }
+    const prompt              = $derived($system_prompts[current_prompt_index]),
+          is_currently_active = $derived($system_prompts[current_prompt_index]?.id === $messages[0].system_prompt_id),
+          is_modified         = $derived($system_prompts[current_prompt_index]?.modified),
+          delete_highlight    = $derived($system_prompts[current_prompt_index]?.delete_highlight)
 
-    export const focusTitle = () => title_input.focus()
+    $effect(() => { input_title; whenInputTitleChanges() })
+    $effect(() => { input_message; whenInputMessageChanges() })
 
-    export const save = async () => {
+    const save = async () => {
         if (read_only || $save_status !== 'idle') return
 
         if (input_title.trim().length === 0) return alert('Prompt must have a title!')
@@ -71,7 +75,7 @@
             setTimeout(() => {
                 $system_prompts[current_prompt_index] = data
                 $save_status = 'saved'
-                setTimeout(() => dispatch('close'), prompt.modified ? 500 : 0)
+                setTimeout(close, prompt.modified ? 500 : 0)
             }, prompt.modified ? 250 : 0)
         } else {
             console.log(`💾–❌ Save failed: ${response.status} ${response.statusText}`)
@@ -81,16 +85,14 @@
         }
     }
 
-    const cancel = () => {
-        if ($save_status === 'idle') dispatch('cancel')
-    }
+    onDestroy(() => {
+        clearAllTimeouts()
+    })
 
-    const deletePrompt = () => {
-        if (prompt.default) {
-            alert(`You can't delete the default prompt.`)
-        } else if ($save_status === 'idle' && confirm('Are you sure you want to delete this prompt?')) {
-            dispatch('deletePrompt')
-        }
+    const clearAllTimeouts = () => {
+        clearTimeout(update_timer)
+        clearTimeout(token_timer)
+        clearTimeout(copy_timer)
     }
 
     const copy = async () => {
@@ -114,19 +116,15 @@
         }, 250)
     }
 
-    const titleChanged = (_) => {
-        if (!read_only) {
-            clearTimeout(update_timer)
-            update_timer = setTimeout(updatePromptInList, 250)
-        }
+    const whenInputTitleChanges = () => {
+        clearTimeout(update_timer)
+        update_timer = setTimeout(updatePromptInList, 250)
     }
 
-    const messageChanged = (_) => {
+    const whenInputMessageChanges = () => {
         getTokenCount()
-        if (!read_only) {
-            clearTimeout(update_timer)
-            update_timer = setTimeout(updatePromptInList, 250)
-        }
+        clearTimeout(update_timer)
+        update_timer = setTimeout(updatePromptInList, 250)
     }
 
     const updatePromptInList = () => {
@@ -135,21 +133,33 @@
         $system_prompts[current_prompt_index].modified = input_title !== prompt.original_title || input_message !== prompt.original_message
     }
 
-    const hoveredDelete   = () => {
+    const clickedSaveButton = () => {
+        if (is_currently_active && !is_modified) return close()
+        save()
+    }
+
+    const clickedCancelButton = () => {
+        if ($save_status === 'idle') close()
+    }
+
+    const mouseoverDeleteButton = () => {
         $system_prompts[current_prompt_index].delete_highlight = true
     }
 
-    const unhoveredDelete = () => {
+    const mouseleaveDeleteButton = () => {
         $system_prompts[current_prompt_index].delete_highlight = false
     }
 
-    const clickedSaveButton = () => {
-        if (is_currently_active && !prompt.modified) return cancel()
-        save()
+    const clickedDeleteButton = () => {
+        if (prompt.default) {
+            alert(`You can't delete the default prompt.`)
+        } else if ($save_status === 'idle' && confirm('Are you sure you want to delete this prompt?')) {
+            deletePrompt()
+        }
     }
 </script>
 
-<div class='prompt-input-container' class:read-only={read_only} class:delete-highlight={prompt?.delete_highlight}>
+<div class='prompt-input-container' class:read-only={read_only} class:delete-highlight={delete_highlight}>
     <input
         class='title-input'
         bind:this={title_input}
@@ -173,15 +183,21 @@
         </div>
         <div class='buttons'>
             {#if read_only}
-                <button class='close-button' on:click={cancel}>Close</button>
-                <button class='copy-button' on:click={copy}>{copy_button_text}</button>
+                <button class='close-button' onclick={close}>Close</button>
+                <button class='copy-button' onclick={copy}>{copy_button_text}</button>
             {:else}
                 {#if $save_status === 'idle'}
-                    <button class='delete-button' on:click={deletePrompt} on:mouseenter={hoveredDelete} on:mouseleave={unhoveredDelete} out:fade={{ duration: 125, easing: quartOut }}>Delete</button>
-                    <button class='cancel-button' on:click={cancel} out:fade={{ duration: 125, easing: quartOut }}>Cancel</button>
+                    <button class='delete-button' onclick={clickedDeleteButton} onmouseenter={mouseoverDeleteButton} onmouseleave={mouseleaveDeleteButton} out:fade={{ duration: 125, easing: quartOut }}>Delete</button>
+                    <button class='cancel-button' onclick={clickedCancelButton} out:fade={{ duration: 125, easing: quartOut }}>Cancel</button>
                 {/if}
-                <button class='save-button {$save_status}' class:no-changes={is_currently_active && !prompt.modified} class:modified={prompt?.modified} on:click={clickedSaveButton}>
-                    <span class='save-text'>{save_button_text}</span>
+                <button class='save-button {$save_status}' class:no-changes={is_currently_active && !is_modified} class:modified={is_modified} onclick={clickedSaveButton}>
+                    <span class='save-text'>
+                        {#if is_currently_active}
+                            {is_modified ? 'Save Changes' : 'Keep Using'}
+                        {:else}
+                            {is_modified ? 'Save & Use' : 'Use Prompt'}
+                        {/if}
+                    </span>
                     <div class='spinner'>
                         <img class='spinner-img' src='/img/icons/cog.png' alt='Saving'>
                     </div>

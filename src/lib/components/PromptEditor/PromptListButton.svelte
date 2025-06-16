@@ -1,24 +1,27 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
     import { fly, slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { save_status } from '$lib/stores/prompt_editor'
 
-    const dispatch = createEventDispatcher()
+    let {
+        // actions
+        selectPrompt,
 
-    export let prompt,
-               index,
-               selected,
-               active
+        // passive
+        prompt,
+        index,
+        selected,
+        active
+    } = $props()
 
-    $: excerpt = prompt.message.length < 100 ? prompt.message : prompt.message.substring(0,99) + '...'
-    $: provisional = !prompt.id
+    const excerpt      = $derived(prompt.message.length < 100 ? prompt.message : prompt.message.substring(0,99) + '...'),
+          provisional  = $derived(!prompt.id),
+          in_duration  = $derived(prompt.id ? 0 : $save_status === 'idle' ? 125 : 0), //  don't animate when a new prompt is being saved, just insta-switch
+          out_duration = $derived($save_status === 'idle' ? 250 : 0)
 
-    const clicked = () => dispatch('selectPrompt', { index })
-
-    //  don't animate when a new prompt is being saved, just insta-switch
-    const inDuration = () => prompt.id ? 0 : $save_status === 'idle' ? 125 : 0
-    const outDuration = () => $save_status === 'idle' ? 250 : 0
+    const clicked = () => {
+        selectPrompt(index)
+    }
 </script>
 
 <button
@@ -27,9 +30,9 @@
     class:provisional={provisional}
     class:modified={prompt.modified}
     class:delete-highlight={prompt.delete_highlight}
-    on:click={clicked}
-    in:fly={{ x: -24, opacity: 0, delay: 100, duration: inDuration(), easing: quartOut }}
-    out:slide={{ duration: outDuration(), easing: quartOut }}
+    onclick={clicked}
+    in:fly={{ x: -24, opacity: 0, delay: 100, duration: in_duration, easing: quartOut }}
+    out:slide={{ duration: out_duration, easing: quartOut }}
 >
     <div class='title'>
         {#if prompt.title}

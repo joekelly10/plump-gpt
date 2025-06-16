@@ -10,19 +10,36 @@
     import PromptList from '$lib/components/PromptEditor/PromptList.svelte'
     import EditPromptForm from '$lib/components/PromptEditor/EditPromptForm.svelte'
 
-    let form,
-        input_title,
-        input_message,
-        read_only
+    let form
 
-    let current_prompt_index = 0
+    let input_title          = $state(''),
+        input_message        = $state(''),
+        current_prompt_index = $state(0)
+    
+    const read_only     = $derived($messages.length > 1),
+          is_new_prompt = $derived(!$system_prompts[current_prompt_index]?.id)
 
-    $: read_only = $messages.length > 1
-    $: is_new_prompt = !$system_prompts[current_prompt_index]?.id
+    onMount(async () => {
+        document.addEventListener('keydown', keydown)
+        input_title   = $messages[0].system_prompt_title ?? '(no title)'
+        input_message = $messages[0].content
+        $save_status  = 'idle'
+        if (!read_only) await fetchSystemPrompts()
+    })
 
-    const close = () => {
-        $system_prompts = $system_prompts.filter(prompt => !!prompt.id)
-        $prompt_editor_active = false
+    onDestroy(() => {
+        document.removeEventListener('keydown', keydown)
+    })
+
+    const keydown = (e) => {
+        if (e.key === 'Escape') {
+            e.preventDefault()
+            return close()
+        }
+        if (e.metaKey && e.key === 'Enter') {
+            e.preventDefault()
+            return form.save()
+        }
     }
 
     const fetchSystemPrompts = async () => {
@@ -114,41 +131,23 @@
         }
     }
 
-    const keydown = (e) => {
-        if (e.key === 'Escape') {
-            e.preventDefault()
-            return close()
-        }
-        if (e.metaKey && e.key === 'Enter') {
-            e.preventDefault()
-            return form.save()
-        }
+    const close = () => {
+        $system_prompts       = $system_prompts.filter(prompt => !!prompt.id)
+        $prompt_editor_active = false
     }
-
-    onMount(async () => {
-        document.addEventListener('keydown', keydown)
-        input_title   = $messages[0].system_prompt_title ?? '(no title)'
-        input_message = $messages[0].content
-        $save_status  = 'idle'
-        if (!read_only) await fetchSystemPrompts()
-    })
-
-    onDestroy(() => {
-        document.removeEventListener('keydown', keydown)
-    })
 </script>
 
 <div class='prompt-editor' class:read-only={read_only} in:scale={{ start: 1.02, opacity: 0, duration: 200, easing: quartOut }} out:scale={{ start: 1.02, opacity: 0, duration: 100, easing: quartOut }}>
     <div class='inner'>
         <PromptEditorHeader
             read_only={read_only}
-            on:close={close}
+            close={close}
         />
 
         {#if !read_only}
             <PromptList
                 current_prompt_index={current_prompt_index}
-                on:selectPrompt={(event) => selectPrompt(event.detail.index)}
+                selectPrompt={selectPrompt}
             />
         {/if}
 
@@ -158,9 +157,9 @@
             bind:input_message
             current_prompt_index={current_prompt_index}
             read_only={read_only}
-            on:deletePrompt={deleteCurrentPrompt}
-            on:cancel={() => close()}
-            on:close={() => close()}
+            deletePrompt={deleteCurrentPrompt}
+            cancel={close}
+            close={close}
         />
     </div>
 </div>

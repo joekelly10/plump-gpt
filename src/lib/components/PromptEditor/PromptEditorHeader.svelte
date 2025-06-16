@@ -1,16 +1,12 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
-
     import EyeIcon from '$lib/components/Icons/Eye.svelte'
     import SystemPromptIcon from '$lib/components/Icons/SystemPrompt.svelte'
 
-    const dispatch = createEventDispatcher()
-
-    export let read_only
+    let { close, read_only } = $props()
 </script>
 
 <div class='prompt-editor-header'>
-    <button class='close-button' on:click={() => dispatch('close')}>
+    <button class='close-button' onclick={close}>
         <img class='close-icon' src='/img/icons/close-white.png' alt='Close'>
     </button>
     <div class='title'>
