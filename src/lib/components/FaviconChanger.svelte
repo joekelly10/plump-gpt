@@ -7,15 +7,15 @@
 
     let favicon
 
-    onMount(() => {
-        if (browser) {
-            favicon = document.getElementById('favicon')
-        }
-    })
-
     $effect(() => {
         if (favicon) {
             setFavicon()
+        }
+    })
+
+    onMount(() => {
+        if (browser) {
+            favicon = document.getElementById('favicon')
         }
     })
 

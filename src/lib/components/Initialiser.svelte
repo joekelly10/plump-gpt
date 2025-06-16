@@ -8,7 +8,14 @@
     import { model } from '$lib/stores/ai'
     import { config } from '$lib/stores/user'
 
-    const { sendImmediately, setInputText, onReady } = $props()
+    let {
+        // actions
+        sendImmediately,
+        setInputText,
+
+        // events
+        onReady
+    } = $props()
 
     let has_fetched_prompt = $state(false),
         has_set_model      = $state(false),

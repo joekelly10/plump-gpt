@@ -28,10 +28,10 @@
 
     let search_input,
         search_timer
+    
+    $effect(() => { search_value; whenSearchValueChanges() })
 
-    $effect(() => searchValueChanged(search_value))
-
-    const searchValueChanged = (_) => {
+    const whenSearchValueChanges = () => {
         clearTimeout(search_timer)
         search_timer = setTimeout(() => {
             active_page = 1

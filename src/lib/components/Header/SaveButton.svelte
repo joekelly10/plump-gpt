@@ -1,12 +1,14 @@
 <script>
     import { chat_id, messages, forks, active_fork, stars, highlights } from '$lib/stores/chat'
 
-    let status = $state('idle'),
-        queued = $state(false)
+    export const saveChat = () => save()
 
     let timer
 
-    export const saveChat = async () => {
+    let status = $state('idle'),
+        queued = $state(false)
+
+    const save = async () => {
         if ($messages.length === 1) return
 
         // queue up save if another save is already in flight

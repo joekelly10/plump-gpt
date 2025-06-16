@@ -11,16 +11,17 @@
     import Sidebar from '$lib/components/Tree/Sidebar.svelte'
     import UsageStats from '$lib/components/Chat/UsageStats.svelte'
 
+    const leaf_spacing = 2 // # of columns
+
     const { onClickNode } = $props()
+
+    let container_el,
+        debounce_timer
 
     let hovered_node = $state(null),
         pending_node = $state(null)
 
-    const leaf_spacing = 2, // # of columns
-          nodes        = $derived(buildTree($forks, $active_fork, $messages, $stars, $highlights, leaf_spacing))
-
-    let container_el,
-        debounce_timer
+    const nodes = $derived(buildTree($forks, $active_fork, $messages, $stars, $highlights, leaf_spacing))
 
     onMount(() => {
         document.addEventListener('keydown', keydown)

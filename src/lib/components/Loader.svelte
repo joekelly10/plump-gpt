@@ -14,7 +14,10 @@
     import PageControls from '$lib/components/Loader/PageControls.svelte'
 
     const { onChatLoaded } = $props()
-    
+
+    let search,
+        scrolling_div
+
     let filter         = $state('all'),
         search_value   = $state(''),
         searched_value = $state(''),
@@ -24,9 +27,6 @@
         active_page    = $state(1),
         keyboard_index = $state(null),
         suspend_mouse  = $state(false)
-
-    let search,
-        scrolling_div
 
     onMount(() => {
         document.addEventListener('keydown', keydown)
