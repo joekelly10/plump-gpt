@@ -40,6 +40,7 @@ You're working on Plump GPT: a Chat UI for interacting with language model APIs.
 
 - Use camelCase for functions
 - Use snake_case for variables and stores
+- Use comma-separated lines (don't repeat `const` and `let`) for multiple assignments
 - Vertically align assignments, e.g. as below:
 
 ```js
@@ -123,7 +124,7 @@ You're working on Plump GPT: a Chat UI for interacting with language model APIs.
     import { page } from '$app/stores'
 ```
 
-3. `import` from stores
+3. `import` from custom stores
 ```js
     import { messages, forks, stars } from '$lib/stores/chat'
     import { model } from '$lib/stores/ai'
@@ -141,8 +142,8 @@ You're working on Plump GPT: a Chat UI for interacting with language model APIs.
     import hljs from 'highlight.js'
 ```
 
-LEAVE EMPTY LINE
-(NOTE: NO EMPTY LINES BETWEEN THE ABOVE 1-5 👆)
+LEAVE AN EMPTY LINE
+(NOTE: THERE ARE NO EMPTY LINES BETWEEN THE ABOVE 1-5 👆)
 
 6. `import` sub-components
 
@@ -152,42 +153,87 @@ LEAVE EMPTY LINE
     import Input from '$lib/components/Input.svelte'
 ```
 
+LEAVE AN EMPTY LINE
+
 7. configuration settings, if any
 ```js
     marked.use({ breaks: true, mangle: false, headerIds: false })
 ```
 
-8. if the component uses an event dispatcher, declare it here
+LEAVE AN EMPTY LINE
+
+8. `export` exposed functions
+**Note:** These exports MUST be one liners. The point is to make it easy to understand what the exposed function does at a glance. They must either do one simple thing OR call another function defined later in the component.
 ```js
-    const dispatch = createEventDispatcher()
+    export const focusInput  = () => input.focus()
+                 sendMessage = () => send() // defined later in the component
 ```
 
-9. `export` variables
+9. destructuring of `$props()`
+**Note:** When there are more than 1 or 2 props, use the following comment labels for readability: `// actions`, `// events`, `// bindable`, `// passive`
+`// actions`  = command props (imperative / do something)
+`// events`   = callback props (event handlers, e.g. onClickHighlightButton)
+`// bindable` = two-way props (use `bind:` in the parent component)
+`// passive`  = one-way props (received from parent component / read only)
+
 ```js
-    export let message,
-               starred
+    let {
+        // actions
+        fetchChats,
+        nextPage,
+        prevPage,
+        close,
+
+        // bindable
+        filter         = $bindable('all'),
+        search_value   = $bindable(''),
+        searched_value = $bindable(''),
+        active_page    = $bindable(1),
+
+        // passive
+        total_chats,
+        total_pages
+    } = $props()
 ```
 
-10. top-level variables used as references to HTML elements, bindings etc., initialised without assignment
+10. top-level NON-REACTIVE variables
+E.g. Used as references to HTML elements etc., initialised without any assignment
 ```js
-    let input,
-        input_text
+    let form,
+        input,
+        update_timer
 ```
 
-11. other top-level variables, with values
+11. `$state` runes
 ```js
-    let input_overflowed = false,
-        input_expanded   = false
+    let input_overflowed = $state(false),
+        input_expanded   = $state(false),
+        token_count      = $state(0)
 ```
 
-12. reactive variables
+12. `$derived` runes
 ```js
-    $: add_reply_highlight  = $highlights.add_reply.includes(message.id)
-    $: regenerate_highlight = $highlights.regenerate.includes(message.id)
-    $: star_highlight       = $highlights.star.includes(message.id)
+    const add_reply_highlight  = $derived($highlights.add_reply.includes(message.id)),
+          regenerate_highlight = $derived($highlights.regenerate.includes(message.id)),
+          star_highlight       = $derived($highlights.star.includes(message.id))
 ```
 
-13. lifecycle functions
+13. `$effect` runes
+**Important:** Only use anonymous functions for simple effects, otherwise define a named function and call it. The point is to make the code easy to read and understand at a glance.
+```js
+    $effect(() => {
+        if (favicon) {
+            setFavicon()
+        }
+    })
+```
+When manually inserting a dependency to be tracked (e.g. when we want to react to any change in a variable) use the following highly-readable pattern:
+```js
+    $effect(() => { input_title; whenInputTitleChanges() })
+    $effect(() => { input_message; whenInputMessageChanges() })
+```
+
+14. lifecycle functions
 ```js
     onMount(() => {
         document.addEventListener('keydown', keydown)
@@ -198,16 +244,16 @@ LEAVE EMPTY LINE
     })
 ```
 
-14. `export` functions on this component
-```js
-    export const focus = () => input.focus()
-```
-
 15. all other functions
 ```js
-    const openPromptEditor = () => $prompt_editor_active = true
+    const keydown = () => {
+        if (e.key === 'Escape') {
+            e.preventDefault()
+            return close()
+        }
+    }
 ```
-Order all other functions in an intuitive way that maximises human readability and ease of comprehension
+Try to order the functions in an intuitive way that reflects the order of operations, and maximises human readability and ease of comprehension
 
 
 
