@@ -33,7 +33,7 @@ export const DELETE = async ({ params }) => {
             where: { id: params.id }
         })
 
-        return json(null, { status: 204 })
+        return new Response(null, { status: 204 })
     } catch (error) {
         console.error('Error deleting system prompt:', error)
         return json({ message: 'Failed to delete system prompt' }, { status: 500 })
