@@ -220,15 +220,15 @@ if ! docker info &> /dev/null; then
         if [ -f "C:\Program Files\Docker\Docker\Docker Desktop.exe" ]; then
             start "" "C:\Program Files\Docker\Docker\Docker Desktop.exe"
         else
-            echo -e "  ${red_bold}❌ ${white}Could not locate Docker Desktop executable${reset}"
-            echo -e "  ${yellow_bold}⚠️ ${white_bold}Please start Docker Desktop manually and try again${reset}"
+            echo -e "     ${white_bold}Please start Docker Desktop manually and try again${reset}"
             echo
+
             exit 1
         fi
     else
-        echo -e "  ${red_bold}❌ ${white}Unsupported operating system${reset}"
-        echo -e "  ${yellow_bold}⚠️ ${white_bold}Please start Docker manually and try again${reset}"
+        echo -e "     ${white_bold}Please start Docker manually and try again${reset}"
         echo
+
         exit 1
     fi
     
@@ -239,13 +239,15 @@ if ! docker info &> /dev/null; then
         DOCKER_RETRY_COUNT=$((DOCKER_RETRY_COUNT+1))
         
         if [ $DOCKER_RETRY_COUNT -eq $MAX_DOCKER_RETRIES ]; then
-            echo -e "  ${red_bold}❌ ${white}Timed out waiting for Docker daemon to start${reset}"
-            echo -e "  ${yellow_bold}⚠️ ${white_bold}Please start Docker manually and try again${reset}"
             echo
+            echo -e "  ${red_bold}❌ ${white}Timed out waiting for Docker daemon to start${reset}"
+            echo -e "     ${white_bold}Please start Docker manually and try again${reset}"
+            echo
+
             exit 1
         fi
         
-        echo -ne "  ${yellow_bold}• ${white}Waiting for Docker daemon... $((MAX_DOCKER_RETRIES / 2 - DOCKER_RETRY_COUNT))s${reset}\033[K\r"
+        echo -ne "  ${blue_bold}• ${white}Waiting for Docker daemon... $((MAX_DOCKER_RETRIES / 2 - DOCKER_RETRY_COUNT))s${reset}\033[K\r"
         sleep 0.5
     done
     
