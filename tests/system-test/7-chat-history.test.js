@@ -6,7 +6,7 @@ import { persistence_prompt, persistence_reply } from '../mock/prompts/persisten
 import defaults from '../../src/lib/fixtures/defaults'
 import models from '../../src/lib/fixtures/models'
 
-test.describe('Persistence', () => {
+test.describe('Chat History', () => {
     test('we should be able to re-load a chat', async ({ page }) => {
         await page.goto('/')
 
