@@ -36,7 +36,13 @@
 
 <div class='prompt-list'>
     <div class='header'>
-        {$system_prompts.length} prompts
+        <div class='text'>
+            System Prompts
+            <span class='bull'>
+                &bull;
+            </span>
+            {$system_prompts.length}
+        </div>
         <button class='create-button' onclick={createPrompt}>
             <AddIcon className='icon' />
         </button>
@@ -60,49 +66,59 @@
         flex-direction:  column
         align-items:     center
         justify-content: flex-start
-        width:           390px
-        height:          space.$edit-prompt-form-height + 128px
+        position:        absolute
+        top:             0
+        left:            0
+        width:           space.$prompt-editor-list-width
+        height:          100vh
 
     .header
         display:          flex
         align-items:      center
         justify-content:  space-between
         width:            100%
+        height:           space.$prompt-editor-header-height
+        flex-shrink:      0
         box-sizing:       border-box
-        padding:          20px space.$default-padding
-        border-radius:    8px 8px 0 0
+        padding:          0 space.$default-padding
+        border-bottom:    1px solid black(0.1)
         background-color: $background-800
+        font-size:        16px
         font-weight:      600
         color:            $off-white
 
-        :global
-            .create-button
-                display:         flex
-                align-items:     center
-                justify-content: center
-                width:           40px
-                height:          40px
-                border-radius:   8px
-                border:          1px solid $background-300
-                color:           $background-200
-                cursor:          pointer
-                transition:      border-color easing.$quart-out 0.125s, background-color easing.$quart-out 0.125s, color easing.$quart-out 0.125s
+        .text
+            .bull
+                margin: 0 8px
+                color:  $yellow
 
-                .icon
-                    height:    11px
-                    transform: rotate(45deg)
+        .create-button
+            display:         flex
+            align-items:     center
+            justify-content: center
+            width:           40px
+            height:          40px
+            border-radius:   8px
+            border:          1px solid $background-300
+            color:           $background-200
+            cursor:          pointer
+            transition:      border-color easing.$quart-out 0.125s, background-color easing.$quart-out 0.125s, color easing.$quart-out 0.125s
+
+            :global(.icon)
+                height:    11px
+                transform: rotate(45deg)
                 
-                &:hover
-                    border-color:     $yellow
-                    background-color: $yellow
-                    color:            $background-800
-                    transition:       none
-            
-                &:active
-                    border-color:     color.adjust($yellow, $lightness: -10%)
-                    background-color: color.adjust($yellow, $lightness: -10%)
-                    color:            $background-800
-                    transition:       none
+            &:hover
+                border-color:     $yellow
+                background-color: $yellow
+                color:            $background-800
+                transition:       none
+        
+            &:active
+                border-color:     color.adjust($yellow, $lightness: -10%)
+                background-color: color.adjust($yellow, $lightness: -10%)
+                color:            $background-800
+                transition:       none
 
     .list
         display:          flex
@@ -113,9 +129,7 @@
         box-sizing:       border-box
         padding:          space.$default-padding
         padding-bottom:   space.$default-padding * 3
-        border-radius:    0 0 8px 8px
-        border:           1px solid $background-800
-        background-color: color.adjust($background-800, $alpha: -0.67)
+        background-color: $background-800
         overflow-y:       auto
         overflow-x:       hidden
         &::-webkit-scrollbar

@@ -19,7 +19,8 @@
 
         // passive
         read_only,
-        current_prompt_index
+        current_prompt_index,
+        is_new_prompt
     } = $props()
 
     let title_input,
@@ -153,6 +154,8 @@
     const clickedDeleteButton = () => {
         if (prompt.default) {
             alert(`You can't delete the default prompt.`)
+        } else if (is_new_prompt && input_title.trim().length === 0 && input_message.trim().length === 0) {
+            deletePrompt()
         } else if ($save_status === 'idle' && confirm('Are you sure you want to delete this prompt?')) {
             deletePrompt()
         }

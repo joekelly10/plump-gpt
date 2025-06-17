@@ -6,28 +6,19 @@
 </script>
 
 <div class='prompt-editor-header'>
+    {#if read_only}
+        <div class='title'>
+            <span class='title-text'>
+                System Prompt
+            </span>
+            <span class='subtitle-text'>
+                (Read only)
+            </span>
+        </div>
+    {/if}
     <button class='close-button' onclick={close}>
         <img class='close-icon' src='/img/icons/close-white.png' alt='Close'>
     </button>
-    <div class='title'>
-        {#if read_only}
-            <EyeIcon className='icon eye-icon' />
-            <div class='title-text'>
-                System Prompt<br>
-                <span class='subtitle-text'>
-                    Read only
-                </span>
-            </div>
-        {:else}
-            <SystemPromptIcon className='icon system-prompt-icon' />
-            <div class='title-text'>
-                System Prompt<br>
-                <span class='subtitle-text'>
-                    Editing
-                </span>
-            </div>
-        {/if}
-    </div>
 </div>
 
 <style lang='sass'>
@@ -39,31 +30,22 @@
         top:              0
         left:             0
         width:            100%
+        height:           space.$prompt-editor-header-height
         box-sizing:       border-box
-        padding:          24px 0
         background-color: $background-800
         user-select:      none
     
-    .title
-        display:     flex
-        align-items: center
-        gap:         16px
-        font-weight: 600
-        color:       $off-white
+    .title-text
+        font-size:      14px
+        font-weight:    700
+        color:          $off-white
+        text-transform: uppercase
 
-        :global
-            .eye-icon
-                height: 13px
-                fill:   $off-white
-
-            .system-prompt-icon
-                height: 21px
-                fill:   $off-white
-
-            .subtitle-text
-                font-size:   14px
-                font-weight: 500
-                color:       $blue-grey
+    .subtitle-text
+        margin-left: 4px
+        font-size:   14px
+        font-weight: 450
+        color:       $blue-grey
 
     .close-button
         position:    absolute

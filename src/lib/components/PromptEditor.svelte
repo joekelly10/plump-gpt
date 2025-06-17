@@ -157,6 +157,7 @@
             bind:input_message
             current_prompt_index={current_prompt_index}
             read_only={read_only}
+            is_new_prompt={is_new_prompt}
             deletePrompt={deleteCurrentPrompt}
             cancel={close}
             close={close}
@@ -174,10 +175,16 @@
         height:           100vh
         background-color: color.adjust($background-700, $alpha: -0.125)
 
+        &.read-only
+            .inner
+                padding-left: 0
+
     .inner
         display:         flex
         align-items:     center
         justify-content: center
-        gap:             96px
+        position:        relative
         height:          100%
+        box-sizing:      border-box
+        padding-left:    space.$prompt-editor-list-width
 </style>

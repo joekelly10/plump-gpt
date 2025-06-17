@@ -76,16 +76,16 @@
         width:            100%
         box-sizing:       border-box
         padding:          30px space.$default-padding
-        border-radius:    8px
+        border-radius:    10px
         background-color: $background-300
         color:            $off-white
         text-align:       left
-        line-height:      1.6
         cursor:           pointer
 
         .title
-            line-height: 26px
+            font-size:   16px
             font-weight: 600
+            line-height: 26px
             color:       $yellow
 
             .untitled-prompt-text
@@ -126,21 +126,20 @@
             font-size:   14px
 
         &:hover
-            box-shadow: 0 0 0 1.5px white
-            transition: none
+            background-color: color.adjust($background-300, $lightness: 1.25%)
+            transition:       none
 
         &:active
-            box-shadow:       0 0 0 1.5px $off-white
-            background-color: color.adjust($background-300, $lightness: -1%)
+            background-color: color.adjust($background-300, $lightness: 0.75%)
 
         &.selected
-            box-shadow: 0 0 0 2px $blue
+            box-shadow: 0 0 0 1.5px $blue inset
 
             &.provisional
-                box-shadow: 0 0 0 2px $yellow
+                box-shadow: 0 0 0 1.5px $yellow inset
 
                 &.delete-highlight
-                    box-shadow: 0 0 0 1.5px $coral
+                    box-shadow: 0 0 0 1.5px $coral inset
         
         &.delete-highlight
             box-shadow:       0 0 0 1.5px $coral
