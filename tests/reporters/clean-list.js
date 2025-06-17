@@ -85,7 +85,7 @@ class CleanListReporter {
         process.stdout.write(`\n${line_color}————————————————————————————————————————————${reset}\n`)
         if (result.status === 'passed') {
             process.stdout.write(`\n  ${green_bold}${this.success_message()}${reset}\n`)
-            process.stdout.write(`\n      ${white_bold}All tests passed${reset}\n`)
+            process.stdout.write(`\n      ${white_bold}All tests passed ${grey}(${this.passed} total)${reset}\n`)
             process.stdout.write(`      ${white}Ran for ${duration}${reset}\n`)
             if (this.skipped > 0) {
                 process.stdout.write(`\n      ${grey}${yellow_bold}${this.skipped} skipped${reset}\n`)
