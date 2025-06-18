@@ -3,7 +3,8 @@
 
     import TemperatureIcon from '$lib/components/Icons/Temperature.svelte'
 
-    $: icon_level = $temperature > 1 ? 4 : Math.round($temperature / 0.3)
+    const display_value = $derived($temperature.toFixed(1)),
+          icon_level    = $derived($temperature > 1 ? 4 : Math.round($temperature / 0.3))
 
     const increment = () => {
         if ($temperature === 1.2) return $temperature = 0
@@ -16,11 +17,15 @@
     }
     
     const clicked = (e) => {
+        e.preventDefault()
         if (e.shiftKey) return decrement()
         increment()
     }
 
-    const rightClicked = () => decrement()
+    const rightClicked = (e) => {
+        e.preventDefault()
+        decrement()
+    }
 
     const keydown = (e) => {
         if (e.ctrlKey && e.key === 't') return increment()
@@ -28,16 +33,16 @@
     }
 </script>
 
-<svelte:document on:keydown={keydown} />
+<svelte:document onkeydown={keydown} />
 
-<button class='temperature-button' title='Adjust temperature (ctrl+T)' on:click|preventDefault={clicked} on:contextmenu|preventDefault={rightClicked}>
+<button class='temperature-button' title='Adjust temperature (ctrl+T)' onclick={clicked} oncontextmenu={rightClicked}>
     <TemperatureIcon level={icon_level} className='icon' />
     <div class='label'>
         <div class='title'>
             Temp
         </div>
         <div class='value'>
-            {$temperature.toFixed(1)}
+            {display_value}
         </div>
     </div>
 </button>

@@ -3,8 +3,8 @@
     import { quartOut } from 'svelte/easing'
     import { avatar_href } from '$lib/stores/user'
 
-    let is_uploading = false,
-        error        = null
+    let is_uploading = $state(false),
+        error        = $state(null)
 
     const upload = async (event) => {
         const file = event.target.files[0]
@@ -61,7 +61,7 @@
                 class='file-input'
                 type='file' 
                 accept='image/*'
-                on:change={upload}
+                onchange={upload}
                 disabled={is_uploading}
             />
         </label>

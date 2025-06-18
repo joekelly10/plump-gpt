@@ -1,5 +1,4 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
     import { scale, slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { config } from '$lib/stores/user'
@@ -9,20 +8,29 @@
 
     import StarIcon from '$lib/components/Icons/Star.svelte'
 
-    const dispatch = createEventDispatcher()
+    let {
+        //actions
+        focusInput,
+        closeModelList,
 
-    export let model,
-               is_hovering_default,
-               is_hovering_prices
+        // bindable
+        is_hovering_default = $bindable(false),
+        is_hovering_prices  = $bindable(false),
 
-    $: prices            = getPrices(model)
-    $: input_price_text  = prices.input  === 0 ? 'Free' : `$${(prices.input * 10000).toFixed(2)}`
-    $: output_price_text = prices.output === 0 ? 'Free' : `$${(prices.output * 10000).toFixed(2)}`
-    $: is_default        = model.id === $config.default_model_id
+        // passive
+        model
+    } = $props()
 
-    let hold_timer       = null,
-        hold_triggered   = false,
-        is_hovering_body = false
+    let hold_timer
+
+    let is_hovering_body = $state(false),
+        hold_triggered   = $state(false)
+
+    const prices            = $derived(getPrices(model)),
+          input_price_text  = $derived(prices.input  === 0 ? 'Free' : `$${(prices.input * 10000).toFixed(2)}`),
+          output_price_text = $derived(prices.output === 0 ? 'Free' : `$${(prices.output * 10000).toFixed(2)}`),
+          is_active         = $derived(model.id === $store_model.id),
+          is_default        = $derived(model.id === $config.default_model_id)
 
     const pointerDown = () => {
         hold_triggered = false
@@ -40,38 +48,38 @@
     const clicked = () => {
         if (!hold_triggered) {
             store_model.setById(model.id)
-            dispatch('focusInput')
-            dispatch('closeModelList')
+            focusInput()
+            closeModelList()
         }
         hold_triggered = false
     }
 
-    const hovered          = () => is_hovering_body    = true,
-          unhovered        = () => is_hovering_body    = false,
-          hoveredDefault   = () => is_hovering_default = true,
-          unhoveredDefault = () => is_hovering_default = false,
-          hoveredPrices    = () => is_hovering_prices  = true,
-          unhoveredPrices  = () => is_hovering_prices  = false
+    const onmouseenter        = () => is_hovering_body    = true,
+          onmouseleave        = () => is_hovering_body    = false,
+          onmouseenterDefault = () => is_hovering_default = true,
+          onmouseleaveDefault = () => is_hovering_default = false,
+          onmouseenterPrices  = () => is_hovering_prices  = true,
+          onmouseleavePrices  = () => is_hovering_prices  = false
 </script>
 
 <button 
     id={`model-button-${cssSanitised(model.id)}`}
     class='model-button' 
-    class:active={model.id === $store_model.id} 
-    on:click={clicked}
-    on:pointerdown={pointerDown}
-    on:pointerup={pointerUp}
-    on:pointerleave={pointerUp}
-    on:pointercancel={pointerUp}
-    on:mouseenter={hovered}
-    on:mouseleave={unhovered}
+    class:active={is_active} 
+    onclick={clicked}
+    onpointerdown={pointerDown}
+    onpointerup={pointerUp}
+    onpointerleave={pointerUp}
+    onpointercancel={pointerUp}
+    onmouseenter={onmouseenter}
+    onmouseleave={onmouseleave}
 >
     <img class='model-icon' src='/img/icons/models/{model.icon}' alt={model.name} />
     {#if is_default}
         <div
             class='default-icon-container'
-            on:mouseenter={hoveredDefault}
-            on:mouseleave={unhoveredDefault}
+            onmouseenter={onmouseenterDefault}
+            onmouseleave={onmouseleaveDefault}
             in:scale={{ start: 0, duration: 200, easing: quartOut }}
         >
             <StarIcon className='default-icon' />
@@ -93,8 +101,8 @@
     </div>
     <div
         class='prices'
-        on:mouseenter={hoveredPrices}
-        on:mouseleave={unhoveredPrices}
+        onmouseenter={onmouseenterPrices}
+        onmouseleave={onmouseleavePrices}
     >
         <div class='input'>
             {input_price_text}

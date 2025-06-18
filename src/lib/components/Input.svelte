@@ -1,5 +1,5 @@
 <script>
-    import { tick, createEventDispatcher } from 'svelte'
+    import { tick } from 'svelte'
     import { page } from '$app/stores'
     import { loader_active, prompt_editor_active, user_settings_active, model_list_active } from '$lib/stores/app'
     import { chat_id, messages, forks, active_fork, active_messages, stars, highlights } from '$lib/stores/chat'
@@ -18,21 +18,34 @@
     import SystemPromptButton from '$lib/components/Input/SystemPromptButton.svelte'
     import ScrollDownButton from '$lib/components/Input/ScrollDownButton.svelte'
 
-    const dispatch = createEventDispatcher()
+    export const focus             = () => input.focus(),
+                 setText           = async (text) => _setText(text),
+                 sendMessage       = async (is_regeneration = false) => _sendMessage(is_regeneration),
+                 addReply          = async () => _sendMessage(true),
+                 regenerateReply   = async () => _sendMessage(true),
+                 quoteSelectedText = () => _quoteSelectedText(),
+                 onChatUpdated     = async (options) => _onChatUpdated(options)
+
+    let {
+        // actions
+        saveChat,
+        scrollChatToBottom,
+
+        // events
+        onSendingMessage
+    } = $props()
 
     let input,
-        input_text,
         rate_limiter,
         nope_timer
     
-    let input_overflowed           = false,
-        input_expanded             = false,
-        nope_highlight             = false,
-        is_hovering_model_switcher = false
-
-    export const focus = () => input.focus()
-
-    export const setText = async (text) => {
+    let input_text                 = $state(''),
+        input_overflowed           = $state(false),
+        input_expanded             = $state(false),
+        nope_highlight             = $state(false),
+        is_hovering_model_switcher = $state(false)
+    
+    const _setText = async (text) => {
         input_text = text
         await tick()
 
@@ -44,68 +57,9 @@
         let selection = window.getSelection()
         selection.removeAllRanges()
         selection.addRange(range)
-
-        await tick()
     }
 
-    export const quoteSelectedText = () => {
-        let selection = window.getSelection()
-
-        if (selection.rangeCount > 0 && !selection.isCollapsed) {
-            const selected_text = selection.toString().trim()
-            if (!selected_text) return
-            
-            const quoted_text = selected_text.split('\n').map(line => `> ${line}`).join('\n'),
-                  range       = selection.getRangeAt(0),
-                  is_in_input = input.contains(range.commonAncestorContainer)
-            
-            if (is_in_input) {
-                document.execCommand('insertText', false, quoted_text)
-            } else {
-                input.focus()
-
-                const new_range = document.createRange()
-                new_range.selectNodeContents(input)
-                new_range.collapse(false)
-                selection.removeAllRanges()
-                selection.addRange(new_range)
-
-                if (input_text && input_text.trim().length > 0) {
-                    if (input_text.slice(-2) === '\n\n') {
-                        document.execCommand('insertText', false, quoted_text + '\n\n')
-                    } else if (input_text.slice(-1) === '\n') {
-                        document.execCommand('insertText', false, '\n' + quoted_text + '\n\n')
-                    } else {
-                        document.execCommand('insertText', false, '\n\n' + quoted_text + '\n\n')
-                    }
-                } else {
-                    document.execCommand('insertText', false, quoted_text + '\n\n')
-                }
-            }
-
-            input.scrollTop = input.scrollHeight
-        }
-    }
-
-    export const regenerateReply = async () => sendMessage(true)
-    export const addReply        = async () => sendMessage(true)
-
-    export const chatLoaded = async (options = {}) => {
-        $user_settings_active = false
-        $model_list_active    = false
-
-        focus()
-        await tick()
-        hljs.highlightAll()
-        addCopyButtons()
-
-        if (options.switch_model) {
-            const last_used_model = $active_messages[$active_messages.length - 1].model?.id
-            if (last_used_model) model.setById(last_used_model)
-        }
-    }
-
-    export const sendMessage = async (is_regeneration = false) => {
+    const _sendMessage = async (is_regeneration = false) => {
         console.log('🤖 Sending message...')
 
         $model_list_active    = false
@@ -132,7 +86,7 @@
             $messages        = [...$messages, user_message]
             $forks[$active_fork].message_ids.push(user_message.id)
             $forks[$active_fork].provisional = false
-            dispatch('sendingMessage')
+            onSendingMessage()
             $forks = $forks
         }
 
@@ -141,7 +95,7 @@
         await tick()
         hljs.highlightAll()
         clearIsHovering()
-        dispatch('scrollChatToBottom', { context: 'sending_message' })
+        scrollChatToBottom({ context: 'sending_message' })
 
         const options = $model.is_reasoner ? {
             model: $model.id
@@ -186,7 +140,7 @@
         $messages = [...$messages, gpt_message]
 
         await tick()
-        dispatch('scrollChatToBottom', { context: 'streaming_started' })
+        scrollChatToBottom({ context: 'streaming_started' })
 
         const decoder = new TextDecoderStream()
         const reader  = response.body.pipeThrough(decoder).getReader()
@@ -200,9 +154,9 @@
         addCopyButtons()
 
         await tick()
-        dispatch('scrollChatToBottom', { context: 'streaming_finished' })
+        scrollChatToBottom({ context: 'streaming_finished' })
 
-        if ($config.autosave) dispatch('saveChat')
+        if ($config.autosave) saveChat()
     }
 
     const streamGPTResponse = async (reader, gpt_message) => {
@@ -410,7 +364,7 @@
                 await tick()
                 hljs.highlightAll()
                 if (!rate_limiter) {
-                    dispatch('scrollChatToBottom', { context: 'streaming_message' })
+                    scrollChatToBottom({ context: 'streaming_message' })
                     rate_limiter = setTimeout(() => { rate_limiter = null }, 200)
                 }
                 await new Promise(resolve => setTimeout(resolve, options.speed_limit))
@@ -428,9 +382,63 @@
             await tick()
             hljs.highlightAll()
             if (!rate_limiter) {
-                dispatch('scrollChatToBottom', { context: 'streaming_message' })
+                scrollChatToBottom({ context: 'streaming_message' })
                 rate_limiter = setTimeout(() => { rate_limiter = null }, 200)
             }
+        }
+    }
+
+    const _quoteSelectedText = () => {
+        let selection = window.getSelection()
+
+        if (selection.rangeCount > 0 && !selection.isCollapsed) {
+            const selected_text = selection.toString().trim()
+            if (!selected_text) return
+            
+            const quoted_text = selected_text.split('\n').map(line => `> ${line}`).join('\n'),
+                  range       = selection.getRangeAt(0),
+                  is_in_input = input.contains(range.commonAncestorContainer)
+            
+            if (is_in_input) {
+                document.execCommand('insertText', false, quoted_text)
+            } else {
+                input.focus()
+
+                const new_range = document.createRange()
+                new_range.selectNodeContents(input)
+                new_range.collapse(false)
+                selection.removeAllRanges()
+                selection.addRange(new_range)
+
+                if (input_text && input_text.trim().length > 0) {
+                    if (input_text.slice(-2) === '\n\n') {
+                        document.execCommand('insertText', false, quoted_text + '\n\n')
+                    } else if (input_text.slice(-1) === '\n') {
+                        document.execCommand('insertText', false, '\n' + quoted_text + '\n\n')
+                    } else {
+                        document.execCommand('insertText', false, '\n\n' + quoted_text + '\n\n')
+                    }
+                } else {
+                    document.execCommand('insertText', false, quoted_text + '\n\n')
+                }
+            }
+
+            input.scrollTop = input.scrollHeight
+        }
+    }
+
+    const _onChatUpdated = async (options = { switch_model: false }) => {
+        $user_settings_active = false
+        $model_list_active    = false
+
+        focus()
+        await tick()
+        hljs.highlightAll()
+        addCopyButtons()
+
+        if (options.switch_model) {
+            const last_used_model = $active_messages[$active_messages.length - 1].model?.id
+            if (last_used_model) model.setById(last_used_model)
         }
     }
 
@@ -439,6 +447,7 @@
     }
 
     const pastedInput = (e) => {
+        e.preventDefault()
         document.execCommand('insertText', false, e.clipboardData.getData('text/plain'))
         const range = window.getSelection().getRangeAt(0)
         const el    = range.startContainer.parentElement
@@ -592,7 +601,7 @@
     }
 </script>
 
-<svelte:document on:keydown={keydownDocument} />
+<svelte:document onkeydown={keydownDocument} />
 
 <section class='primary-input-section' class:expanded={input_expanded}>
     {#if !input_expanded}
@@ -600,7 +609,7 @@
     {/if}
 
     <ModelList
-        on:focusInput={focus}
+        focusInput={focus}
     />
 
     <ModelSettings
@@ -609,17 +618,17 @@
 
     <div class='container' class:nope-highlight={nope_highlight}>
         <ActiveModelButton
-            on:focusInput={focus}
             bind:hovering={is_hovering_model_switcher}
+            focusInput={focus}
         />
         <div
             class='input'
             contenteditable='true'
             bind:this={input}
             bind:innerText={input_text}
-            on:keydown={keydownMessageInput}
-            on:paste|preventDefault={pastedInput}
-            on:input={inputChanged}
+            onkeydown={keydownMessageInput}
+            onpaste={pastedInput}
+            oninput={inputChanged}
         ></div>
     </div>
 
@@ -631,7 +640,7 @@
     {#if !input_expanded}
         <SystemPromptButton/>
         <ScrollDownButton
-            on:clicked={() => dispatch('scrollChatToBottom', { context: 'scroll_down_button' })}
+            scrollChatToBottom={scrollChatToBottom}
         />
     {/if}
 </section>

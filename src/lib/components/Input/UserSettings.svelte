@@ -21,7 +21,7 @@
                 <div class='title'>
                     User Settings
                 </div>
-                <button class='close-button' on:click={() => $user_settings_active = false }>
+                <button class='close-button' onclick={() => $user_settings_active = false }>
                     <img class='close-icon' src='/img/icons/close-white.png' alt='Close'>
                 </button>
             </div>

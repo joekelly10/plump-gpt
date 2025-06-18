@@ -3,10 +3,15 @@
     import { quartOut } from 'svelte/easing'
     import { user_settings_active, model_list_active } from '$lib/stores/app'
 
-    export let input_overflowed = false,
-               input_expanded = false
+    let {
+        // bindable
+        input_expanded = $bindable(false),
 
-    $: show = input_overflowed || input_expanded
+        // passive
+        input_overflowed
+    } = $props()
+
+    const show = $derived(input_overflowed || input_expanded)
 
     const toggleExpanded = () => {
         $user_settings_active = false
@@ -19,7 +24,7 @@
     <button
         class='expand-button'
         class:expanded={input_expanded}
-        on:click={toggleExpanded}
+        onclick={toggleExpanded}
         in:slide={{ axis: 'y', delay: 333, duration: 125, easing: quartOut }}
         out:slide={{ axis: 'y', delay: 333, duration: 125, easing: quartOut }}
     >

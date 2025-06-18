@@ -10,14 +10,14 @@
         <button
             class='button off-button'
             class:selected={$config.smooth_output === false}
-            on:click={() => $config.smooth_output = false}
+            onclick={() => $config.smooth_output = false}
         >
             Off
         </button>
         <button
             class='button on-button'
             class:selected={$config.smooth_output === true}
-            on:click={() => $config.smooth_output = true}
+            onclick={() => $config.smooth_output = true}
         >
             On
         </button>

@@ -1,25 +1,59 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { model } from '$lib/stores/ai'
     import { model_list_active, user_settings_active } from '$lib/stores/app'
     import { getPrices } from '$lib/utils/prices'
 
-    const dispatch = createEventDispatcher()
+    let {
+        // actions
+        focusInput,
 
-    export let hovering = false
+        // bindable
+        hovering = $bindable(false)
+    } = $props()
 
-    let animate_model_change = false
+    let animate_model_change = $state(false)
 
-    $: prices            = getPrices($model)
-    $: input_price_text  = prices.input  === 0 ? 'Free' : `$${(prices.input * 10000).toFixed(2)}`
-    $: output_price_text = prices.output === 0 ? 'Free' : `$${(prices.output * 10000).toFixed(2)}`
-    $: modelChanged($model)
+    const prices            = $derived(getPrices($model)),
+          input_price_text  = $derived(prices.input  === 0 ? 'Free' : `$${(prices.input * 10000).toFixed(2)}`),
+          output_price_text = $derived(prices.output === 0 ? 'Free' : `$${(prices.output * 10000).toFixed(2)}`)
 
-    const modelChanged = (_) => {
+    $effect(() => { $model; modelWasChanged() })
+
+    const modelWasChanged = () => {
         animate_model_change = true
         setTimeout(() => { animate_model_change = false }, 5)
+    }
+
+    const mouseenter = () => {
+        hovering = true
+    }
+
+    const mouseleave = () => {
+        hovering = false
+    }
+
+    const clicked = () => {
+        $user_settings_active = false
+        $model_list_active    = !$model_list_active
+        focusInput()
+    }
+
+    const rightClicked = (e) => {
+        e.preventDefault()
+        focusInput()
+        return false
+    }
+
+    const onwheel = (e) => {
+        e.preventDefault()
+        if (e.deltaY > 0) {
+            model.next()
+        } else {
+            model.prev()
+        }
+        return false
     }
 
     const keydown = (e) => {
@@ -33,40 +67,18 @@
             model.next()
         }
     }
-
-    const clicked = () => {
-        $user_settings_active = false
-        $model_list_active    = !$model_list_active
-        dispatch('focusInput')
-    }
-
-    const rightClicked = (e) => {
-        e.preventDefault()
-        dispatch('focusInput')
-        return false
-    }
-
-    const handleWheel = (e) => {
-        e.preventDefault()
-        if (e.deltaY > 0) {
-            model.next()
-        } else {
-            model.prev()
-        }
-        return false
-    }
 </script>
 
-<svelte:document on:keydown={keydown} />
+<svelte:document onkeydown={keydown} />
 
 <button 
     class='active-model-button'
     class:animate-model-change={animate_model_change}
-    on:click={clicked}
-    on:contextmenu={rightClicked}
-    on:mouseenter={() => hovering = true}
-    on:mouseleave={() => hovering = false}
-    on:wheel={handleWheel}
+    onclick={clicked}
+    oncontextmenu={rightClicked}
+    onmouseenter={mouseenter}
+    onmouseleave={mouseleave}
+    onwheel={onwheel}
 >
     <img class='icon' src='/img/icons/models/{$model.icon}' alt='{$model.name}'>
     {#if hovering}

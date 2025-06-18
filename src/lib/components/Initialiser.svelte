@@ -10,8 +10,8 @@
 
     let {
         // actions
-        sendImmediately,
         setInputText,
+        sendMessage,
 
         // events
         onReady
@@ -39,7 +39,7 @@
             setMessage()
 
             if (send_immediately) {
-                sendImmediately()
+                sendMessage()
                 removeSendImmediatelyFromURL()
             }
 

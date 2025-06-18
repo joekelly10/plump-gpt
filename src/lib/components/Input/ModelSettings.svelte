@@ -2,17 +2,17 @@
     import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
 
-    import TopPControl from '$lib/components/Input/TopPControl.svelte'
-    import TemperatureControl from '$lib/components/Input/TemperatureControl.svelte'
+    import TopPButton from '$lib/components/Input/TopPButton.svelte'
+    import TemperatureButton from '$lib/components/Input/TemperatureButton.svelte'
 
-    export let is_hovering_model_switcher = false
+    let { is_hovering_model_switcher } = $props()
 </script>
 
 <div class='model-settings'>
     {#if !is_hovering_model_switcher}
         <div class='controls' in:fade={{ duration: 125, easing: quartOut }} out:fade={{ duration: 75, easing: quartOut }}>
-            <TopPControl/>
-            <TemperatureControl/>
+            <TopPButton/>
+            <TemperatureButton/>
         </div>
     {/if}
 </div>

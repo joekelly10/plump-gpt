@@ -1,11 +1,10 @@
 <script>
-    import all_models from '$lib/fixtures/models'
-
     import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { config } from '$lib/stores/user'
+    import all_models from '$lib/fixtures/models'
 
-    $: default_model = all_models.find(m => m.id === $config.default_model_id)
+    const default_model = $derived(all_models.find(m => m.id === $config.default_model_id))
 </script>
 
 <div class='hover-info-default-model' in:fade={{ delay: 250, duration: 125, easing: quartOut }}>

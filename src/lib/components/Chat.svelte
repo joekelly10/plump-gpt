@@ -40,7 +40,7 @@
         renderActiveHighlights()
     }
 
-    export const sendingMessage = () => $is_provisionally_forking = false
+    export const onSendingMessage = () => $is_provisionally_forking = false
 
     export const scrollToBottom = (options = { context: null }) => {
         const bottom   = chat.scrollHeight - chat.clientHeight,

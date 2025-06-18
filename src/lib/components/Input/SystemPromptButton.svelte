@@ -3,11 +3,9 @@
     import { prompt_editor_active } from '$lib/stores/app'
     import { messages } from '$lib/stores/chat'
 
-    import SystemPromptIcon from '$lib/components/Icons/SystemPrompt.svelte'
+    let two_secs_elapsed = $state(false)
 
-    let two_secs_elapsed = false
-
-    $: highlight = $messages[0].system_prompt_title && !$messages[0].is_default && !two_secs_elapsed
+    const highlight = $derived($messages[0].system_prompt_title && !$messages[0].is_default && !two_secs_elapsed)
 
     onMount(() => {
         setTimeout(() => two_secs_elapsed = true, 2000)
@@ -21,7 +19,7 @@
 <button
     class='system-prompt-button'
     class:editor-active={$prompt_editor_active}
-    on:click={openPromptEditor}
+    onclick={openPromptEditor}
 >
     <div class='text'>
         <div class='label'>

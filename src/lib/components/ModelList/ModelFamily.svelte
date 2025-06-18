@@ -1,10 +1,19 @@
 <script>
     import ModelButton from '$lib/components/ModelList/ModelButton.svelte'
 
-    export let family,
-               models,
-               is_hovering_default,
-               is_hovering_prices
+    let {
+        // actions
+        focusInput,
+        closeModelList,
+
+        // bindable
+        is_hovering_default = $bindable(false),
+        is_hovering_prices  = $bindable(false),
+
+        // passive
+        family,
+        models,
+    } = $props()
 </script>
 
 <div class='model-family'>
@@ -14,11 +23,11 @@
     <div class='models'>
         {#each models as model}
             <ModelButton
-                model={model}
-                on:focusInput
-                on:closeModelList
                 bind:is_hovering_default
                 bind:is_hovering_prices
+                model={model}
+                focusInput={focusInput}
+                closeModelList={closeModelList}
             />
         {/each}
     </div>

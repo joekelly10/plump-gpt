@@ -11,7 +11,7 @@
     }
 </script>
 
-<button class='user-settings-button' class:active={$user_settings_active} on:click={clicked}>
+<button class='user-settings-button' class:active={$user_settings_active} onclick={clicked}>
     {#if $user_settings_active}
         <div class='arrow-icon' in:fade={{ duration: 125, easing: quartOut }}>
             &darr;

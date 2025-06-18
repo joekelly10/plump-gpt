@@ -2,7 +2,7 @@
     import all_models from '$lib/fixtures/models'
 
     import { onMount } from 'svelte'
-    import { slide, fade } from 'svelte/transition'
+    import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { model_list_active } from '$lib/stores/app'
 
@@ -10,9 +10,13 @@
     import HoverInfoDefaultModel from '$lib/components/ModelList/HoverInfoDefaultModel.svelte'
     import HoverInfoPrices from '$lib/components/ModelList/HoverInfoPrices.svelte'
 
-    let models_by_family    = [],
-        is_hovering_default = false,
-        is_hovering_prices  = false
+    let { focusInput } = $props()
+
+    let models_by_family    = $state([]),
+        is_hovering_default = $state(false),
+        is_hovering_prices  = $state(false)
+    
+    onMount(() => { setModelsByFamily() })
 
     const setModelsByFamily = () => {
         all_models.forEach(model => {
@@ -28,7 +32,9 @@
         })
     }
 
-    onMount(setModelsByFamily)
+    const close = () => {
+        $model_list_active = false
+    }
 </script>
 
 <section class='model-list-section'>
@@ -46,19 +52,19 @@
                     </span>
                     {all_models.length}
                 </div>
-                <button class='close-button' on:click={() => $model_list_active = false }>
+                <button class='close-button' onclick={close}>
                     <img class='close-icon' src='/img/icons/close-white.png' alt='Close'>
                 </button>
             </div>
             <div class='list'>
                 {#each models_by_family as family}
                     <ModelFamily
-                        family={family.family}
-                        models={family.models}
                         bind:is_hovering_default
                         bind:is_hovering_prices
-                        on:focusInput
-                        on:closeModelList={() => $model_list_active = false }
+                        family={family.family}
+                        models={family.models}
+                        focusInput={focusInput}
+                        closeModelList={close}
                     />
                 {/each}
             </div>

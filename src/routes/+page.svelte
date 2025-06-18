@@ -19,28 +19,26 @@
         chat,
         input
 
-    const focusInput            = () => input.focus()
-    const sendImmediately       = () => input.sendMessage()
-    const quoteSelectedText     = () => input.quoteSelectedText()
-    const chatModified          = () => input.chatLoaded()
-    const regenerateReply       = () => input.regenerateReply()
-    const addReply              = () => input.addReply()
-    const saveChat              = () => header.saveChat()
-    const sendingMessage        = () => chat.sendingMessage()
-    const cancelProvisionalFork = () => chat.cancelProvisionalFork()
+    const saveChat              = () => header.saveChat(),
+          scrollChatToBottom    = (options) => chat.scrollToBottom(options),
+          cancelProvisionalFork = () => chat.cancelProvisionalFork(),
+          onSendingMessage      = () => chat.onSendingMessage(),
+          focusInput            = () => input.focus(),
+          setInputText          = (text) => input.setText(text),
+          sendMessage           = () => input.sendMessage(),
+          addReply              = () => input.addReply(),
+          regenerateReply       = () => input.regenerateReply(),
+          quoteSelectedText     = () => input.quoteSelectedText(),
+          chatModified          = () => input.onChatUpdated()
 
-    const setInputText = (text) => {
-        input.setText(text)
-    }
-
-    const scrollChatToBottom = (e) => {
-        chat.scrollToBottom({ context: e.detail?.context })
-    }
-
-    const chatLoaded = () => {
-        input.chatLoaded({ switch_model: true })
+    const onChatLoaded = () => {
+        input.onChatUpdated({ switch_model: true })
         chat.renderActiveHighlights()
-        setTimeout(() => { chat.scrollToBottom({ context: 'chat_loaded' }) }, 250) // allow forks to load
+
+        // allow forks to load
+        setTimeout(() => {
+            chat.scrollToBottom({ context: 'chat_loaded' })
+        }, 250)
     }
 
     const goToMessage = (message_id) => {
@@ -69,21 +67,21 @@
     />
     <Input
         bind:this={input}
-        on:sendingMessage={sendingMessage}
-        on:scrollChatToBottom={scrollChatToBottom}
-        on:saveChat={saveChat}
+        saveChat={saveChat}
+        scrollChatToBottom={scrollChatToBottom}
+        onSendingMessage={onSendingMessage}
     />
 </main>
 
 <Initialiser
-    sendImmediately={sendImmediately}
     setInputText={setInputText}
+    sendMessage={sendMessage}
     onReady={focusInput}
 />
 
 {#if $loader_active}
     <Loader
-        onChatLoaded={chatLoaded}
+        onChatLoaded={onChatLoaded}
     />
 {/if}
 
