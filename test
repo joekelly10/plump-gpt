@@ -43,7 +43,7 @@ while [ $# -gt 0 ]; do
             shift
             if [ $# -eq 0 ]; then
                 echo
-                echo -e "  ${red_bold}❌ ${white}--grep requires a value${reset}"
+                echo -e "  ${red_bold}❌ ${white_bold}--grep requires a value${reset}"
                 echo
 
                 exit 1

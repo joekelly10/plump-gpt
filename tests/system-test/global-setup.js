@@ -56,7 +56,7 @@ const waitForBuild = async (timeout = 60) => {
         } else {
             process.stdout.write(`\n  ${red_bold}❌ Build failed:${reset}\n`)
             process.stdout.write(`     ${white_bold}${error.message}${reset}\n`)
-            process.stdout.write(`\n     ${white}Build logs saved to ${cyan_bold}test-containers-build.log${reset}\n`)
+            process.stdout.write(`     ${white}Build logs saved to ${cyan_bold}test-containers-build.log${reset}\n`)
         }
 
         throw error
