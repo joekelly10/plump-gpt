@@ -14,8 +14,8 @@
         close,
 
         // bindable
-        input_title,
-        input_message,
+        input_title   = $bindable(''),
+        input_message = $bindable(''),
 
         // passive
         read_only,
