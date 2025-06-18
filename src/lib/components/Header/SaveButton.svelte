@@ -68,7 +68,7 @@
     }
 </script>
 
-<svelte:document on:keydown={keydown} />
+<svelte:document onkeydown={keydown} />
 
 <button class='save-button {status}' title='Save chat (⌘+S)' onclick={saveChat}>
     <span class='save-text'>

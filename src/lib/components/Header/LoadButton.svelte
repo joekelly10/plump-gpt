@@ -14,7 +14,7 @@
     }
 </script>
 
-<svelte:document on:keydown={keydown} />
+<svelte:document onkeydown={keydown} />
 
 <button class='load-button' title='Open chat (⌘+O)' onclick={clicked}>
     Load
