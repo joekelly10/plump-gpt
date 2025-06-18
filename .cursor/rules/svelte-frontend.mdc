@@ -163,10 +163,15 @@ LEAVE AN EMPTY LINE
 LEAVE AN EMPTY LINE
 
 8. `export` exposed functions
-**Note:** These exports MUST be one liners. The point is to make it easy to understand what the exposed function does at a glance. They must either do one simple thing OR call another function defined later in the component.
+**Note:** These exports MUST be one liners. The point is to make it easy to read and understand the component's public API at a glance, without implementation details cluttering the view. The exported functions must either do one simple thing OR call an internal function defined later in the component. If the exported function name and the internal function name are the same, use an underscore:
 ```js
-    export const focusInput  = () => input.focus()
-                 sendMessage = () => send() // defined later in the component
+    export const focus             = () => input.focus(),
+                 setText           = async (text) => _setText(text),
+                 sendMessage       = async (is_regeneration = false) => _sendMessage(is_regeneration),
+                 addReply          = async () => _sendMessage(true),
+                 regenerateReply   = async () => _sendMessage(true),
+                 quoteSelectedText = () => _quoteSelectedText(),
+                 onChatUpdated     = async (options) => _onChatUpdated(options)
 ```
 
 9. destructuring of `$props()`
