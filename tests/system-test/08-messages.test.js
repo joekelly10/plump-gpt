@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { fastExpect, slowExpect, sleep } from '../helpers/tools'
 import { cssSanitised } from '../../src/lib/utils/helpers'
-import { delay_prompt, delay_reply } from '../mock/prompts/messages'
+import { delay_prompt, delay_reply, controls_prompt, controls_reply, controls_prompt_2, controls_reply_2, slow_prompt, slow_reply } from '../mock/prompts/messages'
 
 import defaults from '../../src/lib/fixtures/defaults'
 import models from '../../src/lib/fixtures/models'
@@ -10,6 +10,7 @@ test.describe('Messages', () => {
     test('we should see a waiting message while waiting for the API connection to be established', async ({ page }) => {
         await page.goto('/')
 
+        // needs to be Open AI for this test to work (see mock endpoint)
         const input               = page.locator('.primary-input-section .input'),
               model_list_button   = page.locator('.active-model-button'),
               model_list          = page.locator('.models-by-family'),
@@ -44,6 +45,7 @@ test.describe('Messages', () => {
     test('we should see a waiting message while waiting for the reply to start streaming', async ({ page }) => {
         await page.goto('/')
 
+        // needs to be Open AI for this test to work (see mock endpoint)
         const input               = page.locator('.primary-input-section .input'),
               model_list_button   = page.locator('.active-model-button'),
               model_list          = page.locator('.models-by-family'),
@@ -71,5 +73,97 @@ test.describe('Messages', () => {
         await fastExpect(ai_message).toHaveCount(1)
         await fastExpect(ai_message.locator('.status-text')).toContainText(`Waiting for ${openai_model.short_name}`)
         await fastExpect(ai_message.locator('.message-content')).toHaveText(delay_reply)
+    })
+
+    test('full controls should be visible on the last AI reply only', async ({ page }) => {
+        await page.goto('/')
+
+        const input        = page.locator('.primary-input-section .input'),
+              chat         = page.locator('.chat'),
+              user_message = chat.locator('.messages .message.user'),
+              ai_message   = chat.locator('.messages .message.assistant')
+              
+        await input.fill(controls_prompt)
+        await page.keyboard.press('Enter')
+
+        await fastExpect(input).toHaveText('')
+        await fastExpect(user_message).toHaveCount(1)
+        await fastExpect(user_message.locator('.message-content')).toHaveText(controls_prompt)
+        await fastExpect(ai_message).toHaveCount(1)
+        await fastExpect(ai_message.locator('.message-content')).toHaveText(controls_reply)
+        await fastExpect(ai_message.locator('.message-controls-right .add')).toBeVisible()
+        await fastExpect(ai_message.locator('.message-controls-right .retry')).toBeVisible()
+        await fastExpect(ai_message.locator('.message-controls-right .delete')).toBeVisible()
+        await fastExpect(ai_message.locator('.message-controls-right .fork')).toBeHidden()
+        await fastExpect(ai_message.locator('.message-controls-left .star')).toBeVisible()
+
+        await sleep(500)
+
+        await input.fill(controls_prompt_2)
+        await page.keyboard.press('Enter')
+
+        await fastExpect(input).toHaveText('')
+        await fastExpect(user_message).toHaveCount(2)
+        await fastExpect(user_message.nth(1).locator('.message-content')).toHaveText(controls_prompt_2)
+        await fastExpect(ai_message).toHaveCount(2)
+        await fastExpect(ai_message.nth(1).locator('.message-content')).toHaveText(controls_reply_2)
+
+        await fastExpect(ai_message.nth(0).locator('.message-controls-right .add')).not.toBeVisible()
+        await fastExpect(ai_message.nth(0).locator('.message-controls-right .retry')).not.toBeVisible()
+        await fastExpect(ai_message.nth(0).locator('.message-controls-right .delete')).not.toBeVisible()
+        await fastExpect(ai_message.nth(0).locator('.message-controls-right .fork')).toBeVisible()
+        await fastExpect(ai_message.nth(0).locator('.message-controls-left .star')).toBeVisible()
+
+        await fastExpect(ai_message.nth(1).locator('.message-controls-right .add')).toBeVisible()
+        await fastExpect(ai_message.nth(1).locator('.message-controls-right .retry')).toBeVisible()
+        await fastExpect(ai_message.nth(1).locator('.message-controls-right .delete')).toBeVisible()
+        await fastExpect(ai_message.nth(1).locator('.message-controls-right .fork')).not.toBeVisible()
+        await fastExpect(ai_message.nth(1).locator('.message-controls-left .star')).toBeVisible()
+    })
+
+    test('all message controls should be hidden while a reply is streaming', async ({ page }) => {
+        await page.goto('/')
+
+        // needs to be Open AI for this test to work (see mock endpoint)
+        const input               = page.locator('.primary-input-section .input'),
+              model_list_button   = page.locator('.active-model-button'),
+              model_list          = page.locator('.models-by-family'),
+              openai_model        = models.find(m => m.type === 'open-ai'),
+              openai_model_button = model_list.locator(`#model-button-${cssSanitised(openai_model.id)}`),
+              active_model_icon   = model_list_button.locator('.icon'),
+              chat                = page.locator('.chat'),
+              user_message        = chat.locator('.messages .message.user'),
+              ai_message          = chat.locator('.messages .message.assistant'),
+              controls_right      = ai_message.locator('.message-controls-right'),
+              controls_left       = ai_message.locator('.message-controls-left')
+
+        await model_list_button.click()
+        await fastExpect(model_list).toBeVisible()
+        await fastExpect(openai_model_button).toBeVisible()
+
+        await openai_model_button.click()
+        await fastExpect(model_list).toBeHidden()
+        await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${openai_model.icon}`)
+              
+        await input.fill(slow_prompt)
+        await page.keyboard.press('Enter')
+
+        await fastExpect(input).toHaveText('')
+        await fastExpect(user_message).toHaveCount(1)
+        await fastExpect(user_message.locator('.message-content')).toHaveText(slow_prompt)
+        await fastExpect(ai_message).toHaveCount(1)
+        await fastExpect(controls_right).toBeHidden()
+        await fastExpect(controls_left).toBeHidden()
+
+        // need to make sure the reply takes >1s to stream
+        await sleep(1000)
+
+        // should still be hidden...
+        await fastExpect(controls_right).toBeHidden()
+        await fastExpect(controls_left).toBeHidden()
+
+        await expect(ai_message.locator('.message-content')).toHaveText(slow_reply)
+        await fastExpect(controls_right).toBeVisible()
+        await fastExpect(controls_left).toBeVisible()
     })
 })

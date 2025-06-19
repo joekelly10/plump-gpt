@@ -8,9 +8,10 @@ export const POST = async ({ request }) => {
 
     const prompt        = messages[messages.length - 1].content,
           reply         = getAIReply(prompt),
-          is_delay_test = prompt.includes('[DELAY]')
+          is_delay_test = prompt.includes('[DELAY]'),
+          is_slow_test  = prompt.includes('[SLOW]')
 
-    if (is_delay_test) await sleep(3000)
+    if (is_delay_test) await sleep(2500)
 
     const { input_tokens, output_tokens } = getUsage(messages, reply)
 
@@ -28,7 +29,7 @@ export const POST = async ({ request }) => {
             for (let i = 0; i < words.length; i++) {
                 json = JSON.stringify(deltaObject(model, words[i]))
                 enqueue(json)
-                await sleep(speed_limit.fast)
+                await sleep(is_slow_test ? speed_limit.slow : speed_limit.fast)
             }
 
             json = JSON.stringify(finishObject(model))

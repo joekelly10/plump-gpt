@@ -1,5 +1,5 @@
 export const speed_limit = {
-    slow:   50, // ms per word
-    medium: 10,
+    slow:   250, // ms per word
+    medium: 50,
     fast:   5
 }
