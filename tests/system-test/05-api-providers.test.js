@@ -6,7 +6,7 @@ import { basic_prompt, basic_reply } from '../mock/prompts/basic_reply'
 import defaults from '../../src/lib/fixtures/defaults'
 import models from '../../src/lib/fixtures/models'
 
-test.describe('Providers', () => {
+test.describe('API Providers', () => {
     test('we should be able to stream a reply from Open AI', async ({ page }) => {
         await page.goto('/')
 
