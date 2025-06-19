@@ -3,6 +3,7 @@ import { Tiktoken } from 'tiktoken/lite'
 import cl100k_base from 'tiktoken/encoders/cl100k_base.json' assert { type: 'json' }
 
 export const fastExpect = (locator) => expect(locator, { timeout: 500 })
+export const slowExpect = (locator) => expect(locator, { timeout: 20_000 })
 
 export const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
