@@ -1,5 +1,4 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
     import { fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { is_hovering } from '$lib/stores/chat/interactions'
@@ -7,24 +6,26 @@
     import AddIcon from '$lib/components/Icons/Add.svelte'
     import DeleteIcon from '$lib/components/Icons/Delete.svelte'
 
-    const dispatch = createEventDispatcher()
+    let {
+        // actions
+        addReply,
+        cancelFork,
 
-    export let message
+        // passive
+        message
+    } = $props()
 
-    const hoveredAddReply = async () => {
+    const mouseenterAddReply = async () => {
         $is_hovering.add_reply = [...$is_hovering.add_reply, message.id, message.parent_id]
     }
 
-    const unhoveredAddReply = async () => {
+    const mouseleaveAddReply = async () => {
         $is_hovering.add_reply = $is_hovering.add_reply.filter(id => ![message.id, message.parent_id].includes(id))
     }
-
-    const clickedAddReply   = () => dispatch('addReply', { message_id: message.parent_id })
-    const clickedCancelFork = () => dispatch('cancelProvisionalFork')
 </script>
 
 <div class='provisional-fork-controls' in:fly={{ x: -32, delay: 0, duration: 250, easing: quartOut }}>
-    <button class='provisional-fork-button add-reply' title='Add another reply' on:click={clickedAddReply} on:mouseenter={hoveredAddReply} on:mouseleave={unhoveredAddReply}>
+    <button class='provisional-fork-button add-reply' title='Add another reply' onclick={addReply} onmouseenter={mouseenterAddReply} onmouseleave={mouseleaveAddReply}>
         <div class='icon-container'>
             <AddIcon className='icon' />
         </div>
@@ -32,7 +33,7 @@
             Add Reply
         </div>
     </button>
-    <button class='provisional-fork-button cancel-fork' title='Cancel Fork (esc)' on:click={clickedCancelFork}>
+    <button class='provisional-fork-button cancel-fork' title='Cancel Fork (esc)' onclick={cancelFork}>
         <div class='icon-container'>
             <DeleteIcon className='icon' />
         </div>

@@ -1,22 +1,43 @@
 <script>
     import { fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
+    import { smoothScroll } from '$lib/utils/helpers'
     import { marked } from 'marked'
     import DOMPurify from 'dompurify'
 
-    export let message,
-               is_streaming,
-               has_finished_reasoning,
-               scroll_reasoning_interrupted,
-               reasoning_div,
-               delete_highlight,
-               regenerate_highlight,
-               star_highlight,
-               is_starred
+    export const scrollToBottom = () => _scrollToBottom()
 
-    $: reasoning_content = DOMPurify.sanitize(marked(message.reasoning_content))
+    let {
+        // bindable
+        scroll_reasoning_interrupted = $bindable(false),
 
-    const handleWheel = (e) => {
+        // passive
+        message,
+        is_streaming,
+        has_finished_reasoning,
+        delete_highlight,
+        regenerate_highlight,
+        star_highlight,
+        is_starred
+    } = $props()
+
+    let reasoning_div
+
+    const reasoning_content = $derived(DOMPurify.sanitize(marked(message.reasoning_content)))
+
+    const _scrollToBottom = () => {
+        if (is_streaming && reasoning_div && !scroll_reasoning_interrupted) {
+            const bottom   = reasoning_div.scrollHeight - reasoning_div.clientHeight,
+                  distance = bottom - reasoning_div.scrollTop
+            if (distance < 300) {
+                smoothScroll(reasoning_div, bottom, 250, 'cubicOut')
+            } else {
+                smoothScroll(reasoning_div, bottom, 500, 'quartOut')
+            }
+        }
+    }
+
+    const onwheel = (e) => {
         const scrolled_down    = e.deltaY > 0,
               was_on_reasoning = e.target.closest('.reasoning-content')
         if (scrolled_down && was_on_reasoning) {
@@ -30,13 +51,13 @@
 </script>
 
 <div
+    bind:this={reasoning_div}
     class='reasoning-content'
     class:delete-highlight={delete_highlight}
     class:regenerate-highlight={regenerate_highlight}
     class:star-highlight={star_highlight}
     class:starred={is_starred}
-    bind:this={reasoning_div}
-    on:wheel={handleWheel}
+    onwheel={onwheel}
 >
     <p class='reasoning-title'>
         Thinking...

@@ -1,11 +1,9 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { stars } from '$lib/stores/chat'
     import { is_hovering, is_deleting, is_provisionally_forking } from '$lib/stores/chat/interactions'
     import { is_sending, is_streaming as api_is_streaming } from '$lib/stores/api'
-    import { smoothScroll } from '$lib/utils/helpers'
     import { deleteHighlight } from '$lib/utils/highlighter'
     import { marked } from 'marked'
     import DOMPurify from 'dompurify'
@@ -25,61 +23,63 @@
 
     marked.use({ breaks: true, mangle: false, headerIds: false })
 
-    const dispatch = createEventDispatcher()
+    export const getOffsetTop            = () => message_el.offsetTop,
+                 scrollReasoningToBottom = () => _scrollReasoningToBottom(),
+                 tempHighlight           = () => _tempHighlight()
+    
+    let {
+        // actions
+        scrollToBottom,
+        addReply,
+        regenerateReply,
+        switchToFork,
+        cancelFork,
+        saveChat,
 
-    export let message,
-               scroll_reasoning_interrupted
+        // events
+        onChatUpdated,
 
-    let element        = null,
-        show_info      = false,
-        reasoning_div  = null,
-        temp_highlight = false,
-        temp_timer     = null
+        // bindable
+        forking_from                 = $bindable(null),
+        scroll_reasoning_interrupted = $bindable(false),
+        scroll_reasoning_pending_id  = $bindable(null),
 
-    $: is_starred             = $stars.includes(message.id)
-    $: is_streaming           = message.is_last && message.role === 'assistant' && $api_is_streaming
-    $: no_message             = !message.content && !message.reasoning_content
-    $: has_finished_reasoning = message.content.length > 0
+        // passive
+        message
+    } = $props()
 
-    $: message_content = DOMPurify.sanitize(marked(message.content))
+    let message_el,
+        temp_timer
 
-    $: add_reply_highlight  = $is_hovering.add_reply.includes(message.id)
-    $: regenerate_highlight = $is_hovering.regenerate.includes(message.id)
-    $: star_highlight       = $is_hovering.star.includes(message.id)
-    $: delete_highlight     = !(message.role === 'user' && message.forks.length > 1) && $is_hovering.delete.includes(message.id)
+    let reasoning_content = $state(null), // component reference (nb: not reactive, but svelte 5 compiler sees {#if} conditional binding and expects $state)
+        show_info         = $state(false),
+        temp_highlight    = $state(false)
+    
+    const is_starred             = $derived($stars.includes(message.id)),
+          is_streaming           = $derived(message.is_last && message.role === 'assistant' && $api_is_streaming),
+          no_message             = $derived(!message.content && !message.reasoning_content),
+          has_finished_reasoning = $derived(message.content.length > 0),
+          message_content        = $derived(DOMPurify.sanitize(marked(message.content))),
+          add_reply_highlight    = $derived($is_hovering.add_reply.includes(message.id)),
+          regenerate_highlight   = $derived($is_hovering.regenerate.includes(message.id)),
+          star_highlight         = $derived($is_hovering.star.includes(message.id)),
+          delete_highlight       = $derived(!(message.role === 'user' && message.forks.length > 1) && $is_hovering.delete.includes(message.id)),
+          is_small_message       = $derived(message_el.clientHeight < 140)
+    
+    $effect(() => { scroll_reasoning_pending_id === message.id && scrollReasoningToBottom() })
 
-    export const getOffsetTop = () => element.offsetTop
-
-    export const scrollReasoningToBottom = () => {
-        if (is_streaming && reasoning_div && !scroll_reasoning_interrupted) {
-            const bottom   = reasoning_div.scrollHeight - reasoning_div.clientHeight,
-                  distance = bottom - reasoning_div.scrollTop
-            if (distance < 300) {
-                smoothScroll(reasoning_div, bottom, 250, 'cubicOut')
-            } else {
-                smoothScroll(reasoning_div, bottom, 500, 'quartOut')
-            }
-        }
+    const _scrollReasoningToBottom = () => {
+        if (!scroll_reasoning_interrupted) reasoning_content?.scrollToBottom()
+        scroll_reasoning_pending_id = null
     }
 
-    export const tempHighlight = () => {
+    const _tempHighlight = () => {
         clearTimeout(temp_timer)
         temp_highlight = true
         temp_timer     = setTimeout(() => { temp_highlight = false }, 2500)
     }
 
-    const toggleStar = () => {
-        if (is_starred) {
-            $stars = $stars.filter(id => id !== message.id)
-            console.log(`⭐️ Unstarred ${message.id}...`)
-        } else {
-            $stars = [...$stars, message.id]
-            console.log(`⭐️ Starred ${message.id}...`)
-        }
-        dispatch('saveChat')
-    }
-
-    const handleClick = (e) => {
+    const onclick = (e) => {
         const text_highlight = e.target.closest('._text-highlight')
         if (text_highlight) {
             const highlight_id = text_highlight.dataset.highlight_id
@@ -96,7 +96,7 @@
 
         if (confirm(`Delete this highlight?  Press OK to confirm.`)) {
             deleteHighlight(highlight_id)
-            dispatch('saveChat')
+            saveChat()
         } else {
             all_spans.forEach(span => { span.classList.remove('deleting') })
         }
@@ -104,7 +104,7 @@
 </script>
 
 <div
-    bind:this={element}
+    bind:this={message_el}
     id='message-{message.id}'
     data-message_id={message.id}
     class='message {message.role}'
@@ -119,9 +119,22 @@
     class:no-forks={message.forks.length === 0}
     out:slide={{ duration: $is_deleting ? 250 : 0, easing: quartOut }}
     in:slide={{ delay: $is_deleting ? 500 : 0, duration: $is_deleting ? 250 : 0, easing: quartOut }}
-    on:click={handleClick}
+    onclick={onclick}
 >
     <div class='content'>
+        {#if message.reasoning_content}
+            <ReasoningContent
+                bind:this={reasoning_content}
+                bind:scroll_reasoning_interrupted
+                message={message}
+                is_streaming={is_streaming}
+                has_finished_reasoning={has_finished_reasoning}
+                delete_highlight={delete_highlight}
+                regenerate_highlight={regenerate_highlight}
+                star_highlight={star_highlight}
+                is_starred={is_starred}
+            />
+        {/if}
         {#if no_message}
             <p class='status-text'>
                 {#if is_streaming}
@@ -131,19 +144,6 @@
                 {/if}
             </p>
         {:else}
-            {#if message.reasoning_content}
-                <ReasoningContent
-                    bind:reasoning_div
-                    bind:scroll_reasoning_interrupted
-                    message={message}
-                    is_streaming={is_streaming}
-                    has_finished_reasoning={has_finished_reasoning}
-                    delete_highlight={delete_highlight}
-                    regenerate_highlight={regenerate_highlight}
-                    star_highlight={star_highlight}
-                    is_starred={is_starred}
-                />
-            {/if}
             <div class='message-content'>
                 {@html message_content}
             </div>
@@ -163,21 +163,22 @@
 
     {#if message.role === 'assistant' && !($is_sending || $api_is_streaming || $is_provisionally_forking)}
         <Controls
+            bind:forking_from
             message={message}
             is_starred={is_starred}
             showing_message_info={show_info}
-            on:addReply
-            on:regenerateReply
-            on:deleteOne
-            on:deleteBoth
-            on:forkFrom
-            on:toggleStar={toggleStar}
+            addReply={addReply}
+            regenerateReply={regenerateReply}
+            switchToFork={switchToFork}
+            scrollToBottom={scrollToBottom}
+            saveChat={saveChat}
+            onChatUpdated={onChatUpdated}
         />
     {:else if $is_provisionally_forking && message.is_last}
         <ProvisionalForkControls
             message={message}
-            on:addReply
-            on:cancelProvisionalFork
+            addReply={addReply}
+            cancelFork={cancelFork}
         />
     {/if}
 
@@ -186,23 +187,23 @@
     {:else if message.role === 'assistant' && regenerate_highlight}
         <HoverInfoRegenerate/>
     {:else if message.role === 'assistant' && delete_highlight}
-        <HoverInfoDelete small={element.clientHeight < 140} />
+        <HoverInfoDelete small_message={is_small_message} />
     {:else if message.role === 'assistant' && star_highlight}
-        <HoverInfoStar is_starred={is_starred} small={element.clientHeight < 140} />
+        <HoverInfoStar is_starred={is_starred} small_message={is_small_message} />
     {/if}
 </div>
 
 {#if message.role === 'user' && message.forks.length > 1}
     <PromptForks
         message={message}
-        on:switchToFork
+        switchToFork={switchToFork}
     />
 {/if}
 
 {#if message.role === 'assistant' && message.forks.length > 0}
     <ReplyForks
         message={message}
-        on:switchToFork
+        switchToFork={switchToFork}
     />
 {/if}
 

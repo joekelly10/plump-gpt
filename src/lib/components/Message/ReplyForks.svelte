@@ -1,5 +1,4 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
     import { fly, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { is_idle } from '$lib/stores/api'
@@ -7,11 +6,15 @@
 
     import ForkIcon from '$lib/components/Icons/Fork.svelte'
 
-    const dispatch = createEventDispatcher()
+    let {
+        // actions
+        switchToFork,
 
-    export let message
+        // passive
+        message
+    } = $props()
 
-    let show_hover_info_above
+    let show_hover_info_above = $state(false)
 
     const mouseenter = (e) => {
         const rect = e.target.getBoundingClientRect()
@@ -23,7 +26,7 @@
     }
 
     const clickedFork = (fork) => {
-        if ($is_idle) dispatch('switchToFork', { fork_index: fork.index })
+        if ($is_idle) switchToFork(fork.index)
     }
 </script>
 
@@ -38,8 +41,8 @@
             <button
                 class='reply-fork-button'
                 class:active={fork.is_active}
-                on:click={() => clickedFork(fork)}
-                on:mouseenter={mouseenter}
+                onclick={() => clickedFork(fork)}
+                onmouseenter={mouseenter}
             >
                 <ForkIcon className='icon' />
                 {i + 1}

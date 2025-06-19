@@ -3,7 +3,7 @@
     import { page } from '$app/stores'
     import { loader_active, prompt_editor_active, user_settings_active, model_list_active } from '$lib/stores/app'
     import { chat_id, messages, forks, active_fork, active_messages, stars, highlights } from '$lib/stores/chat'
-    import { is_hovering, is_adding_reply, is_scrolled_to_bottom } from '$lib/stores/chat/interactions'
+    import { is_hovering, is_adding_reply, is_scrolled_to_bottom, is_provisionally_forking } from '$lib/stores/chat/interactions'
     import { model, temperature, top_p } from '$lib/stores/ai'
     import { api_state, is_idle } from '$lib/stores/api'
     import { config } from '$lib/stores/user'
@@ -30,9 +30,6 @@
         // actions
         saveChat,
         scrollChatToBottom,
-
-        // events
-        onSendingMessage
     } = $props()
 
     let input,
@@ -86,7 +83,7 @@
             $messages        = [...$messages, user_message]
             $forks[$active_fork].message_ids.push(user_message.id)
             $forks[$active_fork].provisional = false
-            onSendingMessage()
+            $is_provisionally_forking = false
             $forks = $forks
         }
 

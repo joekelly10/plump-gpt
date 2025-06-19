@@ -4,17 +4,27 @@
     import { avatar_href } from '$lib/stores/user'
     import { model } from '$lib/stores/ai'
 
-    export let message,
-               show_info
+    let {
+        // bindable
+        show_info = $bindable(false),
+
+        // passive
+        message
+    } = $props()
+
+    let copy_timer
     
-    let show_copied = false,
-        copy_timer  = null
+    let show_copied = $state(false)
 
     const copyMessageToClipboard = async () => {
         clearTimeout(copy_timer)
         await navigator.clipboard.writeText(message.content)
         show_copied = true
         copy_timer = setTimeout(() => { show_copied = false }, 2000)
+    }
+
+    const setModel = () => {
+        model.setById(message.model.id)
     }
 </script>
 
@@ -24,17 +34,17 @@
             class='avatar user'
             src={$avatar_href}
             alt='You'
-            on:dblclick={copyMessageToClipboard}
+            ondblclick={copyMessageToClipboard}
         >
     {:else}
         <img
             class='avatar ai'
             src='/img/icons/models/{message.model.icon}'
             alt='{message.model.name}'
-            on:mouseenter={() => { show_info = true }}
-            on:mouseleave={() => { show_info = false }}
-            on:click={() => { model.setById(message.model.id) }}
-            on:dblclick={copyMessageToClipboard}
+            onmouseenter={() => { show_info = true }}
+            onmouseleave={() => { show_info = false }}
+            onclick={setModel}
+            ondblclick={copyMessageToClipboard}
         >
     {/if}
     {#if show_copied}

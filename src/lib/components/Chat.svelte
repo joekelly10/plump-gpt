@@ -1,13 +1,13 @@
 <script>
-    import { createEventDispatcher, tick } from 'svelte'
+    import { tick } from 'svelte'
     import { fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { tree_active, loader_active, prompt_editor_active } from '$lib/stores/app'
-    import { messages, forks, active_fork, active_messages, fork_points, stars, highlights, usage } from '$lib/stores/chat'
-    import { is_deleting, is_adding_reply, is_provisionally_forking, is_scrolled_to_bottom } from '$lib/stores/chat/interactions'
+    import { messages, forks, active_fork, active_messages, fork_points, highlights, usage } from '$lib/stores/chat'
+    import { is_provisionally_forking, is_scrolled_to_bottom } from '$lib/stores/chat/interactions'
     import { model } from '$lib/stores/ai'
-    import { is_idle, is_sending } from '$lib/stores/api'
-    import { insert, smoothScroll } from '$lib/utils/helpers'
+    import { is_sending } from '$lib/stores/api'
+    import { smoothScroll } from '$lib/utils/helpers'
     import { createHighlight, renderHighlights } from '$lib/utils/highlighter'
 
     import UsageStats from '$lib/components/Chat/UsageStats.svelte'
@@ -15,34 +15,48 @@
     import WaitingDots from '$lib/components/Chat/WaitingDots.svelte'
     import HighlightAction from '$lib/components/Chat/HighlightAction.svelte'
 
-    const dispatch = createEventDispatcher()
+    export const scrollToBottom         = (options) => _scrollToBottom(options),
+                 goToMessage            = (options) => _goToMessage(options),
+                 renderActiveHighlights = () => _renderActiveHighlights(),
+                 cancelFork             = () => _cancelFork()
+
+    let {
+        // actions
+        saveChat,
+        addReply,
+        regenerateReply,
+        quoteSelectedText,
+
+        // events
+        onChatUpdated
+    } = $props()
     
     let chat,
-        forking_from,
         uparrow_limiter,
         downarrow_limiter
 
-    let message_refs                 = [], // references to the list of `Message` components
-        scroll_interrupted           = false,
-        scroll_reasoning_interrupted = false,
-        highlight_action_visible     = false,
-        highlight_action_position    = { x: 0, y: 0 }
+    let message_refs                 = $state([]), // references to the list of `Message` components
+        forking_from                 = $state(null),
+        scroll_interrupted           = $state(false),
+        scroll_reasoning_interrupted = $state(false),
+        scroll_reasoning_pending_id  = $state(null), // flag to trigger scrolling of reasoning content
+        highlight_action_visible     = $state(false),
+        highlight_action_position    = $state({ x: 0, y: 0 })
 
-    $: processed_messages = $active_messages.slice(1).map((message, i) => ({
+    const processed_messages = $derived($active_messages.slice(1).map((message, i) => ({
         ...message,
         is_last:      i === $active_messages.slice(1).length - 1,
-        forks:        getForksAt(message),
-        has_siblings: hasSiblings(message)
-    }))
+        has_siblings: hasSiblings(message),
+        forks:        getForksAt(message)
+    })))
 
-    $: {
-        $highlights
+    $effect(() => { $highlights; whenHighlightsChange() })
+
+    const whenHighlightsChange = () => {
         renderActiveHighlights()
     }
 
-    export const onSendingMessage = () => $is_provisionally_forking = false
-
-    export const scrollToBottom = (options = { context: null }) => {
+    const _scrollToBottom = (options = { context: null }) => {
         const bottom   = chat.scrollHeight - chat.clientHeight,
               distance = bottom - chat.scrollTop
 
@@ -66,9 +80,9 @@
                     smoothScroll(chat, bottom, 500, 'quartOut')
                 }
             }
-            if (!scroll_reasoning_interrupted) {
+            if ($model.is_reasoner && !scroll_reasoning_interrupted) {
                 const id_of_last = $active_messages[$active_messages.length - 1].id
-                message_refs[id_of_last]?.scrollReasoningToBottom()
+                scroll_reasoning_pending_id = id_of_last
             }
         } else if (['scroll_down_button', 'keyboard_shortcut', 'chat_loaded', 'new_fork'].includes(options.context)) {
             scroll_interrupted           = false
@@ -87,7 +101,7 @@
         }
     }
 
-    export const goToMessage = (options = { message_id: null, delay: 0 }) => {
+    const _goToMessage = (options = { message_id: null, delay: 0 }) => {
         if (!$forks[$active_fork].message_ids.includes(options.message_id)) {
             $active_fork = $forks.findIndex(fork => fork.message_ids.includes(options.message_id))
         }
@@ -101,7 +115,7 @@
         }, options.delay)
     }
 
-    export const renderActiveHighlights = () => {
+    const _renderActiveHighlights = () => {
         //
         //  HACK: prevents rendering highlights twice when loading chat.
         //  first time is when $highlights is set on load but chat html
@@ -113,31 +127,69 @@
         const active_highlights = $highlights.filter(highlight => {
             return $active_messages.some(message => message.id === highlight.message_id)
         })
+
         renderHighlights(active_highlights)
     }
 
-    export const cancelProvisionalFork = () => {
+    const _cancelFork = () => {
         if (!$is_provisionally_forking) return
         switchToFork(forking_from)
     }
 
-    const scrollToTop = () => {
-        scroll_interrupted = true
-        const distance = chat.scrollHeight - chat.clientHeight
-        if (distance < 1000) {
-            return smoothScroll(chat, 0, 333, 'quartOut')
-        } else if (distance < 2500) {
-            return smoothScroll(chat, 0, 500, 'quartOut')
-        } else if (distance < 5000) {
-            return smoothScroll(chat, 0, 750, 'quartOut')
-        } else if (distance < 7500) {
-            return smoothScroll(chat, 0, 1000, 'quartOut')
-        } else {
-            return smoothScroll(chat, 0, 1250, 'quartOut')
-        }
+    const hasSiblings = (message) => {
+        const parent = $messages.find(m => m.id === message.parent_id)
+        return getForksAt(parent).length > 0
     }
 
-    const keydown = (e) => {
+    const getForksAt = (message) => {
+        let all_forks = []
+
+        const firstIndexOf = (fork_point) => {
+            const index = $forks.findIndex(fork => {
+                const index = fork.message_ids.findIndex(id => id === fork_point[0])
+                return fork.message_ids[index + 1] === fork_point[1]
+            })
+            return index
+        }
+
+        const fork_pts = $fork_points.filter(pair => pair[0] === message.id)
+
+        fork_pts.forEach(fp => {
+            const index           = firstIndexOf(fp),
+                  active_ids      = $forks[$active_fork].message_ids,
+                  message_index   = active_ids.indexOf(message.id),
+                  is_active       = fp[1] === active_ids[message_index + 1],
+                  provisional     = $forks[index]?.provisional,
+                  message_ids     = $forks[index]?.message_ids ?? [],
+                  next_message_id = message_ids[message_ids.findIndex(id => id === message.id) + 1] ?? null,
+                  next_message    = $messages.find(m => m.id === next_message_id)
+
+            let model_icon
+
+            // optionals (?) are needed here for the in-between moment when
+            // a provisional fork is created:
+
+            if (message.role === 'user') {
+                model_icon = next_message?.model?.icon
+            } else {
+                const next_ai_message_id = message_ids[message_ids.findIndex(id => id === message.id) + 2],
+                      next_ai_message    = $messages.find(m => m.id === next_ai_message_id)
+                model_icon = next_ai_message?.model?.icon
+            }
+
+            all_forks.push({
+                index,
+                is_active,
+                provisional,
+                next_message,
+                model_icon
+            })
+        })
+
+        return all_forks
+    }
+
+    const onkeydown = (e) => {
         if ($loader_active || $prompt_editor_active) return
 
         if (e.shiftKey && e.altKey && e.key === 'ArrowDown') {
@@ -163,132 +215,26 @@
             return regenerateReply()
         }
         if (e.key === 'Escape') {
-            if ($forks[$active_fork].provisional) cancelProvisionalFork()
+            if ($forks[$active_fork].provisional) cancelFork()
             deselectText()
             return
         }
     }
 
-    const regenerateReply = async () => {
-        if (confirm(`Regenerate this reply?  Press OK to confirm.`)) {
-            $is_deleting = true
-            await tick()
-
-            const deleted = $forks[$active_fork].message_ids.splice(-1,1)
-            $messages   = $messages.filter(m => m.id !== deleted[0])
-            $stars      = $stars.filter(m => m.id !== deleted[0])
-            $highlights = $highlights.filter(hl => hl.message_id !== deleted[0])
-            dispatch('regenerateReply')
-
-            await tick()
-            $is_deleting = false
+    const scrollToTop = () => {
+        scroll_interrupted = true
+        const distance = chat.scrollHeight - chat.clientHeight
+        if (distance < 1000) {
+            return smoothScroll(chat, 0, 333, 'quartOut')
+        } else if (distance < 2500) {
+            return smoothScroll(chat, 0, 500, 'quartOut')
+        } else if (distance < 5000) {
+            return smoothScroll(chat, 0, 750, 'quartOut')
+        } else if (distance < 7500) {
+            return smoothScroll(chat, 0, 1000, 'quartOut')
+        } else {
+            return smoothScroll(chat, 0, 1250, 'quartOut')
         }
-    }
-
-    const deleteMessage = async (delete_both = false) => {
-        if (confirm(`Delete this message?  Press OK to confirm.`)) {
-            $is_deleting = true
-            await tick()
-
-            let deleted
-            if (delete_both) {
-                deleted = $forks[$active_fork].message_ids.splice(-2,2)
-            } else {
-                deleted = $forks[$active_fork].message_ids.splice(-1,1)
-            }
-
-            $messages   = $messages.filter(m => !deleted.includes(m.id))
-            $stars      = $stars.filter(id => !deleted.includes(id))
-            $highlights = $highlights.filter(hl => !deleted.includes(hl.message_id))
-            updateForksAfterDelete()
-            dispatch('chatModified') 
-            dispatch('saveChat')
-
-            await tick()
-            $is_deleting = false
-        }
-    }
-
-    const addReply = async (message_id) => {
-        $is_adding_reply = true
-        if ($is_provisionally_forking) {
-            forking_from              = null
-            $is_provisionally_forking = false
-            removeProvisionalFork()
-        }
-        insert(message_id, $forks[$active_fork].forked_at)
-        const forked_at   = $forks[$active_fork].forked_at.filter(id => id <= message_id)
-        const message_ids = $forks[$active_fork].message_ids.filter(id => id <= message_id)
-        $forks       = $forks.concat([{ message_ids, forked_at, provisional: false }])
-        $active_fork = $forks.length - 1
-        dispatch('chatModified')
-        dispatch('addReply')
-    }
-
-    const forkFrom = async (message_id) => {
-        if (!$is_idle) return
-        forking_from              = $active_fork
-        $is_provisionally_forking = true
-        insert(message_id, $forks[$active_fork].forked_at)
-        const forked_at   = $forks[$active_fork].forked_at.filter(id => id <= message_id)
-        const message_ids = $forks[$active_fork].message_ids.filter(id => id <= message_id)
-        $forks       = $forks.concat([{ message_ids, forked_at, provisional: true }])
-        $active_fork = $forks.length - 1
-        dispatch('chatModified')
-        setTimeout(() => { scrollToBottom({ context: 'new_fork' }) }, 100)
-    }
-
-    const getForksAt = (message) => {
-        let all_forks = []
-
-        const fork_pts = $fork_points.filter(pair => pair[0] === message.id)
-
-        fork_pts.forEach(fp => {
-            const index           = firstIndexOf(fp),
-                  active_ids      = $forks[$active_fork].message_ids,
-                  message_index   = active_ids.indexOf(message.id),
-                  is_active       = fp[1] === active_ids[message_index + 1],
-                  provisional     = $forks[index]?.provisional,
-                  message_ids     = $forks[index]?.message_ids ?? [],
-                  next_message_id = message_ids[message_ids.findIndex(id => id === message.id) + 1] ?? null,
-                  next_message    = $messages.find(m => m.id === next_message_id)
-
-            let model_icon
-
-            // optionals needed for the in-between moment when
-            // a provisional fork is created:
-
-            if (message.role === 'user') {
-                model_icon = next_message?.model?.icon
-            } else {
-                const next_ai_message_id = message_ids[message_ids.findIndex(id => id === message.id) + 2],
-                      next_ai_message    = $messages.find(m => m.id === next_ai_message_id)
-                model_icon = next_ai_message?.model?.icon
-            }
-
-            all_forks.push({
-                index,
-                is_active,
-                provisional,
-                next_message,
-                model_icon
-            })
-        })
-
-        return all_forks
-    }
-
-    const firstIndexOf = (fork_point) => {
-        const index = $forks.findIndex(fork => {
-            const index = fork.message_ids.findIndex(id => id === fork_point[0])
-            return fork.message_ids[index + 1] === fork_point[1]
-        })
-        return index
-    }
-
-    const hasSiblings = (message) => {
-        const parent = $messages.find(m => m.id === message.parent_id)
-        return getForksAt(parent).length > 0
     }
 
     const switchToFork = async (fork_index) => {
@@ -298,7 +244,7 @@
             $is_provisionally_forking = false
             removeProvisionalFork()
         }
-        dispatch('chatModified')
+        onChatUpdated()
         await tick()
         renderActiveHighlights()
     }
@@ -333,84 +279,7 @@
         $forks = $forks
     }
 
-    const updateForksAfterDelete = () => {
-        for (let i = 0; i < $forks.length; i++) {
-            const fork            = $forks[i],
-                  last_forked_at  = fork.forked_at[fork.forked_at.length - 1],
-                  last_message_id = fork.message_ids[fork.message_ids.length - 1],
-                  last_message    = $messages[last_message_id]
-
-            if (last_message?.role === 'assistant' && last_forked_at === last_message_id) {
-
-                //  If we've deleted messages back to a fork point, (re)set the fork
-                //  to provisional.
-
-                for (let _i = 0; _i < $forks.length; _i++) {
-                    if (_i === i) continue
-                    if ($forks[_i].forked_at.includes(last_forked_at)) {
-                        forking_from              = _i
-                        $forks[i].provisional     = true
-                        $is_provisionally_forking = true
-                    }
-                }
-            } else if (last_message?.role === 'user') {
-
-                //  If we've deleted 1 out of 2 replies, so there's now only one
-                //  fork left, remove the fork point (`forked_at`) from the one
-                //  remaining fork then switch to it.
-                //
-                //  If we've deleted 1 out of 3+ replies, switch to the closest
-                //  sibling fork, e.g.:
-                //      - if we've deleted fork 4 of 4, switch to fork 3 of 3.
-                //      - if we've deleted fork 1 of 4, switch to fork 2 of 3.
-                //      - if we've deleted fork 2 of 4, switch to fork 1 of 3.
-
-                let sibling_indexes = []
-                for (let _i = 0; _i < $forks.length; _i++) {
-                    if (_i === i) continue
-                    if ($forks[_i].forked_at.includes(last_message_id)) sibling_indexes.push(_i)
-                }
-
-                if (sibling_indexes.length === 1) {
-                    let _i = sibling_indexes[0]
-                    $forks[_i].forked_at = $forks[_i].forked_at.filter(id => id !== last_forked_at)
-                    if (_i < i) {
-                        switchToFork(_i)
-                        $forks.splice(i, 1)
-                    } else {
-                        $forks.splice(i, 1)
-                        switchToFork(_i - 1)
-                    }
-                } else if (sibling_indexes.length > 1) {
-
-                    //  find the element closest to i in `sibling_indexes` that
-                    //  is less than it.  If there is no such element, use the
-                    //  first element.
-
-                    let closest_index = sibling_indexes.reduce((closest, current) => {
-                        return (current < i && current > closest) ? current : closest
-                    }, sibling_indexes[0])
-
-                    if (closest_index < i) {
-                        switchToFork(closest_index)
-                        $forks.splice(i, 1)
-                    } else {
-                        $forks.splice(i, 1)
-                        switchToFork(closest_index - 1)
-                    }
-                }
-            }
-        }
-        $forks = $forks
-    }
-
-    const deselectText = () => {
-        const selection = window.getSelection()
-        if (selection) selection.removeAllRanges()
-        highlight_action_visible = false
-    }
-
-    const handleWheel = (e) => {
+    const onwheel = (e) => {
         //  UX here = the two scroll interuptions work independently
         //  (i.e. for the main chat and the reasoning content div)
         //  based on where the mouse is when the wheel event occurs
@@ -435,7 +304,7 @@
         }
     }
 
-    const handleScroll = () => {
+    const onscroll = () => {
         const bottom = chat.scrollHeight - chat.clientHeight
         $is_scrolled_to_bottom = chat.scrollTop >= bottom - 160
 
@@ -447,7 +316,7 @@
         }
     }
 
-    const mouseup = async (e) => {
+    const onmouseup = async (e) => {
         if (e.target.closest('.highlight-action')) return
         //  Known issue: when de-selecting text, the selection isn't
         //  updated before mouseup, so we need to wait a tick
@@ -468,12 +337,12 @@
         }
     }
 
-    const mousedown = (e) => {
+    const onmousedown = (e) => {
         if (e.target.closest('.highlight-action')) return
         highlight_action_visible = false
     }
 
-    const selectionchange = () => {
+    const onselectionchange = () => {
         const selection = window.getSelection()
         if (!selection || selection.isCollapsed) {
             highlight_action_visible = false
@@ -509,7 +378,7 @@
     }
     
     const clickedQuoteButton = () => {
-        dispatch('quoteSelectedText')
+        quoteSelectedText()
         highlight_action_visible = false
     }
 
@@ -525,20 +394,26 @@
 
         if (highlight) {
             deselectText()
-            dispatch('saveChat')
+            saveChat()
         }
+    }
+
+    const deselectText = () => {
+        const selection = window.getSelection()
+        if (selection) selection.removeAllRanges()
+        highlight_action_visible = false
     }
 </script>
 
-<svelte:document on:keydown={keydown} on:mousedown={mousedown} on:selectionchange={selectionchange}/>
+<svelte:document onkeydown={onkeydown} onmousedown={onmousedown} onselectionchange={onselectionchange} />
 
 <section
     class='chat'
     class:frozen={$loader_active || $prompt_editor_active}
     bind:this={chat}
-    on:wheel={handleWheel}
-    on:scroll={handleScroll}
-    on:mouseup={mouseup}
+    onwheel={onwheel}
+    onscroll={onscroll}
+    onmouseup={onmouseup}
 >
     {#if $usage.total_responses > 0}
         <UsageStats/>
@@ -548,16 +423,17 @@
         {#each processed_messages as message (message.id)}
             <Message
                 bind:this={message_refs[message.id]}
+                bind:forking_from
+                bind:scroll_reasoning_interrupted
+                bind:scroll_reasoning_pending_id
                 message={message}
-                bind:scroll_reasoning_interrupted={scroll_reasoning_interrupted}
-                on:regenerateReply={regenerateReply}
-                on:deleteOne={() => deleteMessage(false)}
-                on:deleteBoth={() => deleteMessage(true)}
-                on:addReply={(event) => addReply(event.detail.message_id)}
-                on:forkFrom={(event) => forkFrom(event.detail.message_id)}
-                on:switchToFork={(event) => switchToFork(event.detail.fork_index)}
-                on:cancelProvisionalFork={cancelProvisionalFork}
-                on:saveChat
+                scrollToBottom={scrollToBottom}
+                addReply={addReply}
+                regenerateReply={regenerateReply}
+                switchToFork={switchToFork}
+                cancelFork={cancelFork}
+                saveChat={saveChat}
+                onChatUpdated={onChatUpdated}
             />
         {/each}
         {#if $is_sending}

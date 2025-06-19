@@ -1,5 +1,4 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { is_hovering } from '$lib/stores/chat/interactions'
@@ -7,14 +6,18 @@
 
     import ForkIcon from '$lib/components/Icons/Fork.svelte'
 
-    const dispatch = createEventDispatcher()
+    let {
+        // actions
+        switchToFork,
 
-    export let message
+        // passive
+        message
+    } = $props()
 
-    let show_hover_info_above
+    let show_hover_info_above = $state(false)
 
-    $: add_reply_highlight   = $is_hovering.add_reply.includes(message.id)
-    $: delete_fork_highlight = message.forks.length > 1 && $is_hovering.delete.includes(message.id)
+    const add_reply_highlight   = $derived($is_hovering.add_reply.includes(message.id)),
+          delete_fork_highlight = $derived(message.forks.length > 1 && $is_hovering.delete.includes(message.id))
 
     const mouseenter = (e) => {
         const rect = e.target.getBoundingClientRect()
@@ -27,7 +30,7 @@
     }
 
     const clickedFork = (fork) => {
-        if ($is_idle) dispatch('switchToFork', { fork_index: fork.index })
+        if ($is_idle) switchToFork(fork.index)
     }
 </script>
 
@@ -37,8 +40,8 @@
             <button
                 class='prompt-fork-button'
                 class:active={fork.is_active}
-                on:click={() => clickedFork(fork)}
-                on:mouseenter={mouseenter}
+                onclick={() => clickedFork(fork)}
+                onmouseenter={mouseenter}
             >
                 <ForkIcon className='icon' />
                 {i + 1}

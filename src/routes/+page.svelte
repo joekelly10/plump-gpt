@@ -19,17 +19,16 @@
         chat,
         input
 
-    const saveChat              = () => header.saveChat(),
-          scrollChatToBottom    = (options) => chat.scrollToBottom(options),
-          cancelProvisionalFork = () => chat.cancelProvisionalFork(),
-          onSendingMessage      = () => chat.onSendingMessage(),
-          focusInput            = () => input.focus(),
-          setInputText          = (text) => input.setText(text),
-          sendMessage           = () => input.sendMessage(),
-          addReply              = () => input.addReply(),
-          regenerateReply       = () => input.regenerateReply(),
-          quoteSelectedText     = () => input.quoteSelectedText(),
-          chatModified          = () => input.onChatUpdated()
+    const saveChat           = () => header.saveChat(),
+          scrollChatToBottom = (options) => chat.scrollToBottom(options),
+          cancelFork         = () => chat.cancelFork(),
+          focusInput         = () => input.focus(),
+          setInputText       = (text) => input.setText(text),
+          sendMessage        = () => input.sendMessage(),
+          addReply           = () => input.addReply(),
+          regenerateReply    = () => input.regenerateReply(),
+          quoteSelectedText  = () => input.quoteSelectedText(),
+          onChatUpdated      = () => input.onChatUpdated()
 
     const onChatLoaded = () => {
         input.onChatUpdated({ switch_model: true })
@@ -55,21 +54,20 @@
 <main class='plump-gpt' class:blur={blur}>
     <Header
         bind:this={header}
-        onClickTreeButton={cancelProvisionalFork}
+        onClickTreeButton={cancelFork}
     />
     <Chat
         bind:this={chat}
-        on:chatModified={chatModified}
-        on:quoteSelectedText={quoteSelectedText}
-        on:regenerateReply={regenerateReply}
-        on:addReply={addReply}
-        on:saveChat={saveChat}
+        saveChat={saveChat}
+        addReply={addReply}
+        regenerateReply={regenerateReply}
+        quoteSelectedText={quoteSelectedText}
+        onChatUpdated={onChatUpdated}
     />
     <Input
         bind:this={input}
         saveChat={saveChat}
         scrollChatToBottom={scrollChatToBottom}
-        onSendingMessage={onSendingMessage}
     />
 </main>
 

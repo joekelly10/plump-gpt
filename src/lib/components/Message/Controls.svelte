@@ -1,8 +1,11 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
+    import { tick } from 'svelte'
     import { slide, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { is_hovering } from '$lib/stores/chat/interactions'
+    import { messages, forks, active_fork, active_messages, fork_points, stars, highlights } from '$lib/stores/chat'
+    import { is_hovering, is_deleting, is_adding_reply, is_provisionally_forking, is_scrolled_to_bottom } from '$lib/stores/chat/interactions'
+    import { insert } from '$lib/utils/helpers'
+    import { is_idle } from '$lib/stores/api'
 
     import AddIcon from '$lib/components/Icons/Add.svelte'
     import RetryIcon from '$lib/components/Icons/Retry.svelte'
@@ -11,11 +14,25 @@
     import StarIcon from '$lib/components/Icons/Star.svelte'
     import StarEmptyIcon from '$lib/components/Icons/StarEmpty.svelte'
 
-    const dispatch = createEventDispatcher()
+    let {
+        // actions
+        scrollToBottom,
+        addReply,
+        regenerateReply,
+        switchToFork,
+        saveChat,
 
-    export let message,
-               is_starred,
-               showing_message_info
+        // events
+        onChatUpdated,
+
+        // bindable
+        forking_from = $bindable(null),
+
+        // passive
+        message,
+        is_starred,
+        showing_message_info
+    } = $props()
 
     const hoveredDelete = async () => {
         if (!$is_hovering.delete.includes(message.id)) {
@@ -57,26 +74,186 @@
         $is_hovering.star = $is_hovering.star.filter(id => id !== message.id)
     }
 
-    const clickedAddReply   = () => dispatch('addReply', { message_id: message.parent_id })
-    const clickedRegenerate = () => dispatch('regenerateReply')
-    const clickedDelete     = () => dispatch(message.has_siblings ? 'deleteOne' : 'deleteBoth')
-    const clickedFork       = () => dispatch('forkFrom', { message_id: message.id })
-    const clickedStar       = () => dispatch('toggleStar')
+    const clickedAddReply = () => {
+        $is_adding_reply = true
+
+        if ($is_provisionally_forking) {
+            forking_from              = null
+            $is_provisionally_forking = false
+            removeProvisionalFork()
+        }
+
+        insert(message.parent_id, $forks[$active_fork].forked_at)
+
+        const forked_at   = $forks[$active_fork].forked_at.filter(id => id <= message.parent_id),
+              message_ids = $forks[$active_fork].message_ids.filter(id => id <= message.parent_id)
+
+        $forks       = $forks.concat([{ message_ids, forked_at, provisional: false }])
+        $active_fork = $forks.length - 1
+
+        onChatUpdated()
+        addReply()
+    }
+
+    const clickedRegenerate = async () => {
+        if (confirm(`Regenerate this reply?  Press OK to confirm.`)) {
+            $is_deleting = true
+            await tick()
+
+            const deleted = $forks[$active_fork].message_ids.splice(-1,1)
+            $messages   = $messages.filter(m => m.id !== deleted[0])
+            $stars      = $stars.filter(m => m.id !== deleted[0])
+            $highlights = $highlights.filter(hl => hl.message_id !== deleted[0])
+            regenerateReply()
+
+            await tick()
+            $is_deleting = false
+        }
+    }
+ 
+    const clickedDelete = async () => {
+        if (confirm(`Delete this message?  Press OK to confirm.`)) {
+            $is_deleting = true
+            await tick()
+            
+            const delete_parent_too = !message.has_siblings
+
+            let deleted
+            if (delete_parent_too) {
+                deleted = $forks[$active_fork].message_ids.splice(-2,2)
+            } else {
+                deleted = $forks[$active_fork].message_ids.splice(-1,1)
+            }
+
+            $messages   = $messages.filter(m => !deleted.includes(m.id))
+            $stars      = $stars.filter(id => !deleted.includes(id))
+            $highlights = $highlights.filter(hl => !deleted.includes(hl.message_id))
+
+            updateForksAfterDelete()
+            onChatUpdated() 
+            saveChat()
+
+            // TODO: if $messages.length === 1, delete the chat
+
+            await tick()
+            $is_deleting = false
+        }
+    }
+
+    const updateForksAfterDelete = () => {
+        for (let i = 0; i < $forks.length; i++) {
+            const fork            = $forks[i],
+                  last_forked_at  = fork.forked_at[fork.forked_at.length - 1],
+                  last_message_id = fork.message_ids[fork.message_ids.length - 1],
+                  last_message    = $messages[last_message_id]
+
+            if (last_message?.role === 'assistant' && last_forked_at === last_message_id) {
+
+                //  If we've deleted messages back to a fork point, (re)set the fork
+                //  to provisional.
+
+                for (let _i = 0; _i < $forks.length; _i++) {
+                    if (_i === i) continue
+                    if ($forks[_i].forked_at.includes(last_forked_at)) {
+                        forking_from              = _i
+                        $forks[i].provisional     = true
+                        $is_provisionally_forking = true
+                    }
+                }
+            } else if (last_message?.role === 'user') {
+
+                //  If we've deleted 1 out of 2 replies, so there's now only one
+                //  fork left, remove the fork point (`forked_at`) from the one
+                //  remaining fork then switch to it.
+                //
+                //  If we've deleted 1 out of 3+ replies, switch to the closest
+                //  sibling fork, e.g.:
+                //      - if we've deleted fork 4 of 4, switch to fork 3 of 3.
+                //      - if we've deleted fork 1 of 4, switch to fork 2 of 3.
+                //      - if we've deleted fork 2 of 4, switch to fork 1 of 3.
+
+                let sibling_indexes = []
+                for (let _i = 0; _i < $forks.length; _i++) {
+                    if (_i === i) continue
+                    if ($forks[_i].forked_at.includes(last_message_id)) sibling_indexes.push(_i)
+                }
+
+                if (sibling_indexes.length === 1) {
+                    let _i = sibling_indexes[0]
+                    $forks[_i].forked_at = $forks[_i].forked_at.filter(id => id !== last_forked_at)
+                    if (_i < i) {
+                        switchToFork(_i)
+                        $forks.splice(i, 1)
+                    } else {
+                        $forks.splice(i, 1)
+                        switchToFork(_i - 1)
+                    }
+                } else if (sibling_indexes.length > 1) {
+
+                    //  find the element closest to i in `sibling_indexes` that
+                    //  is less than it.  If there is no such element, use the
+                    //  first element.
+
+                    let closest_index = sibling_indexes.reduce((closest, current) => {
+                        return (current < i && current > closest) ? current : closest
+                    }, sibling_indexes[0])
+
+                    if (closest_index < i) {
+                        switchToFork(closest_index)
+                        $forks.splice(i, 1)
+                    } else {
+                        $forks.splice(i, 1)
+                        switchToFork(closest_index - 1)
+                    }
+                }
+            }
+        }
+        $forks = $forks
+    }
+
+    const clickedFork = () => {
+        if (!$is_idle) return
+
+        $is_provisionally_forking = true
+        forking_from              = $active_fork
+
+        insert(message.id, $forks[$active_fork].forked_at)
+
+        const forked_at   = $forks[$active_fork].forked_at.filter(id => id <= message.id),
+              message_ids = $forks[$active_fork].message_ids.filter(id => id <= message.id)
+
+        $forks       = $forks.concat([{ message_ids, forked_at, provisional: true }])
+        $active_fork = $forks.length - 1
+
+        onChatUpdated()
+        setTimeout(() => { scrollToBottom({ context: 'new_fork' }) }, 100)
+    }
+
+    const clickedStar = () => {
+        if (is_starred) {
+            $stars = $stars.filter(id => id !== message.id)
+            console.log(`⭐️ Unstarred ${message.id}...`)
+        } else {
+            $stars = [...$stars, message.id]
+            console.log(`⭐️ Starred ${message.id}...`)
+        }
+        saveChat()
+    }
 </script>
 
 <div class='message-controls-right' in:slide={{ axis: 'x', duration: 250, easing: quartOut }} out:fade={{ duration: 250, easing: quartOut }}>
     {#if message.is_last}
-        <button class='message-control-button add' on:click={clickedAddReply} on:mouseenter={hoveredAddReply} on:mouseleave={unhoveredAddReply}>
+        <button class='message-control-button add' onclick={clickedAddReply} onmouseenter={hoveredAddReply} onmouseleave={unhoveredAddReply}>
             <AddIcon className='icon' />
         </button>
-        <button class='message-control-button retry' on:click={clickedRegenerate} on:mouseenter={hoveredRegenerate} on:mouseleave={unhoveredRegenerate}>
+        <button class='message-control-button retry' onclick={clickedRegenerate} onmouseenter={hoveredRegenerate} onmouseleave={unhoveredRegenerate}>
             <RetryIcon className='icon' />
         </button>
-        <button class='message-control-button delete' on:click={clickedDelete} on:mouseenter={hoveredDelete} on:mouseleave={unhoveredDelete}>
+        <button class='message-control-button delete' onclick={clickedDelete} onmouseenter={hoveredDelete} onmouseleave={unhoveredDelete}>
             <DeleteIcon className='icon' />
         </button>
     {:else}
-        <button class='message-control-button fork' title='Fork' on:click={clickedFork}>
+        <button class='message-control-button fork' title='Fork' onclick={clickedFork}>
             <ForkFromHereIcon className='icon' />
         </button>
     {/if}
@@ -84,7 +261,7 @@
 
 {#if !showing_message_info}
     <div class='message-controls-left' in:slide={{ axis: 'x', duration: 250, easing: quartOut }} out:fade={{ duration: 250, easing: quartOut }}>
-        <button class='message-control-button star' class:starred={is_starred} on:click={clickedStar} on:mouseenter={hoveredStar} on:mouseleave={unhoveredStar}>
+        <button class='message-control-button star' class:starred={is_starred} onclick={clickedStar} onmouseenter={hoveredStar} onmouseleave={unhoveredStar}>
             <StarIcon className='icon full' />
             <StarEmptyIcon className='icon empty' />
         </button>
