@@ -122,19 +122,6 @@
     onclick={onclick}
 >
     <div class='content'>
-        {#if message.reasoning_content}
-            <ReasoningContent
-                bind:this={reasoning_content}
-                bind:scroll_reasoning_interrupted
-                message={message}
-                is_streaming={is_streaming}
-                has_finished_reasoning={has_finished_reasoning}
-                delete_highlight={delete_highlight}
-                regenerate_highlight={regenerate_highlight}
-                star_highlight={star_highlight}
-                is_starred={is_starred}
-            />
-        {/if}
         {#if no_message}
             <p class='status-text'>
                 {#if is_streaming}
@@ -144,6 +131,19 @@
                 {/if}
             </p>
         {:else}
+            {#if message.reasoning_content}
+                <ReasoningContent
+                    bind:this={reasoning_content}
+                    bind:scroll_reasoning_interrupted
+                    message={message}
+                    is_streaming={is_streaming}
+                    has_finished_reasoning={has_finished_reasoning}
+                    delete_highlight={delete_highlight}
+                    regenerate_highlight={regenerate_highlight}
+                    star_highlight={star_highlight}
+                    is_starred={is_starred}
+                />
+            {/if}
             <div class='message-content'>
                 {@html message_content}
             </div>
