@@ -6,8 +6,11 @@ import { startObject, deltaObject, finishObject, usageObject } from '$tests/mock
 export const POST = async ({ request }) => {
     const { model, messages } = await request.json()
 
-    const prompt = messages[messages.length - 1].content,
-          reply  = getAIReply(prompt)
+    const prompt        = messages[messages.length - 1].content,
+          reply         = getAIReply(prompt),
+          is_delay_test = prompt.includes('[DELAY]')
+
+    if (is_delay_test) await sleep(3000)
 
     const { input_tokens, output_tokens } = getUsage(messages, reply)
 
@@ -19,6 +22,8 @@ export const POST = async ({ request }) => {
 
             let json = JSON.stringify(startObject(model))
             enqueue(json)
+
+            if (is_delay_test) await sleep(2000)
 
             for (let i = 0; i < words.length; i++) {
                 json = JSON.stringify(deltaObject(model, words[i]))

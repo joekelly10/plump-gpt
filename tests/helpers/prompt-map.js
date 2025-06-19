@@ -3,6 +3,7 @@ import { basic_reasoning_prompt, basic_reasoning_content, basic_reasoning_reply 
 import { scroll_reasoning_prompt, scroll_reasoning_content, scroll_reasoning_reply } from '$tests/mock/prompts/scroll_reasoning'
 import { persistence_prompt, persistence_reply } from '$tests/mock/prompts/persistence'
 import { send_immediately_prompt, send_immediately_reply } from '$tests/mock/prompts/send_immediately'
+import { delay_prompt, delay_reply } from '$tests/mock/prompts/messages'
 
 export const getAIReply = (prompt) => {
     let reply
@@ -22,6 +23,9 @@ export const getAIReply = (prompt) => {
             break
         case scroll_reasoning_prompt:
             reply = scroll_reasoning_reply
+            break
+        case delay_prompt:
+            reply = delay_reply
             break
         default:
             reply = '💩'
