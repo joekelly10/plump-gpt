@@ -26,7 +26,7 @@
     const reasoning_content = $derived(DOMPurify.sanitize(marked(message.reasoning_content)))
 
     const _scrollToBottom = () => {
-        if (is_streaming && reasoning_div && !scroll_reasoning_interrupted) {
+        if (reasoning_div && !scroll_reasoning_interrupted) {
             const bottom   = reasoning_div.scrollHeight - reasoning_div.clientHeight,
                   distance = bottom - reasoning_div.scrollTop
             if (distance < 300) {
