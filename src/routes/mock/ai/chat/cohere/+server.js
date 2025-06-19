@@ -1,5 +1,6 @@
 import { sleep, wordsFrom, getUsage } from '$tests/helpers/tools'
 import { getAIReply } from '$tests/helpers/prompt-map'
+import { speed_limit } from '$tests/helpers/defaults'
 import { messageStartObject, contentStartObject, contentDeltaObject, contentEndObject, messageEndObject } from '$tests/mock/stream_objects/cohere'
 
 export const POST = async ({ request }) => {
@@ -25,7 +26,7 @@ export const POST = async ({ request }) => {
             for (let i = 0; i < words.length; i++) {
                 json = JSON.stringify(contentDeltaObject(words[i]))
                 enqueue(json)
-                await sleep(25)
+                await sleep(speed_limit.fast)
             }
 
             json = JSON.stringify(contentEndObject())

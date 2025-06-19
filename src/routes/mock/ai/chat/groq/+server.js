@@ -1,5 +1,6 @@
 import { sleep, wordsFrom, getUsage } from '$tests/helpers/tools'
 import { getAIReply, getAIReasoning } from '$tests/helpers/prompt-map'
+import { speed_limit } from '$tests/helpers/defaults'
 import { startObject, deltaObject, finishObject, usageObject } from '$tests/mock/stream_objects/open-ai'
 
 export const POST = async ({ request }) => {
@@ -26,7 +27,7 @@ export const POST = async ({ request }) => {
                 for (let i = 0; i < reasoning_words.length; i++) {
                     json = JSON.stringify(deltaObject(model, reasoning_words[i]))
                     enqueue(json)
-                    await sleep(25)
+                    await sleep(speed_limit.fast)
                 }
                 enqueue(JSON.stringify(deltaObject(model, '</think>')))
             }
@@ -34,7 +35,7 @@ export const POST = async ({ request }) => {
             for (let i = 0; i < reply_words.length; i++) {
                 json = JSON.stringify(deltaObject(model, reply_words[i]))
                 enqueue(json)
-                await sleep(25)
+                await sleep(speed_limit.fast)
             }
 
             json = JSON.stringify(finishObject(model))

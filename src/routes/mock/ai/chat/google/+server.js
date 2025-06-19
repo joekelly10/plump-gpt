@@ -1,5 +1,6 @@
 import { sleep, wordsFrom, getUsage } from '$tests/helpers/tools'
 import { getAIReply, getAIReasoning } from '$tests/helpers/prompt-map'
+import { speed_limit } from '$tests/helpers/defaults'
 import { startObject, partObject, partThoughtObject, finishObject } from '$tests/mock/stream_objects/google'
 
 export const POST = async ({ request }) => {
@@ -28,7 +29,7 @@ export const POST = async ({ request }) => {
                 const chunk = reasoning_words.slice(i, i + chunk_size).join(' ')
                 json = JSON.stringify(partThoughtObject(model, chunk, input_tokens))
                 enqueue(json)
-                await sleep(25)
+                await sleep(speed_limit.fast)
             }
 
             for (let i = 0; i < reply_words.length; i += chunk_size) {
@@ -39,7 +40,7 @@ export const POST = async ({ request }) => {
                     json = JSON.stringify(partObject(model, chunk, input_tokens))
                 }
                 enqueue(json)
-                await sleep(25)
+                await sleep(speed_limit.fast)
             }
 
             enqueue('[DONE]')
