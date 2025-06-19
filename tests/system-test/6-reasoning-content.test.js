@@ -15,7 +15,7 @@ test.describe('Reasoning Content', () => {
               user_message  = page.locator('.chat .messages .message.user'),
               ai_message    = page.locator('.chat .messages .message.assistant')
 
-        if (default_model.type !== 'google') {
+        if (default_model.type !== 'google' || !default_model.is_reasoner) {
             const model_list_button   = page.locator('.active-model-button'),
                   model_list          = page.locator('.models-by-family'),
                   google_model        = models.find(m => m.type === 'google' && m.is_reasoner),
@@ -51,7 +51,7 @@ test.describe('Reasoning Content', () => {
               user_message  = page.locator('.chat .messages .message.user'),
               ai_message    = page.locator('.chat .messages .message.assistant')
         
-        if (default_model.type !== 'x') {
+        if (default_model.type !== 'x' || !default_model.is_reasoner) {
             const model_list_button = page.locator('.active-model-button'),
                   model_list        = page.locator('.models-by-family'),
                   x_model           = models.find(m => m.type === 'x' && m.is_reasoner),
@@ -87,7 +87,7 @@ test.describe('Reasoning Content', () => {
               user_message  = page.locator('.chat .messages .message.user'),
               ai_message    = page.locator('.chat .messages .message.assistant')
         
-        if (default_model.type !== 'deepseek') {
+        if (default_model.type !== 'deepseek' || !default_model.is_reasoner) {
             const model_list_button     = page.locator('.active-model-button'),
                   model_list            = page.locator('.models-by-family'),
                   deepseek_model        = models.find(m => m.type === 'deepseek' && m.is_reasoner),
@@ -123,7 +123,7 @@ test.describe('Reasoning Content', () => {
               user_message  = page.locator('.chat .messages .message.user'),
               ai_message    = page.locator('.chat .messages .message.assistant')
         
-        if (default_model.type !== 'openrouter') {
+        if (default_model.type !== 'openrouter' || !default_model.is_reasoner) {
             const model_list_button       = page.locator('.active-model-button'),
                   model_list              = page.locator('.models-by-family'),
                   openrouter_model        = models.find(m => m.type === 'openrouter' && m.is_reasoner),
@@ -161,7 +161,7 @@ test.describe('Reasoning Content', () => {
               user_message  = page.locator('.chat .messages .message.user'),
               ai_message    = page.locator('.chat .messages .message.assistant')
         
-        if (default_model.type !== 'groq') {
+        if (default_model.type !== 'groq' || !default_model.is_reasoner) {
             const model_list_button = page.locator('.active-model-button'),
                   model_list        = page.locator('.models-by-family'),
                   groq_model        = models.find(m => m.type === 'groq' && m.is_reasoner),
