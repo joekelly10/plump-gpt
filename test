@@ -126,7 +126,7 @@ teardown() {
 
     if [ "$DANGLING_IMAGE_COUNT" -gt 0 ]; then
         docker image prune -f --filter "label=project=plump-gpt" --filter "dangling=true" &>/dev/null
-        echo -e "  ${grey}Deleted ${white}${DANGLING_IMAGE_COUNT}${grey} dangling image$([ $DANGLING_IMAGE_COUNT -gt 1 ] && echo 's')${reset}"
+        echo -e "  ${grey}Deleted ${white}${DANGLING_IMAGE_COUNT}${grey} old docker image$([ $DANGLING_IMAGE_COUNT -gt 1 ] && echo 's')${reset}"
         echo
     fi
 
