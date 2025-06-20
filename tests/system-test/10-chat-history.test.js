@@ -13,7 +13,8 @@ test.describe('Chat History', () => {
 
         const input         = page.locator('.primary-input-section .input'),
               user_message  = page.locator('.chat .messages .message.user'),
-              ai_message    = page.locator('.chat .messages .message.assistant')
+              ai_message    = page.locator('.chat .messages .message.assistant'),
+              save_button   = page.locator('.save-button')
         
         await input.fill(persistence_prompt)
         await page.keyboard.press('Enter')
@@ -23,7 +24,8 @@ test.describe('Chat History', () => {
         await expect(ai_message).toHaveCount(1)
         await expect(ai_message.locator('.message-content')).toHaveText(persistence_reply)
 
-        await sleep(250) // allow chat to be saved to db
+        await expect(save_button).toContainClass('saved')
+
         await page.reload()
 
         const load_button = page.locator('.load-button'),
