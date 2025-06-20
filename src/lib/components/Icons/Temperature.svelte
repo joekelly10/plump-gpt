@@ -1,5 +1,5 @@
 <script>
-    export let className, level
+    let { className, level } = $props()
 </script>
 
 {#if level === 0}
