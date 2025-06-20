@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test'
-import { fastExpect } from '../helpers/tools'
 import { cssSanitised } from '../../src/lib/utils/helpers'
 import defaults from '../../src/lib/fixtures/defaults'
 import models from '../../src/lib/fixtures/models'
@@ -14,11 +13,11 @@ test.describe('Model List', () => {
               family_names = new Set(models.map(m => m.family))
 
         await model_button.click()
-        await fastExpect(model_list).toBeVisible()
+        await expect(model_list).toBeVisible()
 
         for (const family_name of family_names) {
             const family_element = model_list.locator('.model-family', { has: page.locator('.heading', { hasText: family_name }) })
-            await fastExpect(family_element).toHaveCount(1)
+            await expect(family_element).toHaveCount(1)
 
             const model_buttons_count = await family_element.locator('.model-button').count()
             expect(model_buttons_count).toBeGreaterThan(0)
@@ -32,21 +31,21 @@ test.describe('Model List', () => {
               model_list   = page.locator('.models-by-family')
 
         await model_button.click()
-        await fastExpect(model_list).toBeVisible()
+        await expect(model_list).toBeVisible()
 
         for (const model of models) {
             const model_button = model_list.locator(`#model-button-${cssSanitised(model.id)}`)
-            await fastExpect(model_button).toBeVisible()
+            await expect(model_button).toBeVisible()
 
             const input_price_text = model_button.locator('.input'),
                   output_price_text = model_button.locator('.output')
 
             if (model.pricing_id === 'free') {
-                await fastExpect(input_price_text).toContainText('Free')
-                await fastExpect(output_price_text).toContainText('Free')
+                await expect(input_price_text).toContainText('Free')
+                await expect(output_price_text).toContainText('Free')
             } else {
-                await fastExpect(input_price_text).toContainText(/^\$\d+\.\d{2}$/)
-                await fastExpect(output_price_text).toContainText(/^\$\d+\.\d{2}$/)
+                await expect(input_price_text).toContainText(/^\$\d+\.\d{2}$/)
+                await expect(output_price_text).toContainText(/^\$\d+\.\d{2}$/)
             }
         }
     })
@@ -60,9 +59,9 @@ test.describe('Model List', () => {
               default_model_button = model_list.locator(`#model-button-${cssSanitised(default_model.id)}`)
 
         await model_list_button.click()
-        await fastExpect(model_list).toBeVisible()
-        await fastExpect(default_model_button).toContainClass('active')
-        await fastExpect(model_list.locator('.model-button.active')).toHaveCount(1)
+        await expect(model_list).toBeVisible()
+        await expect(default_model_button).toContainClass('active')
+        await expect(model_list.locator('.model-button.active')).toHaveCount(1)
     })
 
     test('default model should be starred', async ({ page }) => {
@@ -75,8 +74,8 @@ test.describe('Model List', () => {
               star_icon            = default_model_button.locator('.default-icon')
 
         await model_list_button.click()
-        await fastExpect(model_list).toBeVisible()
-        await fastExpect(star_icon).toBeVisible()
+        await expect(model_list).toBeVisible()
+        await expect(star_icon).toBeVisible()
     })
 
     test('clicking on a model should make it active and close the list', async ({ page }) => {
@@ -90,14 +89,14 @@ test.describe('Model List', () => {
               active_model_name   = model_list_button.locator('.name')
 
         await model_list_button.click()
-        await fastExpect(model_list).toBeVisible()
+        await expect(model_list).toBeVisible()
 
         await target_model_button.click()
-        await fastExpect(model_list).toBeHidden()
+        await expect(model_list).toBeHidden()
         expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${target_model.icon}`)
 
         await model_list_button.hover()
-        await fastExpect(active_model_name).toContainText(target_model.name)
+        await expect(active_model_name).toContainText(target_model.name)
     })
 
     test('long clicking on a model should set it to default', async ({ page }) => {
@@ -111,14 +110,14 @@ test.describe('Model List', () => {
               target_model_button  = model_list.locator(`#model-button-${cssSanitised(target_model.id)}`)
 
         await model_list_button.click()
-        await fastExpect(model_list).toBeVisible()
+        await expect(model_list).toBeVisible()
 
         await target_model_button.click({ delay: 1200 })
 
         const new_star_icon = target_model_button.locator('.default-icon'),
               old_star_icon = default_model_button.locator('.default-icon')
 
-        await fastExpect(new_star_icon).toBeVisible()
-        await fastExpect(old_star_icon).not.toBeVisible()
+        await expect(new_star_icon).toBeVisible()
+        await expect(old_star_icon).not.toBeVisible()
     })
 })

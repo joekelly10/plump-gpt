@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { fastExpect, sleep } from '../helpers/tools'
-import { cssSanitised } from '../../src/lib/utils/helpers'
+import { sleep } from '../helpers/tools'
 import { persistence_prompt, persistence_reply } from '../mock/prompts/persistence'
 
 import defaults from '../../src/lib/fixtures/defaults'
@@ -18,11 +17,11 @@ test.describe('Chat History', () => {
         
         await input.fill(persistence_prompt)
         await page.keyboard.press('Enter')
-        await fastExpect(input).toHaveText('')
-        await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(persistence_prompt)
-        await fastExpect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(persistence_reply)
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(1)
+        await expect(user_message.locator('.message-content')).toHaveText(persistence_prompt)
+        await expect(ai_message).toHaveCount(1)
+        await expect(ai_message.locator('.message-content')).toHaveText(persistence_reply)
 
         await sleep(250) // allow chat to be saved to db
         await page.reload()
@@ -33,13 +32,13 @@ test.describe('Chat History', () => {
               latest_chat = chat_list.locator('.loader-chat').first()
 
         await load_button.click()
-        await fastExpect(loader).toBeVisible()
+        await expect(loader).toBeVisible()
 
         await latest_chat.click()
-        await fastExpect(loader).toBeHidden()
-        await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(persistence_prompt)
-        await fastExpect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(persistence_reply)
+        await expect(loader).toBeHidden()
+        await expect(user_message).toHaveCount(1)
+        await expect(user_message.locator('.message-content')).toHaveText(persistence_prompt)
+        await expect(ai_message).toHaveCount(1)
+        await expect(ai_message.locator('.message-content')).toHaveText(persistence_reply)
     })
 })

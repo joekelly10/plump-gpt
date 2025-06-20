@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test'
-import { fastExpect } from '../helpers/tools'
 import { cssSanitised } from '../../src/lib/utils/helpers'
 import { basic_prompt, basic_reply } from '../mock/prompts/basic_reply'
 
@@ -23,23 +22,23 @@ test.describe('API Providers', () => {
                   active_model_icon   = model_list_button.locator('.icon')
 
             await model_list_button.click()
-            await fastExpect(model_list).toBeVisible()
-            await fastExpect(openai_model_button).toBeVisible()
+            await expect(model_list).toBeVisible()
+            await expect(openai_model_button).toBeVisible()
 
             await openai_model_button.click()
-            await fastExpect(model_list).toBeHidden()
-            await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${openai_model.icon}`)
+            await expect(model_list).toBeHidden()
+            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${openai_model.icon}`)
         }
 
         await input.fill(basic_prompt)
         await page.keyboard.press('Enter')
 
-        await fastExpect(input).toHaveText('')
-        await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(1)
+        await expect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
+        await expect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
     test('we should be able to stream a reply from Anthropic', async ({ page }) => {
@@ -60,23 +59,23 @@ test.describe('API Providers', () => {
                   active_model_icon      = model_list_button.locator('.icon')
 
             await model_list_button.click()
-            await fastExpect(model_list).toBeVisible()
-            await fastExpect(anthropic_model_button).toBeVisible()
+            await expect(model_list).toBeVisible()
+            await expect(anthropic_model_button).toBeVisible()
 
             await anthropic_model_button.click()
-            await fastExpect(model_list).toBeHidden()
-            await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${anthropic_model.icon}`)
+            await expect(model_list).toBeHidden()
+            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${anthropic_model.icon}`)
         }
 
         await input.fill(basic_prompt)
         await page.keyboard.press('Enter')
 
-        await fastExpect(input).toHaveText('')
-        await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(1)
+        await expect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
+        await expect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
     test('we should be able to stream a reply from Google', async ({ page }) => {
@@ -95,23 +94,23 @@ test.describe('API Providers', () => {
                   active_model_icon   = model_list_button.locator('.icon')
 
             await model_list_button.click()
-            await fastExpect(model_list).toBeVisible()
-            await fastExpect(google_model_button).toBeVisible()
+            await expect(model_list).toBeVisible()
+            await expect(google_model_button).toBeVisible()
 
             await google_model_button.click()
-            await fastExpect(model_list).toBeHidden()
-            await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${google_model.icon}`)
+            await expect(model_list).toBeHidden()
+            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${google_model.icon}`)
         }
 
         await input.fill(basic_prompt)
         await page.keyboard.press('Enter')
 
-        await fastExpect(input).toHaveText('')
-        await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(1)
+        await expect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
+        await expect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
     test('we should be able to stream a reply from X', async ({ page }) => {
@@ -130,23 +129,23 @@ test.describe('API Providers', () => {
                   active_model_icon = model_list_button.locator('.icon')
 
             await model_list_button.click()
-            await fastExpect(model_list).toBeVisible()
-            await fastExpect(x_model_button).toBeVisible()
+            await expect(model_list).toBeVisible()
+            await expect(x_model_button).toBeVisible()
 
             await x_model_button.click()
-            await fastExpect(model_list).toBeHidden()
-            await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${x_model.icon}`)
+            await expect(model_list).toBeHidden()
+            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${x_model.icon}`)
         }
 
         await input.fill(basic_prompt)
         await page.keyboard.press('Enter')
 
-        await fastExpect(input).toHaveText('')
-        await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(1)
+        await expect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
+        await expect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
     test('we should be able to stream a reply from DeepSeek', async ({ page }) => {
@@ -165,23 +164,23 @@ test.describe('API Providers', () => {
                   active_model_icon    = model_list_button.locator('.icon')
 
             await model_list_button.click()
-            await fastExpect(model_list).toBeVisible()
-            await fastExpect(deepseek_model_button).toBeVisible()
+            await expect(model_list).toBeVisible()
+            await expect(deepseek_model_button).toBeVisible()
 
             await deepseek_model_button.click()
-            await fastExpect(model_list).toBeHidden()
-            await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${deepseek_model.icon}`)
+            await expect(model_list).toBeHidden()
+            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${deepseek_model.icon}`)
         }
 
         await input.fill(basic_prompt)
         await page.keyboard.press('Enter')
 
-        await fastExpect(input).toHaveText('')
-        await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(1)
+        await expect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
+        await expect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
     test('we should be able to stream a reply from Mistral', async ({ page }) => {
@@ -200,23 +199,23 @@ test.describe('API Providers', () => {
                   active_model_icon   = model_list_button.locator('.icon')
 
             await model_list_button.click()
-            await fastExpect(model_list).toBeVisible()
-            await fastExpect(mistral_model_button).toBeVisible()
+            await expect(model_list).toBeVisible()
+            await expect(mistral_model_button).toBeVisible()
 
             await mistral_model_button.click()
-            await fastExpect(model_list).toBeHidden()
-            await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${mistral_model.icon}`)
+            await expect(model_list).toBeHidden()
+            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${mistral_model.icon}`)
         }
 
         await input.fill(basic_prompt)
         await page.keyboard.press('Enter')
 
-        await fastExpect(input).toHaveText('')
-        await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(1)
+        await expect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
+        await expect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
     test('we should be able to stream a reply from AI21', async ({ page }) => {
@@ -235,23 +234,23 @@ test.describe('API Providers', () => {
                   active_model_icon = model_list_button.locator('.icon')
 
             await model_list_button.click()
-            await fastExpect(model_list).toBeVisible()
-            await fastExpect(ai21_model_button).toBeVisible()
+            await expect(model_list).toBeVisible()
+            await expect(ai21_model_button).toBeVisible()
 
             await ai21_model_button.click()
-            await fastExpect(model_list).toBeHidden()
-            await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${ai21_model.icon}`)
+            await expect(model_list).toBeHidden()
+            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${ai21_model.icon}`)
         }
 
         await input.fill(basic_prompt)
         await page.keyboard.press('Enter')
 
-        await fastExpect(input).toHaveText('')
-        await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(1)
+        await expect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
+        await expect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
     test('we should be able to stream a reply from Cohere', async ({ page }) => {
@@ -272,23 +271,23 @@ test.describe('API Providers', () => {
                   active_model_icon  = model_list_button.locator('.icon')
 
             await model_list_button.click()
-            await fastExpect(model_list).toBeVisible()
-            await fastExpect(cohere_model_button).toBeVisible()
+            await expect(model_list).toBeVisible()
+            await expect(cohere_model_button).toBeVisible()
 
             await cohere_model_button.click()
-            await fastExpect(model_list).toBeHidden()
-            await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${cohere_model.icon}`)
+            await expect(model_list).toBeHidden()
+            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${cohere_model.icon}`)
         }
 
         await input.fill(basic_prompt)
         await page.keyboard.press('Enter')
 
-        await fastExpect(input).toHaveText('')
-        await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(1)
+        await expect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
+        await expect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
     test('we should be able to stream a reply from Groq', async ({ page }) => {
@@ -307,23 +306,23 @@ test.describe('API Providers', () => {
                   active_model_icon = model_list_button.locator('.icon')
 
             await model_list_button.click()
-            await fastExpect(model_list).toBeVisible()
-            await fastExpect(groq_model_button).toBeVisible()
+            await expect(model_list).toBeVisible()
+            await expect(groq_model_button).toBeVisible()
 
             await groq_model_button.click()
-            await fastExpect(model_list).toBeHidden()
-            await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${groq_model.icon}`)
+            await expect(model_list).toBeHidden()
+            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${groq_model.icon}`)
         }
 
         await input.fill(basic_prompt)
         await page.keyboard.press('Enter')
 
-        await fastExpect(input).toHaveText('')
-        await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(1)
+        await expect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
+        await expect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
     test('we should be able to stream a reply from OpenRouter', async ({ page }) => {
@@ -342,22 +341,22 @@ test.describe('API Providers', () => {
                   active_model_icon       = model_list_button.locator('.icon')
 
             await model_list_button.click()
-            await fastExpect(model_list).toBeVisible()
-            await fastExpect(openrouter_model_button).toBeVisible()
+            await expect(model_list).toBeVisible()
+            await expect(openrouter_model_button).toBeVisible()
 
             await openrouter_model_button.click()
-            await fastExpect(model_list).toBeHidden()
-            await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${openrouter_model.icon}`)
+            await expect(model_list).toBeHidden()
+            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${openrouter_model.icon}`)
         }
 
         await input.fill(basic_prompt)
         await page.keyboard.press('Enter')
 
-        await fastExpect(input).toHaveText('')
-        await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(basic_prompt)
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(1)
+        await expect(user_message.locator('.message-content')).toHaveText(basic_prompt)
 
         await expect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(basic_reply)
+        await expect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 })

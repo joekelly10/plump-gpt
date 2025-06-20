@@ -1,6 +1,6 @@
 import { basic_prompt, basic_reply } from '$tests/mock/prompts/basic_reply'
 import { basic_reasoning_prompt, basic_reasoning_content, basic_reasoning_reply } from '$tests/mock/prompts/basic_reasoning'
-import { scroll_reasoning_prompt, scroll_reasoning_content, scroll_reasoning_reply } from '$tests/mock/prompts/scroll_reasoning'
+import { scroll_prompt, scroll_reply, scroll_prompt_2, scroll_reply_2, scroll_reasoning_prompt, scroll_reasoning_content, scroll_reasoning_reply } from '$tests/mock/prompts/autoscroll'
 import { persistence_prompt, persistence_reply } from '$tests/mock/prompts/persistence'
 import { send_immediately_prompt, send_immediately_reply } from '$tests/mock/prompts/send_immediately'
 import { delay_prompt, delay_reply, controls_prompt, controls_reply, controls_prompt_2, controls_reply_2, slow_prompt, slow_reply } from '$tests/mock/prompts/messages'
@@ -20,6 +20,12 @@ export const getAIReply = (prompt) => {
             break
         case send_immediately_prompt:
             reply = send_immediately_reply
+            break
+        case scroll_prompt:
+            reply = scroll_reply
+            break
+        case scroll_prompt_2:
+            reply = scroll_reply_2
             break
         case scroll_reasoning_prompt:
             reply = scroll_reasoning_reply

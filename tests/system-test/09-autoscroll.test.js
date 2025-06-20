@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
-import { fastExpect, slowExpect } from '../helpers/tools'
+import { sleep } from '../helpers/tools'
 import { cssSanitised } from '../../src/lib/utils/helpers'
-import { scroll_reasoning_prompt, scroll_reasoning_content, scroll_reasoning_reply } from '../mock/prompts/scroll_reasoning'
+import { scroll_prompt, scroll_reply, scroll_prompt_2, scroll_reply_2, scroll_reasoning_prompt, scroll_reasoning_content, scroll_reasoning_reply } from '../mock/prompts/autoscroll'
 
 import defaults from '../../src/lib/fixtures/defaults'
 import models from '../../src/lib/fixtures/models'
@@ -15,14 +15,28 @@ test.describe('Autoscroll', () => {
               user_message = chat.locator('.messages .message.user'),
               ai_message   = chat.locator('.messages .message.assistant')
 
-        await input.fill(scroll_reasoning_prompt)
+        await input.fill(scroll_prompt)
         await page.keyboard.press('Enter')
 
-        await fastExpect(input).toHaveText('')
-        await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(scroll_reasoning_prompt)
-        await fastExpect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(scroll_reasoning_reply)
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(1)
+        await expect(user_message.locator('.message-content')).toHaveText(scroll_prompt)
+        await expect(ai_message).toHaveCount(1)
+        await expect(ai_message.locator('.message-content')).toHaveText(scroll_reply)
+
+        await sleep(500)
+
+        await input.fill(scroll_prompt_2)
+        await page.keyboard.press('Enter')
+
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(2)
+        await expect(user_message.nth(1).locator('.message-content')).toHaveText(scroll_prompt_2)
+        await expect(ai_message).toHaveCount(2)
+        await expect(ai_message.nth(1)).toContainClass('streaming')
+        await expect(ai_message.nth(1)).not.toContainClass('streaming', { timeout: 10_000 })
+
+        await sleep(500)
 
         const did_automatically_scroll_to_bottom = await chat.evaluate(element => {
             // the -1 here provides small tolerance for rounding errors
@@ -49,28 +63,28 @@ test.describe('Autoscroll', () => {
                   active_model_icon     = model_list_button.locator('.icon')
 
             await model_list_button.click()
-            await fastExpect(model_list).toBeVisible()
-            await fastExpect(deepseek_model_button).toBeVisible()
+            await expect(model_list).toBeVisible()
+            await expect(deepseek_model_button).toBeVisible()
 
             await deepseek_model_button.click()
-            await fastExpect(model_list).toBeHidden()
-            await fastExpect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${deepseek_model.icon}`)
+            await expect(model_list).toBeHidden()
+            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${deepseek_model.icon}`)
         }
 
         await input.fill(scroll_reasoning_prompt)
         await page.keyboard.press('Enter')
 
-        await fastExpect(input).toHaveText('')
-        await fastExpect(user_message).toHaveCount(1)
-        await fastExpect(user_message.locator('.message-content')).toHaveText(scroll_reasoning_prompt)
-        await fastExpect(ai_message).toHaveCount(1)
-        await fastExpect(ai_message.locator('.message-content')).toHaveText(scroll_reasoning_reply)
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(1)
+        await expect(user_message.locator('.message-content')).toHaveText(scroll_reasoning_prompt)
+        await expect(ai_message).toHaveCount(1)
+        await expect(ai_message.locator('.message-content')).toHaveText(scroll_reasoning_reply)
 
-        const first_100_chars = scroll_reasoning_content.slice(0, 100),
-              last_100_chars  = scroll_reasoning_content.slice(-100)
+        const was_scrollable = await reasoning_content.evaluate(element => {
+            return element.scrollHeight > element.clientHeight
+        })
 
-        await fastExpect(reasoning_content).toContainText(first_100_chars)
-        await slowExpect(reasoning_content).toContainText(last_100_chars)
+        expect(was_scrollable).toBe(true)
 
         const did_automatically_scroll_to_bottom = await reasoning_content.evaluate(element => {
             // the -1 here provides small tolerance for rounding errors

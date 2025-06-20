@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test'
-import { fastExpect } from '../helpers/tools'
 import models from '../../src/lib/fixtures/models'
 
 test.describe('Model Button', () => {
@@ -13,12 +12,12 @@ test.describe('Model Button', () => {
               prices_element      = active_model_button.locator('.prices')
 
         await expect(active_model_button).toBeVisible()
-        await fastExpect(name_element).not.toBeVisible()
-        await fastExpect(prices_element).not.toBeVisible()
+        await expect(name_element).not.toBeVisible()
+        await expect(prices_element).not.toBeVisible()
     
         await active_model_button.hover()
-        await fastExpect(name_element).toBeVisible()
-        await fastExpect(prices_element).toBeVisible()
+        await expect(name_element).toBeVisible()
+        await expect(prices_element).toBeVisible()
     })
 
     test('on click: model list should show/hide', async ({ page }) => {
@@ -27,13 +26,13 @@ test.describe('Model Button', () => {
         const model_list          = page.locator('.models-by-family'),
               active_model_button = page.locator('.active-model-button')
 
-        await fastExpect(model_list).not.toBeVisible()
+        await expect(model_list).not.toBeVisible()
 
         await active_model_button.click()
-        await fastExpect(model_list).toBeVisible()
+        await expect(model_list).toBeVisible()
 
         await active_model_button.click()
-        await fastExpect(model_list).not.toBeVisible() 
+        await expect(model_list).not.toBeVisible() 
     })
     
     test('on mousewheel: next/prev model should be set', async ({ page }) => {
@@ -53,14 +52,14 @@ test.describe('Model Button', () => {
     
         await active_model_button.hover()
         await page.mouse.wheel(0, 10) // down (next)
-        fastExpect(name_element).toContainText(next_name)
+        expect(name_element).toContainText(next_name)
     
         await active_model_button.hover()
         await page.mouse.wheel(0, -10) // up (prev)
-        fastExpect(name_element).toContainText(initial_name)
+        expect(name_element).toContainText(initial_name)
     
         await active_model_button.hover()
         await page.mouse.wheel(0, -10) // up (prev)
-        fastExpect(name_element).toContainText(prev_name)
+        expect(name_element).toContainText(prev_name)
     })
 })

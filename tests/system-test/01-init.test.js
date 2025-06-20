@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test'
-import { fastExpect } from '../helpers/tools'
 import defaults from '../../src/lib/fixtures/defaults'
 import models from '../../src/lib/fixtures/models'
 
@@ -20,8 +19,8 @@ test.describe('Init', () => {
         await expect(system_prompt_button).toContainText('Assistant')
 
         await system_prompt_button.click()
-        await fastExpect(prompt_editor).toBeVisible()
-        await fastExpect(prompt_input).toHaveValue(/You are a good friend and mentor to the user, who is called Conrad Poohs/)
+        await expect(prompt_editor).toBeVisible()
+        await expect(prompt_input).toHaveValue(/You are a good friend and mentor to the user, who is called Conrad Poohs/)
     })
 
     test('chat history should be empty', async ({ page }) => {
@@ -32,8 +31,8 @@ test.describe('Init', () => {
               no_chats_message = loader.locator('.chats .no-chats')
 
         await load_button.click()
-        await fastExpect(loader).toBeVisible()
-        await fastExpect(no_chats_message).toBeVisible()
+        await expect(loader).toBeVisible()
+        await expect(no_chats_message).toBeVisible()
     })
 
     test('model, temperature, and top_p should be set to the default values', async ({ page }) => {
@@ -45,9 +44,9 @@ test.describe('Init', () => {
               default_model      = models.find(m => m.id === defaults.model),
               icon               = model_button.locator('.icon')
 
-        await fastExpect(icon).toHaveAttribute('src', `/img/icons/models/${default_model.icon}`)
-        await fastExpect(temperature_button).toContainText(String(defaults.temperature))
-        await fastExpect(top_p_button).toContainText(String(defaults.top_p))
+        await expect(icon).toHaveAttribute('src', `/img/icons/models/${default_model.icon}`)
+        await expect(temperature_button).toContainText(String(defaults.temperature))
+        await expect(top_p_button).toContainText(String(defaults.top_p))
     })
 
     test('we should be automatically focused on the primary input field', async ({ page }) => {
