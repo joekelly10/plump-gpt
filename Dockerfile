@@ -1,5 +1,8 @@
 FROM node:20-slim
 
+# Apply label to identify plump-gpt images
+LABEL project=plump-gpt
+
 WORKDIR /app
 
 # Install dependencies including PostgreSQL client tools

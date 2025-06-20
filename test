@@ -122,10 +122,10 @@ teardown() {
         echo
     fi
 
-    DANGLING_IMAGE_COUNT=$(docker image ls --filter "dangling=true" -q | wc -l | tr -d ' ')
+    DANGLING_IMAGE_COUNT=$(docker image ls --filter "label=project=plump-gpt" --filter "dangling=true" -q | wc -l | tr -d ' ')
 
     if [ "$DANGLING_IMAGE_COUNT" -gt 0 ]; then
-        docker image prune -f --filter "dangling=true" &>/dev/null
+        docker image prune -f --filter "label=project=plump-gpt" --filter "dangling=true" &>/dev/null
         echo -e "  ${grey}Deleted ${white}${DANGLING_IMAGE_COUNT}${grey} dangling image$([ $DANGLING_IMAGE_COUNT -gt 1 ] && echo 's')${reset}"
         echo
     fi
