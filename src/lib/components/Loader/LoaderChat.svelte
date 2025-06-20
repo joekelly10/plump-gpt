@@ -85,6 +85,10 @@
             {/if}
         </div>
 
+        <div class='keyboard-tip'>
+            Press <span class='key'>Enter</span>
+        </div>
+
         <div class='message'>
             <div class='author-container'>
                 <img class='avatar user' src={$avatar_href} alt='User'>
@@ -154,15 +158,22 @@
 
         &:not(.suspend-mouse-highlight)
             &:hover
-                box-shadow: 0 0 0 1.5px white
+                box-shadow: 0 0 0 1.5px $off-white inset
                 transition: none
         
         &:active
-            background-color: color.adjust($background-300, $lightness: -1.25%)
+            background-color: color.adjust($background-300, $lightness: -1%)
         
         &.keyboard-highlight
             box-shadow: 0 0 0 2px $blue
             transition: none
+
+            .keyboard-tip
+                opacity:    1
+                transition: opacity easing.$quart-out 0.125s
+
+            &:hover
+                box-shadow: 0 0 0 2px $blue inset, 0 0 0 1.5px $off-white
     
         &.selected
             background-color: color.adjust($background-300, $lightness: -2%)
@@ -187,6 +198,24 @@
         .active
             margin-left: 8px
             color:       $pale-blue
+
+    .keyboard-tip
+        position:    absolute
+        top:         0
+        left:        100%
+        margin-top:  space.$default-padding
+        margin-left: space.$default-padding
+        font-size:   14px
+        font-weight: 450
+        color:       $blue
+        white-space: nowrap
+        opacity:     0
+        transition:  none
+
+        .key
+            font-size:      12px
+            font-weight:    700
+            text-transform: uppercase
 
     .message
         $container-width: 64px
