@@ -36,6 +36,7 @@ test.describe('Autoscroll', () => {
         await expect(ai_message.nth(1)).toContainClass('streaming')
         await expect(ai_message.nth(1)).not.toContainClass('streaming', { timeout: 10_000 })
 
+        // let scroll animation complete
         await sleep(500)
 
         const did_automatically_scroll_to_bottom = await chat.evaluate(element => {
@@ -44,6 +45,50 @@ test.describe('Autoscroll', () => {
         })
         
         expect(did_automatically_scroll_to_bottom).toBe(true)
+    })
+
+    test('the chat should stop autoscrolling if the user scrolls up', async ({ page }) => {
+        await page.goto('/')
+
+        const input        = page.locator('.primary-input-section .input'),
+              chat         = page.locator('.chat'),
+              user_message = chat.locator('.messages .message.user'),
+              ai_message   = chat.locator('.messages .message.assistant')
+        
+        await input.fill(scroll_prompt)
+        await page.keyboard.press('Enter')
+
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(1)
+        await expect(ai_message).toHaveCount(1)
+        await expect(ai_message).not.toContainClass('streaming', { timeout: 10_000 })
+
+        await sleep(500)
+
+        await input.fill(scroll_prompt_2)
+        await page.keyboard.press('Enter')
+
+        await expect(user_message).toHaveCount(2)
+        await expect(ai_message).toHaveCount(2)
+        await expect(ai_message.nth(1)).toContainClass('streaming')
+
+        // allow scrolling to start
+        await sleep(4000)
+        await chat.hover()
+        await page.mouse.wheel(0, -100)
+
+        // wait for streaming to finish
+        await expect(ai_message.nth(1)).not.toContainClass('streaming', { timeout: 10_000 })
+
+        // let scroll animation complete
+        await sleep(500)
+
+        const did_automatically_scroll_to_bottom = await chat.evaluate(element => {
+            // the -1 here provides small tolerance for rounding errors
+            return element.scrollTop + element.clientHeight >= element.scrollHeight - 1
+        })
+        
+        expect(did_automatically_scroll_to_bottom).toBe(false)
     })
 
     test('reasoning content should scroll down automatically when a message is streaming', async ({ page }) => {
@@ -55,20 +100,20 @@ test.describe('Autoscroll', () => {
               ai_message        = page.locator('.chat .messages .message.assistant'),
               reasoning_content = ai_message.locator('.reasoning-content')
         
-        if (default_model.type !== 'deepseek' || !default_model.is_reasoner) {
-            const model_list_button     = page.locator('.active-model-button'),
-                  model_list            = page.locator('.models-by-family'),
-                  deepseek_model        = models.find(m => m.type === 'deepseek' && m.is_reasoner),
-                  deepseek_model_button = model_list.locator(`#model-button-${cssSanitised(deepseek_model.id)}`),
-                  active_model_icon     = model_list_button.locator('.icon')
+        if (!default_model.is_reasoner) {
+            const model_list_button      = page.locator('.active-model-button'),
+                  model_list             = page.locator('.models-by-family'),
+                  reasoning_model        = models.find(m => m.type !== 'open-ai' && m.is_reasoner),
+                  reasoning_model_button = model_list.locator(`#model-button-${cssSanitised(reasoning_model.id)}`),
+                  active_model_icon      = model_list_button.locator('.icon')
 
             await model_list_button.click()
             await expect(model_list).toBeVisible()
-            await expect(deepseek_model_button).toBeVisible()
+            await expect(reasoning_model_button).toBeVisible()
 
-            await deepseek_model_button.click()
+            await reasoning_model_button.click()
             await expect(model_list).toBeHidden()
-            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${deepseek_model.icon}`)
+            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${reasoning_model.icon}`)
         }
 
         await input.fill(scroll_reasoning_prompt)
@@ -80,17 +125,71 @@ test.describe('Autoscroll', () => {
         await expect(ai_message).toHaveCount(1)
         await expect(ai_message.locator('.message-content')).toHaveText(scroll_reasoning_reply)
 
-        const was_scrollable = await reasoning_content.evaluate(element => {
+        const reasoning_was_scrollable = await reasoning_content.evaluate(element => {
             return element.scrollHeight > element.clientHeight
         })
 
-        expect(was_scrollable).toBe(true)
+        expect(reasoning_was_scrollable).toBe(true)
+
+        // let scroll animation complete
+        await sleep(500)
+
+        const did_automatically_scroll_to_bottom = await reasoning_content.evaluate(element => {
+            // the -1 here provides small tolerance for rounding errors
+            return element.scrollTop + element.clientHeight >= element.scrollHeight - 1
+        })
+
+        expect(did_automatically_scroll_to_bottom).toBe(true)
+    })
+
+    test('reasoning content should stop autoscrolling if the user scrolls up on it', async ({ page }) => {
+        await page.goto('/')
+
+        const default_model     = models.find(m => m.id === defaults.model),
+              input             = page.locator('.primary-input-section .input'),
+              user_message      = page.locator('.chat .messages .message.user'),
+              ai_message        = page.locator('.chat .messages .message.assistant'),
+              reasoning_content = ai_message.locator('.reasoning-content')
+        
+        if (!default_model.is_reasoner) {
+            const model_list_button      = page.locator('.active-model-button'),
+                  model_list             = page.locator('.models-by-family'),
+                  reasoning_model        = models.find(m => m.type !== 'open-ai' && m.is_reasoner),
+                  reasoning_model_button = model_list.locator(`#model-button-${cssSanitised(reasoning_model.id)}`),
+                  active_model_icon      = model_list_button.locator('.icon')
+
+            await model_list_button.click()
+            await expect(model_list).toBeVisible()
+            await expect(reasoning_model_button).toBeVisible()
+
+            await reasoning_model_button.click()
+            await expect(model_list).toBeHidden()
+            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${reasoning_model.icon}`)
+        }
+        
+        await input.fill(scroll_reasoning_prompt)
+        await page.keyboard.press('Enter')
+
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(1)
+        await expect(ai_message).toHaveCount(1)
+        await expect(ai_message).toContainClass('streaming')
+
+        await sleep(2000)
+
+        await reasoning_content.hover()
+        await page.mouse.wheel(0, -100)
+
+        await expect(ai_message).not.toContainClass('streaming', { timeout: 10_000 })
+
+        // let scroll animation complete
+        await sleep(500)
 
         const did_automatically_scroll_to_bottom = await reasoning_content.evaluate(element => {
             // the -1 here provides small tolerance for rounding errors
             return element.scrollTop + element.clientHeight >= element.scrollHeight - 1
         })
         
-        expect(did_automatically_scroll_to_bottom).toBe(true)
+        expect(did_automatically_scroll_to_bottom).toBe(false)
     })
 })
