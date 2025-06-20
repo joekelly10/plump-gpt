@@ -3,7 +3,6 @@ import { sleep } from '../helpers/tools'
 import { cssSanitised } from '../../src/lib/utils/helpers'
 import { delay_prompt, delay_reply, controls_prompt, controls_reply, controls_prompt_2, controls_reply_2, slow_prompt, slow_reply } from '../mock/prompts/messages'
 
-import defaults from '../../src/lib/fixtures/defaults'
 import models from '../../src/lib/fixtures/models'
 
 test.describe('Messages', () => {
@@ -165,5 +164,76 @@ test.describe('Messages', () => {
         await expect(ai_message.locator('.message-content')).toHaveText(slow_reply)
         await expect(controls_right).toBeVisible()
         await expect(controls_left).toBeVisible()
+    })
+
+    test('we should be able to star messages', async ({ page }) => {
+        await page.goto('/')
+
+        const input        = page.locator('.primary-input-section .input'),
+              chat         = page.locator('.chat'),
+              user_message = chat.locator('.messages .message.user'),
+              ai_message   = chat.locator('.messages .message.assistant'),
+              star_button  = ai_message.locator('.message-controls-left .star'),
+              hover_info   = ai_message.locator('.hover-info-star'),
+              save_button  = page.locator('.save-button')
+        
+        await input.fill(controls_prompt)
+        await page.keyboard.press('Enter')
+
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(1)
+        await expect(user_message.locator('.message-content')).toHaveText(controls_prompt)
+        await expect(ai_message).toHaveCount(1)
+        await expect(ai_message).not.toContainClass('streaming')
+        await expect(ai_message).not.toContainClass('starred')
+        await expect(star_button).toBeVisible()
+        await expect(star_button).not.toContainClass('starred')
+
+        await star_button.hover()
+        await expect(ai_message).toContainClass('star-highlight')
+        await expect(hover_info).toBeVisible()
+        await expect(hover_info.locator('.text')).toHaveText('Add Star')
+
+        await star_button.click()
+        await expect(ai_message).toContainClass('starred')
+        await expect(star_button).toContainClass('starred')
+
+        // allow hover_info to transition
+        await expect(hover_info.locator('.text')).toHaveCount(1)
+        await expect(hover_info).toBeVisible()
+        await expect(hover_info.locator('.text')).toHaveText('Remove Star')
+        await expect(save_button).toContainClass('saved')
+
+        await page.reload()
+
+        const load_button = page.locator('.load-button'),
+              loader      = page.locator('.loader'),
+              chat_list   = loader.locator('.chats'),
+              latest_chat = chat_list.locator('.loader-chat').first()
+
+        await load_button.click()
+        await expect(loader).toBeVisible()
+        await expect(latest_chat).toBeVisible()
+
+        await latest_chat.click()
+        await expect(loader).toBeHidden()
+        await expect(user_message).toHaveCount(1)
+        await expect(user_message.locator('.message-content')).toHaveText(controls_prompt)
+        await expect(ai_message).toHaveCount(1)
+        await expect(ai_message.locator('.message-content')).toHaveText(controls_reply)
+        await expect(ai_message).toContainClass('starred')
+        await expect(star_button).toBeVisible()
+        await expect(star_button).toContainClass('starred')
+
+        await star_button.hover()
+        await expect(ai_message).toContainClass('star-highlight')
+        await expect(hover_info).toBeVisible()
+        await expect(hover_info.locator('.text')).toHaveText('Remove Star')
+
+        await star_button.click()
+        await expect(ai_message).not.toContainClass('starred')
+        await expect(star_button).not.toContainClass('starred')
+
+        await expect(save_button).toContainClass('saved')
     })
 })
