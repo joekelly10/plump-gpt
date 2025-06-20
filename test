@@ -262,7 +262,7 @@ ARGS=()
 
 if [ -n "$GREP_PATTERN" ]; then
     echo
-    echo -e "  ${white}✂️ Only tests that match: ${yellow_bold}\"${GREP_PATTERN}\"${reset}"
+    echo -e "  ${white_bold}✂️ Only tests that match: ${yellow_bold}\"${GREP_PATTERN}\"${reset}"
     ARGS+=("--" "--grep" "$GREP_PATTERN")
 fi
 
