@@ -121,6 +121,7 @@ kill_reporter() {
     REPORTER_PID=$(lsof -t -i TCP:"$reporter_port" 2>/dev/null)
 
     if [ -n "$REPORTER_PID" ]; then
+        kill -SIGINT "$REPORTER_PID" 2>/dev/null
         kill -SIGTERM "$REPORTER_PID" 2>/dev/null
     fi
 }
