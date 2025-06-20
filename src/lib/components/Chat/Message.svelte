@@ -32,6 +32,7 @@
         scrollToBottom,
         addReply,
         regenerateReply,
+        removeProvisionalFork,
         switchToFork,
         cancelFork,
         saveChat,
@@ -176,9 +177,12 @@
         />
     {:else if $is_provisionally_forking && message.is_last}
         <ProvisionalForkControls
+            bind:forking_from
             message={message}
             addReply={addReply}
+            removeProvisionalFork={removeProvisionalFork}
             cancelFork={cancelFork}
+            onChatUpdated={onChatUpdated}
         />
     {/if}
 

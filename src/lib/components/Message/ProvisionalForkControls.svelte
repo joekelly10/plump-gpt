@@ -1,7 +1,9 @@
 <script>
     import { fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { is_hovering } from '$lib/stores/chat/interactions'
+    import { forks, active_fork } from '$lib/stores/chat'
+    import { is_hovering, is_adding_reply, is_provisionally_forking } from '$lib/stores/chat/interactions'
+    import { insertIdIntoOrderedArray } from '$lib/utils/helpers'
 
     import AddIcon from '$lib/components/Icons/Add.svelte'
     import DeleteIcon from '$lib/components/Icons/Delete.svelte'
@@ -9,7 +11,14 @@
     let {
         // actions
         addReply,
+        removeProvisionalFork,
         cancelFork,
+
+        // events
+        onChatUpdated,
+
+        // bindable
+        forking_from = $bindable(null),
 
         // passive
         message
@@ -22,10 +31,29 @@
     const mouseleaveAddReply = async () => {
         $is_hovering.add_reply = $is_hovering.add_reply.filter(id => ![message.id, message.parent_id].includes(id))
     }
+
+    const clickedAddReply = () => {
+        $is_adding_reply          = true
+        forking_from              = null
+        $is_provisionally_forking = false
+
+        removeProvisionalFork()
+
+        insertIdIntoOrderedArray(message.parent_id, $forks[$active_fork].forked_at)
+
+        const forked_at   = $forks[$active_fork].forked_at.filter(id => id <= message.parent_id),
+              message_ids = $forks[$active_fork].message_ids.filter(id => id <= message.parent_id)
+
+        $forks       = $forks.concat([{ message_ids, forked_at, provisional: false }])
+        $active_fork = $forks.length - 1
+
+        onChatUpdated()
+        addReply()
+    }
 </script>
 
 <div class='provisional-fork-controls' in:fly={{ x: -32, delay: 0, duration: 250, easing: quartOut }}>
-    <button class='provisional-fork-button add-reply' title='Add another reply' onclick={addReply} onmouseenter={mouseenterAddReply} onmouseleave={mouseleaveAddReply}>
+    <button class='provisional-fork-button add-reply' title='Add another reply' onclick={clickedAddReply} onmouseenter={mouseenterAddReply} onmouseleave={mouseleaveAddReply}>
         <div class='icon-container'>
             <AddIcon className='icon' />
         </div>

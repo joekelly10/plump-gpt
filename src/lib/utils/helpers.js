@@ -78,7 +78,7 @@ const timeAgo = (date) => {
     return 'Just now'
 }
 
-export const insert = (id, array) => {
+export const insertIdIntoOrderedArray = (id, array) => {
     if (array.includes(id)) return
     const i = array.findIndex(el => el > id)
     if (i === -1) {

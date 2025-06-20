@@ -430,6 +430,7 @@
                 scrollToBottom={scrollToBottom}
                 addReply={addReply}
                 regenerateReply={regenerateReply}
+                removeProvisionalFork={removeProvisionalFork}
                 switchToFork={switchToFork}
                 cancelFork={cancelFork}
                 saveChat={saveChat}

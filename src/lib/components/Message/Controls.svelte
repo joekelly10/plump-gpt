@@ -2,9 +2,9 @@
     import { tick } from 'svelte'
     import { slide, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { messages, forks, active_fork, active_messages, fork_points, stars, highlights } from '$lib/stores/chat'
-    import { is_hovering, is_deleting, is_adding_reply, is_provisionally_forking, is_scrolled_to_bottom } from '$lib/stores/chat/interactions'
-    import { insert } from '$lib/utils/helpers'
+    import { messages, forks, active_fork, stars, highlights } from '$lib/stores/chat'
+    import { is_hovering, is_deleting, is_adding_reply, is_provisionally_forking } from '$lib/stores/chat/interactions'
+    import { insertIdIntoOrderedArray } from '$lib/utils/helpers'
     import { is_idle } from '$lib/stores/api'
 
     import AddIcon from '$lib/components/Icons/Add.svelte'
@@ -77,13 +77,7 @@
     const clickedAddReply = () => {
         $is_adding_reply = true
 
-        if ($is_provisionally_forking) {
-            forking_from              = null
-            $is_provisionally_forking = false
-            removeProvisionalFork()
-        }
-
-        insert(message.parent_id, $forks[$active_fork].forked_at)
+        insertIdIntoOrderedArray(message.parent_id, $forks[$active_fork].forked_at)
 
         const forked_at   = $forks[$active_fork].forked_at.filter(id => id <= message.parent_id),
               message_ids = $forks[$active_fork].message_ids.filter(id => id <= message.parent_id)
@@ -217,7 +211,7 @@
         $is_provisionally_forking = true
         forking_from              = $active_fork
 
-        insert(message.id, $forks[$active_fork].forked_at)
+        insertIdIntoOrderedArray(message.id, $forks[$active_fork].forked_at)
 
         const forked_at   = $forks[$active_fork].forked_at.filter(id => id <= message.id),
               message_ids = $forks[$active_fork].message_ids.filter(id => id <= message.id)
