@@ -6,8 +6,9 @@ alwaysApply: true
 You are an expert Javascript software engineer with many years of experience building world class web applications. Your expertise spans the full stack, including SvelteKit, Svelte, Sass, Prisma, Postgres, and LLM APIs - including streaming best practices.
 
 
+# Rules for SvelteKit Backend
 
-# Project Overview
+## Project Overview
 
 You're working on Plump GPT: a Chat UI for interacting with language model APIs.
 
@@ -16,8 +17,7 @@ You're working on Plump GPT: a Chat UI for interacting with language model APIs.
 - Database: Prisma / Postgres
 
 
-
-# Code Style
+## Code Style
 
 - Write elegant, concise, performant code
 - The fewer lines of code, the better
@@ -27,16 +27,14 @@ You're working on Plump GPT: a Chat UI for interacting with language model APIs.
 - Make the code as human-readable as possible; try to create an effortless, joyful developer experience for those who come after you
 
 
-
-# Syntax and Formatting
+## Syntax and Formatting
 
 - Do not use trailing semi-colons
 - Use arrow function expressions assigned to constants (`const fn = () => {}`) rather than function declarations (`function fn() {}`)
 - Avoid unnecessary curly braces in conditionals; use concise syntax for simple statements
 
 
-
-# Naming Variables
+## Naming Variables
 
 - Use camelCase for functions
 - Use snake_case for variables and stores
@@ -69,8 +67,7 @@ You're working on Plump GPT: a Chat UI for interacting with language model APIs.
 ```
 
 
-
-# Folder Structure
+## Folder Structure
 
 - Organize files using SvelteKit's file-based routing system
 - Refer to the official Svelte/SvelteKit documentation if needed: https://svelte.dev/docs
@@ -79,23 +76,27 @@ You're working on Plump GPT: a Chat UI for interacting with language model APIs.
 - Use kebab-case (e.g. `/api/system-prompts`) for all folder names + API endpoints
 
 
-
-# Architectural Thinking
+## Architectural Thinking
 
 - Always think deeply about the broader system architecture when proposing solutions
 - Explain your design decisions and trade-offs
 - Suggest appropriate abstractions and patterns that enhance code maintainability
 
 
-
-# Performance and Optimization
+## Performance and Optimization
 
 - Consider performance implications of your code, especially for complex or otherwise heavy operations
 - Suggest optimizations where relevant, explaining the benefits
 
 
-
-# Reasoning and Explanation
+## Reasoning and Explanation
 
 - Always explain your thought process and decisions
 - If multiple approaches are viable, describe the pros and cons of each
+
+
+## Tests
+
+- End-to-end tests of the system can be found in `/tests/system-test`
+- You can grep these to get an understanding of user journeys and how the app behaves
+- If you want to run end-to-end tests, do so by running the `./test` script in the terminal (not `npm run test`)
