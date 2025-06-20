@@ -65,6 +65,17 @@ while [ $# -gt 0 ]; do
     shift
 done
 
+# make sure an image exists for the --cached flag
+if [ "$USE_CACHE" = true ]; then
+    if ! docker image inspect plump-gpt:test >/dev/null 2>&1; then
+        echo
+        echo -e "  ${white_bold}⚠️ Warning: No docker image found for cached build!${reset}"
+        echo -e "     ${white}The app will be built fresh${reset}"
+        echo
+        USE_CACHE=false
+    fi
+fi
+
 
 suspend_input() {
     ORIGINAL_STTY=$(stty -g)
