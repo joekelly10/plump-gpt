@@ -137,11 +137,10 @@ kill_reporter() {
     local reporter_port=9323
 
     # lsof -t outputs only PIDs, -i TCP selects network files
-    REPORTER_PID=$(lsof -t -i TCP:"$reporter_port" 2>/dev/null)
+    REPORTER_PIDS=$(lsof -t -i TCP:"$reporter_port" 2>/dev/null)
 
-    if [ -n "$REPORTER_PID" ]; then
-        kill -SIGINT "$REPORTER_PID" 2>/dev/null
-        kill -SIGTERM "$REPORTER_PID" 2>/dev/null
+    if [ -n "$REPORTER_PIDS" ]; then
+        kill -SIGTERM $REPORTER_PIDS 2>/dev/null
     fi
 }
 
