@@ -1,15 +1,13 @@
-import { sleep, wordsFrom, getUsage } from '$tests/helpers/tools'
-import { getAIReply } from '$tests/helpers/prompt-map'
+import { sleep, wordsFrom, process } from '$tests/helpers/tools'
 import { speed_limit } from '$tests/helpers/defaults'
 import { startObject, deltaObject, finishObject, usageObject } from '$tests/mock/stream_objects/open-ai'
 
 export const POST = async ({ request }) => {
     const { model, messages } = await request.json()
 
-    const prompt = messages[messages.length - 1].content,
-          reply  = getAIReply(prompt)
+    const { reply, input_tokens, output_tokens, is_delay_test, is_slow_test } = process(messages)
 
-    const { input_tokens, output_tokens } = getUsage(messages, reply)
+    if (is_delay_test) await sleep(2000)
 
     const stream = new ReadableStream({
         async start(controller) {
@@ -20,10 +18,12 @@ export const POST = async ({ request }) => {
             let json = JSON.stringify(startObject(model))
             enqueue(json)
 
+            if (is_delay_test) await sleep(2000)
+
             for (let i = 0; i < words.length; i++) {
                 json = JSON.stringify(deltaObject(model, words[i]))
                 enqueue(json)
-                await sleep(speed_limit.fast)
+                await sleep(is_slow_test ? speed_limit.slow : speed_limit.fast)
             }
 
             json = JSON.stringify(finishObject(model))

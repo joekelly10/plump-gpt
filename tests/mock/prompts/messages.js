@@ -1,11 +1,8 @@
-export const delay_prompt = '[DELAY] Wake up, GPT'
-export const delay_reply  = 'I’m already awake, you prat - I don’t sleep.'
+export const short_reply_prompt = 'The movie ran through me'
+export const short_reply        = `The glamour subdued me. The tabloid untie me. I'm empty, please fill me.`
 
-export const controls_prompt = `And now you're under control`
-export const controls_reply  = `And now you do what they told ya`
+export const medium_reply_prompt = `I am the Niña, the Pinta, the Santa María`
+export const medium_reply        = `The noose and the rapist, the fields overseer. The agents of orange, the priests of Hiroshima. The cost of my desire: sleep now in the fire.`
 
-export const controls_prompt_2 = `[SLOW] I am the Niña, the Pinta, the Santa María`
-export const controls_reply_2  = `The noose and the rapist, the fields overseer. The agents of orange, the priests of Hiroshima. The cost of my desire: sleep now in the fire.`
-
-export const slow_prompt = '[SLOW] The movie ran through me'
-export const slow_reply  = `The glamour subdued me. The tabloid untie me. I'm empty, please fill me.`
+export const long_reply_prompt = `You know you could've been a wonder`
+export const long_reply        = `Taking your circus to the sky-y-y. You couldn't take it on the tight rope. No, you had to take it on the si-i-ide. You always like it undercover.Tucked in between your dirty shee-ee-eets. But no one's even done nutt'n to ya. In between the hollers and the screa-ea-eams. And I said, "nah, nah, hey, hey, another dirty bird ain't giving out a taste, taste." Well, in the black of the night, til the red morning light. You got your cozy little corner. All night you're jamming on your fee-ee-eet. Hanging out just like a street sign. And pulled a twenty dollar tri-i-ick. I hear you're blowing like a feather. And then they rub it in your fa-a-ace. Oh, once they've had all their fun, hun. You're at the bottom of the ca-a-age. And I said, "nah, nah, hey, hey, another dirty bird ain't giving out a taste, taste." In the black of the night, til the red morning light. And I said, "nah, nah, hey, hey, you're giving all your cinnamon away-ay." That's not right. Hey, hey, another dirty bird ain't giving out a taste. Uh, hey, keep on giving away and giving it away, giving it away. Hey, hey, you're giving all your cinnamon away-ay. Hey, hey, you're giving all your cinnamon away. Ah, hey, hey, another dirty bird ain't giving out a taste, taste. In the black of the night til the red morning light. And I said, "nah, nah, hey, hey, you're giving all your cinnamon away." That's not right. And I said, "nah, nah, hey, hey, another dirty bird ain't giving out a taste, taste." In the black of the night, til the red morning light. And I said, "nah, nah, hey, hey, you're giving all your cinnamon away-ay.`

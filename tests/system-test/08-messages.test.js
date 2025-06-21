@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { sleep } from '../helpers/tools'
 import { cssSanitised } from '../../src/lib/utils/helpers'
-import { delay_prompt, delay_reply, controls_prompt, controls_reply, controls_prompt_2, controls_reply_2, slow_prompt, slow_reply } from '../mock/prompts/messages'
+import { short_reply_prompt, short_reply, medium_reply_prompt, medium_reply } from '../mock/prompts/messages'
 
 import models from '../../src/lib/fixtures/models'
 import defaults from '../../src/lib/fixtures/defaults'
@@ -10,25 +10,14 @@ test.describe('Messages', () => {
     test('we should see a waiting message while waiting for the API connection to be established', async ({ page }) => {
         await page.goto('/')
 
-        // needs to be Open AI for this test to work (see mock endpoint)
-        const input               = page.locator('.primary-input-section .input'),
-              model_list_button   = page.locator('.active-model-button'),
-              model_list          = page.locator('.models-by-family'),
-              openai_model        = models.find(m => m.type === 'open-ai'),
-              openai_model_button = model_list.locator(`#model-button-${cssSanitised(openai_model.id)}`),
-              active_model_icon   = model_list_button.locator('.icon'),
-              chat                = page.locator('.chat'),
-              user_message        = chat.locator('.messages .message.user'),
-              connecting_div      = chat.locator('.connecting')
+        const default_model  = models.find(m => m.id === defaults.model),
+              input          = page.locator('.primary-input-section .input'),
+              chat           = page.locator('.chat'),
+              user_message   = chat.locator('.messages .message.user'),
+              connecting_div = chat.locator('.connecting')
 
-        await model_list_button.click()
-        await expect(model_list).toBeVisible()
-        await expect(openai_model_button).toBeVisible()
+        const delay_prompt = '[DELAY] ' + short_reply_prompt
 
-        await openai_model_button.click()
-        await expect(model_list).toBeHidden()
-        await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${openai_model.icon}`)
-    
         await input.fill(delay_prompt)
         await page.keyboard.press('Enter')
 
@@ -39,31 +28,20 @@ test.describe('Messages', () => {
         await sleep(2000)
 
         await expect(connecting_div).toBeVisible()
-        await expect(connecting_div.locator('.text')).toContainText(`Waiting for ${openai_model.hosted_at}`)
+        await expect(connecting_div.locator('.text')).toContainText(`Waiting for ${default_model.hosted_at}`)
     })
 
     test('we should see a waiting message while waiting for the reply to start streaming', async ({ page }) => {
         await page.goto('/')
 
-        // needs to be Open AI for this test to work (see mock endpoint)
-        const input               = page.locator('.primary-input-section .input'),
-              model_list_button   = page.locator('.active-model-button'),
-              model_list          = page.locator('.models-by-family'),
-              openai_model        = models.find(m => m.type === 'open-ai'),
-              openai_model_button = model_list.locator(`#model-button-${cssSanitised(openai_model.id)}`),
-              active_model_icon   = model_list_button.locator('.icon'),
-              chat                = page.locator('.chat'),
-              user_message        = chat.locator('.messages .message.user'),
-              ai_message          = chat.locator('.messages .message.assistant')
+        const default_model = models.find(m => m.id === defaults.model),
+              input         = page.locator('.primary-input-section .input'),
+              chat          = page.locator('.chat'),
+              user_message  = chat.locator('.messages .message.user'),
+              ai_message    = chat.locator('.messages .message.assistant')
 
-        await model_list_button.click()
-        await expect(model_list).toBeVisible()
-        await expect(openai_model_button).toBeVisible()
+        const delay_prompt = '[DELAY] ' + short_reply_prompt
 
-        await openai_model_button.click()
-        await expect(model_list).toBeHidden()
-        await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${openai_model.icon}`)
-    
         await input.fill(delay_prompt)
         await page.keyboard.press('Enter')
 
@@ -71,8 +49,8 @@ test.describe('Messages', () => {
         await expect(user_message).toHaveCount(1)
         await expect(user_message.locator('.message-content')).toHaveText(delay_prompt)
         await expect(ai_message).toHaveCount(1)
-        await expect(ai_message.locator('.status-text')).toContainText(`Waiting for ${openai_model.short_name}`)
-        await expect(ai_message.locator('.message-content')).toHaveText(delay_reply)
+        await expect(ai_message.locator('.status-text')).toContainText(`Waiting for ${default_model.short_name}`)
+        await expect(ai_message.locator('.message-content')).toHaveText(short_reply)
     })
 
     test('full controls should be visible on the last AI reply only', async ({ page }) => {
@@ -83,14 +61,14 @@ test.describe('Messages', () => {
               user_message = chat.locator('.messages .message.user'),
               ai_message   = chat.locator('.messages .message.assistant')
               
-        await input.fill(controls_prompt)
+        await input.fill(short_reply_prompt)
         await page.keyboard.press('Enter')
 
         await expect(input).toHaveText('')
         await expect(user_message).toHaveCount(1)
-        await expect(user_message.locator('.message-content')).toHaveText(controls_prompt)
+        await expect(user_message.locator('.message-content')).toHaveText(short_reply_prompt)
         await expect(ai_message).toHaveCount(1)
-        await expect(ai_message.locator('.message-content')).toHaveText(controls_reply)
+        await expect(ai_message.locator('.message-content')).toHaveText(short_reply)
         await expect(ai_message.locator('.message-controls-right .add')).toBeVisible()
         await expect(ai_message.locator('.message-controls-right .regenerate')).toBeVisible()
         await expect(ai_message.locator('.message-controls-right .delete')).toBeVisible()
@@ -99,14 +77,16 @@ test.describe('Messages', () => {
 
         await sleep(500)
 
-        await input.fill(controls_prompt_2)
+        const slow_prompt = '[SLOW] ' + medium_reply_prompt
+
+        await input.fill(slow_prompt)
         await page.keyboard.press('Enter')
 
         await expect(input).toHaveText('')
         await expect(user_message).toHaveCount(2)
-        await expect(user_message.nth(1).locator('.message-content')).toHaveText(controls_prompt_2)
+        await expect(user_message.nth(1).locator('.message-content')).toHaveText(slow_prompt)
         await expect(ai_message).toHaveCount(2)
-        await expect(ai_message.nth(1).locator('.message-content')).toHaveText(controls_reply_2)
+        await expect(ai_message.nth(1).locator('.message-content')).toHaveText(medium_reply, { timeout: 10_000 })
 
         await expect(ai_message.nth(0).locator('.message-controls-right .add')).not.toBeVisible()
         await expect(ai_message.nth(0).locator('.message-controls-right .regenerate')).not.toBeVisible()
@@ -124,26 +104,14 @@ test.describe('Messages', () => {
     test('all message controls should be hidden while a reply is streaming', async ({ page }) => {
         await page.goto('/')
 
-        // needs to be Open AI for this test to work (see mock endpoint)
-        const input               = page.locator('.primary-input-section .input'),
-              model_list_button   = page.locator('.active-model-button'),
-              model_list          = page.locator('.models-by-family'),
-              openai_model        = models.find(m => m.type === 'open-ai'),
-              openai_model_button = model_list.locator(`#model-button-${cssSanitised(openai_model.id)}`),
-              active_model_icon   = model_list_button.locator('.icon'),
-              chat                = page.locator('.chat'),
-              user_message        = chat.locator('.messages .message.user'),
-              ai_message          = chat.locator('.messages .message.assistant'),
-              controls_right      = ai_message.locator('.message-controls-right'),
-              controls_left       = ai_message.locator('.message-controls-left')
+        const input          = page.locator('.primary-input-section .input'),
+              chat           = page.locator('.chat'),
+              user_message   = chat.locator('.messages .message.user'),
+              ai_message     = chat.locator('.messages .message.assistant'),
+              controls_right = ai_message.locator('.message-controls-right'),
+              controls_left  = ai_message.locator('.message-controls-left')
 
-        await model_list_button.click()
-        await expect(model_list).toBeVisible()
-        await expect(openai_model_button).toBeVisible()
-
-        await openai_model_button.click()
-        await expect(model_list).toBeHidden()
-        await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${openai_model.icon}`)
+        const slow_prompt = '[SLOW] ' + medium_reply_prompt
               
         await input.fill(slow_prompt)
         await page.keyboard.press('Enter')
@@ -162,7 +130,7 @@ test.describe('Messages', () => {
         await expect(controls_right).toBeHidden()
         await expect(controls_left).toBeHidden()
 
-        await expect(ai_message.locator('.message-content')).toHaveText(slow_reply)
+        await expect(ai_message.locator('.message-content')).toHaveText(medium_reply, { timeout: 10_000 })
         await expect(controls_right).toBeVisible()
         await expect(controls_left).toBeVisible()
     })
@@ -178,12 +146,12 @@ test.describe('Messages', () => {
               hover_info   = ai_message.locator('.hover-info-star'),
               save_button  = page.locator('.save-button')
         
-        await input.fill(controls_prompt)
+        await input.fill(short_reply_prompt)
         await page.keyboard.press('Enter')
 
         await expect(input).toHaveText('')
         await expect(user_message).toHaveCount(1)
-        await expect(user_message.locator('.message-content')).toHaveText(controls_prompt)
+        await expect(user_message.locator('.message-content')).toHaveText(short_reply_prompt)
         await expect(ai_message).toHaveCount(1)
         await expect(ai_message).not.toContainClass('streaming')
         await expect(ai_message).not.toContainClass('starred')
@@ -219,9 +187,9 @@ test.describe('Messages', () => {
         await latest_chat.click()
         await expect(loader).toBeHidden()
         await expect(user_message).toHaveCount(1)
-        await expect(user_message.locator('.message-content')).toHaveText(controls_prompt)
+        await expect(user_message.locator('.message-content')).toHaveText(short_reply_prompt)
         await expect(ai_message).toHaveCount(1)
-        await expect(ai_message.locator('.message-content')).toHaveText(controls_reply)
+        await expect(ai_message.locator('.message-content')).toHaveText(short_reply)
         await expect(ai_message).toContainClass('starred')
         await expect(star_button).toBeVisible()
         await expect(star_button).toContainClass('starred')
@@ -248,26 +216,26 @@ test.describe('Messages', () => {
               delete_button = ai_message.locator('.message-controls-right .delete'),
               hover_info    = ai_message.locator('.hover-info-delete')
 
-        await input.fill(controls_prompt)
+        await input.fill(short_reply_prompt)
         await page.keyboard.press('Enter')
 
         await expect(input).toHaveText('')
         await expect(user_message).toHaveCount(1)
-        await expect(user_message.locator('.message-content')).toHaveText(controls_prompt)
+        await expect(user_message.locator('.message-content')).toHaveText(short_reply_prompt)
         await expect(ai_message).toHaveCount(1)
-        await expect(ai_message.locator('.message-content')).toHaveText(controls_reply)
+        await expect(ai_message.locator('.message-content')).toHaveText(short_reply)
         await expect(delete_button).toBeVisible()
 
         await sleep(500)
 
-        await input.fill(controls_prompt)
+        await input.fill(medium_reply_prompt)
         await page.keyboard.press('Enter')
 
         await expect(input).toHaveText('')
         await expect(user_message).toHaveCount(2)
-        await expect(user_message.nth(1).locator('.message-content')).toHaveText(controls_prompt)
+        await expect(user_message.nth(1).locator('.message-content')).toHaveText(medium_reply_prompt)
         await expect(ai_message).toHaveCount(2)
-        await expect(ai_message.nth(1).locator('.message-content')).toHaveText(controls_reply)
+        await expect(ai_message.nth(1).locator('.message-content')).toHaveText(medium_reply)
         await expect(delete_button).toBeVisible()
 
         await delete_button.hover()
@@ -279,7 +247,9 @@ test.describe('Messages', () => {
 
         await delete_button.click()
         await expect(ai_message).toHaveCount(1)
+        await expect(ai_message.locator('.message-content')).toHaveText(short_reply)
         await expect(user_message).toHaveCount(1)
+        await expect(user_message.locator('.message-content')).toHaveText(short_reply_prompt)
         await expect(delete_button).toBeVisible()
 
         await delete_button.hover()
@@ -306,14 +276,14 @@ test.describe('Messages', () => {
               hover_info        = ai_message.locator('.hover-info-regenerate'),
               save_button       = page.locator('.save-button')
 
-        await input.fill(controls_prompt)
+        await input.fill(short_reply_prompt)
         await page.keyboard.press('Enter')
 
         await expect(input).toHaveText('')
         await expect(user_message).toHaveCount(1)
-        await expect(user_message.locator('.message-content')).toHaveText(controls_prompt)
+        await expect(user_message.locator('.message-content')).toHaveText(short_reply_prompt)
         await expect(ai_message).toHaveCount(1)
-        await expect(ai_message.locator('.message-content')).toHaveText(controls_reply)
+        await expect(ai_message.locator('.message-content')).toHaveText(short_reply)
         await expect(model_icon).toHaveAttribute('src', `/img/icons/models/${default_model.icon}`)
         await expect(save_button).toContainClass('saved')
         await expect(regenerate_button).toBeVisible()
@@ -347,7 +317,7 @@ test.describe('Messages', () => {
         page.on('dialog', async dialog => { await dialog.accept() })
 
         await regenerate_button.click()
-        await expect(ai_message.locator('.message-content')).toHaveText(controls_reply)
+        await expect(ai_message.locator('.message-content')).toHaveText(short_reply)
         await expect(model_icon).toHaveAttribute('src', `/img/icons/models/${other_model.icon}`)
     })
 })

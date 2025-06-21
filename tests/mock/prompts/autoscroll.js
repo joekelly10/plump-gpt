@@ -30,7 +30,7 @@ The scope of my desire
 The Party blessed me with its future
 And I protect it with fire
 
-I am the Nina, the Pinta, the Santa Maria
+I am the Niña, the Pinta, the Santa María
 The noose and the rapist
 And the fields overseer
 The agents of orange
@@ -50,7 +50,7 @@ It's caged and frozen still
 There is no other pill to take
 So swallow the one that made you ill
 
-The Nina, the Pinta, the Santa Maria
+The Niña, the Pinta, the Santa María
 The noose and the rapist
 The fields overseer
 The agents of orange

@@ -1,16 +1,13 @@
-import { sleep, wordsFrom, getUsage } from '$tests/helpers/tools'
-import { getAIReply, getAIReasoning } from '$tests/helpers/prompt-map'
+import { sleep, wordsFrom, process } from '$tests/helpers/tools'
 import { speed_limit } from '$tests/helpers/defaults'
 import { startObject, deltaReasoningObject, deltaObject, finishObject, usageObject } from '$tests/mock/stream_objects/openrouter'
 
 export const POST = async ({ request }) => {
     const { model, messages } = await request.json()
 
-    const prompt    = messages[messages.length - 1].content,
-          reasoning = getAIReasoning(prompt),
-          reply     = getAIReply(prompt)
+    const { reply, reasoning, input_tokens, output_tokens, reasoning_tokens, is_delay_test, is_slow_test } = process(messages)
 
-    const { input_tokens, output_tokens, reasoning_tokens } = getUsage(messages, reply, reasoning)
+    if (is_delay_test) await sleep(2000)
 
     const stream = new ReadableStream({
         async start(controller) {
@@ -22,16 +19,18 @@ export const POST = async ({ request }) => {
             let json = JSON.stringify(startObject(model))
             enqueue(json)
 
+            if (is_delay_test) await sleep(2000)
+
             for (let i = 0; i < reasoning_words.length; i++) {
                 json = JSON.stringify(deltaReasoningObject(model, reasoning_words[i]))
                 enqueue(json)
-                await sleep(speed_limit.fast)
+                await sleep(is_slow_test ? speed_limit.slow : speed_limit.fast)
             }
 
             for (let i = 0; i < reply_words.length; i++) {
                 json = JSON.stringify(deltaObject(model, reply_words[i]))
                 enqueue(json)
-                await sleep(speed_limit.fast)
+                await sleep(is_slow_test ? speed_limit.slow : speed_limit.fast)
             }
 
             json = JSON.stringify(finishObject(model))

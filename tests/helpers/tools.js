@@ -1,10 +1,35 @@
-import { Tiktoken } from 'tiktoken/lite'
 import cl100k_base from 'tiktoken/encoders/cl100k_base.json' assert { type: 'json' }
+import { Tiktoken } from 'tiktoken/lite'
+import { getAIReply, getAIReasoning } from './prompt-map'
 
 export const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 export const checkInterruption = async () => {
     if (global.isSetupInterrupted) process.exit(130) // exit code for Ctrl+C
+}
+
+export const process = (messages) => {
+    let prompt = messages[messages.length - 1].content
+
+    let is_delay_test = false,
+        is_slow_test  = false
+
+    if (prompt.startsWith('[DELAY] ')) {
+        prompt        = prompt.replace('[DELAY] ', '')
+        is_delay_test = true
+    }
+
+    if (prompt.startsWith('[SLOW] ')) {
+        prompt       = prompt.replace('[SLOW] ', '')
+        is_slow_test = true
+    }
+
+    const reply     = getAIReply(prompt),
+          reasoning = getAIReasoning(prompt)
+
+    const { input_tokens, output_tokens, reasoning_tokens } = getUsage(messages, reply, reasoning)
+
+    return { prompt, reply, reasoning, input_tokens, output_tokens, reasoning_tokens, is_delay_test, is_slow_test }
 }
 
 export const wordsFrom = (text) => {
