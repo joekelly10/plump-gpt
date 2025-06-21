@@ -72,7 +72,7 @@
         }
 
         if ($is_deleting) {
-            await sleep(250) // let delete animation finish
+            await sleep(300) // let delete animation finish
             $is_deleting = false
         }
 
