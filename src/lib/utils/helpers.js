@@ -1,3 +1,5 @@
+export const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+
 export const addCopyButtons = () => {
     const code_blocks = document.querySelectorAll('.message pre')
 
