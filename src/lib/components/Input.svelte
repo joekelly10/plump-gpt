@@ -3,11 +3,11 @@
     import { page } from '$app/stores'
     import { loader_active, prompt_editor_active, user_settings_active, model_list_active } from '$lib/stores/app'
     import { chat_id, messages, forks, active_fork, active_messages, stars, highlights } from '$lib/stores/chat'
-    import { is_hovering, is_adding_reply, is_scrolled_to_bottom, is_provisionally_forking } from '$lib/stores/chat/interactions'
+    import { is_hovering, is_adding_reply, is_deleting, is_scrolled_to_bottom, is_provisionally_forking } from '$lib/stores/chat/interactions'
     import { model, temperature, top_p } from '$lib/stores/ai'
     import { api_state, is_idle } from '$lib/stores/api'
     import { config } from '$lib/stores/user'
-    import { addCopyButtons } from '$lib/utils/helpers'
+    import { addCopyButtons, sleep } from '$lib/utils/helpers'
     import hljs from 'highlight.js'
 
     import ModelList from '$lib/components/Input/ModelList.svelte'
@@ -71,6 +71,11 @@
             return message_ids[message_ids.length - 1]
         }
 
+        if ($is_deleting) {
+            await sleep(250) // let delete animation finish
+            $is_deleting = false
+        }
+
         if (!is_regeneration) {
             const user_message = {
                 id:        getNextId(),
@@ -131,10 +136,10 @@
 
         api_state.startStreaming()
 
+        $messages = [...$messages, gpt_message]
+
         $forks[$active_fork].message_ids.push(gpt_message.id)
         $forks = $forks
-
-        $messages = [...$messages, gpt_message]
 
         await tick()
         scrollChatToBottom({ context: 'streaming_started' })

@@ -95,13 +95,12 @@
             await tick()
 
             const deleted = $forks[$active_fork].message_ids.splice(-1,1)
+
             $messages   = $messages.filter(m => m.id !== deleted[0])
             $stars      = $stars.filter(m => m.id !== deleted[0])
             $highlights = $highlights.filter(hl => hl.message_id !== deleted[0])
-            regenerateReply()
 
-            await tick()
-            $is_deleting = false
+            regenerateReply()
         }
     }
  
@@ -240,7 +239,7 @@
         <button class='message-control-button add' onclick={clickedAddReply} onmouseenter={hoveredAddReply} onmouseleave={unhoveredAddReply}>
             <AddIcon className='icon' />
         </button>
-        <button class='message-control-button retry' onclick={clickedRegenerate} onmouseenter={hoveredRegenerate} onmouseleave={unhoveredRegenerate}>
+        <button class='message-control-button regenerate' onclick={clickedRegenerate} onmouseenter={hoveredRegenerate} onmouseleave={unhoveredRegenerate}>
             <RetryIcon className='icon' />
         </button>
         <button class='message-control-button delete' onclick={clickedDelete} onmouseenter={hoveredDelete} onmouseleave={unhoveredDelete}>
@@ -340,7 +339,7 @@
                         border-color:     color.mix($background-500, $blue, 5%)
                         background-color: color.mix($background-500, $blue, 5%)
 
-                &.retry
+                &.regenerate
                     .icon
                         height: 18px
                     &:hover
