@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { sleep } from '../helpers/tools'
-import { cssSanitised } from '../../src/lib/utils/helpers'
+import { switchModel } from '../helpers/actions'
 import { scroll_prompt, scroll_reply, scroll_prompt_2, scroll_reply_2, scroll_reasoning_prompt, scroll_reasoning_content, scroll_reasoning_reply } from '../mock/prompts/autoscroll'
 
 import defaults from '../../src/lib/fixtures/defaults'
@@ -101,19 +101,8 @@ test.describe('Autoscroll', () => {
               reasoning_content = ai_message.locator('.reasoning-content')
         
         if (!default_model.is_reasoner) {
-            const model_list_button      = page.locator('.active-model-button'),
-                  model_list             = page.locator('.models-by-family'),
-                  reasoning_model        = models.find(m => m.type !== 'open-ai' && m.is_reasoner),
-                  reasoning_model_button = model_list.locator(`#model-button-${cssSanitised(reasoning_model.id)}`),
-                  active_model_icon      = model_list_button.locator('.icon')
-
-            await model_list_button.click()
-            await expect(model_list).toBeVisible()
-            await expect(reasoning_model_button).toBeVisible()
-
-            await reasoning_model_button.click()
-            await expect(model_list).toBeHidden()
-            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${reasoning_model.icon}`)
+            const reasoning_model = models.find(m => m.type !== 'open-ai' && m.is_reasoner)
+            await switchModel(page, reasoning_model)
         }
 
         await input.fill(scroll_reasoning_prompt)
@@ -152,19 +141,8 @@ test.describe('Autoscroll', () => {
               reasoning_content = ai_message.locator('.reasoning-content')
         
         if (!default_model.is_reasoner) {
-            const model_list_button      = page.locator('.active-model-button'),
-                  model_list             = page.locator('.models-by-family'),
-                  reasoning_model        = models.find(m => m.type !== 'open-ai' && m.is_reasoner),
-                  reasoning_model_button = model_list.locator(`#model-button-${cssSanitised(reasoning_model.id)}`),
-                  active_model_icon      = model_list_button.locator('.icon')
-
-            await model_list_button.click()
-            await expect(model_list).toBeVisible()
-            await expect(reasoning_model_button).toBeVisible()
-
-            await reasoning_model_button.click()
-            await expect(model_list).toBeHidden()
-            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${reasoning_model.icon}`)
+            const reasoning_model = models.find(m => m.type !== 'open-ai' && m.is_reasoner)
+            await switchModel(page, reasoning_model)
         }
         
         await input.fill(scroll_reasoning_prompt)

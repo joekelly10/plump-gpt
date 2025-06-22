@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { cssSanitised } from '../../src/lib/utils/helpers'
+import { switchModel } from '../helpers/actions'
 import { basic_reasoning_prompt, basic_reasoning_content, basic_reasoning_reply } from '../mock/prompts/basic_reasoning'
 
 import defaults from '../../src/lib/fixtures/defaults'
@@ -15,19 +15,8 @@ test.describe('Reasoning Content', () => {
               ai_message    = page.locator('.chat .messages .message.assistant')
 
         if (default_model.type !== 'google' || !default_model.is_reasoner) {
-            const model_list_button   = page.locator('.active-model-button'),
-                  model_list          = page.locator('.models-by-family'),
-                  google_model        = models.find(m => m.type === 'google' && m.is_reasoner),
-                  google_model_button = model_list.locator(`#model-button-${cssSanitised(google_model.id)}`),
-                  active_model_icon   = model_list_button.locator('.icon')
-
-            await model_list_button.click()
-            await expect(model_list).toBeVisible()
-            await expect(google_model_button).toBeVisible()
-
-            await google_model_button.click()
-            await expect(model_list).toBeHidden()
-            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${google_model.icon}`)
+            const google_model = models.find(m => m.type === 'google' && m.is_reasoner)
+            await switchModel(page, google_model)
         }
 
         await input.fill(basic_reasoning_prompt)
@@ -51,19 +40,8 @@ test.describe('Reasoning Content', () => {
               ai_message    = page.locator('.chat .messages .message.assistant')
         
         if (default_model.type !== 'x' || !default_model.is_reasoner) {
-            const model_list_button = page.locator('.active-model-button'),
-                  model_list        = page.locator('.models-by-family'),
-                  x_model           = models.find(m => m.type === 'x' && m.is_reasoner),
-                  x_model_button    = model_list.locator(`#model-button-${cssSanitised(x_model.id)}`),
-                  active_model_icon = model_list_button.locator('.icon')
-
-            await model_list_button.click()
-            await expect(model_list).toBeVisible()
-            await expect(x_model_button).toBeVisible()
-
-            await x_model_button.click()
-            await expect(model_list).toBeHidden()
-            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${x_model.icon}`)
+            const x_model = models.find(m => m.type === 'x' && m.is_reasoner)
+            await switchModel(page, x_model)
         }
 
         await input.fill(basic_reasoning_prompt)
@@ -87,19 +65,8 @@ test.describe('Reasoning Content', () => {
               ai_message    = page.locator('.chat .messages .message.assistant')
         
         if (default_model.type !== 'deepseek' || !default_model.is_reasoner) {
-            const model_list_button     = page.locator('.active-model-button'),
-                  model_list            = page.locator('.models-by-family'),
-                  deepseek_model        = models.find(m => m.type === 'deepseek' && m.is_reasoner),
-                  deepseek_model_button = model_list.locator(`#model-button-${cssSanitised(deepseek_model.id)}`),
-                  active_model_icon     = model_list_button.locator('.icon')
-
-            await model_list_button.click()
-            await expect(model_list).toBeVisible()
-            await expect(deepseek_model_button).toBeVisible()
-
-            await deepseek_model_button.click()
-            await expect(model_list).toBeHidden()
-            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${deepseek_model.icon}`)
+            const deepseek_model = models.find(m => m.type === 'deepseek' && m.is_reasoner)
+            await switchModel(page, deepseek_model)
         }
 
         await input.fill(basic_reasoning_prompt)
@@ -123,21 +90,8 @@ test.describe('Reasoning Content', () => {
               ai_message    = page.locator('.chat .messages .message.assistant')
         
         if (default_model.type !== 'openrouter' || !default_model.is_reasoner) {
-            const model_list_button       = page.locator('.active-model-button'),
-                  model_list              = page.locator('.models-by-family'),
-                  openrouter_model        = models.find(m => m.type === 'openrouter' && m.is_reasoner),
-                  openrouter_model_button = model_list.locator(`#model-button-${cssSanitised(openrouter_model.id)}`),
-                  active_model_icon       = model_list_button.locator('.icon')
-            
-            if (!openrouter_model) test.skip()
-
-            await model_list_button.click()
-            await expect(model_list).toBeVisible()
-            await expect(openrouter_model_button).toBeVisible()
-
-            await openrouter_model_button.click()
-            await expect(model_list).toBeHidden()
-            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${openrouter_model.icon}`)
+            const openrouter_model = models.find(m => m.type === 'openrouter' && m.is_reasoner)
+            await switchModel(page, openrouter_model)
         }
 
         await input.fill(basic_reasoning_prompt)
@@ -161,21 +115,8 @@ test.describe('Reasoning Content', () => {
               ai_message    = page.locator('.chat .messages .message.assistant')
         
         if (default_model.type !== 'groq' || !default_model.is_reasoner) {
-            const model_list_button = page.locator('.active-model-button'),
-                  model_list        = page.locator('.models-by-family'),
-                  groq_model        = models.find(m => m.type === 'groq' && m.is_reasoner),
-                  groq_model_button = model_list.locator(`#model-button-${cssSanitised(groq_model.id)}`),
-                  active_model_icon = model_list_button.locator('.icon')
-            
-            if (!groq_model) test.skip()
-
-            await model_list_button.click()
-            await expect(model_list).toBeVisible()
-            await expect(groq_model_button).toBeVisible()
-
-            await groq_model_button.click()
-            await expect(model_list).toBeHidden()
-            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${groq_model.icon}`)
+            const groq_model = models.find(m => m.type === 'groq' && m.is_reasoner)
+            await switchModel(page, groq_model)
         }
 
         await input.fill(basic_reasoning_prompt)

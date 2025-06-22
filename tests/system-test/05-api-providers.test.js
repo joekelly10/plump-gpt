@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { cssSanitised } from '../../src/lib/utils/helpers'
+import { switchModel } from '../helpers/actions'
 import { basic_prompt, basic_reply } from '../mock/prompts/basic_reply'
 
 import defaults from '../../src/lib/fixtures/defaults'
@@ -15,19 +15,8 @@ test.describe('API Providers', () => {
               ai_message    = page.locator('.chat .messages .message.assistant')
 
         if (default_model.type !== 'open-ai') {
-            const model_list_button   = page.locator('.active-model-button'),
-                  model_list          = page.locator('.models-by-family'),
-                  openai_model        = models.find(m => m.type === 'open-ai'),
-                  openai_model_button = model_list.locator(`#model-button-${cssSanitised(openai_model.id)}`),
-                  active_model_icon   = model_list_button.locator('.icon')
-
-            await model_list_button.click()
-            await expect(model_list).toBeVisible()
-            await expect(openai_model_button).toBeVisible()
-
-            await openai_model_button.click()
-            await expect(model_list).toBeHidden()
-            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${openai_model.icon}`)
+            const openai_model = models.find(m => m.type === 'open-ai')
+            await switchModel(page, openai_model)
         }
 
         await input.fill(basic_prompt)
@@ -52,19 +41,8 @@ test.describe('API Providers', () => {
               ai_message    = page.locator('.chat .messages .message.assistant')
 
         if (default_model.type !== 'anthropic') {
-            const model_list_button      = page.locator('.active-model-button'),
-                  model_list             = page.locator('.models-by-family'),
-                  anthropic_model        = models.find(m => m.type === 'anthropic'),
-                  anthropic_model_button = model_list.locator(`#model-button-${cssSanitised(anthropic_model.id)}`),
-                  active_model_icon      = model_list_button.locator('.icon')
-
-            await model_list_button.click()
-            await expect(model_list).toBeVisible()
-            await expect(anthropic_model_button).toBeVisible()
-
-            await anthropic_model_button.click()
-            await expect(model_list).toBeHidden()
-            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${anthropic_model.icon}`)
+            const anthropic_model = models.find(m => m.type === 'anthropic')
+            await switchModel(page, anthropic_model)
         }
 
         await input.fill(basic_prompt)
@@ -87,19 +65,8 @@ test.describe('API Providers', () => {
               ai_message    = page.locator('.chat .messages .message.assistant')
 
         if (default_model.type !== 'google') {
-            const model_list_button   = page.locator('.active-model-button'),
-                  model_list          = page.locator('.models-by-family'),
-                  google_model        = models.find(m => m.type === 'google' && !m.is_reasoner),
-                  google_model_button = model_list.locator(`#model-button-${cssSanitised(google_model.id)}`),
-                  active_model_icon   = model_list_button.locator('.icon')
-
-            await model_list_button.click()
-            await expect(model_list).toBeVisible()
-            await expect(google_model_button).toBeVisible()
-
-            await google_model_button.click()
-            await expect(model_list).toBeHidden()
-            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${google_model.icon}`)
+            const google_model = models.find(m => m.type === 'google' && !m.is_reasoner)
+            await switchModel(page, google_model)
         }
 
         await input.fill(basic_prompt)
@@ -122,19 +89,8 @@ test.describe('API Providers', () => {
               ai_message    = page.locator('.chat .messages .message.assistant')
 
         if (default_model.type !== 'x') {
-            const model_list_button = page.locator('.active-model-button'),
-                  model_list        = page.locator('.models-by-family'),
-                  x_model           = models.find(m => m.type === 'x'),
-                  x_model_button    = model_list.locator(`#model-button-${cssSanitised(x_model.id)}`),
-                  active_model_icon = model_list_button.locator('.icon')
-
-            await model_list_button.click()
-            await expect(model_list).toBeVisible()
-            await expect(x_model_button).toBeVisible()
-
-            await x_model_button.click()
-            await expect(model_list).toBeHidden()
-            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${x_model.icon}`)
+            const x_model = models.find(m => m.type === 'x')
+            await switchModel(page, x_model)
         }
 
         await input.fill(basic_prompt)
@@ -157,19 +113,8 @@ test.describe('API Providers', () => {
               ai_message    = page.locator('.chat .messages .message.assistant')
 
         if (default_model.type !== 'deepseek') {
-            const model_list_button    = page.locator('.active-model-button'),
-                  model_list           = page.locator('.models-by-family'),
-                  deepseek_model       = models.find(m => m.type === 'deepseek'),
-                  deepseek_model_button = model_list.locator(`#model-button-${cssSanitised(deepseek_model.id)}`),
-                  active_model_icon    = model_list_button.locator('.icon')
-
-            await model_list_button.click()
-            await expect(model_list).toBeVisible()
-            await expect(deepseek_model_button).toBeVisible()
-
-            await deepseek_model_button.click()
-            await expect(model_list).toBeHidden()
-            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${deepseek_model.icon}`)
+            const deepseek_model = models.find(m => m.type === 'deepseek')
+            await switchModel(page, deepseek_model)
         }
 
         await input.fill(basic_prompt)
@@ -192,19 +137,8 @@ test.describe('API Providers', () => {
               ai_message    = page.locator('.chat .messages .message.assistant')
 
         if (default_model.type !== 'mistral') {
-            const model_list_button   = page.locator('.active-model-button'),
-                  model_list          = page.locator('.models-by-family'),
-                  mistral_model       = models.find(m => m.type === 'mistral'),
-                  mistral_model_button = model_list.locator(`#model-button-${cssSanitised(mistral_model.id)}`),
-                  active_model_icon   = model_list_button.locator('.icon')
-
-            await model_list_button.click()
-            await expect(model_list).toBeVisible()
-            await expect(mistral_model_button).toBeVisible()
-
-            await mistral_model_button.click()
-            await expect(model_list).toBeHidden()
-            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${mistral_model.icon}`)
+            const mistral_model = models.find(m => m.type === 'mistral')
+            await switchModel(page, mistral_model)
         }
 
         await input.fill(basic_prompt)
@@ -227,19 +161,8 @@ test.describe('API Providers', () => {
               ai_message    = page.locator('.chat .messages .message.assistant')
 
         if (default_model.type !== 'ai21') {
-            const model_list_button = page.locator('.active-model-button'),
-                  model_list        = page.locator('.models-by-family'),
-                  ai21_model        = models.find(m => m.type === 'ai21'),
-                  ai21_model_button = model_list.locator(`#model-button-${cssSanitised(ai21_model.id)}`),
-                  active_model_icon = model_list_button.locator('.icon')
-
-            await model_list_button.click()
-            await expect(model_list).toBeVisible()
-            await expect(ai21_model_button).toBeVisible()
-
-            await ai21_model_button.click()
-            await expect(model_list).toBeHidden()
-            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${ai21_model.icon}`)
+            const ai21_model = models.find(m => m.type === 'ai21')
+            await switchModel(page, ai21_model)
         }
 
         await input.fill(basic_prompt)
@@ -264,19 +187,8 @@ test.describe('API Providers', () => {
               ai_message    = page.locator('.chat .messages .message.assistant')
 
         if (default_model.type !== 'cohere') {
-            const model_list_button  = page.locator('.active-model-button'),
-                  model_list         = page.locator('.models-by-family'),
-                  cohere_model       = models.find(m => m.type === 'cohere'),
-                  cohere_model_button = model_list.locator(`#model-button-${cssSanitised(cohere_model.id)}`),
-                  active_model_icon  = model_list_button.locator('.icon')
-
-            await model_list_button.click()
-            await expect(model_list).toBeVisible()
-            await expect(cohere_model_button).toBeVisible()
-
-            await cohere_model_button.click()
-            await expect(model_list).toBeHidden()
-            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${cohere_model.icon}`)
+            const cohere_model = models.find(m => m.type === 'cohere')
+            await switchModel(page, cohere_model)
         }
 
         await input.fill(basic_prompt)
@@ -299,19 +211,8 @@ test.describe('API Providers', () => {
               ai_message    = page.locator('.chat .messages .message.assistant')
 
         if (default_model.type !== 'groq') {
-            const model_list_button = page.locator('.active-model-button'),
-                  model_list        = page.locator('.models-by-family'),
-                  groq_model        = models.find(m => m.type === 'groq' && !m.is_reasoner),
-                  groq_model_button = model_list.locator(`#model-button-${cssSanitised(groq_model.id)}`),
-                  active_model_icon = model_list_button.locator('.icon')
-
-            await model_list_button.click()
-            await expect(model_list).toBeVisible()
-            await expect(groq_model_button).toBeVisible()
-
-            await groq_model_button.click()
-            await expect(model_list).toBeHidden()
-            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${groq_model.icon}`)
+            const groq_model = models.find(m => m.type === 'groq' && !m.is_reasoner)
+            await switchModel(page, groq_model)
         }
 
         await input.fill(basic_prompt)
@@ -334,19 +235,8 @@ test.describe('API Providers', () => {
               ai_message    = page.locator('.chat .messages .message.assistant')
 
         if (default_model.type !== 'openrouter') {
-            const model_list_button       = page.locator('.active-model-button'),
-                  model_list              = page.locator('.models-by-family'),
-                  openrouter_model        = models.find(m => m.type === 'openrouter' && !m.is_reasoner),
-                  openrouter_model_button = model_list.locator(`#model-button-${cssSanitised(openrouter_model.id)}`),
-                  active_model_icon       = model_list_button.locator('.icon')
-
-            await model_list_button.click()
-            await expect(model_list).toBeVisible()
-            await expect(openrouter_model_button).toBeVisible()
-
-            await openrouter_model_button.click()
-            await expect(model_list).toBeHidden()
-            await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${openrouter_model.icon}`)
+            const openrouter_model = models.find(m => m.type === 'openrouter' && !m.is_reasoner)
+            await switchModel(page, openrouter_model)
         }
 
         await input.fill(basic_prompt)

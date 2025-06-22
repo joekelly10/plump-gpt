@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { sleep } from '../helpers/tools'
-import { cssSanitised } from '../../src/lib/utils/helpers'
+import { switchModel } from '../helpers/actions'
 import { short_reply_prompt, short_reply, medium_reply_prompt, medium_reply } from '../mock/prompts/messages'
 
 import models from '../../src/lib/fixtures/models'
@@ -33,19 +33,8 @@ test.describe('Forks', () => {
 
         await sleep(500)
 
-        const model_list_button   = page.locator('.active-model-button'),
-              model_list          = page.locator('.models-by-family'),
-              second_model        = models.find(m => m.id !== defaults.model),
-              second_model_button = model_list.locator(`#model-button-${cssSanitised(second_model.id)}`),
-              active_model_icon   = model_list_button.locator('.icon')
-        
-        await model_list_button.click()
-        await expect(model_list).toBeVisible()
-        await expect(second_model_button).toBeVisible()
-
-        await second_model_button.click()
-        await expect(model_list).toBeHidden()
-        await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${second_model.icon}`)
+        const second_model = models.find(m => m.id !== defaults.model)
+        await switchModel(page, second_model)
 
         await add_reply_button.hover()
         await expect(hover_info).toBeVisible()
@@ -71,16 +60,8 @@ test.describe('Forks', () => {
         await expect(ai_message.locator('.message-content')).toHaveText(short_reply)
         await expect(ai_message.locator('.avatar')).toHaveAttribute('src', `/img/icons/models/${default_model.icon}`)
 
-        const third_model        = models.find(m => m.id !== defaults.model && m.id !== second_model.id),
-              third_model_button = model_list.locator(`#model-button-${cssSanitised(third_model.id)}`)
-        
-        await model_list_button.click()
-        await expect(model_list).toBeVisible()
-        await expect(third_model_button).toBeVisible()
-
-        await third_model_button.click()
-        await expect(model_list).toBeHidden()
-        await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${third_model.icon}`)
+        const third_model = models.find(m => m.id !== defaults.model && m.id !== second_model.id)
+        await switchModel(page, third_model)
         
         await add_reply_button.click()
         await expect(user_message).toHaveCount(1)
@@ -137,19 +118,8 @@ test.describe('Forks', () => {
 
         await sleep(500)
 
-        const model_list_button   = page.locator('.active-model-button'),
-              model_list          = page.locator('.models-by-family'),
-              second_model        = models.find(m => m.id !== defaults.model),
-              second_model_button = model_list.locator(`#model-button-${cssSanitised(second_model.id)}`),
-              active_model_icon   = model_list_button.locator('.icon')
-        
-        await model_list_button.click()
-        await expect(model_list).toBeVisible()
-        await expect(second_model_button).toBeVisible()
-
-        await second_model_button.click()
-        await expect(model_list).toBeHidden()
-        await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${second_model.icon}`)
+        const second_model = models.find(m => m.id !== defaults.model)
+        await switchModel(page, second_model)
 
         await add_reply_button.hover()
         await expect(hover_info_add).toBeVisible()
@@ -168,16 +138,8 @@ test.describe('Forks', () => {
         await expect(ai_message.locator('.message-content')).toHaveText(short_reply)
         await expect(ai_message.locator('.avatar')).toHaveAttribute('src', `/img/icons/models/${second_model.icon}`)
 
-        const third_model        = models.find(m => m.id !== defaults.model && m.id !== second_model.id),
-              third_model_button = model_list.locator(`#model-button-${cssSanitised(third_model.id)}`)
-        
-        await model_list_button.click()
-        await expect(model_list).toBeVisible()
-        await expect(third_model_button).toBeVisible()
-
-        await third_model_button.click()
-        await expect(model_list).toBeHidden()
-        await expect(active_model_icon).toHaveAttribute('src', `/img/icons/models/${third_model.icon}`)
+        const third_model = models.find(m => m.id !== defaults.model && m.id !== second_model.id)
+        await switchModel(page, third_model)
         
         await add_reply_button.click()
         await expect(user_message).toHaveCount(1)
