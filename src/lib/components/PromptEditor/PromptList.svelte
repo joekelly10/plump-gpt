@@ -132,16 +132,5 @@
         background-color: $background-800
         overflow-y:       auto
         overflow-x:       hidden
-        &::-webkit-scrollbar
-            width:            0px
-            height:           0px
-            background-color: transparent
-        &::-webkit-scrollbar-thumb
-            background-color: transparent
-            &:hover
-                background-color: transparent
-            &:active
-                background-color: transparent
-        &::-webkit-scrollbar-corner
-            display: none
+        +shared.scrollbar
 </style>
