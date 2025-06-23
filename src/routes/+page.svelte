@@ -42,7 +42,7 @@
 
     const goToMessage = (message_id) => {
         chat.goToMessage({ message_id, delay: 50 })
-        input.chatLoaded({ switch_model: true })
+        input.onChatUpdated({ switch_model: true })
     }
 </script>
 
