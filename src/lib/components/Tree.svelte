@@ -46,7 +46,7 @@
                 const target_scroll_position = node_bottom - container_el.clientHeight / 2
                 setTimeout(() => {
                     smoothScroll(container_el, target_scroll_position, 1000, 'quartOut')
-                }, 200)
+                }, 175)
             }
         }
     }
@@ -87,11 +87,9 @@
         onClickClose={close}
     />
 
-    {#if hovered_node}
-        <Sidebar
-            node={hovered_node}
-        />
-    {/if}
+    <Sidebar
+        node={hovered_node}
+    />
 
     <UsageStats
         tree_view={true}

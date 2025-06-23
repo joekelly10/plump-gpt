@@ -18,35 +18,36 @@
 
 <div
     class='tree-sidebar'
-    class:starred={node.is_starred}
-    in:fade={{ duration: 250, easing: quartOut }}
-    out:fade={{ duration: 10, easing: quartOut }}
+    class:active={!!node}
+    class:starred={node?.is_starred}
 >
     <div class='inner'>
-        <div class='avatar-container'>
-            {#if node.message.role === 'system'}
-                <SystemPromptIcon className='icon system-prompt-icon' />
-            {:else if node.message.role === 'assistant'}
-                <img class='avatar ai' src='/img/icons/models/{node.message.model.icon}' alt='{node.message.model.name}' />
-            {:else}
-                <img class='avatar user' src={$avatar_href} alt='You' />
-            {/if}
-            {#if node.is_starred}
-                <StarIcon className='icon star-icon' />
-            {/if}
-            {#if node.highlights.length > 0}
-                <div class='highlight-count-container'>
-                    <HighlightIcon className='icon highlight-icon' />
-                    <span class='highlight-count'>
-                        {node.highlights.length}
-                    </span>
-                </div>
-            {/if}
-        </div>
-        <div class='message-preview'>
-            {@html marked(preview)}
-        </div>
-        <MessageInfo message={node.message} />
+        {#if node}
+            <div class='avatar-container'>
+                {#if node.message.role === 'system'}
+                    <SystemPromptIcon className='icon system-prompt-icon' />
+                {:else if node.message.role === 'assistant'}
+                    <img class='avatar ai' src='/img/icons/models/{node.message.model.icon}' alt='{node.message.model.name}' />
+                {:else}
+                    <img class='avatar user' src={$avatar_href} alt='You' />
+                {/if}
+                {#if node.is_starred}
+                    <StarIcon className='icon star-icon' />
+                {/if}
+                {#if node.highlights.length > 0}
+                    <div class='highlight-count-container'>
+                        <HighlightIcon className='icon highlight-icon' />
+                        <span class='highlight-count'>
+                            {node.highlights.length}
+                        </span>
+                    </div>
+                {/if}
+            </div>
+            <div class='message-preview'>
+                {@html marked(preview)}
+            </div>
+            <MessageInfo message={node.message} />
+        {/if}
     </div>
 </div>
 
@@ -68,6 +69,11 @@
         padding-right:    16px
         background-image: linear-gradient(to right, color.adjust($background-800, $lightness: -2%), transparent)
         pointer-events:   none
+        opacity:          0
+        transition:       opacity 250ms easing.$quart-out
+
+        &.active
+            opacity: 1
 
     .inner
         width:       100%

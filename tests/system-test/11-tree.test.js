@@ -348,7 +348,7 @@ test.describe('Tree', () => {
         // allow the scroll animation to finish
         await sleep(1000)
 
-        const tree_container = tree_view.locator('.inner'),
+        const tree_container = tree_view.locator('> .inner'),
               scroll_top     = await tree_container.evaluate(el => el.scrollTop),
               scroll_height  = await tree_container.evaluate(el => el.scrollHeight),
               client_height  = await tree_container.evaluate(el => el.clientHeight)
