@@ -279,8 +279,15 @@
         } else {
             const part = data.candidates[0].content.parts[0]
             await append(gpt_message, part.text, { is_reasoning: part.thought, speed_limit: 8 })
-            gpt_message.usage.input_tokens = data.usageMetadata.promptTokenCount
-            gpt_message.usage.output_tokens = data.usageMetadata.candidatesTokenCount
+            if (data.usageMetadata.promptTokenCount) {
+                gpt_message.usage.input_tokens = data.usageMetadata.promptTokenCount
+            }
+            if (data.usageMetadata.thoughtsTokenCount) {
+                gpt_message.usage.reasoning_tokens = data.usageMetadata.thoughtsTokenCount
+            }
+            if (data.usageMetadata.candidatesTokenCount) {
+                gpt_message.usage.output_tokens = data.usageMetadata.candidatesTokenCount
+            }
         }
     }
 
