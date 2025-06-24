@@ -85,19 +85,19 @@ export default [
     },
     {
         type:           'google',
-        id:             'gemini-2.0-flash-lite',
-        name:           'Gemini 2.0 Flash Lite',
+        id:             'gemini-2.5-flash-lite-preview-06-17',
+        name:           'Gemini 2.5 Flash Lite',
         short_name:     'Gemini',
         icon:           'gemini-flash-lite.png',
         family:         'Google',
         hosted_at:      'googleapis.com',
         context_window: 1000000,
         is_reasoner:    false,
-        pricing_id:     'gemini-2.0-flash-lite'
+        pricing_id:     'gemini-2.5-flash-lite'
     },
     {
         type:           'google',
-        id:             'gemini-2.5-flash-preview-05-20',
+        id:             'gemini-2.5-flash',
         name:           'Gemini 2.5 Flash',
         short_name:     'Gemini',
         icon:           'gemini-flash.png',
@@ -109,7 +109,7 @@ export default [
     },
     {
         type:           'google',
-        id:             'gemini-2.5-pro-preview-06-05',
+        id:             'gemini-2.5-pro',
         name:           'Gemini 2.5 Pro',
         short_name:     'Gemini',
         icon:           'gemini-pro.png',

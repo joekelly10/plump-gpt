@@ -81,27 +81,27 @@ const model_prices = {
             }
         }
     },
-    'gemini-2.0-flash-lite': {
+    'gemini-2.5-flash-lite': {
         price: {
             cents: {
-                input_token:  7.5/1000000, // $0.075/mTok
-                output_token:  30/1000000  // $0.30/mTok
+                input_token:  10/1000000, // $0.10/mTok
+                output_token: 40/1000000  // $0.40/mTok
             }
         }
     },
     'gemini-2.5-flash': {
         price: {
             cents: {
-                input_token:   15/1000000, // $0.15/mTok
-                output_token:  60/1000000
+                input_token:   30/1000000, // $0.30/mTok
+                output_token: 250/1000000
             }
         }
     },
     'gemini-2.5-flash-thinking': {
         price: {
             cents: {
-                input_token:   15/1000000, // $0.15/mTok
-                output_token: 350/1000000
+                input_token:   30/1000000, // $0.30/mTok
+                output_token: 250/1000000
             }
         }
     },
