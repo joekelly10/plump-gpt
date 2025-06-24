@@ -200,17 +200,35 @@ docker compose down -v
 
 
 
+# Tests
+Run end-to-end tests:
+```
+./test
+```
+
+Using a previous (cached) build:
+```
+./test --cached
+```
+
+Filter by string pattern:
+```
+./test --grep "forks"
+```
+
+
+
 # y tho?
 
 Two high-level goals:
 
-1. **Understanding**: Develop procedural knowledge of LLM technology through play ("Feel the AGI")
+1. **Understanding**: Learn the limitations of LLM technology through play ("Feel the AGI")
 2. **Utility**: Use Plump GPT as an everyday thinking tool ("Fatten your thoughts")
 
 
 
 # Notes
 
-Plump GPT is a personal project that I originally had no intention of sharing, so this isn't meant to be polished, production ready code. I use it a lot as a daily thinking tool, and I could probably be persuaded to develop it properly, but it works for my needs as is, and I'm currently focusing on other things!
+Plump GPT is a personal project that I originally had no intention of sharing. I use it a lot as a daily thinking tool, and I could probably be persuaded to develop it properly, but it works for my needs as is!
 
-Svelte 5 and some responsive design would be a start... 😂
+Some responsive design would be a start... 😂
