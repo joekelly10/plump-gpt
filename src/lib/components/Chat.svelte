@@ -23,6 +23,7 @@
     let {
         // actions
         saveChat,
+        deleteChat,
         addReply,
         regenerateReply,
         quoteSelectedText,
@@ -434,6 +435,7 @@
                 switchToFork={switchToFork}
                 cancelFork={cancelFork}
                 saveChat={saveChat}
+                deleteChat={deleteChat}
                 onChatUpdated={onChatUpdated}
             />
         {/each}

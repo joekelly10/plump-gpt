@@ -28,6 +28,7 @@
           addReply           = () => input.addReply(),
           regenerateReply    = () => input.regenerateReply(),
           quoteSelectedText  = () => input.quoteSelectedText(),
+          deleteChat         = () => input.deleteChat(),
           onChatUpdated      = () => input.onChatUpdated()
 
     const onChatLoaded = () => {
@@ -59,6 +60,7 @@
     <Chat
         bind:this={chat}
         saveChat={saveChat}
+        deleteChat={deleteChat}
         addReply={addReply}
         regenerateReply={regenerateReply}
         quoteSelectedText={quoteSelectedText}

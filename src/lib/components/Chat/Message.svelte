@@ -36,6 +36,7 @@
         switchToFork,
         cancelFork,
         saveChat,
+        deleteChat,
 
         // events
         onChatUpdated,
@@ -173,6 +174,7 @@
             switchToFork={switchToFork}
             scrollToBottom={scrollToBottom}
             saveChat={saveChat}
+            deleteChat={deleteChat}
             onChatUpdated={onChatUpdated}
         />
     {:else if $is_provisionally_forking && message.is_last}

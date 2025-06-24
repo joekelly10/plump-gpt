@@ -21,6 +21,7 @@
         regenerateReply,
         switchToFork,
         saveChat,
+        deleteChat,
 
         // events
         onChatUpdated,
@@ -123,10 +124,13 @@
             $highlights = $highlights.filter(hl => !deleted.includes(hl.message_id))
 
             updateForksAfterDelete()
-            onChatUpdated() 
-            saveChat()
+            onChatUpdated()
 
-            // TODO: if $messages.length === 1, delete the chat
+            if ($messages.length === 1) {
+                deleteChat()
+            } else {
+                saveChat()
+            }
 
             await tick()
             $is_deleting = false

@@ -309,4 +309,38 @@ test.describe('Messages', () => {
         await expect(ai_message.locator('.message-content')).toHaveText(short_reply)
         await expect(model_icon).toHaveAttribute('src', `/img/icons/models/${other_model.icon}`)
     })
+
+    test('if all messages are deleted, the chat should be deleted', async ({ page }) => {
+        await page.goto('/')
+
+        const input            = page.locator('.primary-input-section .input'),
+              chat             = page.locator('.chat'),
+              user_message     = chat.locator('.messages .message.user'),
+              ai_message       = chat.locator('.messages .message.assistant'),
+              delete_button    = ai_message.locator('.message-controls-right .delete'),
+              load_button      = page.locator('.load-button'),
+              loader           = page.locator('.loader'),
+              no_chats_message = loader.locator('.chats .no-chats')
+
+        await input.fill(short_reply_prompt)
+        await page.keyboard.press('Enter')
+
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(1)
+        await expect(user_message.locator('.message-content')).toHaveText(short_reply_prompt)
+        await expect(ai_message).toHaveCount(1)
+        await expect(ai_message.locator('.message-content')).toHaveText(short_reply)
+        await expect(delete_button).toBeVisible()
+
+        page.on('dialog', async dialog => { await dialog.accept() })
+
+        await delete_button.click()
+        await expect(ai_message).toHaveCount(0)
+        await expect(user_message).toHaveCount(0)
+        await expect(delete_button).toBeHidden()
+
+        await load_button.click()
+        await expect(loader).toBeVisible()
+        await expect(no_chats_message).toBeVisible()
+    })
 })
