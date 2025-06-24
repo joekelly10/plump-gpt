@@ -131,6 +131,7 @@
                 cache_write_tokens: 0,
                 cache_read_tokens:  0,
                 input_tokens:       0,
+                reasoning_tokens:   0,
                 output_tokens:      0
             }
         }
@@ -314,9 +315,11 @@
         await append(gpt_message, reasoning_content, { is_reasoning: true })
         await append(gpt_message, content)
         if (data.usage) {
-            const cache_read_tokens = data.usage.prompt_tokens_details?.cached_tokens ?? 0
+            const cache_read_tokens = data.usage.prompt_tokens_details?.cached_tokens ?? 0,
+                  reasoning_tokens  = data.usage.completion_tokens_details?.reasoning_tokens ?? 0
             gpt_message.usage.cache_read_tokens = cache_read_tokens
             gpt_message.usage.input_tokens      = data.usage.prompt_tokens - cache_read_tokens
+            gpt_message.usage.reasoning_tokens  = reasoning_tokens
             gpt_message.usage.output_tokens     = data.usage.completion_tokens
         }
     }
