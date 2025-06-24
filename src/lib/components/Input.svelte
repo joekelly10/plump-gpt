@@ -24,6 +24,7 @@
                  addReply          = async () => _sendMessage(true),
                  regenerateReply   = async () => _sendMessage(true),
                  quoteSelectedText = () => _quoteSelectedText(),
+                 deleteChat        = () => _deleteChat(),
                  onChatUpdated     = async (options) => _onChatUpdated(options)
 
     let {
@@ -429,6 +430,22 @@
         }
     }
 
+    const _deleteChat = async () => {
+        console.log(`🗑️ Deleting chat: ${$chat_id}...`)
+        const response = await fetch(`/api/chats/${$chat_id}`, {
+            method:  'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+        })
+        if (response.ok) {
+            console.log(`🗑️–✅ Chat deleted.`)
+            newChat()
+        } else {
+            console.log(`🗑️–❌ Delete failed: ${response.status} ${response.statusText}`)
+            const json = await response.json()
+            if (json) console.log(json)
+        }
+    }
+
     const _onChatUpdated = async (options = { switch_model: false }) => {
         $user_settings_active = false
         $model_list_active    = false
@@ -543,7 +560,7 @@
 
         if (e.metaKey && e.altKey && e.key === 'Backspace') {
             e.preventDefault()
-            if ($chat_id && !$loader_active) return deleteChat()
+            if ($chat_id && !$loader_active) return confirmDeleteChat()
         }
 
         if (e.ctrlKey && e.key === 'n') {
@@ -563,21 +580,9 @@
         $prompt_editor_active = true
     }
 
-    const deleteChat = async () => {
+    const confirmDeleteChat = () => {
         if (confirm('Delete current chat?  Press OK to confirm.')) {
-            console.log(`🗑️ Deleting chat: ${$chat_id}...`)
-            const response = await fetch(`/api/chats/${$chat_id}`, {
-                method:  'DELETE',
-                headers: { 'Content-Type': 'application/json' }
-            })
-            if (response.ok) {
-                console.log(`🗑️–✅ Chat deleted.`)
-                newChat()
-            } else {
-                console.log(`🗑️–❌ Delete failed: ${response.status} ${response.statusText}`)
-                const json = await response.json()
-                if (json) console.log(json)
-            }
+            _deleteChat()
         }
     }
 
