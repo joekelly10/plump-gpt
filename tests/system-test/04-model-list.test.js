@@ -16,7 +16,7 @@ test.describe('Model List', () => {
         await expect(model_list).toBeVisible()
 
         for (const family_name of family_names) {
-            const family_element = model_list.locator('.model-family', { has: page.locator('.heading', { hasText: family_name }) })
+            const family_element = model_list.locator('.model-family', { has: page.locator('.heading').filter({ hasText: new RegExp(`^${family_name}$`) }) })
             await expect(family_element).toHaveCount(1)
 
             const model_buttons_count = await family_element.locator('.model-button').count()
