@@ -382,5 +382,29 @@ export default [
         context_window: 128000,
         is_reasoner:    true,
         pricing_id:     'groq-r1-distill-70b'
+    },
+    {
+        type:           'openrouter',
+        id:             'minimax/minimax-01',
+        name:           'MiniMax 01',
+        short_name:     '01',
+        icon:           'minimax-01.png',
+        family:         'MiniMax',
+        hosted_at:      'openrouter.ai',
+        context_window: 4000000,
+        is_reasoner:    true,
+        pricing_id:     'minimax-01'
+    },
+    {
+        type:           'openrouter',
+        id:             'minimax/minimax-m1',
+        name:           'MiniMax M1',
+        short_name:     'M1',
+        icon:           'minimax-m1.png',
+        family:         'MiniMax',
+        hosted_at:      'openrouter.ai',
+        context_window: 1000000,
+        is_reasoner:    true,
+        pricing_id:     'minimax-m1'
     }
 ]

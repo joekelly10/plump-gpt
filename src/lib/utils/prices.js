@@ -250,6 +250,22 @@ const model_prices = {
                 output_token: 99/1000000
             }
         }
+    },
+    'minimax-01': {
+        price: {
+            cents: {
+                input_token:   20/1000000, // $0.20/mTok
+                output_token: 110/1000000
+            }
+        }
+    },
+    'minimax-m1': {
+        price: {
+            cents: {
+                input_token:   30/1000000, // $0.30/mTok
+                output_token: 165/1000000
+            }
+        }
     }
 }
 

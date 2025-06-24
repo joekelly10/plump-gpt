@@ -66,6 +66,10 @@ It runs in your browser on `localhost:1337`.
 - <img alt='Llama 4 Maverick' src='./static/img/icons/models/groq-llama.png' width='21' height='21' valign='middle'>&nbsp; Llama 4 Maverick
 - <img alt='R1 Distill 70b' src='./static/img/icons/models/groq-deepseek.png' width='21' height='21' valign='middle'>&nbsp; R1 Distill 70b
 
+**MiniMax**
+- <img alt='MiniMax 01' src='./static/img/icons/models/minimax-01.png' width='21' height='21' valign='middle'>&nbsp; MiniMax 01
+- <img alt='MiniMax M1' src='./static/img/icons/models/minimax-m1.png' width='21' height='21' valign='middle'>&nbsp; MiniMax M1
+
 
 
 # Features
