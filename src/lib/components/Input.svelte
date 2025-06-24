@@ -357,15 +357,17 @@
         }
     }
 
-    const append = async(gpt_message, new_text, options = { is_reasoning: false, speed_limit: 10 }) => {
+    const append = async(gpt_message, new_text, options = {}) => {
+        const { is_reasoning = false, speed_limit = 10 } = options
+
         if (!new_text) return
-        if ($config.smooth_output && options.speed_limit > 0) {
+        if ($config.smooth_output && speed_limit > 0) {
             //  Smooth out + speed limit the API output stream for a nicer UX.
             //  The Google API in particular bazookas out fat chunks of text at a time,
             //  which in terms of UX is a formidable scent that stings the nostrils.
             const words = new_text.split(/(\s+)/)
             for (const word of words) {
-                if (options.is_reasoning) {
+                if (is_reasoning) {
                     gpt_message.reasoning_content += word
                     if (word.trim().length > 0) {
                         gpt_message.usage.reasoning_tokens = (gpt_message.usage?.reasoning_tokens || 0) + 1
@@ -380,10 +382,10 @@
                     scrollChatToBottom({ context: 'streaming_message' })
                     rate_limiter = setTimeout(() => { rate_limiter = null }, 200)
                 }
-                await new Promise(resolve => setTimeout(resolve, options.speed_limit))
+                await new Promise(resolve => setTimeout(resolve, speed_limit))
             }
         } else {
-            if (options.is_reasoning) {
+            if (is_reasoning) {
                 gpt_message.reasoning_content += new_text
                 if (new_text.trim().length > 0) {
                     gpt_message.usage.reasoning_tokens = (gpt_message.usage?.reasoning_tokens || 0) + 1
