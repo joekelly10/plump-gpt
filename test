@@ -67,7 +67,7 @@ done
 
 # make sure an image exists for the --cached flag
 if [ "$USE_CACHE" = true ]; then
-    if ! docker image inspect plump-gpt:test >/dev/null 2>&1; then
+    if [ -z "$(docker image ls --filter "label=project=plump-gpt" -q 2>/dev/null)" ]; then
         echo
         echo -e "  ${white_bold}⚠️ Warning: No docker image found for cached build!${reset}"
         echo -e "     ${white}The app will be built fresh${reset}"
