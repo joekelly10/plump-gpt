@@ -215,7 +215,7 @@ Using a previous (cached) build:
 ./test --cached
 ```
 
-Filter by string pattern:
+Filtered by string pattern:
 ```
 ./test --grep "forks"
 ```
