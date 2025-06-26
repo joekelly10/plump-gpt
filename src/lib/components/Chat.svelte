@@ -149,12 +149,8 @@
         //
         const is_before_chat_has_loaded = $loader_active || $tree_active
         if (is_before_chat_has_loaded) return
-        
-        const active_highlights = $highlights.filter(highlight => {
-            return $active_messages.some(message => message.id === highlight.message_id)
-        })
 
-        renderHighlights(active_highlights)
+        renderHighlights($highlights)
     }
 
     const _cancelFork = () => {
