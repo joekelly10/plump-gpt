@@ -44,13 +44,6 @@
         highlight_action_visible     = $state(false),
         highlight_action_position    = $state({ x: 0, y: 0 })
 
-    const processed_messages = $derived($active_messages.slice(1).map((message, i) => ({
-        ...message,
-        is_last:      i === $active_messages.slice(1).length - 1,
-        has_siblings: hasSiblings(message),
-        forks:        getForksAt(message)
-    })))
-
     $effect(() => { $highlights; whenHighlightsChange() })
 
     const whenHighlightsChange = () => {
@@ -135,59 +128,6 @@
     const _cancelFork = () => {
         if (!$is_provisionally_forking) return
         switchToFork(forking_from)
-    }
-
-    const hasSiblings = (message) => {
-        const parent = $messages.find(m => m.id === message.parent_id)
-        return getForksAt(parent).length > 0
-    }
-
-    const getForksAt = (message) => {
-        let all_forks = []
-
-        const firstIndexOf = (fork_point) => {
-            const index = $forks.findIndex(fork => {
-                const index = fork.message_ids.findIndex(id => id === fork_point[0])
-                return fork.message_ids[index + 1] === fork_point[1]
-            })
-            return index
-        }
-
-        const fork_pts = $fork_points.filter(pair => pair[0] === message.id)
-
-        fork_pts.forEach(fp => {
-            const index           = firstIndexOf(fp),
-                  active_ids      = $forks[$active_fork].message_ids,
-                  message_index   = active_ids.indexOf(message.id),
-                  is_active       = fp[1] === active_ids[message_index + 1],
-                  provisional     = $forks[index]?.provisional,
-                  message_ids     = $forks[index]?.message_ids ?? [],
-                  next_message_id = message_ids[message_ids.findIndex(id => id === message.id) + 1] ?? null,
-                  next_message    = $messages.find(m => m.id === next_message_id)
-
-            let model_icon
-
-            // optionals (?) are needed here for the in-between moment when
-            // a provisional fork is created:
-
-            if (message.role === 'user') {
-                model_icon = next_message?.model?.icon
-            } else {
-                const next_ai_message_id = message_ids[message_ids.findIndex(id => id === message.id) + 2],
-                      next_ai_message    = $messages.find(m => m.id === next_ai_message_id)
-                model_icon = next_ai_message?.model?.icon
-            }
-
-            all_forks.push({
-                index,
-                is_active,
-                provisional,
-                next_message,
-                model_icon
-            })
-        })
-
-        return all_forks
     }
 
     const onkeydown = (e) => {
@@ -421,7 +361,7 @@
     {/if}
 
     <div class='messages'>
-        {#each processed_messages as message (message.id)}
+        {#each $active_messages.slice(1) as message (message.id)}
             <Message
                 bind:this={message_refs[message.id]}
                 bind:forking_from
