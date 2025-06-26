@@ -3,7 +3,7 @@
     import { fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { tree_active, loader_active, prompt_editor_active } from '$lib/stores/app'
-    import { messages, forks, active_fork, active_messages, highlights, usage } from '$lib/stores/chat'
+    import { forks, active_fork, active_messages, highlights, usage } from '$lib/stores/chat'
     import { is_provisionally_forking, is_scrolled_to_bottom } from '$lib/stores/chat/interactions'
     import { model } from '$lib/stores/ai'
     import { is_sending } from '$lib/stores/api'
@@ -13,7 +13,7 @@
     import UsageStats from '$lib/components/Chat/UsageStats.svelte'
     import Message from '$lib/components/Chat/Message.svelte'
     import WaitingDots from '$lib/components/Chat/WaitingDots.svelte'
-    import HighlightAction from '$lib/components/Chat/HighlightAction.svelte'
+    import SelectionAction from '$lib/components/Chat/SelectionAction.svelte'
 
     export const scrollToTop            = () => _scrollToTop(),
                  scrollToBottom         = (options) => _scrollToBottom(options),
@@ -43,8 +43,8 @@
         scroll_interrupted           = $state(false),
         scroll_reasoning_interrupted = $state(false),
         scroll_reasoning_pending_id  = $state(null), // flag to trigger scrolling of reasoning content
-        highlight_action_visible     = $state(false),
-        highlight_action_position    = $state({ x: 0, y: 0 })
+        selection_action_visible     = $state(false),
+        selection_action_position    = $state({ x: 0, y: 0 })
 
     $effect(() => { $highlights; whenHighlightsChange() })
 
@@ -138,7 +138,7 @@
     const _deselectText = () => {
         const selection = window.getSelection()
         if (selection) selection.removeAllRanges()
-        highlight_action_visible = false
+        selection_action_visible = false
     }
 
     const _renderActiveHighlights = () => {
@@ -229,16 +229,16 @@
         const bottom = chat.scrollHeight - chat.clientHeight
         $is_scrolled_to_bottom = chat.scrollTop >= bottom - 160
 
-        if (highlight_action_visible) {
+        if (selection_action_visible) {
             const selection = window.getSelection()
             if (selection && !selection.isCollapsed) {
-                positionHighlightAction(selection)
+                positionSelectionAction(selection)
             }
         }
     }
 
     const onmouseup = async (e) => {
-        if (e.target.closest('.highlight-action')) return
+        if (e.target.closest('.selection-action')) return
         //  Known issue: when de-selecting text, the selection isn't
         //  updated before mouseup, so we need to wait a tick
         await new Promise(resolve => setTimeout(resolve, 1))
@@ -248,43 +248,43 @@
             const messages_div   = document.querySelector('.chat > .messages'),
                   is_in_messages = messages_div.contains(selection.anchorNode) && messages_div.contains(selection.focusNode)
             if (is_in_messages) {
-                positionHighlightAction(selection)
-                highlight_action_visible = true
+                positionSelectionAction(selection)
+                selection_action_visible = true
             } else {
-                highlight_action_visible = false
+                selection_action_visible = false
             }
         } else {
-            highlight_action_visible = false
+            selection_action_visible = false
         }
     }
 
     const onmousedown = (e) => {
-        if (e.target.closest('.highlight-action')) return
-        highlight_action_visible = false
+        if (e.target.closest('.selection-action')) return
+        selection_action_visible = false
     }
 
     const onselectionchange = () => {
         const selection = window.getSelection()
         if (!selection || selection.isCollapsed) {
-            highlight_action_visible = false
+            selection_action_visible = false
         }
     }
 
     const onresize = () => {
-        if (highlight_action_visible) {
+        if (selection_action_visible) {
             const selection = window.getSelection()
             if (selection && !selection.isCollapsed) {
-                positionHighlightAction(selection)
+                positionSelectionAction(selection)
             }
         }
     }
 
-    const positionHighlightAction = (selection) => {
+    const positionSelectionAction = (selection) => {
         if (isForwardSelection(selection)) {
             const range      = selection.getRangeAt(0),
                   all_rects  = range.getClientRects(),
                   last_rect  = all_rects[all_rects.length - 1]
-            highlight_action_position = {
+            selection_action_position = {
                 x: last_rect.right,
                 y: last_rect.top - 20
             }
@@ -292,7 +292,7 @@
             const range      = selection.getRangeAt(0),
                   all_rects  = range.getClientRects(),
                   first_rect = all_rects[0]
-            highlight_action_position = {
+            selection_action_position = {
                 x: first_rect.left,
                 y: first_rect.top - 20
             }
@@ -309,14 +309,14 @@
     
     const clickedQuoteButton = () => {
         quoteSelectedText()
-        highlight_action_visible = false
+        selection_action_visible = false
     }
 
     const clickedHighlightButton = async () => {
         const selection = window.getSelection()
 
         if (!selection || selection.isCollapsed) {
-            highlight_action_visible = false
+            selection_action_visible = false
             return
         }
 
@@ -373,9 +373,9 @@
         {/if}
     </div>
     
-    {#if highlight_action_visible}
-        <HighlightAction
-            bind:highlight_action_position
+    {#if selection_action_visible}
+        <SelectionAction
+            bind:selection_action_position
             onClickQuoteButton={clickedQuoteButton}
             onClickHighlightButton={clickedHighlightButton}
         />

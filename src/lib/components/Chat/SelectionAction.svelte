@@ -10,26 +10,26 @@
         onClickHighlightButton,
 
         // bindable
-        highlight_action_position = $bindable({ x: 0, y: 0 })
+        selection_action_position = $bindable({ x: 0, y: 0 })
     } = $props()
 </script>
 
 <div
-    class='highlight-action'
-    style='left: {highlight_action_position.x}px; top: {highlight_action_position.y}px'
+    class='selection-action'
+    style='left: {selection_action_position.x}px; top: {selection_action_position.y}px'
     in:fly={{ y: 8, duration: 100, easing: quartOut }}
     out:fly={{ y: 8, duration: 50 }}
 >
-    <button class='highlight-action-button quote-button' onclick={onClickQuoteButton}>
+    <button class='selection-action-button quote-button' onclick={onClickQuoteButton}>
         <span class='quote-icon'>”</span>
     </button>
-    <button class='highlight-action-button add-highlight-button' onclick={onClickHighlightButton}>
+    <button class='selection-action-button add-highlight-button' onclick={onClickHighlightButton}>
         <HighlightIcon className='add-highlight-icon' />
     </button>
 </div>
 
 <style lang='sass'>
-    .highlight-action
+    .selection-action
         display:          flex
         align-items:      center
         justify-content:  center
@@ -54,7 +54,7 @@
             border-style: solid
             border-color: $background-800 transparent transparent
 
-    .highlight-action-button
+    .selection-action-button
         display:          inline-flex
         align-items:      center
         justify-content:  center

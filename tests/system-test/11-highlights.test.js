@@ -15,9 +15,9 @@ test.describe('Highlights', () => {
               chat                 = page.locator('.chat'),
               user_message         = chat.locator('.messages .message.user'),
               ai_message           = chat.locator('.messages .message.assistant'),
-              highlight_action     = chat.locator('.highlight-action'),
-              quote_button         = highlight_action.locator('.quote-button'),
-              add_highlight_button = highlight_action.locator('.add-highlight-button'),
+              selection_action     = chat.locator('.selection-action'),
+              quote_button         = selection_action.locator('.quote-button'),
+              add_highlight_button = selection_action.locator('.add-highlight-button'),
               save_button          = page.locator('.save-button')
 
         const text_to_highlight = 'The agents of orange, the priests of Hiroshima.'
@@ -91,7 +91,7 @@ test.describe('Highlights', () => {
         const selectedText = await page.evaluate(() => window.getSelection().toString())
         expect(selectedText).toBe(text_to_highlight)
 
-        await expect(highlight_action).toBeVisible()
+        await expect(selection_action).toBeVisible()
         await expect(quote_button).toBeVisible()
         await expect(add_highlight_button).toBeVisible()
 
@@ -152,9 +152,9 @@ test.describe('Highlights', () => {
               chat                 = page.locator('.chat'),
               user_message         = chat.locator('.messages .message.user'),
               ai_message           = chat.locator('.messages .message.assistant'),
-              highlight_action     = chat.locator('.highlight-action'),
-              quote_button         = highlight_action.locator('.quote-button'),
-              add_highlight_button = highlight_action.locator('.add-highlight-button'),
+              selection_action     = chat.locator('.selection-action'),
+              quote_button         = selection_action.locator('.quote-button'),
+              add_highlight_button = selection_action.locator('.add-highlight-button'),
               highlights           = ai_message.locator('span._text-highlight'),
               save_button          = page.locator('.save-button')
         
@@ -223,7 +223,7 @@ test.describe('Highlights', () => {
         const reasoning_selectedText = await page.evaluate(() => window.getSelection().toString())
         expect(reasoning_selectedText).toBe(reasoning_to_highlight)
 
-        await expect(highlight_action).toBeVisible()
+        await expect(selection_action).toBeVisible()
         await expect(quote_button).toBeVisible()
         await expect(add_highlight_button).toBeVisible()
 
@@ -280,7 +280,7 @@ test.describe('Highlights', () => {
         const selected_text = await page.evaluate(() => window.getSelection().toString())
         expect(selected_text).toBe(message_text_to_highlight)
 
-        await expect(highlight_action).toBeVisible()
+        await expect(selection_action).toBeVisible()
         await expect(quote_button).toBeVisible()
         await expect(add_highlight_button).toBeVisible()
 
