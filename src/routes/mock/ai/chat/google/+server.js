@@ -26,14 +26,14 @@ export const POST = async ({ request }) => {
             const chunk_size = 5
 
             for (let i = 0; i < reasoning_words.length; i += chunk_size) {
-                const chunk = reasoning_words.slice(i, i + chunk_size).join(' ')
+                const chunk = reasoning_words.slice(i, i + chunk_size).join('')
                 json = JSON.stringify(partThoughtObject(model, chunk, input_tokens))
                 enqueue(json)
                 await sleep(is_slow_test ? speed_limit.slow : speed_limit.fast)
             }
 
             for (let i = 0; i < reply_words.length; i += chunk_size) {
-                const chunk = reply_words.slice(i, i + chunk_size).join(' ')
+                const chunk = reply_words.slice(i, i + chunk_size).join('')
                 if (i + chunk_size >= reply_words.length) {
                     json = JSON.stringify(finishObject(model, chunk, input_tokens, output_tokens, reasoning_tokens))
                 } else {
