@@ -66,7 +66,7 @@
             white-space: nowrap
 
             .bull
-                margin: 0 8px
+                margin: 0 5px
                 color:  $blue
 
         &:hover,

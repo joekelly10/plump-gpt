@@ -89,7 +89,7 @@
 
         .text
             .bull
-                margin: 0 8px
+                margin: 0 5px
                 color:  $yellow
 
         .create-button

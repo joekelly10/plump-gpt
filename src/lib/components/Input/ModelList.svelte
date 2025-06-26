@@ -114,7 +114,7 @@
                 font-weight: 600
 
                 .bull
-                    margin: 0 8px
+                    margin: 0 5px
                     color:  $blue
             
             .close-button
