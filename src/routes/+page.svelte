@@ -55,7 +55,7 @@
 <main class='plump-gpt' class:blur={blur}>
     <Header
         bind:this={header}
-        onClickTreeButton={cancelFork}
+        cancelFork={cancelFork}
     />
     <Chat
         bind:this={chat}

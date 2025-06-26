@@ -8,7 +8,7 @@
 
     export const saveChat = () => save_button.saveChat()
 
-    const { onClickTreeButton } = $props()
+    const { cancelFork } = $props()
 
     let save_button
 </script>
@@ -24,7 +24,7 @@
     <div class='right'>
         {#if $messages.length > 1}
             <TreeButton
-                onClick={onClickTreeButton}
+                cancelFork={cancelFork}
             />
         {/if}
     </div>

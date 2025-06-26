@@ -8,12 +8,12 @@
 
     import ForkIcon from '$lib/components/Icons/Fork.svelte'
 
-    const { onClick } = $props()
+    const { cancelFork } = $props()
 
     const clicked = async () => {
         if (!$is_idle) return
 
-        onClick()
+        cancelFork()
         await tick()
 
         $tree_active = true
