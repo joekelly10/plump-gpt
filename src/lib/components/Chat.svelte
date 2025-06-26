@@ -270,6 +270,15 @@
         }
     }
 
+    const onresize = () => {
+        if (highlight_action_visible) {
+            const selection = window.getSelection()
+            if (selection && !selection.isCollapsed) {
+                positionHighlightAction(selection)
+            }
+        }
+    }
+
     const positionHighlightAction = (selection) => {
         if (isForwardSelection(selection)) {
             const range      = selection.getRangeAt(0),
@@ -321,6 +330,7 @@
 </script>
 
 <svelte:document onmousedown={onmousedown} onselectionchange={onselectionchange} />
+<svelte:window onresize={onresize} />
 
 <section
     class='chat'
