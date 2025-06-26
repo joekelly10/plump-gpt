@@ -2,7 +2,7 @@
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { model } from '$lib/stores/ai'
-    import { model_list_active, user_settings_active } from '$lib/stores/app'
+    import { is_initialising, model_list_active, user_settings_active } from '$lib/stores/app'
     import { getPrices } from '$lib/utils/prices'
 
     let {
@@ -80,7 +80,13 @@
     onmouseleave={mouseleave}
     onwheel={onwheel}
 >
-    <img class='icon' src='/img/icons/models/{$model.icon}' alt='{$model.name}'>
+    {#if $is_initialising}
+        <div class='initialising-spinner'>
+            <img class='spinner-img' src='/img/icons/cog.png' alt='Initialising...'>
+        </div>
+    {:else}
+        <img class='icon' src='/img/icons/models/{$model.icon}' alt='{$model.name}'>
+    {/if}
     {#if hovering}
         <div class='name' in:slide={{ axis: 'x', duration: 250, easing: quartOut }} out:slide={{ axis: 'x', duration: 125, easing: quartOut }}>
             {$model.name}
@@ -124,6 +130,17 @@
             .icon
                 transform:  scale(1.2)
                 transition: none
+
+    .initialising-spinner
+        display:         flex
+        align-items:     center
+        justify-content: center
+        width:           24px
+        height:          24px
+
+        .spinner-img
+            height:    19px
+            animation: animation.$spinner-animation
 
     .icon
         height:     24px
