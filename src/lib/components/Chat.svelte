@@ -107,11 +107,11 @@
             $active_fork = $forks.findIndex(fork => fork.message_ids.includes(options.message_id))
         }
         setTimeout(() => {
-            const element     = message_refs[options.message_id],
-                  element_top = element?.getOffsetTop(),
+            const message     = message_refs[options.message_id],
+                  message_top = message?.getOffsetTop(),
                   offset      = -40
-            chat.scroll({ top: element_top + offset, behavior: 'smooth' })
-            element.tempHighlight()
+            chat.scroll({ top: message_top + offset, behavior: 'smooth' })
+            message?.tempHighlight()
             renderActiveHighlights()
         }, options.delay)
     }
