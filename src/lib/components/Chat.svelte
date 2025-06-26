@@ -361,7 +361,7 @@
     {/if}
 
     <div class='messages'>
-        {#each $active_messages.slice(1) as message (message.id)}
+        {#each $active_messages.slice(1) as message (`${$active_fork}-${message.id}`)}
             <Message
                 bind:this={message_refs[message.id]}
                 bind:forking_from
