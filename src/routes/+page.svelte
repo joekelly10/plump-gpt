@@ -9,15 +9,16 @@
     import Loader from '$lib/components/Loader.svelte'
     import Tree from '$lib/components/Tree.svelte'
     import PromptEditor from '$lib/components/PromptEditor.svelte'
+    import KeyboardShortcuts from '$lib/components/KeyboardShortcuts.svelte'
     import ScreenCover from '$lib/components/ScreenCover.svelte'
     import FaviconChanger from '$lib/components/FaviconChanger.svelte'
 
+    let header = $state(null), // component references (nb: not reactive, but svelte 5 compiler sees them passed as props, so expects $state)
+        chat   = $state(null),
+        input  = $state(null)
+
     const title = $derived($messages.length > 1 ? $messages[1].content : 'Plump GPT'),
           blur  = $derived($loader_active || $tree_active || $prompt_editor_active)
-    
-    let header,
-        chat,
-        input
 
     const saveChat           = () => header.saveChat(),
           scrollChatToBottom = (options) => chat.scrollToBottom(options),
@@ -94,6 +95,12 @@
 {#if $prompt_editor_active}
     <PromptEditor/>
 {/if}
+
+<KeyboardShortcuts
+    header={header}
+    chat={chat}
+    input={input}
+/>
 
 <ScreenCover/>
 <FaviconChanger/>

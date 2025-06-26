@@ -4,8 +4,8 @@ import defaults from '$lib/fixtures/defaults'
 import models from '$lib/fixtures/models'
 
 export const model       = createModel()
-export const temperature = writable(defaults.temperature)
-export const top_p       = writable(defaults.top_p)
+export const temperature = createTemperature()
+export const top_p       = createTopP()
 
 function createModel() {
     const default_index = models.findIndex(m => m.id === defaults.model)
@@ -30,6 +30,48 @@ function createModel() {
         setById: (id) => {
             const model = models.find(m => m.id === id)
             if (model) set(model)
+        }
+    }
+}
+
+function createTemperature() {
+    const { subscribe, set, update } = writable(defaults.temperature)
+
+    return {
+        subscribe,
+        set,
+        increment: () => {
+            update(value => {
+                if (value === 1.2) return 0
+                return (value * 10 + 1) / 10
+            })
+        },
+        decrement: () => {
+            update(value => {
+                if (value === 0) return 1.2
+                return (value * 10 - 1) / 10
+            })
+        }
+    }
+}
+
+function createTopP() {
+    const { subscribe, set, update } = writable(defaults.top_p)
+
+    return {
+        subscribe,
+        set,
+        increment: () => {
+            update(value => {
+                if (value === 1) return 0.05
+                return (value * 10 + 0.5) / 10
+            })
+        },
+        decrement: () => {
+            update(value => {
+                if (value === 0.05) return 1
+                return (value * 10 - 0.5) / 10
+            })
         }
     }
 }

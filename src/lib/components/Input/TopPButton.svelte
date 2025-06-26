@@ -2,37 +2,20 @@
     import { top_p } from '$lib/stores/ai'
 
     const display_value = $derived($top_p.toFixed($top_p * 10 % 1 === 0 ? 1 : 2))
-
-    const increment = () => {
-        if ($top_p === 1) return $top_p = 0.05
-        $top_p = ($top_p * 10 + 0.5) / 10
-    }
-
-    const decrement = () => {
-        if ($top_p === 0.05) return $top_p = 1
-        $top_p = ($top_p * 10 - 0.5) / 10
-    }
     
     const clicked = (e) => {
         e.preventDefault()
-        if (e.shiftKey) return decrement()
-        increment()
+        if (e.shiftKey) return top_p.decrement()
+        top_p.increment()
     }
     
     const rightClicked = (e) => {
         e.preventDefault()
-        decrement()
-    }
-
-    const keydown = (e) => {
-        if (e.ctrlKey && e.key === 'p') return increment()
-        if (e.ctrlKey && e.shiftKey && e.key === 'P') return decrement()
+        top_p.decrement()
     }
 </script>
 
-<svelte:document onkeydown={keydown} />
-
-<button class='top_p-button' title='Adjust top_p (ctrl+P)' onclick={clicked} oncontextmenu={rightClicked}>
+<button class='top_p-button' title='Adjust top_p (Ctrl+P)' onclick={clicked} oncontextmenu={rightClicked}>
     <div class='icon'>
         <div class='fill' style='height:{$top_p * 100}%'></div>
     </div>

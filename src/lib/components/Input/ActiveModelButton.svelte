@@ -55,21 +55,7 @@
         }
         return false
     }
-
-    const keydown = (e) => {
-        if (e.shiftKey && e.metaKey && e.key === 'm') {
-            e.preventDefault()
-            model.prev()
-            return
-        }
-        if (e.metaKey && e.key === 'm') {
-            e.preventDefault()
-            model.next()
-        }
-    }
 </script>
-
-<svelte:document onkeydown={keydown} />
 
 <button 
     class='active-model-button'

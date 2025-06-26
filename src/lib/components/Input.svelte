@@ -25,6 +25,7 @@
                  regenerateReply   = async () => _sendMessage(true),
                  quoteSelectedText = () => _quoteSelectedText(),
                  deleteChat        = () => _deleteChat(),
+                 newChat           = () => _newChat(),
                  onChatUpdated     = async (options) => _onChatUpdated(options)
 
     let {
@@ -458,6 +459,23 @@
         }
     }
 
+    const _newChat = async () => {
+        $messages              = $messages.slice(0,1)
+        $forks                 = [{ message_ids: [0], forked_at: [], provisional: false }]
+        $active_fork           = 0
+        $stars                 = []
+        $highlights            = []
+        $chat_id               = null
+        $loader_active         = false
+        $is_scrolled_to_bottom = true
+        clearIsHovering()
+        $page.url.searchParams.delete('user_message')
+        window.history.replaceState(null, '', $page.url.toString())
+        focus()
+        await tick()
+        console.log('🌱 New chat created.')
+    }
+
     const _onChatUpdated = async (options = { switch_model: false }) => {
         $user_settings_active = false
         $model_list_active    = false
@@ -557,70 +575,10 @@
         }
     }
 
-    const keydownDocument = (e) => {
-        if ($loader_active || $prompt_editor_active) return
-
-        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 's') {
-            e.preventDefault()
-            return openPromptEditor()
-        }
-
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === '.') {
-            e.preventDefault()
-            return quoteSelectedText()
-        }
-
-        if (e.metaKey && e.altKey && e.key === 'Backspace') {
-            e.preventDefault()
-            if ($chat_id && !$loader_active) return confirmDeleteChat()
-        }
-
-        if (e.ctrlKey && e.key === 'n') {
-            e.preventDefault()
-            return newChat()
-        }
-
-        if (e.key === 'Escape') {
-            e.preventDefault()
-            $model_list_active    = false
-            $user_settings_active = false
-            return false
-        }
-    }
-
-    const openPromptEditor = () => {
-        $prompt_editor_active = true
-    }
-
-    const confirmDeleteChat = () => {
-        if (confirm('Delete current chat?  Press OK to confirm.')) {
-            _deleteChat()
-        }
-    }
-
-    const newChat = async () => {
-        $messages              = $messages.slice(0,1)
-        $forks                 = [{ message_ids: [0], forked_at: [], provisional: false }]
-        $active_fork           = 0
-        $stars                 = []
-        $highlights            = []
-        $chat_id               = null
-        $loader_active         = false
-        $is_scrolled_to_bottom = true
-        clearIsHovering()
-        $page.url.searchParams.delete('user_message')
-        window.history.replaceState(null, '', $page.url.toString())
-        focus()
-        await tick()
-        console.log('🌱 New chat created.')
-    }
-
     const clearIsHovering = () => {
         is_hovering.set({ delete: [], regenerate: [], add_reply: [], star: [] })
     }
 </script>
-
-<svelte:document onkeydown={keydownDocument} />
 
 <section class='primary-input-section' class:expanded={input_expanded}>
     {#if !input_expanded}

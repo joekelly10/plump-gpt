@@ -5,37 +5,20 @@
 
     const display_value = $derived($temperature.toFixed(1)),
           icon_level    = $derived($temperature > 1 ? 4 : Math.round($temperature / 0.3))
-
-    const increment = () => {
-        if ($temperature === 1.2) return $temperature = 0
-        $temperature = ($temperature * 10 + 1) / 10
-    }
-
-    const decrement = () => {
-        if ($temperature === 0) return $temperature = 1.2
-        $temperature = ($temperature * 10 - 1) / 10
-    }
     
     const clicked = (e) => {
         e.preventDefault()
-        if (e.shiftKey) return decrement()
-        increment()
+        if (e.shiftKey) return temperature.decrement()
+        temperature.increment()
     }
 
     const rightClicked = (e) => {
         e.preventDefault()
-        decrement()
-    }
-
-    const keydown = (e) => {
-        if (e.ctrlKey && e.key === 't') return increment()
-        if (e.ctrlKey && e.shiftKey && e.key === 'T') return decrement()
+        temperature.decrement()
     }
 </script>
 
-<svelte:document onkeydown={keydown} />
-
-<button class='temperature-button' title='Adjust temperature (ctrl+T)' onclick={clicked} oncontextmenu={rightClicked}>
+<button class='temperature-button' title='Adjust temperature (Ctrl+T)' onclick={clicked} oncontextmenu={rightClicked}>
     <TemperatureIcon level={icon_level} className='icon' />
     <div class='label'>
         <div class='title'>

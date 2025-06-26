@@ -59,16 +59,7 @@
             if (json) console.log(json)
         }
     }
-
-    const keydown = (e) => {
-        if ((e.ctrlKey && e.key === 's') || (e.metaKey && e.key === 's')) {
-            e.preventDefault()
-            saveChat()
-        }
-    }
 </script>
-
-<svelte:document onkeydown={keydown} />
 
 <button class='save-button {status}' title='Save chat (⌘+S)' onclick={saveChat}>
     <span class='save-text'>

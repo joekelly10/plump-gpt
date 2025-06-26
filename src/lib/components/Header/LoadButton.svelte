@@ -1,20 +1,11 @@
 <script>
-    import { loader_active } from '$lib/stores/app.js'
-    import { is_idle } from '$lib/stores/api.js'
+    import { loader_active } from '$lib/stores/app'
+    import { is_idle } from '$lib/stores/api'
 
     const clicked = () => {
         if ($is_idle) $loader_active = true
     }
-
-    const keydown = (e) => {
-        if ((e.ctrlKey && e.key === 'o') || (e.metaKey && e.key === 'o')) {
-            e.preventDefault()
-            if ($is_idle) $loader_active = !$loader_active
-        }
-    }
 </script>
-
-<svelte:document onkeydown={keydown} />
 
 <button class='load-button' title='Open chat (⌘+O)' onclick={clicked}>
     Load

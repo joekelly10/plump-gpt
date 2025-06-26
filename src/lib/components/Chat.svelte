@@ -3,7 +3,7 @@
     import { fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { tree_active, loader_active, prompt_editor_active } from '$lib/stores/app'
-    import { messages, forks, active_fork, active_messages, fork_points, highlights, usage } from '$lib/stores/chat'
+    import { messages, forks, active_fork, active_messages, highlights, usage } from '$lib/stores/chat'
     import { is_provisionally_forking, is_scrolled_to_bottom } from '$lib/stores/chat/interactions'
     import { model } from '$lib/stores/ai'
     import { is_sending } from '$lib/stores/api'
@@ -15,8 +15,12 @@
     import WaitingDots from '$lib/components/Chat/WaitingDots.svelte'
     import HighlightAction from '$lib/components/Chat/HighlightAction.svelte'
 
-    export const scrollToBottom         = (options) => _scrollToBottom(options),
+    export const scrollToTop            = () => _scrollToTop(),
+                 scrollToBottom         = (options) => _scrollToBottom(options),
+                 scrollUp               = () => _scrollUp(),
+                 scrollDown             = () => _scrollDown(),
                  goToMessage            = (options) => _goToMessage(options),
+                 deselectText           = () => _deselectText(),
                  renderActiveHighlights = () => _renderActiveHighlights(),
                  cancelFork             = () => _cancelFork()
 
@@ -32,9 +36,7 @@
         onChatUpdated
     } = $props()
     
-    let chat,
-        uparrow_limiter,
-        downarrow_limiter
+    let chat
 
     let message_refs                 = $state([]), // references to the list of `Message` components
         forking_from                 = $state(null),
@@ -48,6 +50,22 @@
 
     const whenHighlightsChange = () => {
         renderActiveHighlights()
+    }
+
+    const _scrollToTop = () => {
+        scroll_interrupted = true
+        const distance = chat.scrollHeight - chat.clientHeight
+        if (distance < 1000) {
+            return smoothScroll(chat, 0, 333, 'quartOut')
+        } else if (distance < 2500) {
+            return smoothScroll(chat, 0, 500, 'quartOut')
+        } else if (distance < 5000) {
+            return smoothScroll(chat, 0, 750, 'quartOut')
+        } else if (distance < 7500) {
+            return smoothScroll(chat, 0, 1000, 'quartOut')
+        } else {
+            return smoothScroll(chat, 0, 1250, 'quartOut')
+        }
     }
 
     const _scrollToBottom = (options = { context: null }) => {
@@ -95,6 +113,14 @@
         }
     }
 
+    const _scrollUp = () => {
+        smoothScroll(chat, chat.scrollTop - 400, 333, 'quartOut')
+    }
+
+    const _scrollDown = () => {
+        smoothScroll(chat, chat.scrollTop + 400, 333, 'quartOut')
+    }
+
     const _goToMessage = (options = { message_id: null, delay: 0 }) => {
         if (!$forks[$active_fork].message_ids.includes(options.message_id)) {
             $active_fork = $forks.findIndex(fork => fork.message_ids.includes(options.message_id))
@@ -107,6 +133,12 @@
             message?.tempHighlight()
             renderActiveHighlights()
         }, options.delay)
+    }
+
+    const _deselectText = () => {
+        const selection = window.getSelection()
+        if (selection) selection.removeAllRanges()
+        highlight_action_visible = false
     }
 
     const _renderActiveHighlights = () => {
@@ -128,54 +160,6 @@
     const _cancelFork = () => {
         if (!$is_provisionally_forking) return
         switchToFork(forking_from)
-    }
-
-    const onkeydown = (e) => {
-        if ($loader_active || $prompt_editor_active) return
-
-        if (e.shiftKey && e.altKey && e.key === 'ArrowDown') {
-            return scrollToBottom({ context: 'keyboard_shortcut' })
-        }
-        if (e.shiftKey && e.altKey && e.key === 'ArrowUp') {
-            return scrollToTop()
-        }
-        if (e.altKey && e.key === 'ArrowDown') {
-            if (downarrow_limiter) return
-            downarrow_limiter = setTimeout(() => { downarrow_limiter = null }, 50)
-            return smoothScroll(chat, chat.scrollTop + 400, 333, 'quartOut')
-        }
-        if (e.altKey && e.key === 'ArrowUp') {
-            if (uparrow_limiter) return
-            uparrow_limiter = setTimeout(() => { uparrow_limiter = null }, 50)
-            return smoothScroll(chat, chat.scrollTop - 400, 333, 'quartOut')
-        }
-        if (e.ctrlKey && e.key === 'Backspace') {
-            return deleteMessage($messages.length-1)
-        }
-        if (e.ctrlKey && e.key === 'r') {
-            return regenerateReply()
-        }
-        if (e.key === 'Escape') {
-            if ($forks[$active_fork].provisional) cancelFork()
-            deselectText()
-            return
-        }
-    }
-
-    const scrollToTop = () => {
-        scroll_interrupted = true
-        const distance = chat.scrollHeight - chat.clientHeight
-        if (distance < 1000) {
-            return smoothScroll(chat, 0, 333, 'quartOut')
-        } else if (distance < 2500) {
-            return smoothScroll(chat, 0, 500, 'quartOut')
-        } else if (distance < 5000) {
-            return smoothScroll(chat, 0, 750, 'quartOut')
-        } else if (distance < 7500) {
-            return smoothScroll(chat, 0, 1000, 'quartOut')
-        } else {
-            return smoothScroll(chat, 0, 1250, 'quartOut')
-        }
     }
 
     const switchToFork = async (fork_index) => {
@@ -338,15 +322,9 @@
             saveChat()
         }
     }
-
-    const deselectText = () => {
-        const selection = window.getSelection()
-        if (selection) selection.removeAllRanges()
-        highlight_action_visible = false
-    }
 </script>
 
-<svelte:document onkeydown={onkeydown} onmousedown={onmousedown} onselectionchange={onselectionchange} />
+<svelte:document onmousedown={onmousedown} onselectionchange={onselectionchange} />
 
 <section
     class='chat'
