@@ -1,6 +1,7 @@
 <script>
     import { messages } from '$lib/stores/chat'
 
+    import DeleteButton from '$lib/components/Header/DeleteButton.svelte'
     import LoadButton from '$lib/components/Header/LoadButton.svelte'
     import SaveButton from '$lib/components/Header/SaveButton.svelte'
     import TreeButton from '$lib/components/Header/TreeButton.svelte'
@@ -8,21 +9,28 @@
 
     export const saveChat = () => save_button.saveChat()
 
-    const { cancelFork } = $props()
+    const { cancelFork, deleteChat } = $props()
 
     let save_button
+
+    const chat_has_messages = $derived($messages.length > 1)
 </script>
 
 <header class='header'>
     <div class='left'>
         <LoadButton/>
         <SaveButton bind:this={save_button} />
+        {#if chat_has_messages}
+            <DeleteButton
+                deleteChat={deleteChat}
+            />
+        {/if}
     </div>
     <div class='title'>
         <Logo/>
     </div>
     <div class='right'>
-        {#if $messages.length > 1}
+        {#if chat_has_messages}
             <TreeButton
                 cancelFork={cancelFork}
             />

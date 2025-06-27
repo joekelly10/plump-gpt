@@ -57,6 +57,7 @@
     <Header
         bind:this={header}
         cancelFork={cancelFork}
+        deleteChat={deleteChat}
     />
     <Chat
         bind:this={chat}
