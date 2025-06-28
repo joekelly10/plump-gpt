@@ -2,9 +2,11 @@
     import { fly, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { model } from '$lib/stores/ai'
+
+    let { small_message } = $props()
 </script>
 
-<div class='hover-info-add-reply' in:fly={{ x: 4, duration: 125, easing: quartOut }} out:fade={{ duration: 75, easing: quartOut }}>
+<div class='hover-info-add-reply' class:small-message={small_message} in:fly={{ x: 4, duration: 125, easing: quartOut }} out:fade={{ duration: 75, easing: quartOut }}>
     <img class='model-icon' src='/img/icons/models/{$model.icon}' alt='{$model.name}'>
     <span class='text'>
         Add Another Reply<br>
@@ -17,7 +19,7 @@
 <style lang='sass'>
     .hover-info-add-reply
         position:         absolute
-        bottom:           32px
+        top:              32px
         right:            32px
         z-index:          1000
         display:          flex
@@ -27,6 +29,10 @@
         border-radius:    8px
         background-color: $blue
         color:            $background-800
+
+        &.small-message
+            top:    auto
+            bottom: 32px
 
     .model-icon
         height: 32px

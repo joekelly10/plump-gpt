@@ -32,6 +32,7 @@
         // passive
         message,
         is_starred,
+        is_small_message,
         showing_message_info
     } = $props()
 
@@ -73,6 +74,16 @@
 
     const unhoveredStar = async () => {
         $is_hovering.star = $is_hovering.star.filter(id => id !== message.id)
+    }
+
+    const hoveredFork = async () => {
+        if (!$is_hovering.add_fork.includes(message.id)) {
+            $is_hovering.add_fork = [...$is_hovering.add_fork, message.id]
+        }
+    }
+    
+    const unhoveredFork = async () => {
+        $is_hovering.add_fork = $is_hovering.add_fork.filter(id => id !== message.id)
     }
 
     const clickedAddReply = () => {
@@ -212,6 +223,7 @@
         if (!$is_idle) return
 
         $is_provisionally_forking = true
+        $is_hovering.add_fork     = []
         forking_from              = $active_fork
 
         insertIdIntoOrderedArray(message.id, $forks[$active_fork].forked_at)
@@ -238,11 +250,11 @@
     }
 </script>
 
-<div class='message-controls-right' in:slide={{ axis: 'x', duration: 250, easing: quartOut }} out:fade={{ duration: 250, easing: quartOut }}>
+<div class='message-controls-right' class:small-message={is_small_message} in:slide={{ axis: 'x', duration: 250, easing: quartOut }} out:fade={{ duration: 250, easing: quartOut }}>
+    <button class='message-control-button add' onclick={clickedAddReply} onmouseenter={hoveredAddReply} onmouseleave={unhoveredAddReply}>
+        <AddIcon className='icon' />
+    </button>
     {#if message.is_last}
-        <button class='message-control-button add' onclick={clickedAddReply} onmouseenter={hoveredAddReply} onmouseleave={unhoveredAddReply}>
-            <AddIcon className='icon' />
-        </button>
         <button class='message-control-button regenerate' onclick={clickedRegenerate} onmouseenter={hoveredRegenerate} onmouseleave={unhoveredRegenerate}>
             <RetryIcon className='icon' />
         </button>
@@ -250,7 +262,7 @@
             <DeleteIcon className='icon' />
         </button>
     {:else}
-        <button class='message-control-button fork' title='Fork' onclick={clickedFork}>
+        <button class='message-control-button fork' title='Fork' onclick={clickedFork} onmouseenter={hoveredFork} onmouseleave={unhoveredFork}>
             <ForkFromHereIcon className='icon' />
         </button>
     {/if}
@@ -267,14 +279,28 @@
 
 <style lang='sass'>
     .message-controls-right
-        position:    absolute
-        bottom:      0
-        left:        100%
-        margin-left: space.$default-padding
-        width:       48px
+        display:         flex
+        flex-direction:  column
+        align-items:     flex-end
+        justify-content: flex-end
+        gap:             16px
+        position:        absolute
+        bottom:          0
+        left:            100%
+        min-height:      100%
+        margin-left:     space.$default-padding
+
+        &.small-message
+            .message-control-button
+                &.add
+                    position:  static
+                    top:       auto
+                    left:      auto
+                    transform: none
     
     .message-controls-left
         display:         flex
+        flex-direction:  column
         align-items:     flex-end
         justify-content: flex-end
         position:        absolute
@@ -292,7 +318,6 @@
                 align-items:     center
                 justify-content: center
                 position:        relative
-                margin-top:      16px
                 width:           $button-size
                 height:          $button-size
                 box-sizing:      border-box
@@ -316,11 +341,18 @@
                         transition: none
 
                 &.add
+                    position:     absolute
+                    top:          -0.5px
+                    left:         0
+                    transform:    translateY(-50%)
+                    border-style: dashed
+
                     .icon
                         height:    11px
                         transform: rotate(45deg)
 
                     &:hover
+                        border-style:     solid
                         border-color:     $blue
                         background-color: $blue
 
@@ -364,10 +396,12 @@
                         background-color: color.mix($background-500, $coral, 5%)
 
                 &.fork
+                    border-style: dashed
                     .icon
                         height:    13px
                         transform: rotate(45deg)
                     &:hover
+                        border-style:     solid
                         border-color:     $blue
                         background-color: $blue
                     &:active
@@ -375,7 +409,7 @@
                         background-color: color.mix($background-500, $blue, 5%)
 
                 &.star
-                    height: 80px
+                    height: 66px
                     .icon
                         &.empty
                             height: 19px

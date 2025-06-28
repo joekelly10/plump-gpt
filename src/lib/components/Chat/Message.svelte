@@ -17,6 +17,7 @@
     import HoverInfoRegenerate from '$lib/components/Message/HoverInfoRegenerate.svelte'
     import HoverInfoDelete from '$lib/components/Message/HoverInfoDelete.svelte'
     import HoverInfoStar from '$lib/components/Message/HoverInfoStar.svelte'
+    import HoverInfoFork from '$lib/components/Message/HoverInfoFork.svelte'
     import PromptForks from '$lib/components/Message/PromptForks.svelte'
     import ReplyForks from '$lib/components/Message/ReplyForks.svelte'
     import WaitingDots from '$lib/components/Chat/WaitingDots.svelte'
@@ -50,10 +51,10 @@
         message
     } = $props()
 
-    let message_el,
-        temp_timer
+    let temp_timer
 
-    let reasoning_content = $state(null), // component reference (nb: not reactive, but svelte 5 compiler sees {#if} conditional binding and expects $state)
+    let message_el        = $state(null), // component reference (nb: not reactive, but svelte 5 compiler sees {#if} conditional binding and expects $state)
+        reasoning_content = $state(null),
         show_info         = $state(false),
         temp_highlight    = $state(false)
     
@@ -65,8 +66,10 @@
           add_reply_highlight    = $derived($is_hovering.add_reply.includes(message.id)),
           regenerate_highlight   = $derived($is_hovering.regenerate.includes(message.id)),
           star_highlight         = $derived($is_hovering.star.includes(message.id)),
+          add_fork_highlight     = $derived($is_hovering.add_fork.includes(message.id)),
           delete_highlight       = $derived(!(message.role === 'user' && message.forks.length > 1) && $is_hovering.delete.includes(message.id)),
-          is_small_message       = $derived(message_el.clientHeight < 140)
+          is_tiny_message        = $derived(message_el?.clientHeight < 140),
+          is_small_message       = $derived(message_el?.clientHeight < 320)
     
     $effect(() => { scroll_reasoning_pending_id === message.id && scrollReasoningToBottom() })
 
@@ -117,6 +120,7 @@
     class:regenerate-highlight={regenerate_highlight}
     class:add-reply-highlight={add_reply_highlight}
     class:star-highlight={star_highlight}
+    class:add-fork-highlight={add_fork_highlight}
     class:temp-highlight={temp_highlight}
     class:no-forks={message.forks.length === 0}
     out:slide={{ duration: $is_deleting ? 250 : 0, easing: quartOut }}
@@ -176,26 +180,24 @@
             saveChat={saveChat}
             deleteChat={deleteChat}
             onChatUpdated={onChatUpdated}
+            is_small_message={is_small_message}
         />
     {:else if $is_provisionally_forking && message.is_last}
         <ProvisionalForkControls
-            bind:forking_from
-            message={message}
-            addReply={addReply}
-            removeProvisionalFork={removeProvisionalFork}
             cancelFork={cancelFork}
-            onChatUpdated={onChatUpdated}
         />
     {/if}
 
     {#if message.role === 'assistant' && add_reply_highlight}
-        <HoverInfoAddReply/>
+        <HoverInfoAddReply small_message={is_small_message} />
     {:else if message.role === 'assistant' && regenerate_highlight}
         <HoverInfoRegenerate/>
     {:else if message.role === 'assistant' && delete_highlight}
-        <HoverInfoDelete small_message={is_small_message} />
+        <HoverInfoDelete tiny_message={is_tiny_message} />
     {:else if message.role === 'assistant' && star_highlight}
-        <HoverInfoStar is_starred={is_starred} small_message={is_small_message} />
+        <HoverInfoStar is_starred={is_starred} tiny_message={is_tiny_message} />
+    {:else if message.role === 'assistant' && add_fork_highlight}
+        <HoverInfoFork/>
     {/if}
 </div>
 
@@ -223,7 +225,6 @@
         padding-left: space.$avatar-container-width
         box-shadow:   0 0 0 1.5px transparent
         border:       0px solid transparent
-        transition:   padding-bottom easing.$quart-out 0.25s, border-bottom easing.$quart-out 0.25s, background-color easing.$quart-out 0.125s, box-shadow easing.$quart-out 0.125s
         +shared.code_block_styles
 
         &:first-of-type
@@ -234,7 +235,7 @@
             background-color: $background-300
 
             &:not(.streaming)
-                transition: background-color easing.$quart-out 0.075s, box-shadow easing.$quart-out 0.075s, top easing.$quart-out 0.125s
+                transition: background-color easing.$quart-out 0.075s, box-shadow easing.$quart-out 0.075s
 
                 &.delete-highlight
                     background-color: color.adjust($delete-highlight-bg, $alpha: -0.4)
@@ -246,13 +247,6 @@
                     box-shadow:       0 0 0 1.5px $blue, 0 1.5px 9px 1.5px color.adjust($background-700, $alpha: -0.75)
                     border-radius:    8px 8px 1.5px 1.5px
                     background-color: $regenerate-highlight-bg
-
-                    &.no-forks
-                        top:        5px
-                        transition: background-color easing.$quart-out 0.075s, box-shadow easing.$quart-out 0.075s, top easing.$quart-out 0.125s
-
-                        .content
-                            transition: filter easing.$quart-out 0.2s
 
                 &.temp-highlight
                     z-index:          999
@@ -280,7 +274,7 @@
                 pointer-events:   none
 
             &:not(.streaming)
-                transition: background-color easing.$quart-out 0.075s, box-shadow easing.$quart-out 0.075s
+                transition: padding-bottom easing.$quart-out 0.25s, margin-bottom easing.$quart-out 0.125s, border-bottom easing.$quart-out 0.125s, border-radius easing.$quart-out 0.125s, background-color easing.$quart-out 0.075s, box-shadow easing.$quart-out 0.075s
 
                 &.add-reply-highlight
                     .content,
@@ -318,6 +312,13 @@
                             color:            $regenerate-highlight-color
                             text-decoration:  line-through
                 
+                &.add-fork-highlight
+                    // 56px is the height of the "Fork Here" hover info box
+                    margin-bottom: 56px + space.$default-padding
+                    border-radius: 0 0 0 1.5px
+                    border-bottom: 1.5px solid $blue
+                    transition:    margin-bottom easing.$quart-out 0.125s, border-bottom easing.$quart-out 0.075s
+
                 &.star-highlight
                     background-color: $star-highlight-bg
                     box-shadow:       0 0 0 1.5px $yellow
@@ -351,6 +352,7 @@
         &.streaming
             min-height: space.$avatar-container-width
             animation:  streaming-no-message 1.5s linear infinite
+            transition: padding-bottom easing.$quart-out 0.25s, border-bottom easing.$quart-out 0.25s, background-color easing.$quart-out 0.125s, box-shadow easing.$quart-out 0.125s
 
             &:not(.no-message)
                 padding-bottom: 1.25 * space.$default-padding

@@ -1,7 +1,7 @@
 <script>
     import { tick } from 'svelte'
     import { page } from '$app/stores'
-    import { loader_active, prompt_editor_active, user_settings_active, model_list_active } from '$lib/stores/app'
+    import { loader_active, user_settings_active, model_list_active } from '$lib/stores/app'
     import { chat_id, messages, forks, active_fork, active_messages, stars, highlights } from '$lib/stores/chat'
     import { is_hovering, is_adding_reply, is_deleting, is_scrolled_to_bottom, is_provisionally_forking } from '$lib/stores/chat/interactions'
     import { model, temperature, top_p } from '$lib/stores/ai'
@@ -576,7 +576,7 @@
     }
 
     const clearIsHovering = () => {
-        is_hovering.set({ delete: [], regenerate: [], add_reply: [], star: [] })
+        is_hovering.set({ delete: [], regenerate: [], add_reply: [], add_fork: [], star: [] })
     }
 </script>
 

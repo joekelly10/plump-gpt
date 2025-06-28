@@ -4,6 +4,7 @@ export const is_hovering = writable({
     delete:     [],
     regenerate: [],
     add_reply:  [],
+    add_fork:   [],
     star:       []
 })
 
