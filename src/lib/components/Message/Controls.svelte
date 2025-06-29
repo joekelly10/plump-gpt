@@ -409,15 +409,15 @@
                         background-color: color.mix($background-500, $blue, 5%)
 
                 &.star
-                    height: 66px
+                    height: 72px
                     .icon
                         &.empty
-                            height: 19px
+                            height: 18px
                             fill:   $background-200
                         &.full
                             display: none
-                            height: 19px
-                            fill:   $yellow
+                            height:  18px
+                            fill:    $yellow
                     &:hover,
                     &:active
                         border-color:     $background-200
@@ -427,7 +427,7 @@
                                 display: none
                             &.full
                                 display: block
-                                height:  19px
+                                height:  18px
                                 fill:    $yellow
                     &:active
                         border-color:     color.adjust($background-200, $lightness: -2%)
@@ -440,7 +440,7 @@
                                 display: none
                             &.full
                                 display: block
-                                height:  19px
+                                height:  18px
                                 fill:    $background-700
                         &:active
                             background-color: color.mix($background-500, $yellow, 5%)
