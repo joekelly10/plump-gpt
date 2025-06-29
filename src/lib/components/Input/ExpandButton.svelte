@@ -1,32 +1,26 @@
 <script>
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { user_settings_active, model_list_active } from '$lib/stores/app'
+    import { user_settings_active, model_list_active, input_expanded } from '$lib/stores/app'
 
-    let {
-        // bindable
-        input_expanded = $bindable(false),
+    let { input_overflowed } = $props()
 
-        // passive
-        input_overflowed
-    } = $props()
-
-    const show = $derived(input_overflowed || input_expanded)
+    const show = $derived(input_overflowed || $input_expanded)
 
     const toggleExpanded = () => {
         $user_settings_active = false
         $model_list_active    = false
-        input_expanded        = !input_expanded
+        $input_expanded       = !$input_expanded
     }
 </script>
 
 {#if show}
     <button
         class='expand-button'
-        class:expanded={input_expanded}
+        class:expanded={$input_expanded}
         onclick={toggleExpanded}
-        in:slide={{ axis: 'y', delay: 333, duration: 125, easing: quartOut }}
-        out:slide={{ axis: 'y', delay: 333, duration: 125, easing: quartOut }}
+        in:slide={{ axis: 'y', delay: 125, duration: 125, easing: quartOut }}
+        out:slide={{ axis: 'y', duration: 125, easing: quartOut }}
     >
         <span class='up-arrow'>
             ↑

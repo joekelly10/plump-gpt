@@ -1,7 +1,7 @@
 <script>
     import { tick } from 'svelte'
     import { page } from '$app/stores'
-    import { loader_active, user_settings_active, model_list_active } from '$lib/stores/app'
+    import { loader_active, user_settings_active, model_list_active, input_expanded } from '$lib/stores/app'
     import { chat_id, messages, forks, active_fork, active_messages, stars, highlights } from '$lib/stores/chat'
     import { is_hovering, is_adding_reply, is_deleting, is_scrolled_to_bottom, is_provisionally_forking } from '$lib/stores/chat/interactions'
     import { model, temperature, top_p } from '$lib/stores/ai'
@@ -40,7 +40,6 @@
     
     let input_text                 = $state(''),
         input_overflowed           = $state(false),
-        input_expanded             = $state(false),
         nope_highlight             = $state(false),
         is_hovering_model_switcher = $state(false)
     
@@ -492,7 +491,7 @@
     }
 
     const inputChanged = () => {
-        input_overflowed = input_expanded || input.scrollHeight > input.clientHeight
+        input_overflowed = $input_expanded || input.scrollHeight > input.clientHeight
     }
 
     const pastedInput = (e) => {
@@ -544,14 +543,14 @@
             e.preventDefault()
             $user_settings_active = false
             $model_list_active    = false
-            return input_expanded = true
+            return $input_expanded = true
         }
         
         if (e.ctrlKey && e.shiftKey && e.key === 'ArrowDown') {
             e.preventDefault()
             $user_settings_active = false
             $model_list_active    = false
-            return input_expanded = false
+            return $input_expanded = false
         }
 
         if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'b') {
@@ -566,7 +565,7 @@
 
         if (e.key == 'Enter' && !e.shiftKey) {
             e.preventDefault()
-            input_expanded = false
+            $input_expanded = false
             if ($is_idle && input_text.trim().length) {
                 return sendMessage()
             } else {
@@ -576,8 +575,8 @@
     }
 </script>
 
-<section class='primary-input-section' class:expanded={input_expanded}>
-    {#if !input_expanded}
+<section class='primary-input-section' class:expanded={$input_expanded} class:model-list-active={$model_list_active}>
+    {#if !$input_expanded}
         <UserSettings/>
     {/if}
 
@@ -606,11 +605,10 @@
     </div>
 
     <ExpandButton
-        bind:input_expanded={input_expanded}
         input_overflowed={input_overflowed}
     />
 
-    {#if !input_expanded}
+    {#if !$input_expanded}
         <SystemPromptButton/>
         <ScrollDownButton
             scrollChatToBottom={scrollChatToBottom}
@@ -627,6 +625,10 @@
         padding:          space.$default-padding 0
         background-color: $background-700
         user-select:      none
+
+        &.model-list-active
+            .input
+                max-height: 86px
 
         &.expanded
             .input
@@ -670,7 +672,7 @@
         text-wrap:     wrap
         resize:        none
         overflow:      overlay
-        transition:    min-height easing.$quart-out 600ms, max-height easing.$quart-out 300ms
+        transition:    min-height easing.$quart-out 450ms, max-height easing.$quart-out 300ms
 
         &::-webkit-scrollbar
             width:      8px
