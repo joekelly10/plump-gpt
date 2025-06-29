@@ -69,7 +69,7 @@
           add_fork_highlight     = $derived($is_hovering.add_fork.includes(message.id)),
           delete_highlight       = $derived(!(message.role === 'user' && message.forks.length > 1) && $is_hovering.delete.includes(message.id)),
           is_tiny_message        = $derived(message_el?.clientHeight < 140),
-          is_small_message       = $derived(message_el?.clientHeight < 320)
+          is_small_message       = $derived(message_el?.clientHeight < 200)
     
     $effect(() => { scroll_reasoning_pending_id === message.id && scrollReasoningToBottom() })
 
