@@ -47,9 +47,18 @@
         selection_action_position    = $state({ x: 0, y: 0 })
 
     $effect(() => { $highlights; whenHighlightsChange() })
+    $effect(() => { $active_fork; whenActiveForkChanges() })
 
     const whenHighlightsChange = () => {
         renderActiveHighlights()
+    }
+
+    const whenActiveForkChanges = () => {
+        //
+        //  clear message_refs whenever we switch forks
+        //  to ensure there are no stale references
+        //
+        message_refs = []
     }
 
     const _scrollToTop = () => {
@@ -345,7 +354,7 @@
     {/if}
 
     <div class='messages'>
-        {#each $active_messages.slice(1) as message (`${$active_fork}-${message.id}`)}
+        {#each $active_messages.slice(1) as message (message.id)}
             <Message
                 bind:this={message_refs[message.id]}
                 bind:forking_from
