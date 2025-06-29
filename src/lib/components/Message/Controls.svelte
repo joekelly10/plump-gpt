@@ -262,7 +262,7 @@
             <DeleteIcon className='icon' />
         </button>
     {:else}
-        <button class='message-control-button fork' title='Fork' onclick={clickedFork} onmouseenter={hoveredFork} onmouseleave={unhoveredFork}>
+        <button class='message-control-button fork' onclick={clickedFork} onmouseenter={hoveredFork} onmouseleave={unhoveredFork}>
             <ForkFromHereIcon className='icon' />
         </button>
     {/if}
