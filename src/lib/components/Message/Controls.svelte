@@ -1,6 +1,6 @@
 <script>
     import { tick } from 'svelte'
-    import { slide, fade } from 'svelte/transition'
+    import { fly, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { messages, forks, active_fork, stars, highlights } from '$lib/stores/chat'
     import { is_hovering, is_deleting, is_adding_reply, is_provisionally_forking } from '$lib/stores/chat/interactions'
@@ -250,7 +250,7 @@
     }
 </script>
 
-<div class='message-controls-right' class:small-message={is_small_message} in:slide={{ axis: 'x', duration: 250, easing: quartOut }} out:fade={{ duration: 250, easing: quartOut }}>
+<div class='message-controls-right' class:small-message={is_small_message} in:fly={{ x: -32, duration: 125, easing: quartOut }} out:fade={{ duration: 125, easing: quartOut }}>
     <button class='message-control-button add' onclick={clickedAddReply} onmouseenter={hoveredAddReply} onmouseleave={unhoveredAddReply}>
         <AddIcon className='icon' />
     </button>
@@ -269,7 +269,7 @@
 </div>
 
 {#if !showing_message_info}
-    <div class='message-controls-left' in:slide={{ axis: 'x', duration: 250, easing: quartOut }} out:fade={{ duration: 250, easing: quartOut }}>
+    <div class='message-controls-left' in:fly={{ x: 32, duration: 125, easing: quartOut }} out:fade={{ duration: 125, easing: quartOut }}>
         <button class='message-control-button star' class:starred={is_starred} onclick={clickedStar} onmouseenter={hoveredStar} onmouseleave={unhoveredStar}>
             <StarIcon className='icon full' />
             <StarEmptyIcon className='icon empty' />

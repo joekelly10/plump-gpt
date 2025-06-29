@@ -7,7 +7,7 @@
     let { cancelFork } = $props()
 </script>
 
-<div class='provisional-fork-controls' in:fly={{ x: -32, delay: 0, duration: 250, easing: quartOut }}>
+<div class='provisional-fork-controls' in:fly={{ x: -32, duration: 125, easing: quartOut }}>
     <button class='cancel-fork-button' title='Cancel Fork (esc)' onclick={cancelFork}>
         <div class='icon-container'>
             <DeleteIcon className='icon' />
