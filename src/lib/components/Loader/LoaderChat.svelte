@@ -160,7 +160,10 @@
             &:hover
                 box-shadow: 0 0 0 1.5px $off-white inset
                 transition: none
-        
+
+                &.keyboard-highlight
+                    box-shadow: 0 0 0 2px $blue, 0 0 0 1.5px $off-white inset
+
         &:active
             background-color: color.adjust($background-300, $lightness: -1%)
         
@@ -171,9 +174,6 @@
             .keyboard-tip
                 opacity:    1
                 transition: opacity easing.$quart-out 0.125s
-
-            &:hover
-                box-shadow: 0 0 0 2px $blue inset, 0 0 0 1.5px $off-white
     
         &.selected
             background-color: color.adjust($background-300, $lightness: -2%)
