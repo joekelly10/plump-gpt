@@ -47,18 +47,9 @@
         selection_action_position    = $state({ x: 0, y: 0 })
 
     $effect(() => { $highlights; whenHighlightsChange() })
-    $effect(() => { $active_fork; whenActiveForkChanges() })
 
     const whenHighlightsChange = () => {
         renderActiveHighlights()
-    }
-
-    const whenActiveForkChanges = () => {
-        //
-        //  clear message_refs whenever we switch forks
-        //  to ensure there are no stale references
-        //
-        message_refs = []
     }
 
     const _scrollToTop = () => {
@@ -168,12 +159,19 @@
     }
 
     const switchToFork = async (fork_index) => {
+        //
+        //  always clear message_refs whenever we switch forks
+        //  to ensure there are no stale references
+        //
+        message_refs = []
         $active_fork = fork_index
+
         if (forking_from !== null) {
             forking_from              = null
             $is_provisionally_forking = false
             removeProvisionalFork()
         }
+
         onChatUpdated()
         await tick()
         renderActiveHighlights()
