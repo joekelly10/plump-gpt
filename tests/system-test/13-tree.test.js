@@ -186,7 +186,7 @@ test.describe('Tree', () => {
         const third_model = models.find(m => m.id !== default_model.id && m.id !== second_model.id)
         await switchModel(page, third_model)
 
-        await add_reply_button.click()
+        await add_reply_button.last().click()
         await expect(prompt_forks_container).toBeVisible()
         await expect(prompt_fork_buttons).toHaveCount(2)
         await expect(prompt_fork_buttons.nth(0)).not.toContainClass('active')

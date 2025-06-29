@@ -365,8 +365,7 @@ test.describe('Forks', () => {
               ai_message                = chat.locator('.messages .message.assistant'),
               create_fork_button        = ai_message.locator('.message-controls-right .fork'),
               provisional_fork_controls = ai_message.locator('.provisional-fork-controls'),
-              add_reply_button          = provisional_fork_controls.locator('.add-reply'),
-              cancel_fork_button        = provisional_fork_controls.locator('.cancel-fork'),
+              cancel_fork_button        = provisional_fork_controls.locator('.cancel-fork-button'),
               forks_container           = page.locator('.reply-forks-container'),
               fork_buttons              = forks_container.locator('.reply-fork-button')
 
@@ -411,7 +410,6 @@ test.describe('Forks', () => {
         await expect(fork_buttons.nth(1)).toContainClass('provisional')
         await expect(create_fork_button).toBeHidden()
         await expect(provisional_fork_controls).toBeVisible()
-        await expect(add_reply_button).toBeVisible()
         await expect(cancel_fork_button).toBeVisible()
 
         await sleep(100)
@@ -508,7 +506,7 @@ test.describe('Forks', () => {
               ai_message                = chat.locator('.messages .message.assistant'),
               create_fork_button        = ai_message.locator('.message-controls-right .fork'),
               provisional_fork_controls = ai_message.locator('.provisional-fork-controls'),
-              cancel_fork_button        = provisional_fork_controls.locator('.cancel-fork'),
+              cancel_fork_button        = provisional_fork_controls.locator('.cancel-fork-button'),
               forks_container           = page.locator('.reply-forks-container'),
               fork_buttons              = forks_container.locator('.reply-fork-button'),
               delete_button             = ai_message.locator('.message-controls-right .delete')
@@ -661,17 +659,15 @@ test.describe('Forks', () => {
     test('we should be able to regenerate any one prompt out of many', async ({ page }) => {
         await page.goto('/')
 
-        const default_model             = models.find(m => m.id === defaults.model),
-              input                     = page.locator('.primary-input-section .input'),
-              chat                      = page.locator('.chat'),
-              user_message              = chat.locator('.messages .message.user'),
-              ai_message                = chat.locator('.messages .message.assistant'),
-              create_fork_button        = ai_message.locator('.message-controls-right .fork'),
-              provisional_fork_controls = ai_message.locator('.provisional-fork-controls'),
-              cancel_fork_button        = provisional_fork_controls.locator('.cancel-fork'),
-              forks_container           = page.locator('.reply-forks-container'),
-              fork_buttons              = forks_container.locator('.reply-fork-button'),
-              regenerate_button         = ai_message.locator('.message-controls-right .regenerate')
+        const default_model      = models.find(m => m.id === defaults.model),
+              input              = page.locator('.primary-input-section .input'),
+              chat               = page.locator('.chat'),
+              user_message       = chat.locator('.messages .message.user'),
+              ai_message         = chat.locator('.messages .message.assistant'),
+              create_fork_button = ai_message.locator('.message-controls-right .fork'),
+              forks_container    = page.locator('.reply-forks-container'),
+              fork_buttons       = forks_container.locator('.reply-fork-button'),
+              regenerate_button  = ai_message.locator('.message-controls-right .regenerate')
 
         // send first message
         await input.fill(short_reply_prompt)

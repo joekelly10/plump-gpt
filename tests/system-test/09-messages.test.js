@@ -88,7 +88,7 @@ test.describe('Messages', () => {
         await expect(ai_message).toHaveCount(2)
         await expect(ai_message.nth(1).locator('.message-content')).toHaveText(medium_reply, { timeout: 10_000 })
 
-        await expect(ai_message.nth(0).locator('.message-controls-right .add')).not.toBeVisible()
+        await expect(ai_message.nth(0).locator('.message-controls-right .add')).toBeVisible()
         await expect(ai_message.nth(0).locator('.message-controls-right .regenerate')).not.toBeVisible()
         await expect(ai_message.nth(0).locator('.message-controls-right .delete')).not.toBeVisible()
         await expect(ai_message.nth(0).locator('.message-controls-right .fork')).toBeVisible()
