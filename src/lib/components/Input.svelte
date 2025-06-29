@@ -98,7 +98,7 @@
 
         await tick()
         hljs.highlightAll()
-        clearIsHovering()
+        is_hovering.clear()
         scrollChatToBottom({ context: 'sending_message' })
 
         const options = $model.is_reasoner ? {
@@ -468,7 +468,7 @@
         $chat_id               = null
         $loader_active         = false
         $is_scrolled_to_bottom = true
-        clearIsHovering()
+        is_hovering.clear()
         $page.url.searchParams.delete('user_message')
         window.history.replaceState(null, '', $page.url.toString())
         focus()
@@ -573,10 +573,6 @@
                 return nope()
             }
         }
-    }
-
-    const clearIsHovering = () => {
-        is_hovering.set({ delete: [], regenerate: [], add_reply: [], add_fork: [], star: [] })
     }
 </script>
 
