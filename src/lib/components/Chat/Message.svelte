@@ -33,7 +33,6 @@
         scrollToBottom,
         addReply,
         regenerateReply,
-        removeProvisionalFork,
         switchToFork,
         cancelFork,
         saveChat,
