@@ -37,7 +37,7 @@
         width:           40px
         height:          40px
         border-radius:   8px
-        border:          1px solid $background-200
+        border:          1px solid $background-300
         color:           $background-200
         cursor:          pointer
         transition:      border-color easing.$quart-out 100ms, background-color easing.$quart-out 100ms
