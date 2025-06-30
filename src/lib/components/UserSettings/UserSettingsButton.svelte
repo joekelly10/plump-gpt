@@ -65,7 +65,7 @@
                 opacity: 0
     
     :global(.settings-icon)
-        height: 17px
+        height: 16px
         fill:   $background-200
         
     .arrow-icon
