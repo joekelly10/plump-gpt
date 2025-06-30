@@ -13,7 +13,7 @@
     import LoaderChat from '$lib/components/Loader/LoaderChat.svelte'
     import PageControls from '$lib/components/Loader/PageControls.svelte'
 
-    const { onChatLoaded } = $props()
+    const { focusInput, onChatLoaded } = $props()
 
     let search,
         scrolling_div
@@ -276,6 +276,7 @@
 
     const close = () => {
         $loader_active = false
+        focusInput()
     }
 </script>
 

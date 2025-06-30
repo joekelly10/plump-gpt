@@ -83,6 +83,7 @@
 
 {#if $loader_active}
     <Loader
+        focusInput={focusInput}
         onChatLoaded={onChatLoaded}
     />
 {/if}
@@ -94,7 +95,9 @@
 {/if}
 
 {#if $prompt_editor_active}
-    <PromptEditor/>
+    <PromptEditor
+        focusInput={focusInput}
+    />
 {/if}
 
 <KeyboardShortcuts

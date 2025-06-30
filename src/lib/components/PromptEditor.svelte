@@ -10,6 +10,8 @@
     import PromptList from '$lib/components/PromptEditor/PromptList.svelte'
     import EditPromptForm from '$lib/components/PromptEditor/EditPromptForm.svelte'
 
+    const { focusInput } = $props()
+
     let form
 
     let input_title          = $state(''),
@@ -134,6 +136,7 @@
     const close = () => {
         $system_prompts       = $system_prompts.filter(prompt => !!prompt.id)
         $prompt_editor_active = false
+        focusInput()
     }
 </script>
 
