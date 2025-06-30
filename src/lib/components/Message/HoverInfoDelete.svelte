@@ -2,10 +2,10 @@
     import { fly, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
 
-    let { small_message } = $props()
+    let { tiny_message } = $props()
 </script>
 
-<div class='hover-info-delete' class:small-message={small_message} in:fly={{ x: 4, duration: 125, easing: quartOut }} out:fade={{ duration: 75, easing: quartOut }}>
+<div class='hover-info-delete' class:tiny-message={tiny_message} in:fly={{ x: 4, duration: 125, easing: quartOut }} out:fade={{ duration: 75, easing: quartOut }}>
     <span class='text'>
         Delete
     </span>
@@ -25,7 +25,7 @@
         background-color: $coral
         color:            $background-800
 
-        &.small-message
+        &.tiny-message
             bottom:    50%
             right:     24px
             transform: translateY(50%)

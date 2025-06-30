@@ -2,10 +2,10 @@
     import { fly, fade, slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
 
-    let { is_starred, small_message } = $props()
+    let { is_starred, tiny_message } = $props()
 </script>
 
-<div class='hover-info-star' class:starred={is_starred} class:small-message={small_message} in:fly={{ x: -4, duration: 125, easing: quartOut }} out:fade={{ duration: 75, easing: quartOut }}>
+<div class='hover-info-star' class:starred={is_starred} class:tiny-message={tiny_message} in:fly={{ x: -4, duration: 125, easing: quartOut }} out:fade={{ duration: 75, easing: quartOut }}>
     {#if !is_starred}
         <span class='text' in:slide={{ axis: 'x', delay: 25, duration: 75, easing: quartOut }} out:slide={{ axis: 'x', duration: 25, easing: quartOut }}>
             Add Star
@@ -35,7 +35,7 @@
             background-color: $background-500
             color:            $yellow
 
-        &.small-message
+        &.tiny-message
             bottom:    50%
             left:      24px
             transform: translateY(50%)
