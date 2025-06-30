@@ -66,6 +66,7 @@
           regenerate_highlight   = $derived($is_hovering.regenerate.includes(message.id)),
           star_highlight         = $derived($is_hovering.star.includes(message.id)),
           add_fork_highlight     = $derived($is_hovering.add_fork.includes(message.id)),
+          add_fork_lowlight      = $derived($is_hovering.add_fork.some(id => id < message.id)),
           delete_highlight       = $derived(!(message.role === 'user' && message.forks.length > 1) && $is_hovering.delete.includes(message.id)),
           is_tiny_message        = $derived(message_el?.clientHeight < 140),
           is_small_message       = $derived(message_el?.clientHeight < 200)
@@ -120,6 +121,7 @@
     class:add-reply-highlight={add_reply_highlight}
     class:star-highlight={star_highlight}
     class:add-fork-highlight={add_fork_highlight}
+    class:add-fork-lowlight={add_fork_lowlight}
     class:temp-highlight={temp_highlight}
     class:no-forks={message.forks.length === 0}
     out:slide={{ duration: $is_deleting ? 250 : 0, easing: quartOut }}
@@ -229,9 +231,26 @@
         &:first-of-type
             margin-top: space.$default-padding
 
+        &:after
+            content:          ''
+            position:         absolute
+            top:              0
+            left:             0
+            width:            100%
+            height:           100%
+            box-sizing:       border-box
+            border-radius:    1.5px 1.5px 8px 8px
+            background-image: linear-gradient(to bottom, color.adjust($background-500, $alpha: -0.5), color.adjust($background-500, $alpha: -0.75))
+            opacity:          0
+            transition:       opacity easing.$quart-out 0.1s
+            pointer-events:   none
+
         &.user
             border-radius:    8px 8px 0 0
             background-color: $background-300
+
+            &:after
+                border-radius: 8px 8px 1.5px 1.5px
 
             &:not(.streaming)
                 transition: background-color easing.$quart-out 0.075s, box-shadow easing.$quart-out 0.075s
@@ -247,6 +266,15 @@
                     border-radius:    8px 8px 1.5px 1.5px
                     background-color: $regenerate-highlight-bg
 
+                &.add-fork-lowlight
+                    .content,
+                    :global(.avatar-container)
+                        filter: blur(2px)
+                        color:  $blue-grey
+
+                    &:after
+                        opacity: 1
+
                 &.temp-highlight
                     z-index:          999
                     background-color: color.adjust($background-300, $lightness: -2.5%)
@@ -257,20 +285,6 @@
             margin-bottom:    space.$default-padding
             border-radius:    0 0 8px 8px
             background-color: $background-300
-
-            &:after
-                content:          ''
-                position:         absolute
-                top:              0
-                left:             0
-                width:            100%
-                height:           100%
-                box-sizing:       border-box
-                border-radius:    1.5px 1.5px 8px 8px
-                background-image: linear-gradient(to bottom, color.adjust($background-500, $alpha: -0.5), color.adjust($background-500, $alpha: -0.75))
-                opacity:          0
-                transition:       opacity easing.$quart-out 0.1s
-                pointer-events:   none
 
             &:not(.streaming)
                 transition: padding-bottom easing.$quart-out 0.25s, margin-bottom easing.$quart-out 0.125s, border-bottom easing.$quart-out 0.125s, border-radius easing.$quart-out 0.125s, background-color easing.$quart-out 0.075s, box-shadow easing.$quart-out 0.075s
@@ -283,6 +297,16 @@
 
                     &:after
                         opacity: 1
+
+                &.add-fork-lowlight
+                    .content,
+                    :global(.avatar-container)
+                        filter: blur(2px)
+                        color:  $blue-grey
+
+                    &:after
+                        opacity:          1
+                        background-image: linear-gradient(to bottom, color.adjust($background-500, $alpha: -0.75), color.adjust($background-500, $alpha: -0.5))
 
                 &.delete-highlight
                     box-shadow:       0 0 0 1.5px $coral
