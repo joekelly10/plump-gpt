@@ -5,9 +5,10 @@
 
     const { tree_view = false } = $props()
 
-    const cache_used     = $derived($usage.cache_read_tokens > 0 || $usage.cache_write_tokens > 0),
-          cost_string    = $derived('$' + ($usage.total_cost / 100).toFixed(5)),
-          savings_string = $derived('$' + ($usage.total_savings / 100).toFixed(5))
+    const cache_used       = $derived($usage.cache_read_tokens > 0 || $usage.cache_write_tokens > 0),
+          cost_string      = $derived('$' + ($usage.total_cost / 100).toFixed(5)),
+          savings_string   = $derived('$' + ($usage.total_savings / 100).toFixed(5)),
+          negative_savings = $derived($usage.total_savings < 0)
 </script>
 
 <div
@@ -63,7 +64,7 @@
         </div>
         {#if $usage.total_savings !== 0}
             <div class='cache-savings'>
-                <span class='small'>
+                <span class='small' title={negative_savings ? 'Negative savings due to cache write cost' : ''}>
                     ({savings_string} saved)
                 </span>
             </div>
