@@ -1,5 +1,5 @@
 <script>
-    import { loader_active, prompt_editor_active, tree_active, model_list_active, user_settings_active } from '$lib/stores/app'
+    import { loader_active, prompt_editor_active, tree_active, model_list_active, user_settings_active, input_expanded } from '$lib/stores/app'
     import { forks, active_fork, chat_id } from '$lib/stores/chat'
     import { model, temperature, top_p } from '$lib/stores/ai'
     import { is_idle } from '$lib/stores/api'
@@ -84,6 +84,21 @@
         if (e.ctrlKey && e.shiftKey && e.key === 'P') {
             e.preventDefault()
             top_p.decrement()
+        }
+
+        // expand input
+        if (e.ctrlKey && e.shiftKey && e.key === 'ArrowUp') {
+            e.preventDefault()
+            $user_settings_active = false
+            $model_list_active    = false
+            return $input_expanded = true
+        }
+        
+        if (e.ctrlKey && e.shiftKey && e.key === 'ArrowDown') {
+            e.preventDefault()
+            $user_settings_active = false
+            $model_list_active    = false
+            return $input_expanded = false
         }
 
         // escape / cancel

@@ -539,20 +539,6 @@
             return
         }
 
-        if (e.ctrlKey && e.shiftKey && e.key === 'ArrowUp') {
-            e.preventDefault()
-            $user_settings_active = false
-            $model_list_active    = false
-            return $input_expanded = true
-        }
-        
-        if (e.ctrlKey && e.shiftKey && e.key === 'ArrowDown') {
-            e.preventDefault()
-            $user_settings_active = false
-            $model_list_active    = false
-            return $input_expanded = false
-        }
-
         if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'b') {
             e.preventDefault()
             return formatSelectedText('bold')
