@@ -45,7 +45,6 @@
         padding-left:  space.$default-padding
         padding-right: space.$default-padding
         border-radius: 8px
-        border:        1px solid transparent
         line-height:   font.$line-height-14px
         font-size:     14px
         font-weight:   450
@@ -61,7 +60,7 @@
 
         .prompt-title
             font-weight: 600
-            color:       $off-white
+            color:       $blue-grey
             transition:  font-size easing.$quart-out 0.25s, color easing.$quart-out 0.1s
 
             &.highlight
@@ -69,22 +68,22 @@
                 color:     $yellow
 
         &:hover
-            border:     1px solid $background-200
-            color:      $blue-grey
-            transition: none
+            background-color: $background-800
+            color:            $off-white
+            transition:       none
 
             .prompt-title
                 transition: font-size easing.$quart-out 0.25s
         
         &:active
-            background-color: color.adjust($background-700, $lightness: -1%)
-            color:            $blue-grey
+            background-color: color.adjust($background-800, $lightness: -1%)
+            color:            $off-white
             transition:       none
 
             .prompt-title
                 transition: none
 
         &.editor-active
-            border: 1px solid $background-200
-            color:  $blue-grey
+            border-color: $background-800
+            color:        $off-white
 </style>
