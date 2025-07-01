@@ -73,6 +73,7 @@
             transition:       none
 
             .prompt-title
+                color:      $pale-blue
                 transition: font-size easing.$quart-out 0.25s
         
         &:active
