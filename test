@@ -266,11 +266,11 @@ if ! docker info &> /dev/null; then
             exit 1
         fi
         
-        echo -ne "  ${blue_bold}• ${white}Waiting for Docker daemon... ${blue}$((MAX_DOCKER_RETRIES / 2 - DOCKER_RETRY_COUNT))s${reset}\033[K\r"
+        echo -ne "  ${blue_bold}• ${white}Waiting for Docker daemon... ${blue}$((MAX_DOCKER_RETRIES / 2 - DOCKER_RETRY_COUNT))s${reset}${clear_line}${carriage_return}"
         sleep 0.5
     done
     
-    echo -e "  ${green_bold}✔ ${white}Docker started${reset}\033[K\r"
+    echo -e "  ${green_bold}✔ ${white}Docker started${reset}${clear_line}"
 
     WE_JUST_STARTED_DOCKER=true
 fi
