@@ -164,9 +164,9 @@ LEAVE AN EMPTY LINE
 ```js
     export const focus             = () => input.focus(),
                  setText           = async (text) => _setText(text),
-                 sendMessage       = async (is_regeneration = false) => _sendMessage(is_regeneration),
-                 addReply          = async () => _sendMessage(true),
-                 regenerateReply   = async () => _sendMessage(true),
+                 sendMessage       = async (is_new_user_message = false) => _sendMessage(is_new_user_message),
+                 addReply          = async () => _sendMessage(false),
+                 regenerateReply   = async () => _sendMessage(false),
                  quoteSelectedText = () => _quoteSelectedText(),
                  onChatUpdated     = async (options) => _onChatUpdated(options)
 ```
