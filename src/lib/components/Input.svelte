@@ -155,6 +155,22 @@
         await tick()
         scrollChatToBottom({ context: 'streaming_started' })
 
+        if (!response.ok) {
+            const json = await response.json()
+            console.log('🤖-❌ Error:', response.status, json)
+            gpt_message.content = `**🚨 Error: ${json.error?.message}**`
+            $messages = [...$messages.slice(0,-1), gpt_message]
+
+            api_state.finishStreaming()
+            hljs.highlightAll()
+            addCopyButtons()
+
+            await tick()
+            scrollChatToBottom({ context: 'streaming_finished' })
+
+            return
+        }
+
         const decoder = new TextDecoderStream()
         const reader  = response.body.pipeThrough(decoder).getReader()
         await streamGPTResponse(reader, gpt_message)
