@@ -111,7 +111,7 @@
             transition:       padding easing.$quart-out 0.25s
         
         &:active
-            background-color: color.adjust($background-800, $lightness: -1%)
+            background-color: $background-850
 
         &.animate-model-change
             .icon

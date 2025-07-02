@@ -50,6 +50,6 @@
                 margin-left: -0.5px
 
         &:active
-            background-color: color.adjust($background-800, $lightness: -1%)
+            background-color: $background-850
             transition:       none
 </style>
