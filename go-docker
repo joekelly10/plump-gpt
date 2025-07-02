@@ -17,6 +17,10 @@ blue_bold='\033[1;34m'
 cyan_bold='\033[1;36m'
 reset='\033[0m'
 
+up_one_line='\033[1A'
+carriage_return='\r'
+clear_line='\033[K'
+
 
 # Check for rebuild argument
 REBUILD=false
@@ -24,82 +28,114 @@ REBUILD=false
 echo
 if [ "$1" = "rebuild" ]; then
     REBUILD=true
-    echo -e "${blue_bold}➜ ${white_bold}Rebuilding Plump GPT...${reset}"
+    echo -e "${blue_bold}➜ ${white_bold}Launching Plump GPT... ${grey}(with rebuild)${reset}"
 else
     echo -e "${blue_bold}➜ ${white_bold}Launching Plump GPT...${reset}"
 fi
-echo
 
 
 sleep 0.1
 
 
-# Check if .env file exists
 if [ ! -f .env ]; then
-    echo -e "  ${red_bold}✗ ${white}No .env file found${reset}"
-    echo -e "  ${yellow_bold}• ${white}Creating one from .env.example...${reset}"
+    echo
+    echo
+    echo -e "  ${grey_bold}✗ ${grey}No .env file found${reset}"
 
-    if [ -f .env.example ]; then
-        cp .env.example .env
-        echo -e "  ${green_bold}✔ ${white}Created .env file from .env.example${reset}"
+    if [ -f .env.example.docker ]; then
+        cp .env.example.docker .env
+        echo -e "  ${green_bold}✔ ${white}Created a new .env file from .env.example.docker...${reset}"
     else
-        echo -e "  ${red_bold}✗ ${white}No .env.example file found${reset}"
-        echo
-        echo -e "  ${yellow_bold}• ${white}Creating a blank .env file...${reset}"
         touch .env
         echo -e "  ${green_bold}✔ ${white}Created blank .env file${reset}"
     fi
     
     echo
-    echo -e "  ${yellow_bold}⚠️ ${white_bold}Please add your API keys to the .env file and run this script again${reset}"
-    echo -e "     ${white}OPENAI_API_KEY=your_key_here${reset}"
-    echo -e "     ${white}ANTHROPIC_API_KEY=your_key_here${reset}"
-    echo -e "     ${white}GEMINI_API_KEY=your_key_here${reset}"
-    echo -e "     ${white}etc...${reset}"
+    echo
+    echo -e "  ${blue_bold}➜ ${white_bold}Please add your ${cyan_bold}API keys${white_bold} to the .env file, then run this script again${reset}"
+    echo
+    echo -e "    ${grey}OPENAI_API_KEY=${cyan}your_key_here${reset}"
+    echo -e "    ${grey}ANTHROPIC_API_KEY=${cyan}your_key_here${reset}"
+    echo -e "    ${grey}GEMINI_API_KEY=${cyan}your_key_here${reset}"
+    echo -e "    ${grey}etc...${reset}"
     echo
 
     exit 1
 fi
 
-echo -e "  ${green_bold}✔ ${white}.env file found${reset}"
+
+# check .env file contents
+source .env
+
+API_KEYS_SET=false
+
+api_keys=(
+    "OPENAI_API_KEY"
+    "ANTHROPIC_API_KEY" 
+    "GEMINI_API_KEY"
+    "GROK_API_KEY"
+    "COHERE_API_KEY"
+    "MISTRAL_API_KEY"
+    "DEEPSEEK_API_KEY"
+    "AI21_API_KEY"
+    "OPENROUTER_API_KEY"
+    "GROQ_API_KEY"
+)
+
+for key in "${api_keys[@]}"; do
+    value="${!key}"
+
+    if [[ -n "$value" && "$value" != "your_api_key_here" && "$value" != "..." ]]; then
+        API_KEYS_SET=true
+        break
+    fi
+done
+
+if [ "$API_KEYS_SET" = false ]; then
+    echo
+    echo -e "  ${red_bold}❌ ${white_bold}API keys are still set to placeholder values!${reset}"
+    echo -e "     ${white}Please set at least one API key in your ${cyan}.env${white} file${reset}"
+    echo
+
+    exit 1
+fi
 
 
 sleep 0.1
 
 
-# Check if Docker and Docker Compose are installed
+# check Docker is installed
 if ! command -v docker &> /dev/null; then
-    echo -e "  ${red_bold}✗ ${white}Docker is not installed or not in PATH${reset}"
     echo
-    echo -e "  ${yellow_bold}⚠️ ${white_bold}Please install Docker and Docker Compose before continuing${reset}"
-    echo -e "     ${white}Visit https://docs.docker.com/get-docker/ for installation instructions${reset}"
+    echo -e "  ${red_bold}❌ ${white}Docker is not installed or not in PATH${reset}"
+    echo
+    echo -e "     ${white}Please install Docker before continuing${reset}"
+    echo -e "     ${grey}Visit https://docs.docker.com/get-docker/ for installation instructions${reset}"
     echo
 
     exit 1
 fi
 
+# check Docker Compose is installed
 if ! command -v docker compose &> /dev/null; then
-    echo -e "  ${red_bold}✗ ${white}Docker Compose is not installed or not in PATH${reset}"
     echo
-    echo -e "  ${yellow_bold}⚠️ ${white_bold}Please install Docker Compose before continuing${reset}"
-    echo -e "     ${white}Visit https://docs.docker.com/compose/install/ for installation instructions${reset}"
+    echo -e "  ${red_bold}❌ ${white}Docker Compose is not installed or not in PATH${reset}"
+    echo
+    echo -e "     ${white}Please install Docker Compose before continuing${reset}"
+    echo -e "     ${grey}Visit https://docs.docker.com/compose/install/ for installation instructions${reset}"
     echo
 
     exit 1
 fi
 
-echo -e "  ${green_bold}✔ ${white}Docker and Docker Compose are installed${reset}"
 
-
-sleep 0.1
-
-
-# Flag to track if this script starts Docker
+# flag to track if this script starts Docker
 WE_JUST_STARTED_DOCKER=false
 
-# Check if Docker daemon is running
+# check Docker is running
 if ! docker info &> /dev/null; then
-    echo -e "  ${red_bold}✗ ${white}Docker daemon is not running${reset}"
+    echo
+    echo -e "  ${grey_bold}✗ ${grey}Docker daemon isn't running${reset}"
     echo
 
     if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -117,15 +153,15 @@ if ! docker info &> /dev/null; then
         if [ -f "C:\Program Files\Docker\Docker\Docker Desktop.exe" ]; then
             start "" "C:\Program Files\Docker\Docker\Docker Desktop.exe"
         else
-            echo -e "  ${red_bold}✗ ${white}Could not locate Docker Desktop executable${reset}"
-            echo -e "  ${yellow_bold}⚠️ ${white_bold}Please start Docker Desktop manually and try again${reset}"
+            echo -e "     ${white_bold}Please start Docker Desktop manually and try again${reset}"
             echo
+
             exit 1
         fi
     else
-        echo -e "  ${red_bold}✗ ${white}Unsupported operating system${reset}"
-        echo -e "  ${yellow_bold}⚠️ ${white_bold}Please start Docker manually and try again${reset}"
+        echo -e "     ${white_bold}Please start Docker manually and try again${reset}"
         echo
+
         exit 1
     fi
     
@@ -136,17 +172,20 @@ if ! docker info &> /dev/null; then
         DOCKER_RETRY_COUNT=$((DOCKER_RETRY_COUNT+1))
         
         if [ $DOCKER_RETRY_COUNT -eq $MAX_DOCKER_RETRIES ]; then
-            echo -e "  ${red_bold}✗ ${white}Timed out waiting for Docker daemon to start${reset}"
-            echo -e "  ${yellow_bold}⚠️ ${white_bold}Please start Docker manually and try again${reset}"
             echo
+            echo -e "  ${red_bold}❌ ${white_bold}Timed out waiting for Docker daemon to start${reset}"
+            echo -e "     ${white}Please start Docker manually and try again${reset}"
+            echo
+
             exit 1
         fi
         
-        echo -ne "  ${yellow_bold}• ${white}Waiting for Docker daemon... $((MAX_DOCKER_RETRIES / 2 - DOCKER_RETRY_COUNT))s${reset}\033[K\r"
+        echo -ne "  ${blue_bold}• ${white}Waiting for Docker daemon... ${blue}$((MAX_DOCKER_RETRIES / 2 - DOCKER_RETRY_COUNT))s${reset}${clear_line}${carriage_return}"
         sleep 0.5
     done
     
-    echo -e "  ${green_bold}✔ ${white}Docker started${reset}\033[K\r"
+    echo -e "  ${green_bold}✔ ${white}Docker started${reset}${clear_line}"
+
     WE_JUST_STARTED_DOCKER=true
 fi
 
@@ -154,7 +193,7 @@ fi
 sleep 0.1
 
 
-# Check if a plump-gpt volume exists - if not, this is the first run
+# check if a plump-gpt volume exists - if not, this is the first run
 if ! docker volume ls | grep -q "plump-gpt"; then
     echo
     echo -e "  ${cyan_bold}➜ ${white_bold}First time setup...${reset}"
@@ -172,6 +211,8 @@ if ! docker volume ls | grep -q "plump-gpt"; then
     fi
 fi
 
+
+# (re)build and start containers
 if [ "$REBUILD" = true ]; then
     echo
     echo -e "  ${blue_bold}➜ ${white_bold}Rebuilding containers...${reset}"
@@ -182,7 +223,7 @@ if [ "$REBUILD" = true ]; then
     echo
     echo -e "  ${green_bold}✔ ${white}Containers started${reset}"
 else
-    # Check if Plump GPT containers are already running
+    # check if Plump GPT containers are already running
     if docker compose ps | grep -q "plump-gpt"; then
         if [ "$WE_JUST_STARTED_DOCKER" = true ]; then
             echo
@@ -224,7 +265,7 @@ fi
 sleep 0.1
 
 
-# Check if / wait for database migrations to complete
+# check for database migrations (wait for them to complete)
 MAX_RETRIES=30
 RETRY_COUNT=0
 
@@ -232,21 +273,22 @@ while true; do
     RETRY_COUNT=$((RETRY_COUNT+1))
 
     if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
-        echo -e "  ${red_bold}✗ ${white}Timed out waiting for database migration and seeding${reset}"
-        echo -e "    ${white}Please check the logs with: ${cyan_bold}docker compose logs app${reset}"
+        echo
+        echo -e "  ${red_bold}❌ ${white}Timed out waiting for database migration and seeding${reset}"
+        echo -e "     ${white}Please check the logs with: ${cyan_bold}docker compose logs app${reset}"
         echo
 
         exit 1
     fi
 
-    # Check 1: Basic connection to database
+    # check 1: Basic connection to database
     if ! docker compose exec db psql -U plump_user -d plump_gpt -c "SELECT 1" &>/dev/null; then
-        echo -ne "  ${yellow_bold}• ${white}Waiting for database... $(($MAX_RETRIES - $RETRY_COUNT))s${reset}\033[K\r"
+        echo -ne "  ${blue_bold}• ${white}Waiting for database... ${blue}$((MAX_RETRIES/2 - RETRY_COUNT))s${reset}${clear_line}${carriage_return}"
         sleep 0.5
         continue
     fi
 
-    # Check 2: SystemPrompt table exists and has the default prompt in it
+    # check 2: SystemPrompt table exists and has the default prompt in it
     #
     # The default prompt check needs to fail gracefully (not throw errors)
     # if the table doesn't exist yet (hence the `AND`)
@@ -260,24 +302,24 @@ while true; do
         break
     fi
 
-    echo -ne "  ${yellow_bold}• ${white}Waiting for database... $(($MAX_RETRIES - $RETRY_COUNT))s${reset}\033[K\r"
+    echo -ne "  ${blue_bold}• ${white}Waiting for database... ${blue}$((MAX_RETRIES/2 - RETRY_COUNT))s${reset}${clear_line}${carriage_return}"
     sleep 0.5
 done
 
-echo -e "  ${green_bold}✔ ${white}Database ready${reset}\033[K\r"
+echo -e "  ${green_bold}✔ ${white}Database ready${reset}${clear_line}"
 
 
 sleep 0.1
 
 
-# Great success
+# great success
 echo -e "  ${green_bold}✔ ...🚀${reset}"
 
 
 sleep 0.25
 
 
-# Read version from package.json
+# read version from package.json
 APP_VERSION=$(grep "\"version\":" package.json | head -1 | sed 's/.*: "\(.*\)",/\1/' | tr -d '[:space:]')
 
 echo
@@ -321,7 +363,7 @@ sleep 0.005
 echo
 
 
-sleep 0.25
+sleep 0.5
 
 
 if [[ "$OSTYPE" == "darwin"* ]]; then

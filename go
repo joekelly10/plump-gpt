@@ -108,7 +108,7 @@ done
 
 if [ "$API_KEYS_SET" = false ]; then
     echo
-    echo -e "  ${red_bold}❌ ${white_bold}No API keys detected${reset}"
+    echo -e "  ${red_bold}❌ ${white_bold}API keys are still set to placeholder values${reset}"
     echo -e "     ${white}Please set at least one API key in your ${cyan}.env${white} file${reset}"
     echo
 
@@ -122,7 +122,7 @@ sleep 0.1
 # check if Node.js is installed
 if ! command -v node &> /dev/null; then
     echo
-    echo -e "  ${red_bold}❌ ${white}Node.js is not installed or not in PATH${reset}"
+    echo -e "  ${red_bold}❌ ${white_bold}Node.js is not installed or not in PATH${reset}"
     echo
     echo -e "     ${white}Please install Node.js before continuing${reset}"
     echo -e "     ${grey}Visit https://nodejs.org/ for installation instructions${reset}"
@@ -134,7 +134,7 @@ fi
 # check if npm is installed
 if ! command -v npm &> /dev/null; then
     echo
-    echo -e "  ${red_bold}❌ ${white}npm is not installed or not in PATH${reset}"
+    echo -e "  ${red_bold}❌ ${white_bold}npm is not installed or not in PATH${reset}"
     echo
     echo -e "     ${white}Please install npm before continuing${reset}"
     echo -e "     ${grey}Visit https://nodejs.org/ for installation instructions${reset}"
@@ -146,7 +146,7 @@ fi
 # check if Postgres is installed
 if ! command -v psql &> /dev/null; then
     echo
-    echo -e "  ${red_bold}❌ ${white}PostgreSQL is not installed or not in PATH${reset}"
+    echo -e "  ${red_bold}❌ ${white_bold}PostgreSQL is not installed or not in PATH${reset}"
     echo
     echo -e "     ${white}Please install PostgreSQL before continuing${reset}"
     echo -e "     ${grey}Visit https://www.postgresql.org/download/ for installation instructions${reset}"

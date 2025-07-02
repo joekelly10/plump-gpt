@@ -171,8 +171,8 @@ if ! command -v node &> /dev/null; then
     echo
     echo -e "  ${red_bold}❌ ${white}Node.js is not installed or not in PATH${reset}"
     echo
-    echo -e "  ${yellow_bold}⚠️ ${white_bold}Please install Node.js before continuing${reset}"
-    echo -e "     ${white}Visit https://nodejs.org/ for installation instructions${reset}"
+    echo -e "     ${white}Please install Node.js before continuing${reset}"
+    echo -e "     ${grey}Visit https://nodejs.org/ for installation instructions${reset}"
     echo
 
     exit 1
@@ -183,7 +183,8 @@ if ! command -v npm &> /dev/null; then
     echo
     echo -e "  ${red_bold}❌ ${white}npm is not installed or not in PATH${reset}"
     echo
-    echo -e "  ${yellow_bold}⚠️ ${white_bold}Please install npm before continuing${reset}"
+    echo -e "     ${white}Please install npm before continuing${reset}"
+    echo -e "     ${grey}Visit https://nodejs.org/ for installation instructions${reset}"
     echo
 
     exit 1
@@ -195,8 +196,8 @@ if ! command -v docker &> /dev/null; then
     echo
     echo -e "  ${red_bold}❌ ${white}Docker is not installed or not in PATH${reset}"
     echo
-    echo -e "  ${yellow_bold}⚠️ ${white_bold}Please install Docker and Docker Compose before continuing${reset}"
-    echo -e "     ${white}Visit https://docs.docker.com/get-docker/ for installation instructions${reset}"
+    echo -e "     ${white}Please install Docker before continuing${reset}"
+    echo -e "     ${grey}Visit https://docs.docker.com/get-docker/ for installation instructions${reset}"
     echo
 
     exit 1
@@ -207,8 +208,8 @@ if ! command -v docker compose &> /dev/null; then
     echo
     echo -e "  ${red_bold}❌ ${white}Docker Compose is not installed or not in PATH${reset}"
     echo
-    echo -e "  ${yellow_bold}⚠️ ${white_bold}Please install Docker Compose before continuing${reset}"
-    echo -e "     ${white}Visit https://docs.docker.com/compose/install/ for installation instructions${reset}"
+    echo -e "     ${white}Please install Docker Compose before continuing${reset}"
+    echo -e "     ${grey}Visit https://docs.docker.com/compose/install/ for installation instructions${reset}"
     echo
 
     exit 1
