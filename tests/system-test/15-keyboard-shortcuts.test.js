@@ -275,4 +275,19 @@ test.describe('Keyboard Shortcuts', () => {
         await expect(user_message).toHaveCount(2)
         await expect(ai_message).toHaveCount(2)
     })
+
+    test('we should be able to use the keyboard to expand and collapse the input', async ({ page }) => {
+        await page.goto('/')
+
+        const input_section = page.locator('.primary-input-section')
+        await expect(input_section).not.toContainClass('expanded')
+
+        // ctrl+shift+up (expand input)
+        await page.keyboard.press('Control+Shift+ArrowUp')
+        await expect(input_section).toContainClass('expanded')
+
+        // ctrl+shift+down (collapse input)
+        await page.keyboard.press('Control+Shift+ArrowDown')
+        await expect(input_section).not.toContainClass('expanded')
+    })
 })
