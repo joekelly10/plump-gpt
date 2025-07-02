@@ -440,5 +440,18 @@ export default [
         is_reasoner:    true,
         pricing_id:     'minimax-m1',
         controls:       []
+    },
+    {
+        type:           'inception',
+        id:             'mercury',
+        name:           'Mercury',
+        short_name:     'Mercury',
+        icon:           'mercury.png',
+        family:         'Inception',
+        hosted_at:      'inceptionlabs.ai',
+        context_window: 32000,
+        is_reasoner:    false,
+        pricing_id:     'inception-mercury',
+        controls:       []
     }
 ]

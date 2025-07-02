@@ -70,6 +70,8 @@ It runs in your browser on `localhost:1337`.
 - <img alt='MiniMax 01' src='./static/img/icons/models/minimax-01.png' width='21' height='21' valign='middle'>&nbsp; MiniMax 01
 - <img alt='MiniMax M1' src='./static/img/icons/models/minimax-m1.png' width='21' height='21' valign='middle'>&nbsp; MiniMax M1
 
+**Inception Labs** (Diffusion)
+- <img alt='Mercury' src='./static/img/icons/models/mercury.png' width='21' height='21' valign='middle'>&nbsp; Mercury
 
 
 # Features

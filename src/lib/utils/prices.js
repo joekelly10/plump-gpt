@@ -266,6 +266,14 @@ const model_prices = {
                 output_token: 165/1000000
             }
         }
+    },
+    'inception-mercury': {
+        price: {
+            cents: {
+                input_token:   25/1000000, // $0.25/mTok
+                output_token: 100/1000000
+            }
+        }
     }
 }
 

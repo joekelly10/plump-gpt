@@ -159,12 +159,12 @@
             const json = await response.json()
             console.log('🤖-❌ Error:', response.status, json)
             gpt_message.content = `**🚨 Error: ${json.error?.message}**`
+
             $messages = [...$messages.slice(0,-1), gpt_message]
 
             api_state.finishStreaming()
             hljs.highlightAll()
             addCopyButtons()
-
             await tick()
             scrollChatToBottom({ context: 'streaming_finished' })
 
@@ -234,7 +234,7 @@
                     const json_string = buffer.slice(start_index, end_index)
                     try {
                         const data = JSON.parse(json_string)
-                        if (['open-ai', 'x', 'mistral', 'ai21'].includes($model.type)) {
+                        if (['open-ai', 'x', 'mistral', 'ai21', 'inception'].includes($model.type)) {
                             await processOpenAIObject(data, gpt_message)
                         } else if ($model.type === 'anthropic') {
                             await processAnthropicObject(data, gpt_message)
