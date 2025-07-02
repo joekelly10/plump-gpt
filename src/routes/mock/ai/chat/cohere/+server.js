@@ -1,5 +1,4 @@
-import { sleep, wordsFrom, process } from '$tests/helpers/tools'
-import { speed_limit } from '$tests/helpers/defaults'
+import { sleep, wordsFrom, process, speed_limit } from '$tests/helpers/tools'
 import { messageStartObject, contentStartObject, contentDeltaObject, contentEndObject, messageEndObject } from '$tests/mock/stream_objects/cohere'
 
 export const POST = async ({ request }) => {

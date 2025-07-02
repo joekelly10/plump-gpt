@@ -8,6 +8,12 @@ export const checkInterruption = async () => {
     if (global.isSetupInterrupted) process.exit(130) // exit code for Ctrl+C
 }
 
+export const speed_limit = {
+    slow:   250, // ms per word
+    medium: 50,
+    fast:   2
+}
+
 export const process = (messages) => {
     let prompt = messages[messages.length - 1].content
 

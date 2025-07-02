@@ -1,5 +1,4 @@
-import { sleep, wordsFrom, process } from '$tests/helpers/tools'
-import { speed_limit } from '$tests/helpers/defaults'
+import { sleep, wordsFrom, process, speed_limit } from '$tests/helpers/tools'
 import { messageStartObject, thinkingStartObject, thinkingDeltaObject, signatureDeltaObject, textStartObject, textDeltaObject, contentBlockStopObject, messageDeltaObject, messageStopObject } from '$tests/mock/stream_objects/anthropic'
 
 export const POST = async ({ request }) => {

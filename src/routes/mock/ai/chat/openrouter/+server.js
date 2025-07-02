@@ -1,5 +1,4 @@
-import { sleep, wordsFrom, process } from '$tests/helpers/tools'
-import { speed_limit } from '$tests/helpers/defaults'
+import { sleep, wordsFrom, process, speed_limit } from '$tests/helpers/tools'
 import { startObject, deltaReasoningObject, deltaObject, finishObject, usageObject } from '$tests/mock/stream_objects/openrouter'
 
 export const POST = async ({ request }) => {

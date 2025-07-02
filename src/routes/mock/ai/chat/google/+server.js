@@ -1,5 +1,4 @@
-import { sleep, wordsFrom, process } from '$tests/helpers/tools'
-import { speed_limit } from '$tests/helpers/defaults'
+import { sleep, wordsFrom, process, speed_limit } from '$tests/helpers/tools'
 import { startObject, partObject, partThoughtObject, finishObject } from '$tests/mock/stream_objects/google'
 
 export const POST = async ({ request }) => {
