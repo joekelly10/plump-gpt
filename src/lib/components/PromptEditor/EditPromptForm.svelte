@@ -118,12 +118,14 @@
     }
 
     const whenInputTitleChanges = () => {
+        if (read_only) return
         clearTimeout(update_timer)
         update_timer = setTimeout(updatePromptInList, 250)
     }
 
     const whenInputMessageChanges = () => {
         getTokenCount()
+        if (read_only) return
         clearTimeout(update_timer)
         update_timer = setTimeout(updatePromptInList, 250)
     }
