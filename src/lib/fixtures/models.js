@@ -9,7 +9,8 @@ export default [
         hosted_at:      'openai.com',
         context_window: 1000000,
         is_reasoner:    false,
-        pricing_id:     'gpt-4.1-nano'
+        pricing_id:     'gpt-4.1-nano',
+        controls:       []
     },
     {
         type:           'open-ai',
@@ -21,7 +22,8 @@ export default [
         hosted_at:      'openai.com',
         context_window: 1000000,
         is_reasoner:    false,
-        pricing_id:     'gpt-4.1-mini'
+        pricing_id:     'gpt-4.1-mini',
+        controls:       []
     },
     {
         type:           'open-ai',
@@ -33,7 +35,8 @@ export default [
         hosted_at:      'openai.com',
         context_window: 1000000,
         is_reasoner:    false,
-        pricing_id:     'gpt-4.1'
+        pricing_id:     'gpt-4.1',
+        controls:       []
     },
     {
         type:           'open-ai',
@@ -45,7 +48,8 @@ export default [
         hosted_at:      'openai.com',
         context_window: 128000,
         is_reasoner:    true,
-        pricing_id:     'o4-mini'
+        pricing_id:     'o4-mini',
+        controls:       []
     },
     {
         type:           'anthropic',
@@ -57,7 +61,8 @@ export default [
         hosted_at:      'anthropic.com',
         context_window: 200000,
         is_reasoner:    false,
-        pricing_id:     'claude-haiku'
+        pricing_id:     'claude-haiku',
+        controls:       []
     },
     {
         type:           'anthropic',
@@ -68,8 +73,9 @@ export default [
         family:         'Anthropic',
         hosted_at:      'anthropic.com',
         context_window: 200000,
-        is_reasoner:    false,
-        pricing_id:     'claude-sonnet'
+        is_reasoner:    true,
+        pricing_id:     'claude-sonnet',
+        controls:       ['thinking_budget']
     },
     {
         type:           'anthropic',
@@ -80,8 +86,9 @@ export default [
         family:         'Anthropic',
         hosted_at:      'anthropic.com',
         context_window: 200000,
-        is_reasoner:    false,
-        pricing_id:     'claude-opus'
+        is_reasoner:    true,
+        pricing_id:     'claude-opus',
+        controls:       ['thinking_budget']
     },
     {
         type:           'google',
@@ -93,7 +100,8 @@ export default [
         hosted_at:      'googleapis.com',
         context_window: 1000000,
         is_reasoner:    false,
-        pricing_id:     'gemini-2.5-flash-lite'
+        pricing_id:     'gemini-2.5-flash-lite',
+        controls:       []
     },
     {
         type:           'google',
@@ -105,7 +113,8 @@ export default [
         hosted_at:      'googleapis.com',
         context_window: 1000000,
         is_reasoner:    true,
-        pricing_id:     'gemini-2.5-flash'
+        pricing_id:     'gemini-2.5-flash',
+        controls:       []
     },
     {
         type:           'google',
@@ -117,7 +126,8 @@ export default [
         hosted_at:      'googleapis.com',
         context_window: 1000000,
         is_reasoner:    true,
-        pricing_id:     'gemini-2.5-pro'
+        pricing_id:     'gemini-2.5-pro',
+        controls:       []
     },
     {
         type:           'x',
@@ -129,7 +139,8 @@ export default [
         hosted_at:      'x.ai',
         context_window: 131072,
         is_reasoner:    true,
-        pricing_id:     'grok-3-mini'
+        pricing_id:     'grok-3-mini',
+        controls:       []
     },
     {
         type:           'x',
@@ -141,7 +152,8 @@ export default [
         hosted_at:      'x.ai',
         context_window: 131072,
         is_reasoner:    false,
-        pricing_id:     'grok-3'
+        pricing_id:     'grok-3',
+        controls:       []
     },
     {
         type:           'openrouter',
@@ -153,7 +165,8 @@ export default [
         hosted_at:      'openrouter.ai',
         context_window: 512000,
         is_reasoner:    false,
-        pricing_id:     'free'
+        pricing_id:     'free',
+        controls:       []
     },
     {
         type:           'openrouter',
@@ -165,7 +178,8 @@ export default [
         hosted_at:      'openrouter.ai',
         context_window: 128000,
         is_reasoner:    false,
-        pricing_id:     'free'
+        pricing_id:     'free',
+        controls:       []
     },
     {
         type:           'openrouter',
@@ -177,7 +191,8 @@ export default [
         hosted_at:      'openrouter.ai',
         context_window: 33000,
         is_reasoner:    false,
-        pricing_id:     'llama-3-405b'
+        pricing_id:     'llama-3-405b',
+        controls:       []
     },
     {
         type:           'deepseek',
@@ -189,7 +204,8 @@ export default [
         hosted_at:      'deepseek.com',
         context_window: 164000,
         is_reasoner:    false,
-        pricing_id:     'deepseek-chat'
+        pricing_id:     'deepseek-chat',
+        controls:       []
     },
     {
         type:           'openrouter',
@@ -201,7 +217,8 @@ export default [
         hosted_at:      'openrouter.ai',
         context_window: 164000,
         is_reasoner:    false,
-        pricing_id:     'free'
+        pricing_id:     'free',
+        controls:       []
     },
     {
         type:           'deepseek',
@@ -213,7 +230,8 @@ export default [
         hosted_at:      'deepseek.com',
         context_window: 164000,
         is_reasoner:    true,
-        pricing_id:     'deepseek-reasoner'
+        pricing_id:     'deepseek-reasoner',
+        controls:       []
     },
     {
         type:           'openrouter',
@@ -225,7 +243,8 @@ export default [
         hosted_at:      'openrouter.ai',
         context_window: 164000,
         is_reasoner:    true,
-        pricing_id:     'free'
+        pricing_id:     'free',
+        controls:       []
     },
     {
         type:           'openrouter',
@@ -237,7 +256,8 @@ export default [
         hosted_at:      'openrouter.ai',
         context_window: 1000000,
         is_reasoner:    false,
-        pricing_id:     'qwen-turbo'
+        pricing_id:     'qwen-turbo',
+        controls:       []
     },
     {
         type:           'openrouter',
@@ -249,7 +269,8 @@ export default [
         hosted_at:      'openrouter.ai',
         context_window: 1000000,
         is_reasoner:    false,
-        pricing_id:     'qwen-plus'
+        pricing_id:     'qwen-plus',
+        controls:       []
     },
     {
         type:           'openrouter',
@@ -261,7 +282,8 @@ export default [
         hosted_at:      'openrouter.ai',
         context_window: 32000,
         is_reasoner:    false,
-        pricing_id:     'qwen-max'
+        pricing_id:     'qwen-max',
+        controls:       []
     },
     {
         type:           'mistral',
@@ -273,7 +295,8 @@ export default [
         hosted_at:      'mistral.ai',
         context_window: 128000,
         is_reasoner:    false,
-        pricing_id:     'free'
+        pricing_id:     'free',
+        controls:       []
     },
     {
         type:           'mistral',
@@ -285,7 +308,8 @@ export default [
         hosted_at:      'mistral.ai',
         context_window: 128000,
         is_reasoner:    false,
-        pricing_id:     'free'
+        pricing_id:     'free',
+        controls:       []
     },
     {
         type:           'mistral',
@@ -297,7 +321,8 @@ export default [
         hosted_at:      'mistral.ai',
         context_window: 128000,
         is_reasoner:    false,
-        pricing_id:     'free'
+        pricing_id:     'free',
+        controls:       []
     },
     {
         type:           'cohere',
@@ -309,7 +334,8 @@ export default [
         hosted_at:      'cohere.com',
         context_window: 128000,
         is_reasoner:    false,
-        pricing_id:     'command-r'
+        pricing_id:     'command-r',
+        controls:       []
     },
     {
         type:           'cohere',
@@ -321,7 +347,8 @@ export default [
         hosted_at:      'cohere.com',
         context_window: 128000,
         is_reasoner:    false,
-        pricing_id:     'command-r-plus'
+        pricing_id:     'command-r-plus',
+        controls:       []
     },
     {
         type:           'ai21',
@@ -333,7 +360,8 @@ export default [
         hosted_at:      'ai21.com',
         context_window: 256000,
         is_reasoner:    false,
-        pricing_id:     'jamba-1.6-mini'
+        pricing_id:     'jamba-1.6-mini',
+        controls:       []
     },
     {
         type:           'ai21',
@@ -345,7 +373,8 @@ export default [
         hosted_at:      'ai21.com',
         context_window: 256000,
         is_reasoner:    false,
-        pricing_id:     'jamba-1.6-large'
+        pricing_id:     'jamba-1.6-large',
+        controls:       []
     },
     {
         type:           'groq',
@@ -357,7 +386,8 @@ export default [
         hosted_at:      'groq.com',
         context_window: 128000,
         is_reasoner:    true,
-        pricing_id:     'groq-qwq-32b'
+        pricing_id:     'groq-qwq-32b',
+        controls:       []
     },
     {
         type:           'groq',
@@ -369,7 +399,8 @@ export default [
         hosted_at:      'groq.com',
         context_window: 128000,
         is_reasoner:    false,
-        pricing_id:     'groq-llama-4-maverick'
+        pricing_id:     'groq-llama-4-maverick',
+        controls:       []
     },
     {
         type:           'groq',
@@ -381,7 +412,8 @@ export default [
         hosted_at:      'groq.com',
         context_window: 128000,
         is_reasoner:    true,
-        pricing_id:     'groq-r1-distill-70b'
+        pricing_id:     'groq-r1-distill-70b',
+        controls:       []
     },
     {
         type:           'openrouter',
@@ -393,7 +425,8 @@ export default [
         hosted_at:      'openrouter.ai',
         context_window: 4000000,
         is_reasoner:    true,
-        pricing_id:     'minimax-01'
+        pricing_id:     'minimax-01',
+        controls:       []
     },
     {
         type:           'openrouter',
@@ -405,6 +438,7 @@ export default [
         hosted_at:      'openrouter.ai',
         context_window: 1000000,
         is_reasoner:    true,
-        pricing_id:     'minimax-m1'
+        pricing_id:     'minimax-m1',
+        controls:       []
     }
 ]

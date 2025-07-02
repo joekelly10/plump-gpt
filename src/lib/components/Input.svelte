@@ -1,10 +1,10 @@
 <script>
     import { tick } from 'svelte'
     import { page } from '$app/stores'
-    import { loader_active, user_settings_active, model_list_active, input_expanded } from '$lib/stores/app'
+    import { is_initialising, loader_active, user_settings_active, model_list_active, input_expanded } from '$lib/stores/app'
     import { chat_id, messages, forks, active_fork, active_messages, stars, highlights } from '$lib/stores/chat'
     import { is_hovering, is_adding_reply, is_deleting, is_scrolled_to_bottom, is_provisionally_forking } from '$lib/stores/chat/interactions'
-    import { model, temperature, top_p } from '$lib/stores/ai'
+    import { model, temperature, top_p, thinking_budget } from '$lib/stores/ai'
     import { api_state, is_idle } from '$lib/stores/api'
     import { config } from '$lib/stores/user'
     import { addCopyButtons, sleep } from '$lib/utils/helpers'
@@ -12,6 +12,7 @@
 
     import ModelList from '$lib/components/Input/ModelList.svelte'
     import ActiveModelButton from '$lib/components/Input/ActiveModelButton.svelte'
+    import InputFooter from '$lib/components/Input/InputFooter.svelte'
     import ModelSettings from '$lib/components/Input/ModelSettings.svelte'
     import UserSettings from '$lib/components/Input/UserSettings.svelte'
     import ExpandButton from '$lib/components/Input/ExpandButton.svelte'
@@ -42,6 +43,8 @@
         input_overflowed           = $state(false),
         nope_highlight             = $state(false),
         is_hovering_model_switcher = $state(false)
+    
+    const input_footer_active = $derived(!$is_initialising && $model.controls.length > 0)
     
     const _setText = async (text) => {
         input_text = text
@@ -106,6 +109,12 @@
             model:       $model.id,
             temperature: $temperature,
             top_p:       $top_p
+        }
+
+        if ($model.type === 'anthropic' && $thinking_budget > 0) {
+            options.thinking_budget = $thinking_budget
+            options.temperature     = 1
+            options.top_p           = 1
         }
 
         const response = await fetch(`/api/ai/chat/${$model.type}`, {
@@ -259,8 +268,13 @@
 
     const processAnthropicObject = async (data, gpt_message) => {
         if (data.type === 'content_block_delta') {
-            const text = data.delta.text ?? ''
-            await append(gpt_message, text)
+            if (data.delta.type === 'thinking_delta') {
+                const thinking = data.delta.thinking
+                await append(gpt_message, thinking, { is_reasoning: true })
+            } else {
+                const text = data.delta.text ?? ''
+                await append(gpt_message, text)
+            }
         } else if (data.type === 'message_start') {
             gpt_message.usage.cache_write_tokens = data.message.usage.cache_creation_input_tokens ?? 0
             gpt_message.usage.cache_read_tokens  = data.message.usage.cache_read_input_tokens ?? 0
@@ -561,7 +575,7 @@
     }
 </script>
 
-<section class='primary-input-section' class:expanded={$input_expanded} class:model-list-active={$model_list_active}>
+<section class='primary-input-section' class:expanded={$input_expanded} class:model-list-active={$model_list_active} class:input-footer-active={input_footer_active}>
     {#if !$input_expanded}
         <UserSettings/>
     {/if}
@@ -574,20 +588,25 @@
         is_hovering_model_switcher={is_hovering_model_switcher}
     />
 
-    <div class='container' class:nope-highlight={nope_highlight}>
+    <div class='input-container' class:nope-highlight={nope_highlight}>
         <ActiveModelButton
             bind:hovering={is_hovering_model_switcher}
             focusInput={focus}
         />
-        <div
-            class='input'
-            contenteditable='true'
-            bind:this={input}
-            bind:innerText={input_text}
-            onkeydown={keydownMessageInput}
-            onpaste={pastedInput}
-            oninput={inputChanged}
-        ></div>
+        <div class='input-main'>
+            <div
+                class='input'
+                contenteditable='true'
+                bind:this={input}
+                bind:innerText={input_text}
+                onkeydown={keydownMessageInput}
+                onpaste={pastedInput}
+                oninput={inputChanged}
+            ></div>
+        </div>
+        {#if input_footer_active}
+            <InputFooter/>
+        {/if}
     </div>
 
     <ExpandButton
@@ -616,19 +635,27 @@
             .input
                 max-height: 86px
 
+        &.input-footer-active
+            &.model-list-active
+                .input
+                    max-height: 60px
+            &.expanded
+                .input
+                    min-height: 75vh
+                    max-height: 75vh
+
         &.expanded
             .input
                 min-height: 80vh
                 max-height: 80vh
                 transition: min-height easing.$quart-out 300ms, max-height easing.$quart-out 300ms
     
-    .container
+    .input-container
         position:         relative
         z-index:          10
         margin:           0 auto
-        width:            720px
+        width:            space.$input-container-width
         box-sizing:       border-box
-        padding:          16px
         border:           1px solid $blue-grey
         border-radius:    12px
         background-color: $background-300
@@ -638,6 +665,9 @@
             box-shadow:   0 0 0 1px $coral, 0 0 0 1px $coral inset
             border-color: $coral
             transition:   none
+
+        .input-main
+            padding: 16px
     
     .input
         position:      relative

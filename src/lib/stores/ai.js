@@ -3,9 +3,10 @@ import { browser } from '$app/environment'
 import defaults from '$lib/fixtures/defaults'
 import models from '$lib/fixtures/models'
 
-export const model       = createModel()
-export const temperature = createTemperature()
-export const top_p       = createTopP()
+export const model           = createModel()
+export const temperature     = createTemperature()
+export const top_p           = createTopP()
+export const thinking_budget = createThinkingBudget()
 
 function createModel() {
     const default_index = models.findIndex(m => m.id === defaults.model)
@@ -76,13 +77,41 @@ function createTopP() {
     }
 }
 
-if (browser) {
-    const stored_temperature = Number(localStorage.getItem('temperature'))
-    const stored_top_p       = Number(localStorage.getItem('top_p'))
+function createThinkingBudget() {
+    const { subscribe, set, update } = writable(defaults.thinking_budget)
 
-    if (stored_temperature) temperature.set(stored_temperature)
-    if (stored_top_p) top_p.set(stored_top_p)
+    return {
+        subscribe,
+        set,
+        increment: () => {
+            update(value => {
+                if (value === 32000) return 0
+                if (value < 4000) return value + 1000
+                if (value < 12000) return value + 2000
+                return value + 4000
+            })
+        },
+        decrement: () => {
+            update(value => {
+                if (value === 0) return 32000
+                if (value <= 4000) return value - 1000
+                if (value <= 12000) return value - 2000
+                return value - 4000
+            })
+        }
+    }
+}
+
+if (browser) {
+    const stored_temperature     = localStorage.getItem('temperature'),
+          stored_top_p           = localStorage.getItem('top_p'),
+          stored_thinking_budget = localStorage.getItem('thinking_budget')
+
+    if (stored_temperature) temperature.set(Number(stored_temperature))
+    if (stored_top_p) top_p.set(Number(stored_top_p))
+    if (stored_thinking_budget) thinking_budget.set(Number(stored_thinking_budget))
 
     temperature.subscribe(value => localStorage.setItem('temperature', value))
     top_p.subscribe(value => localStorage.setItem('top_p', value))
+    thinking_budget.subscribe(value => localStorage.setItem('thinking_budget', value))
 }

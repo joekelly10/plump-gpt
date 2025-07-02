@@ -158,8 +158,8 @@ test.describe('Highlights', () => {
               highlights           = ai_message.locator('span._text-highlight'),
               save_button          = page.locator('.save-button')
         
-        if (!default_model.is_reasoner) {
-            const reasoning_model = models.find(model => model.type !== 'open-ai' && model.is_reasoner)
+        if (!default_model.is_reasoner || ['open-ai', 'anthropic'].includes(default_model.type)) {
+            const reasoning_model = models.find(model => !['open-ai', 'anthropic'].includes(model.type) && model.is_reasoner)
             await switchModel(page, reasoning_model)
         }
 

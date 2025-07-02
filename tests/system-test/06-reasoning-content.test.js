@@ -6,6 +6,34 @@ import defaults from '../../src/lib/fixtures/defaults'
 import models from '../../src/lib/fixtures/models'
 
 test.describe('Reasoning Content', () => {
+    test('we should see the reasoning from Anthropic models', async ({ page }) => {
+        await page.goto('/')
+
+        const default_model          = models.find(m => m.id === defaults.model),
+              input                  = page.locator('.primary-input-section .input'),
+              user_message           = page.locator('.chat .messages .message.user'),
+              ai_message             = page.locator('.chat .messages .message.assistant'),
+              thinking_budget_button = page.locator('.thinking-budget-button')
+
+        if (default_model.type !== 'anthropic' || !default_model.is_reasoner) {
+            const anthropic_model = models.find(m => m.type === 'anthropic' && m.is_reasoner)
+            await switchModel(page, anthropic_model)
+        }
+
+        await thinking_budget_button.click()
+        await expect(thinking_budget_button).toContainText('1,000')
+
+        await input.fill(basic_reasoning_prompt)
+        await page.keyboard.press('Enter')
+
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(1)
+        await expect(user_message.locator('.message-content')).toHaveText(basic_reasoning_prompt)
+        await expect(ai_message).toHaveCount(1)
+        await expect(ai_message.locator('.reasoning-content')).toContainText(basic_reasoning_content)
+        await expect(ai_message.locator('.message-content')).toHaveText(basic_reasoning_reply)
+    })
+
     test('we should see the reasoning from Google models', async ({ page }) => {
         await page.goto('/')
 

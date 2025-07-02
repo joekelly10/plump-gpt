@@ -67,7 +67,7 @@
         <div class='reasoning-summary' in:fly={{ x: -4, duration: 125, easing: quartOut }}>
             Thought for
             <span class='reasoning-token-count'>
-                {is_streaming ? '~' : ''}{message.usage.reasoning_tokens}
+                {is_streaming || message.model.type === 'anthropic' ? '~' : ''}{message.usage.reasoning_tokens}
             </span>
             tokens
         </div>

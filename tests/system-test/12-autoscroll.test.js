@@ -100,8 +100,8 @@ test.describe('Autoscroll', () => {
               ai_message        = page.locator('.chat .messages .message.assistant'),
               reasoning_content = ai_message.locator('.reasoning-content')
         
-        if (!default_model.is_reasoner) {
-            const reasoning_model = models.find(m => m.type !== 'open-ai' && m.is_reasoner)
+        if (!default_model.is_reasoner || ['open-ai', 'anthropic'].includes(default_model.type)) {
+            const reasoning_model = models.find(model => !['open-ai', 'anthropic'].includes(model.type) && model.is_reasoner)
             await switchModel(page, reasoning_model)
         }
 
@@ -140,8 +140,8 @@ test.describe('Autoscroll', () => {
               ai_message        = page.locator('.chat .messages .message.assistant'),
               reasoning_content = ai_message.locator('.reasoning-content')
         
-        if (!default_model.is_reasoner) {
-            const reasoning_model = models.find(m => m.type !== 'open-ai' && m.is_reasoner)
+        if (!default_model.is_reasoner || ['open-ai', 'anthropic'].includes(default_model.type)) {
+            const reasoning_model = models.find(model => !['open-ai', 'anthropic'].includes(model.type) && model.is_reasoner)
             await switchModel(page, reasoning_model)
         }
         

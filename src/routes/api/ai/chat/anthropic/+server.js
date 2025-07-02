@@ -42,6 +42,8 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
         'x-api-key':         env.ANTHROPIC_API_KEY
     })
 
+    const thinking_budget = (options.thinking_budget === 1000 ? 1024 : options.thinking_budget) || 0
+
     const body = JSON.stringify({
         model:       options.model,
         temperature: options.temperature,
@@ -53,7 +55,8 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
             cache_control: { type: 'ephemeral' }
         }],
         messages:    messages.slice(1),
-        max_tokens:  4096
+        max_tokens:  4096 + thinking_budget,
+        ...(thinking_budget && { thinking: { type: 'enabled', budget_tokens: thinking_budget } })
     })
 
     if (env.NODE_ENV === 'test') {
