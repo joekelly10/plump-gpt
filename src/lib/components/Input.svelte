@@ -21,9 +21,9 @@
 
     export const focus             = () => input.focus(),
                  setText           = async (text) => _setText(text),
-                 sendMessage       = async (is_regeneration = false) => _sendMessage(is_regeneration),
-                 addReply          = async () => _sendMessage(true),
-                 regenerateReply   = async () => _sendMessage(true),
+                 sendMessage       = async (is_new_user_message) => _sendMessage(is_new_user_message),
+                 addReply          = async () => _sendMessage(false),
+                 regenerateReply   = async () => _sendMessage(false),
                  quoteSelectedText = () => _quoteSelectedText(),
                  deleteChat        = () => _deleteChat(),
                  newChat           = () => _newChat(),
@@ -60,7 +60,7 @@
         selection.addRange(range)
     }
 
-    const _sendMessage = async (is_regeneration = false) => {
+    const _sendMessage = async (is_new_user_message = true) => {
         console.log('🤖 Sending message...')
 
         $model_list_active    = false
@@ -80,7 +80,7 @@
             $is_deleting = false
         }
 
-        if (!is_regeneration) {
+        if (is_new_user_message) {
             const user_message = {
                 id:        getNextId(),
                 parent_id: getParentId(),
