@@ -3,26 +3,36 @@
 # Colors
 white='\033[0;37m'
 grey='\033[0;90m'
-blue='\033[0;34m'
-cyan='\033[0;36m'
-green='\033[0;32m'
 red='\033[0;31m'
 yellow='\033[0;33m'
+green='\033[0;32m'
+blue='\033[0;34m'
+cyan='\033[0;36m'
 white_bold='\033[1;37m'
-blue_bold='\033[1;34m'
-cyan_bold='\033[1;36m'
-green_bold='\033[1;32m'
+grey_bold='\033[1;90m'
 red_bold='\033[1;31m'
 yellow_bold='\033[1;33m'
+green_bold='\033[1;32m'
+blue_bold='\033[1;34m'
+cyan_bold='\033[1;36m'
 reset='\033[0m'
 
-# Check for development mode argument
+up_one_line='\033[1A'
+carriage_return='\r'
+clear_line='\033[K'
+
+
+# check for arguments
 DEV_MODE=false
+REBUILD=false
 
 echo
 if [ "$1" = "dev" ]; then
     DEV_MODE=true
-    echo -e "${blue_bold}➜ ${white_bold}Starting Plump GPT in dev mode...${reset}"
+    echo -e "${blue_bold}➜ ${white_bold}Starting Plump GPT in dev mode... ${grey}(live reloading)${reset}"
+elif [ "$1" = "rebuild" ]; then
+    REBUILD=true
+    echo -e "${blue_bold}➜ ${white_bold}Starting Plump GPT... ${grey}(with rebuild)${reset}"
 else
     echo -e "${blue_bold}➜ ${white_bold}Starting Plump GPT...${reset}"
 fi
@@ -31,80 +41,132 @@ fi
 sleep 0.1
 
 
-# Check if .env file exists
+# check if .env file exists
 if [ ! -f .env ]; then
     echo
-    echo -e "  ${red_bold}✗ ${white}No .env file found${reset}"
-    echo -e "  ${yellow_bold}• ${white}Creating one from .env.example...${reset}"
+    echo
+    echo -e "  ${grey_bold}✗ ${grey}No .env file found${reset}"
 
     if [ -f .env.example ]; then
         cp .env.example .env
-        echo -e "  ${green_bold}✔ ${white}Created .env file from .env.example${reset}"
+        echo -e "  ${green_bold}✔ ${white}Created a new .env file from .env.example...${reset}"
     else
-        echo -e "  ${red_bold}✗ ${white}No .env.example file found${reset}"
-        echo
-        echo -e "  ${yellow_bold}• ${white}Creating a blank .env file...${reset}"
         touch .env
         echo -e "  ${green_bold}✔ ${white}Created blank .env file${reset}"
     fi
     
     echo
-    echo -e "  ${yellow_bold}⚠️ ${white_bold}Please add your API keys to the .env file and run this script again${reset}"
-    echo -e "     ${white}OPENAI_API_KEY=your_key_here${reset}"
-    echo -e "     ${white}ANTHROPIC_API_KEY=your_key_here${reset}"
-    echo -e "     ${white}GEMINI_API_KEY=your_key_here${reset}"
-    echo -e "     ${white}etc...${reset}"
+    echo
+    echo -e "  ${blue_bold}➜ ${white_bold}Please add your ${cyan_bold}Database URL${white_bold} and ${cyan_bold}API keys${white_bold} to the .env file, then run this script again${reset}"
+    echo
+    echo -e "    ${grey}DATABASE_URL=${cyan}postgresql://your_username:your_password@localhost:5432/plump_gpt${reset}"
+    echo -e "    ${grey}OPENAI_API_KEY=${cyan}your_key_here${reset}"
+    echo -e "    ${grey}ANTHROPIC_API_KEY=${cyan}your_key_here${reset}"
+    echo -e "    ${grey}GEMINI_API_KEY=${cyan}your_key_here${reset}"
+    echo -e "    ${grey}etc...${reset}"
     echo
 
     exit 1
 fi
 
 
-# Check if Node.js is installed
+# check .env file contents
+source .env
+
+if [[ "$DATABASE_URL" == "postgresql://your_username:your_password@localhost:5432/plump_gpt" ]]; then
+    echo
+    echo -e "  ${red_bold}❌ ${white_bold}DATABASE_URL is still set to the default placeholder${reset}"
+    echo -e "     ${white}Please update ${cyan}DATABASE_URL${white} in your ${cyan}.env${white} file with your actual database details${reset}"
+    echo
+
+    exit 1
+fi
+
+API_KEYS_SET=false
+
+api_keys=(
+    "OPENAI_API_KEY"
+    "ANTHROPIC_API_KEY" 
+    "GEMINI_API_KEY"
+    "GROK_API_KEY"
+    "COHERE_API_KEY"
+    "MISTRAL_API_KEY"
+    "DEEPSEEK_API_KEY"
+    "AI21_API_KEY"
+    "OPENROUTER_API_KEY"
+    "GROQ_API_KEY"
+)
+
+for key in "${api_keys[@]}"; do
+    value="${!key}"
+
+    if [[ -n "$value" && "$value" != "your_api_key_here" && "$value" != "..." ]]; then
+        API_KEYS_SET=true
+        break
+    fi
+done
+
+if [ "$API_KEYS_SET" = false ]; then
+    echo
+    echo -e "  ${red_bold}❌ ${white_bold}No API keys detected${reset}"
+    echo -e "     ${white}Please set at least one API key in your ${cyan}.env${white} file${reset}"
+    echo
+
+    exit 1
+fi
+
+
+sleep 0.1
+
+
+# check if Node.js is installed
 if ! command -v node &> /dev/null; then
     echo
-    echo -e "  ${red_bold}✗ ${white}Node.js is not installed or not in PATH${reset}"
+    echo -e "  ${red_bold}❌ ${white}Node.js is not installed or not in PATH${reset}"
     echo
-    echo -e "  ${yellow_bold}⚠️ ${white_bold}Please install Node.js before continuing${reset}"
-    echo -e "     ${white}Visit https://nodejs.org/ for installation instructions${reset}"
+    echo -e "     ${white}Please install Node.js before continuing${reset}"
+    echo -e "     ${grey}Visit https://nodejs.org/ for installation instructions${reset}"
     echo
 
     exit 1
 fi
 
-# Check if npm is installed
+# check if npm is installed
 if ! command -v npm &> /dev/null; then
     echo
-    echo -e "  ${red_bold}✗ ${white}npm is not installed or not in PATH${reset}"
+    echo -e "  ${red_bold}❌ ${white}npm is not installed or not in PATH${reset}"
     echo
-    echo -e "  ${yellow_bold}⚠️ ${white_bold}Please install npm before continuing${reset}"
+    echo -e "     ${white}Please install npm before continuing${reset}"
+    echo -e "     ${grey}Visit https://nodejs.org/ for installation instructions${reset}"
     echo
 
     exit 1
 fi
 
-# Check if Postgres is installed
+# check if Postgres is installed
 if ! command -v psql &> /dev/null; then
     echo
-    echo -e "  ${red_bold}✗ ${white}PostgreSQL is not installed or not in PATH${reset}"
+    echo -e "  ${red_bold}❌ ${white}PostgreSQL is not installed or not in PATH${reset}"
     echo
-    echo -e "  ${yellow_bold}⚠️ ${white_bold}Please install PostgreSQL before continuing${reset}"
+    echo -e "     ${white}Please install PostgreSQL before continuing${reset}"
+    echo -e "     ${grey}Visit https://www.postgresql.org/download/ for installation instructions${reset}"
     echo
 
     exit 1
 fi
 
 
-# Check if dependencies are installed
-if [ ! -d node_modules ] || [ ! -f node_modules/.install-stamp ] || [ package.json -nt node_modules/.install-stamp ]; then
+# check if dependencies are installed
+if [ "$REBUILD" = true ] || [ ! -d node_modules ] || [ ! -f node_modules/.install-stamp ] || [ package.json -nt node_modules/.install-stamp ]; then
     echo
     echo -e "  ${blue_bold}➜ ${white_bold}Installing dependencies...${reset}"
 
     npm install > go.log 2>&1
 
     if [ $? -ne 0 ]; then
-        echo -e "  ${yellow_bold}⚠️ ${white_bold}Installation failed${reset}"
+        echo -e "  ${red_bold}❌ ${white_bold}Installation failed${reset}"
         echo -e "     ${white}Please check ${cyan_bold}go.log${white} for details${reset}"
+
         exit 1
     fi
 
@@ -117,8 +179,9 @@ if [ ! -d node_modules ] || [ ! -f node_modules/.install-stamp ] || [ package.js
     npx prisma generate > go.log 2>&1
 
     if [ $? -ne 0 ]; then
-        echo -e "  ${yellow_bold}⚠️ ${white_bold}Failed to generate Prisma client${reset}"
+        echo -e "  ${red_bold}❌ ${white_bold}Failed to generate Prisma client${reset}"
         echo -e "     ${white}Please check ${cyan_bold}go.log${white} for details${reset}"
+
         exit 1
     fi
     
@@ -129,15 +192,15 @@ fi
 sleep 0.1
 
 
-# Check if app has already been built
-if [ "$DEV_MODE" = false ] && [ ! -d .svelte-kit/output ]; then
+# check if app has already been built
+if [ "$REBUILD" = true ] || ([ "$DEV_MODE" = false ] && [ ! -d .svelte-kit/output ]); then
     echo
     echo -e "  ${blue_bold}➜ ${white_bold}Building app...${reset}"
 
     npm run build > go.log 2>&1
 
     if [ $? -ne 0 ]; then
-        echo -e "  ${yellow_bold}⚠️ ${white_bold}Build failed${reset}"
+        echo -e "  ${red_bold}❌ ${white_bold}Build failed${reset}"
         echo -e "     ${white}Please check ${cyan_bold}go.log${white} for details${reset}"
         exit 1
     fi
@@ -154,7 +217,7 @@ DB_URL=$(grep "DATABASE_URL" .env | cut -d= -f2)
 
 if ! [[ $DB_URL =~ postgresql://([^:@]+)?(:[^@]+)?@([^:/]+)(:([0-9]+))?/([^?]+)(\?.*)?$ ]]; then
     echo
-    echo -e "  ${yellow_bold}⚠️ ${white_bold}Couldn't parse DATABASE_URL in .env file${reset}"
+    echo -e "  ${red_bold}❌ ${white_bold}Couldn't parse DATABASE_URL in .env file${reset}"
     echo -e "     ${white}Please check that your DATABASE_URL is correct${reset}"
     echo -e "     ${white}e.g. postgresql://user:password@localhost:5432/database_name${reset}"
 
@@ -169,25 +232,29 @@ else
     echo -e "  ${blue_bold}➜ ${white_bold}Checking database...${reset}"
 
     if ! nc -z $DB_HOST $DB_PORT 2>/dev/null; then
-        echo -e "  ${red_bold}✗ ${white}PostgreSQL is not running on ${DB_HOST}:${DB_PORT}${reset}"
         echo
-        echo -e "  ${yellow_bold}⚠️ ${white_bold}Please start PostgreSQL before continuing${reset}"
+        echo -e "  ${red_bold}❌ ${white_bold}Couldn't connect to PostgreSQL database${reset}"
+        echo
+        echo -e "     ${white}Please make sure PostgreSQL is up and running, then try again${reset}"
+        echo -e "     ${grey}Attempted connection to: ${cyan}${DB_URL}${reset}"
         echo
 
         exit 1
     else
-        echo -e "  ${green_bold}✔ ${white}PostgreSQL is running${reset}"
+        echo -e "  ${green_bold}✔ ${white}PostgreSQL is running...${reset}"
 
         if [ ! -z "$DB_NAME" ]; then
             if ! psql "$DB_URL" -c '\q' 2>/dev/null; then
                 echo
-                echo -e "  ${yellow_bold}⚠️ ${white_bold}Couldn't connect to database '${DB_NAME}'${reset}"
-                echo -e "     ${white}Please make sure the database exists${reset}"
+                echo -e "  ${red_bold}❌ ${white_bold}Couldn't connect to database ${yellow_bold}'${DB_NAME}'${reset}"
+                echo
+                echo -e "     ${white}Please make sure a database with that name exists${reset}"
+                echo -e "     ${grey}Attempted connection to: ${cyan}${DB_URL}${reset}"
                 echo
 
                 exit 1
             else
-                echo -e "  ${green_bold}✔ ${white}Successfully connected to '${DB_NAME}'${reset}"
+                echo -e "${up_one_line}${carriage_return}${clear_line}  ${green_bold}✔ ${white}Successfully connected to database ${blue_bold}'${DB_NAME}'${reset}"
             fi
         fi
     fi
@@ -197,7 +264,7 @@ fi
 sleep 0.1
 
 
-# Check if the database has been seeded already; if not, this is the first run
+# check if the database has been seeded already; if not, this is the first run
 if psql "$DB_URL" -t -c "
     SELECT EXISTS (
         SELECT FROM pg_tables WHERE tablename = 'SystemPrompt' 
