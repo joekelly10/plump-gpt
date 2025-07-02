@@ -6,6 +6,96 @@ import defaults from '../../src/lib/fixtures/defaults'
 import models from '../../src/lib/fixtures/models'
 
 test.describe('Reasoning Content', () => {
+    test ('thinking budget button should only show for Anthropic thinking models', async ({ page }) => {
+        await page.goto('/')
+
+        const thinking_budget_button = page.locator('.thinking-budget-button')
+
+        // non-Anthropic thinking model
+        let model = models.find(m => m.type !== 'anthropic' && m.is_reasoner)
+        await switchModel(page, model)
+        await expect(thinking_budget_button).not.toBeVisible()
+
+        // non-thinking Anthropic model
+        model = models.find(m => m.type === 'anthropic' && !m.is_reasoner)
+        if (model) {
+            await switchModel(page, model)
+            await expect(thinking_budget_button).not.toBeVisible()
+        }
+
+        // thinking Anthropic model
+        model = models.find(m => m.type === 'anthropic' && m.is_reasoner)
+        await switchModel(page, model)
+        await expect(thinking_budget_button).toBeVisible()
+    })
+
+    test('thinking budget button should work', async ({ page }) => {
+        await page.goto('/')
+
+        const _default               = defaults.thinking_budget,
+              default_model          = models.find(m => m.id === defaults.model),
+              thinking_budget_button = page.locator('.thinking-budget-button')
+
+        if (default_model.type !== 'anthropic' || !default_model.is_reasoner) {
+            const anthropic_model = models.find(m => m.type === 'anthropic' && m.is_reasoner)
+            await switchModel(page, anthropic_model)
+        }
+
+        await expect(thinking_budget_button).toBeVisible()
+
+        // if default is not 0, then keep right clicking until containsText('off')
+        if (_default !== 0) {
+            while (!(await thinking_budget_button.textContent()).includes('off')) {
+                await thinking_budget_button.click({ button: 'right' })
+            }
+        }
+
+        await expect(thinking_budget_button).toContainText('off')
+
+        // left click: +1000
+        await thinking_budget_button.click()
+        await expect(thinking_budget_button).toContainText('1,000')
+
+        // right click: -1000
+        await thinking_budget_button.click({ button: 'right' })
+        await expect(thinking_budget_button).toContainText('off')
+
+        // left click up to max
+        for (let i = 0; i < 4; i++) {
+            await thinking_budget_button.click()
+        }
+        await expect(thinking_budget_button).toContainText('4,000')
+
+        for (let i = 0; i < 4; i++) {
+            await thinking_budget_button.click()
+        }
+        await expect(thinking_budget_button).toContainText('12,000')
+
+        for (let i = 0; i < 5; i++) {
+            await thinking_budget_button.click()
+        }
+        await expect(thinking_budget_button).toContainText('32,000')
+
+        // right click down to min
+        for (let i = 0; i < 5; i++) {
+            await thinking_budget_button.click({ button: 'right' })
+        }
+        await expect(thinking_budget_button).toContainText('12,000')
+
+        for (let i = 0; i < 4; i++) {
+            await thinking_budget_button.click({ button: 'right' })
+        }
+        await expect(thinking_budget_button).toContainText('4,000')
+
+        await thinking_budget_button.click({ button: 'right' })
+        await thinking_budget_button.click({ button: 'right' })
+        await expect(thinking_budget_button).toContainText('2,000')
+
+        // check persistence
+        await page.reload()
+        await expect(thinking_budget_button).toContainText('2,000')
+    })
+
     test('we should see the reasoning from Anthropic models', async ({ page }) => {
         await page.goto('/')
 
