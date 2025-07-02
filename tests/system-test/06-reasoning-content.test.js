@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { switchModel } from '../helpers/actions'
 import { basic_reasoning_prompt, basic_reasoning_content, basic_reasoning_reply } from '../mock/prompts/basic_reasoning'
+import { basic_prompt, basic_reply } from '../mock/prompts/basic_reply'
 
 import defaults from '../../src/lib/fixtures/defaults'
 import models from '../../src/lib/fixtures/models'
@@ -32,8 +33,7 @@ test.describe('Reasoning Content', () => {
     test('thinking budget button should work', async ({ page }) => {
         await page.goto('/')
 
-        const _default               = defaults.thinking_budget,
-              default_model          = models.find(m => m.id === defaults.model),
+        const default_model          = models.find(m => m.id === defaults.model),
               thinking_budget_button = page.locator('.thinking-budget-button')
 
         if (default_model.type !== 'anthropic' || !default_model.is_reasoner) {
@@ -44,7 +44,7 @@ test.describe('Reasoning Content', () => {
         await expect(thinking_budget_button).toBeVisible()
 
         // if default is not 0, then keep right clicking until containsText('off')
-        if (_default !== 0) {
+        if (defaults.thinking_budget !== 0) {
             while (!(await thinking_budget_button.textContent()).includes('off')) {
                 await thinking_budget_button.click({ button: 'right' })
             }
@@ -110,6 +110,13 @@ test.describe('Reasoning Content', () => {
             await switchModel(page, anthropic_model)
         }
 
+        // if default is not 0, then keep right clicking until containsText('off')
+        if (defaults.thinking_budget !== 0) {
+            while (!(await thinking_budget_button.textContent()).includes('off')) {
+                await thinking_budget_button.click({ button: 'right' })
+            }
+        }
+
         await thinking_budget_button.click()
         await expect(thinking_budget_button).toContainText('1,000')
 
@@ -122,6 +129,20 @@ test.describe('Reasoning Content', () => {
         await expect(ai_message).toHaveCount(1)
         await expect(ai_message.locator('.reasoning-content')).toContainText(basic_reasoning_content)
         await expect(ai_message.locator('.message-content')).toHaveText(basic_reasoning_reply)
+
+        // ensure that 'off' works and reasoning content is not present on a normal reply
+        await thinking_budget_button.click({ button: 'right' })
+        await expect(thinking_budget_button).toContainText('off')
+
+        await input.fill(basic_prompt)
+        await page.keyboard.press('Enter')
+
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(2)
+        await expect(user_message.nth(1).locator('.message-content')).toHaveText(basic_prompt)
+        await expect(ai_message).toHaveCount(2)
+        await expect(ai_message.nth(1).locator('.message-content')).toHaveText(basic_reply)
+        await expect(ai_message.nth(1).locator('.reasoning-content')).not.toBeVisible()
     })
 
     test('we should see the reasoning from Google models', async ({ page }) => {
