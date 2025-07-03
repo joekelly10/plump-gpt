@@ -385,7 +385,7 @@
                 animation:      streaming 1.5s linear infinite
 
             &.diffusing
-                color: $blue-grey
+                color: color.adjust($off-white, $alpha: -0.33)
 
         &.starred
             background-color: color.adjust($yellow, $alpha: -0.6)
