@@ -9,13 +9,24 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
     let long_first_message = messages[1]?.content.length > 2000
 
     // strip all properties except `role` + `content` else you get a 400
-    messages = messages.map(({ role, content }, i) => {
+    messages = messages.map(({ role, content, reasoning_content, signature }, i) => {
         const message = {
             role,
             content: [{
                 type: 'text',
                 text: content
             }]
+        }
+        //
+        //  always pass back all thinking blocks:
+        //  https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking#preserving-thinking-blocks
+        //
+        if (reasoning_content) {
+            message.content.push({
+                type:     'thinking',
+                thinking: reasoning_content,
+                signature
+            })
         }
         //
         //  set a cache breakpoint on the first assistant message if the

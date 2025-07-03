@@ -293,9 +293,12 @@
             if (data.delta.type === 'thinking_delta') {
                 const thinking = data.delta.thinking
                 await append(gpt_message, thinking, { is_reasoning: true })
-            } else {
+            } else if (data.delta.type === 'text_delta') {
                 const text = data.delta.text ?? ''
                 await append(gpt_message, text)
+            } else if (data.delta.type === 'signature_delta') {
+                const signature = data.delta.signature
+                gpt_message.signature = signature
             }
         } else if (data.type === 'message_start') {
             gpt_message.usage.cache_write_tokens = data.message.usage.cache_creation_input_tokens ?? 0
