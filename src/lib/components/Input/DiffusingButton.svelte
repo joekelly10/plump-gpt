@@ -5,9 +5,14 @@
         e.preventDefault()
         $diffusing_on = !$diffusing_on
     }
+
+    const rightClicked = (e) => {
+        e.preventDefault()
+        $diffusing_on = !$diffusing_on
+    }
 </script>
 
-<button class='diffusing-button' onclick={clicked}>
+<button class='diffusing-button' onclick={clicked} oncontextmenu={rightClicked}>
     <img class='icon' src='/img/icons/diffusing-grey.png' alt='Diffusing' />
     <div class='title'>
         Diffusing
