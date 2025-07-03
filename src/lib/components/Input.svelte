@@ -117,7 +117,7 @@
             options.top_p           = 1
         }
 
-        if ($model.type === 'inception' && $diffusing_on) {
+        if ($model.is_diffuser && $diffusing_on) {
             options.diffusing = true
         }
 
