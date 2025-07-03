@@ -7,6 +7,7 @@ export const model           = createModel()
 export const temperature     = createTemperature()
 export const top_p           = createTopP()
 export const thinking_budget = createThinkingBudget()
+export const diffusing_on    = writable(defaults.diffusing_on)
 
 function createModel() {
     const default_index = models.findIndex(m => m.id === defaults.model)

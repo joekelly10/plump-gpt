@@ -4,6 +4,7 @@
     import { model } from '$lib/stores/ai'
 
     import ThinkingBudgetButton from '$lib/components/Input/ThinkingBudgetButton.svelte'
+    import DiffusingButton from '$lib/components/Input/DiffusingButton.svelte'
 </script>
 
 <div
@@ -14,6 +15,8 @@
     {#each $model.controls as control}
         {#if control === 'thinking_budget'}
             <ThinkingBudgetButton/>
+        {:else if control === 'diffusing'}
+            <DiffusingButton/>
         {/if}
     {/each}
 </div>

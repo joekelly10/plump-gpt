@@ -4,6 +4,7 @@
     import { stars } from '$lib/stores/chat'
     import { is_hovering, is_deleting, is_provisionally_forking } from '$lib/stores/chat/interactions'
     import { is_sending, is_streaming as api_is_streaming } from '$lib/stores/api'
+    import { diffusing_on } from '$lib/stores/ai'
     import { deleteHighlight } from '$lib/utils/highlighter'
     import { marked } from 'marked'
     import DOMPurify from 'dompurify'
@@ -59,6 +60,7 @@
     
     const is_starred             = $derived($stars.includes(message.id)),
           is_streaming           = $derived(message.is_last && message.role === 'assistant' && $api_is_streaming),
+          is_diffusing           = $derived(is_streaming && message.model.is_diffuser && $diffusing_on),
           no_message             = $derived(!message.content && !message.reasoning_content),
           has_finished_reasoning = $derived(message.content.length > 0),
           message_content        = $derived(DOMPurify.sanitize(marked(message.content))),
@@ -115,6 +117,7 @@
     class='message {message.role}'
     class:starred={is_starred}
     class:streaming={is_streaming}
+    class:diffusing={is_diffusing}
     class:no-message={no_message}
     class:delete-highlight={delete_highlight}
     class:regenerate-highlight={regenerate_highlight}
@@ -380,6 +383,9 @@
             &:not(.no-message)
                 padding-bottom: 1.25 * space.$default-padding
                 animation:      streaming 1.5s linear infinite
+
+            &.diffusing
+                color: $blue-grey
 
         &.starred
             background-color: color.adjust($yellow, $alpha: -0.6)

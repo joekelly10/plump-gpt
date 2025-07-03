@@ -20,6 +20,7 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
         top_p:          options.top_p,
         stream:         true,
         stream_options: { include_usage: true },
+        diffusing:      options.diffusing,
         messages:       messages
     })
 

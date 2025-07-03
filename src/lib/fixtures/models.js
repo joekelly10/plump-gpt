@@ -451,7 +451,8 @@ export default [
         hosted_at:      'inceptionlabs.ai',
         context_window: 32000,
         is_reasoner:    false,
+        is_diffuser:    true,
         pricing_id:     'inception-mercury',
-        controls:       []
+        controls:       ['diffusing']
     }
 ]

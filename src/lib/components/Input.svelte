@@ -4,7 +4,7 @@
     import { is_initialising, loader_active, user_settings_active, model_list_active, input_expanded } from '$lib/stores/app'
     import { chat_id, messages, forks, active_fork, active_messages, stars, highlights } from '$lib/stores/chat'
     import { is_hovering, is_adding_reply, is_deleting, is_scrolled_to_bottom, is_provisionally_forking } from '$lib/stores/chat/interactions'
-    import { model, temperature, top_p, thinking_budget } from '$lib/stores/ai'
+    import { model, temperature, top_p, thinking_budget, diffusing_on } from '$lib/stores/ai'
     import { api_state, is_idle } from '$lib/stores/api'
     import { config } from '$lib/stores/user'
     import { addCopyButtons, sleep } from '$lib/utils/helpers'
@@ -115,6 +115,10 @@
             options.thinking_budget = $thinking_budget
             options.temperature     = 1
             options.top_p           = 1
+        }
+
+        if ($model.type === 'inception' && $diffusing_on) {
+            options.diffusing = true
         }
 
         const response = await fetch(`/api/ai/chat/${$model.type}`, {
@@ -234,7 +238,7 @@
                     const json_string = buffer.slice(start_index, end_index)
                     try {
                         const data = JSON.parse(json_string)
-                        if (['open-ai', 'x', 'mistral', 'ai21', 'inception'].includes($model.type)) {
+                        if (['open-ai', 'x', 'mistral', 'ai21'].includes($model.type)) {
                             await processOpenAIObject(data, gpt_message)
                         } else if ($model.type === 'anthropic') {
                             await processAnthropicObject(data, gpt_message)
@@ -248,6 +252,8 @@
                             await processOpenRouterObject(data, gpt_message)
                         } else if ($model.type === 'cohere') {
                             await processCohereObject(data, gpt_message)
+                        } else if ($model.type === 'inception') {
+                            await processInceptionObject(data, gpt_message)
                         }
                     } catch {
                         console.log('❌ Error parsing json: ', json_string)
@@ -387,6 +393,25 @@
         }
     }
 
+    const processInceptionObject = async (data, gpt_message) => {
+        const content = data.choices[0]?.delta.content ?? ''
+        if ($diffusing_on && content.trim().length > 0) {
+            await diffuse(gpt_message, content)
+        } else {
+            await append(gpt_message, content)
+        }
+        if (data.usage) {
+            const cache_read_tokens = data.usage.prompt_tokens_details?.cached_tokens ?? 0
+            gpt_message.usage.cache_read_tokens = cache_read_tokens
+            gpt_message.usage.input_tokens      = data.usage.prompt_tokens - cache_read_tokens
+            gpt_message.usage.output_tokens     = data.usage.completion_tokens
+            const reasoning_tokens = data.usage.completion_tokens_details?.reasoning_tokens
+            if (reasoning_tokens) {
+                gpt_message.usage.reasoning_tokens = reasoning_tokens
+            }
+        }
+    }
+
     const append = async(gpt_message, new_text, options = {}) => {
         const { is_reasoning = false, speed_limit = 10 } = options
 
@@ -431,6 +456,14 @@
                 rate_limiter = setTimeout(() => { rate_limiter = null }, 200)
             }
         }
+    }
+
+    const diffuse = async (gpt_message, content) => {
+        gpt_message.content = content
+        $messages = [...$messages.slice(0, -1), gpt_message]
+
+        await tick()
+        hljs.highlightAll()
     }
 
     const _quoteSelectedText = () => {
