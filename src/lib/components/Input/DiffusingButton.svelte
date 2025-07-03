@@ -47,14 +47,14 @@
             text-transform: uppercase
 
         &:hover
-            background-color: black(0.1)
+            background-color: black(0.075)
             color:            $off-white
 
             .icon
                 filter: brightness(2)
         
         &:active
-            background-color: black(0.125)
+            background-color: black(0.1)
             color:            $off-white
             transition:       none
 

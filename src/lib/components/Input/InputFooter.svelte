@@ -28,6 +28,6 @@
         justify-content:  flex-start
         align-items:      center
         border-radius:    0 0 12px 12px
-        background-color: black(0.09)
+        background-color: color.adjust($background-500, $alpha: -0.75)
         overflow:         hidden
 </style>
