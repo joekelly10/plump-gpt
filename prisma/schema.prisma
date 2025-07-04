@@ -32,6 +32,7 @@ model Message {
   role                  String
   content               String    @db.Text
   reasoningContent      String?   @db.Text
+  signature             String?   @db.Text
   model                 Json?
   temperature           Float?
   topP                  Float?

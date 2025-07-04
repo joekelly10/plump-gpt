@@ -42,7 +42,8 @@ export const POST = async ({ request }) => {
                         temperature:      msg.temperature,
                         topP:             msg.top_p,
                         usage:            msg.usage,
-                        reasoningContent: msg.reasoning_content
+                        reasoningContent: msg.reasoning_content,
+                        signature:        msg.signature
                     })
                 }))
             })
@@ -70,7 +71,8 @@ export const POST = async ({ request }) => {
                                 temperature:      msg.temperature,
                                 topP:             msg.top_p,
                                 usage:            msg.usage,
-                                reasoningContent: msg.reasoning_content
+                                reasoningContent: msg.reasoning_content,
+                                signature:        msg.signature
                             })
                         }))
                     }

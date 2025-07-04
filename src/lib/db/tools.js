@@ -23,7 +23,8 @@ export const formatForAPI = (db_chat) => {
                 temperature:       message.temperature,
                 top_p:             message.topP,
                 usage:             message.usage,
-                reasoning_content: message.reasoningContent
+                reasoning_content: message.reasoningContent,
+                signature:         message.signature
             })
         }))
     }
