@@ -4,11 +4,13 @@
     const clicked = (e) => {
         e.preventDefault()
         thinking_budget.increment()
+        return e.target.blur()
     }
     
     const rightClicked = (e) => {
         e.preventDefault()
         thinking_budget.decrement()
+        return e.target.blur()
     }
 
     const onwheel = (e) => {
