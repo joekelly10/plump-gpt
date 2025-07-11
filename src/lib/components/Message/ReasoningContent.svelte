@@ -65,19 +65,24 @@
     {@html reasoning_content}
     {#if has_finished_reasoning}
         <div class='reasoning-summary' in:fly={{ x: -4, duration: 125, easing: quartOut }}>
-            Thought for
-            <span class='reasoning-token-count'>
-                {is_streaming || message.model.type === 'anthropic' ? '~' : ''}{message.usage.reasoning_tokens}
-            </span>
-            tokens
+            <div class='reasoning-summary-text'>
+                Thought for
+                <span class='reasoning-token-count'>
+                    {is_streaming || message.model.type === 'anthropic' ? '~' : ''}{message.usage.reasoning_tokens}
+                </span>
+                tokens
+            </div>
         </div>
     {/if}
 </div>
 
 <style lang='sass'>
+    $reasoning-summary-height: 40px
+
     .reasoning-content
+        position:         relative
         margin-bottom:    32px
-        padding:          24px space.$default-padding
+        padding:          24px space.$default-padding ($reasoning-summary-height + 12px)
         max-height:       290px
         overflow-y:       auto
         border-radius:    8px
@@ -132,17 +137,22 @@
 
     .reasoning-title
         font-weight: 600
+        color:       $off-white
 
     .reasoning-summary
-        display:          inline-block
-        margin:           12px 0
-        padding:          0 24px
-        border-radius:    99px
-        background-color: color.adjust($off-white, $alpha: -0.5)
+        display:          flex
+        align-items:      center
+        justify-content:  center
+        position:         absolute
+        bottom:           0
+        left:             0
+        width:            100%
+        height:           $reasoning-summary-height
+        box-sizing:       border-box
+        border-radius:    0 0 8px 8px
+        background-color: color.adjust($off-white, $alpha: -0.125)
         font-size:        12px
         font-weight:      450
-        text-align:       center
-        line-height:      40px
         color:            $background-700
 
         .reasoning-token-count
