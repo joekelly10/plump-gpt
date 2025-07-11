@@ -113,7 +113,7 @@ const model_prices = {
             }
         }
     },
-    'grok-3-mini': {
+    'grok-mini': {
         price: {
             cents: {
                 input_token:  30/1000000, // $0.30/mTok
@@ -121,7 +121,7 @@ const model_prices = {
             }
         }
     },
-    'grok-3': {
+    'grok': {
         price: {
             cents: {
                 input_token:   300/1000000, // $3.00/mTok

@@ -139,20 +139,20 @@ export default [
         hosted_at:      'x.ai',
         context_window: 131072,
         is_reasoner:    true,
-        pricing_id:     'grok-3-mini',
+        pricing_id:     'grok-mini',
         controls:       []
     },
     {
         type:           'x',
-        id:             'grok-3-beta',
-        name:           'Grok 3',
+        id:             'grok-4',
+        name:           'Grok 4',
         short_name:     'Grok',
         icon:           'grok.png',
         family:         'X',
         hosted_at:      'x.ai',
-        context_window: 131072,
-        is_reasoner:    false,
-        pricing_id:     'grok-3',
+        context_window: 256000,
+        is_reasoner:    true,
+        pricing_id:     'grok',
         controls:       []
     },
     {

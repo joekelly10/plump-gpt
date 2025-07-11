@@ -32,7 +32,7 @@ It runs in your browser on `localhost:1337`.
 
 **X**
 - <img alt='Grok Mini' src='./static/img/icons/models/grok-mini.png' width='21' height='21' valign='middle'>&nbsp; Grok 3 Mini
-- <img alt='Grok' src='./static/img/icons/models/grok.png' width='21' height='21' valign='middle'>&nbsp; Grok 3
+- <img alt='Grok 4' src='./static/img/icons/models/grok.png' width='21' height='21' valign='middle'>&nbsp; Grok 4
 
 **DeepSeek**
 - <img alt='DeepSeek V3' src='./static/img/icons/models/deepseek-chat.png' width='21' height='21' valign='middle'>&nbsp; DeepSeek V3
