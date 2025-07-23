@@ -91,6 +91,9 @@
         line-height:      28px
         color:            color.adjust($off-white, $alpha: -0.5)
 
+        &:first-child
+            margin-top: -2px
+
         &::-webkit-scrollbar
             width:      6px
             height:     6px
