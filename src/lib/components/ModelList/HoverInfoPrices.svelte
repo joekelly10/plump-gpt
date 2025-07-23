@@ -24,7 +24,8 @@
         gap:              24px
         padding:          24px 48px 24px 24px
         border-radius:    8px
-        background-color: $off-white
+        background-color: $blue
+        background-image: linear-gradient(to bottom right, color.adjust($off-white, $alpha: -0.9), transparent)
         color:            $background-800
         pointer-events:   none
         
