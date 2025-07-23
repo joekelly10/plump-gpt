@@ -59,6 +59,7 @@
         .header
             display:          flex
             align-items:      center
+            flex-shrink:      0
             position:         relative
             width:            100%
             height:           space.$header-height
