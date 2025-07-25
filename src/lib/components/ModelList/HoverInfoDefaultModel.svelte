@@ -4,7 +4,7 @@
     import { config } from '$lib/stores/user'
     import all_models from '$lib/fixtures/models'
 
-    import StarIcon from '$lib/components/icons/Star.svelte'
+    import StarIcon from '$lib/components/Icons/Star.svelte'
 
     const default_model = $derived(all_models.find(m => m.id === $config.default_model_id))
 </script>
