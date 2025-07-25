@@ -118,6 +118,9 @@
 
             &::-webkit-scrollbar-thumb
                 background: $delete-highlight-color
+            
+            .reasoning-title
+                color: $delete-highlight-color
 
             .reasoning-summary
                 background-color: $delete-highlight-color

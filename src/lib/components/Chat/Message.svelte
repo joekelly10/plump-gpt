@@ -327,6 +327,18 @@
                     background-color: $delete-highlight-bg
                     text-decoration:  line-through
                     color:            $delete-highlight-color
+
+                    .content
+                        :global
+                            .tool-use
+                                background-color: color.mix($background-700, $delete-highlight-bg, 25%)
+                                color:            $delete-highlight-color
+
+                                .icon
+                                    opacity: 0.25
+
+                                .tool-use-value
+                                    color: $delete-highlight-color
                 
                 &.regenerate-highlight
                     box-shadow:       0 0 0 1.5px $blue
@@ -347,6 +359,18 @@
                             background-color: color.mix($background-700, $regenerate-highlight-bg, 25%)
                             color:            $regenerate-highlight-color
                             text-decoration:  line-through
+                    
+                    .content
+                        :global
+                            .tool-use
+                                background-color: color.mix($background-500, $regenerate-highlight-bg, 33%)
+                                color:            $regenerate-highlight-color
+
+                                .icon
+                                    opacity: 0.25
+
+                                .tool-use-value
+                                    color: $regenerate-highlight-color
                 
                 &.add-fork-highlight
                     // 56px is the height of the "Fork Here" hover info box
@@ -369,6 +393,11 @@
 
                         code, pre code
                             background-color: color.mix($background-700, $star-highlight-bg, 85%)
+                    
+                    .content
+                        :global
+                            .tool-use
+                                background-color: color.mix($background-700, $star-highlight-bg, 85%)
                 
                 &.temp-highlight
                     background-color: color.adjust($background-300, $lightness: -2.5%)
