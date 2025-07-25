@@ -1,5 +1,5 @@
 <script>
-    import { loader_active, prompt_editor_active, tree_active, model_list_active, user_settings_active, input_expanded } from '$lib/stores/app'
+    import { loader_active, prompt_editor_active, tree_active, model_list_active, tool_list_active, user_settings_active, input_expanded } from '$lib/stores/app'
     import { forks, active_fork, chat_id } from '$lib/stores/chat'
     import { model, temperature, top_p } from '$lib/stores/ai'
     import { is_idle } from '$lib/stores/api'
@@ -91,6 +91,7 @@
             e.preventDefault()
             $user_settings_active = false
             $model_list_active    = false
+            $tool_list_active     = false
             return $input_expanded = true
         }
         
@@ -98,6 +99,7 @@
             e.preventDefault()
             $user_settings_active = false
             $model_list_active    = false
+            $tool_list_active     = false
             return $input_expanded = false
         }
 

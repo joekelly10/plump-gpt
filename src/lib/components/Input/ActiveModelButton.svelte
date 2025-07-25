@@ -2,7 +2,7 @@
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { model } from '$lib/stores/ai'
-    import { is_initialising, model_list_active, user_settings_active, input_expanded } from '$lib/stores/app'
+    import { is_initialising, model_list_active, tool_list_active, user_settings_active, input_expanded } from '$lib/stores/app'
     import { getPrices } from '$lib/utils/prices'
 
     let {
@@ -37,6 +37,7 @@
     const clicked = () => {
         $user_settings_active = false
         $input_expanded       = false
+        $tool_list_active     = false
         $model_list_active    = !$model_list_active
         focusInput()
     }

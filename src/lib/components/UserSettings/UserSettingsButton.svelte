@@ -1,12 +1,13 @@
 <script>
     import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { model_list_active, user_settings_active } from '$lib/stores/app'
+    import { model_list_active, tool_list_active, user_settings_active } from '$lib/stores/app'
 
     import SettingsIcon from '$lib/components/Icons/Settings.svelte'
 
     const clicked = () => {
         $model_list_active    = false
+        $tool_list_active     = false
         $user_settings_active = !$user_settings_active
     }
 </script>
@@ -42,6 +43,10 @@
         cursor:          pointer
         transition:      border-color easing.$quart-out 100ms, background-color easing.$quart-out 100ms
 
+        :global(.settings-icon)
+            height: 16px
+            fill:   $background-200
+
         &:hover,
         &:active
             border-color:     $background-200
@@ -63,10 +68,6 @@
         &.active
             .label
                 opacity: 0
-    
-    :global(.settings-icon)
-        height: 16px
-        fill:   $background-200
         
     .arrow-icon
         font-size: 20px

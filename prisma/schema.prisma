@@ -36,6 +36,8 @@ model Message {
   model                 Json?
   temperature           Float?
   topP                  Float?
+  tools                 Json?
+  toolUses              Json?
   usage                 Json?
   systemPromptId        String?
   systemPromptTitle     String?

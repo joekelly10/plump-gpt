@@ -22,9 +22,11 @@ export const formatForAPI = (db_chat) => {
                 model:             message.model,
                 temperature:       message.temperature,
                 top_p:             message.topP,
-                usage:             message.usage,
+                tools:             message.tools,
                 reasoning_content: message.reasoningContent,
-                signature:         message.signature
+                signature:         message.signature,
+                tool_uses:         message.toolUses,
+                usage:             message.usage
             })
         }))
     }

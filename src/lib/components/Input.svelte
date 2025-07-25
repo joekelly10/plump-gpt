@@ -1,18 +1,20 @@
 <script>
     import { tick } from 'svelte'
     import { page } from '$app/stores'
-    import { is_initialising, loader_active, user_settings_active, model_list_active, input_expanded } from '$lib/stores/app'
+    import { is_initialising, loader_active, user_settings_active, model_list_active, tool_list_active, input_expanded } from '$lib/stores/app'
     import { chat_id, messages, forks, active_fork, active_messages, stars, highlights } from '$lib/stores/chat'
     import { is_hovering, is_adding_reply, is_deleting, is_scrolled_to_bottom, is_provisionally_forking } from '$lib/stores/chat/interactions'
-    import { model, temperature, top_p, thinking_budget, diffusing_on } from '$lib/stores/ai'
+    import { model, temperature, top_p, diffusing_on, active_tools, thinking_budget, web_search } from '$lib/stores/ai'
     import { api_state, is_idle } from '$lib/stores/api'
     import { config } from '$lib/stores/user'
     import { addCopyButtons, sleep } from '$lib/utils/helpers'
     import hljs from 'highlight.js'
 
     import ModelList from '$lib/components/Input/ModelList.svelte'
+    import ToolList from '$lib/components/Input/ToolList.svelte'
     import ActiveModelButton from '$lib/components/Input/ActiveModelButton.svelte'
-    import InputFooter from '$lib/components/Input/InputFooter.svelte'
+    import ToolsButton from '$lib/components/Input/ToolsButton.svelte'
+    import InputToolbar from '$lib/components/Input/Toolbar.svelte'
     import ModelSettings from '$lib/components/Input/ModelSettings.svelte'
     import UserSettings from '$lib/components/Input/UserSettings.svelte'
     import ExpandButton from '$lib/components/Input/ExpandButton.svelte'
@@ -35,16 +37,16 @@
         scrollChatToBottom,
     } = $props()
 
-    let input,
-        rate_limiter,
+    let rate_limiter,
         nope_timer
     
-    let input_text                 = $state(''),
+    let input                      = $state(null),
+        input_text                 = $state(''),
         input_overflowed           = $state(false),
         nope_highlight             = $state(false),
         is_hovering_model_switcher = $state(false)
     
-    const input_footer_active = $derived(!$is_initialising && $model.controls.length > 0)
+    const toolbar_active = $derived(!$is_initialising && ($active_tools.length > 0 || $tool_list_active))
     
     const _setText = async (text) => {
         input_text = text
@@ -64,6 +66,7 @@
         console.log('🤖 Sending message...')
 
         $model_list_active    = false
+        $tool_list_active     = false
         $user_settings_active = false
 
         const getNextId = () => {
@@ -103,7 +106,7 @@
         is_hovering.clear()
         scrollChatToBottom({ context: 'sending_message' })
 
-        const options = $model.is_reasoner ? {
+        let options = $model.is_reasoner ? {
             model: $model.id
         } : {
             model:       $model.id,
@@ -111,15 +114,15 @@
             top_p:       $top_p
         }
 
-        if ($model.type === 'anthropic' && $thinking_budget > 0) {
+        if ($model.type === 'anthropic' && $active_tools.includes('thinking_budget')) {
             options.thinking_budget = $thinking_budget
-            options.temperature     = 1
-            options.top_p           = 1
         }
 
         if ($model.is_diffuser && $diffusing_on) {
             options.diffusing = true
         }
+
+        options.tools = createToolsArray()
 
         const response = await fetch(`/api/ai/chat/${$model.type}`, {
             method:  'POST',
@@ -140,6 +143,8 @@
             model:              $model,
             temperature:        $temperature,
             top_p:              $top_p,
+            tools:              options.tools,
+            tool_uses:          [],
             usage:              {
                 cache_write_tokens: 0,
                 cache_read_tokens:  0,
@@ -289,7 +294,21 @@
     }
 
     const processAnthropicObject = async (data, gpt_message) => {
-        if (data.type === 'content_block_delta') {
+        if (data.type === 'message_start') {
+            gpt_message.usage.cache_write_tokens = data.message.usage.cache_creation_input_tokens ?? 0
+            gpt_message.usage.cache_read_tokens  = data.message.usage.cache_read_input_tokens ?? 0
+            gpt_message.usage.input_tokens       = data.message.usage.input_tokens
+        } else if (data.type === 'content_block_start') {
+            if (data.content_block.type === 'server_tool_use') {
+                gpt_message.content += `\n\n{{TOOL_USE:${data.content_block.id}}}\n\n`
+                gpt_message.tool_uses.push({
+                    type:  'server_tool_use',
+                    id:    data.content_block.id,
+                    name:  data.content_block.name,
+                    input: data.content_block.input
+                })
+            }
+        } else if (data.type === 'content_block_delta') {
             if (data.delta.type === 'thinking_delta') {
                 const thinking = data.delta.thinking
                 await append(gpt_message, thinking, { is_reasoning: true })
@@ -299,11 +318,17 @@
             } else if (data.delta.type === 'signature_delta') {
                 const signature = data.delta.signature
                 gpt_message.signature = signature
+            } else if (data.delta.type === 'input_json_delta') {
+                gpt_message._partial_json = (gpt_message._partial_json || '') + data.delta.partial_json
+                try {
+                    const json = JSON.parse(gpt_message._partial_json)
+                    if (json) {
+                        gpt_message.tool_uses[gpt_message.tool_uses.length - 1].input = json
+                    }
+                } catch {
+                    return
+                }
             }
-        } else if (data.type === 'message_start') {
-            gpt_message.usage.cache_write_tokens = data.message.usage.cache_creation_input_tokens ?? 0
-            gpt_message.usage.cache_read_tokens  = data.message.usage.cache_read_input_tokens ?? 0
-            gpt_message.usage.input_tokens       = data.message.usage.input_tokens
         } else if (data.type === 'message_delta') {
             gpt_message.usage.output_tokens = data.usage.output_tokens
         } else if (data.type === 'error') {
@@ -556,6 +581,19 @@
         }
     }
 
+    const createToolsArray = () => {
+        const tools = []
+
+        if ($active_tools.includes('web_search') && $web_search.max_uses > 0) {
+            tools.push({
+                name:     'web_search',
+                max_uses: $web_search.max_uses
+            })
+        }
+
+        return tools
+    }
+
     const inputChanged = () => {
         input_overflowed = $input_expanded || input.scrollHeight > input.clientHeight
     }
@@ -627,7 +665,7 @@
     }
 </script>
 
-<section class='primary-input-section' class:expanded={$input_expanded} class:model-list-active={$model_list_active} class:input-footer-active={input_footer_active}>
+<section class='primary-input-section' class:expanded={$input_expanded} class:model-list-active={$model_list_active} class:toolbar-active={toolbar_active}>
     {#if !$input_expanded}
         <UserSettings/>
     {/if}
@@ -656,10 +694,15 @@
                 oninput={inputChanged}
             ></div>
         </div>
-        {#if input_footer_active}
-            <InputFooter/>
+        {#if toolbar_active}
+            <InputToolbar/>
+        {/if}
+        {#if $model.tools.length > 0}
+            <ToolsButton/>
         {/if}
     </div>
+
+    <ToolList/>
 
     <ExpandButton
         input_overflowed={input_overflowed}
@@ -687,7 +730,7 @@
             .input
                 max-height: 86px
 
-        &.input-footer-active
+        &.toolbar-active
             &.model-list-active
                 .input
                     max-height: 60px

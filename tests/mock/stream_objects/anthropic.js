@@ -46,6 +46,26 @@ export const signatureDeltaObject = () => ({
     }
 })
 
+export const serverToolStartObject = () => ({
+    type: "content_block_start",
+    index: 0,
+    content_block: {
+        type:  "server_tool_use",
+        id:    "srvtoolu_1337",
+        name:  "web_search",
+        input: {}
+    }
+})
+
+export const serverToolDeltaObject = (content) => ({
+    type:  "content_block_delta",
+    index: 0,
+    delta: {
+        type:         "input_json_delta",
+        partial_json: content
+    }
+})
+
 export const textStartObject = () => ({
     type:  "content_block_start",
     index: 0,

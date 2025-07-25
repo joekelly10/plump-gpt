@@ -6,6 +6,13 @@ import { env } from '$env/dynamic/private'
 export const POST = async ({ request, fetch: internal_fetch }) => {
     let { messages, options } = await request.json()
 
+    if (options.thinking_budget) {
+        options.top_p           = 1
+        options.temperature     = 1
+        //  1024 is the minimum; the API request will fail otherwise
+        if (options.thinking_budget === 1000) options.thinking_budget = 1024
+    }
+
     let long_first_message = messages[1]?.content.length > 2000
 
     // strip all properties except `role` + `content` else you get a 400
@@ -53,9 +60,7 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
         'x-api-key':         env.ANTHROPIC_API_KEY
     })
 
-    const thinking_budget = (options.thinking_budget === 1000 ? 1024 : options.thinking_budget) || 0
-
-    const body = JSON.stringify({
+    let body = {
         model:       options.model,
         temperature: options.temperature,
         top_p:       options.top_p,
@@ -66,9 +71,28 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
             cache_control: { type: 'ephemeral' }
         }],
         messages:    messages.slice(1),
-        max_tokens:  4096 + thinking_budget,
-        ...(thinking_budget && { thinking: { type: 'enabled', budget_tokens: thinking_budget } })
-    })
+        max_tokens:  4096 + (options.thinking_budget || 0),
+    }
+
+    if (options.thinking_budget) {
+        body.thinking = { type: 'enabled', budget_tokens: options.thinking_budget }
+    }
+
+    if (options.tools?.length > 0) {
+        body.tools = []
+
+        options.tools.forEach(tool => {
+            if (tool.name === 'web_search' && tool.max_uses > 0) {
+                body.tools.push({
+                    type:     'web_search_20250305',
+                    name:     'web_search',
+                    max_uses: tool.max_uses
+                })
+            }
+        })
+    }
+
+    body = JSON.stringify(body)
 
     if (env.NODE_ENV === 'test') {
         //

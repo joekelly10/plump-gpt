@@ -1,13 +1,20 @@
 import { writable } from 'svelte/store'
 import { browser } from '$app/environment'
+
 import defaults from '$lib/fixtures/defaults'
 import models from '$lib/fixtures/models'
 
 export const model           = createModel()
 export const temperature     = createTemperature()
 export const top_p           = createTopP()
-export const thinking_budget = createThinkingBudget()
 export const diffusing_on    = writable(defaults.diffusing_on)
+export const active_tools    = createActiveTools()
+export const thinking_budget = createThinkingBudget()
+export const web_search      = createWebSearch()
+
+model.subscribe(new_model => {
+    active_tools.update(value => value.filter(tool => new_model.tools.includes(tool)))
+})
 
 function createModel() {
     const default_index = models.findIndex(m => m.id === defaults.model)
@@ -78,6 +85,30 @@ function createTopP() {
     }
 }
 
+function createActiveTools() {
+    const { subscribe, set, update } = writable([])
+
+    return {
+        subscribe,
+        set,
+        update,
+        add: (tool_name) => {
+            update(value => {
+                if (!value.includes(tool_name)) {
+                    value.push(tool_name)
+                }
+                return value
+            })
+        },
+        remove: (tool_name) => {
+            update(value => {
+                value = value.filter(tool => tool !== tool_name)
+                return value
+            })
+        }
+    }
+}
+
 function createThinkingBudget() {
     const { subscribe, set, update } = writable(defaults.thinking_budget)
 
@@ -98,6 +129,31 @@ function createThinkingBudget() {
                 if (value <= 4000) return value - 1000
                 if (value <= 12000) return value - 2000
                 return value - 4000
+            })
+        }
+    }
+}
+
+function createWebSearch() {
+    const { subscribe, set, update } = writable({
+        max_uses:        5,
+        allowed_domains: [],
+        blocked_domains: []
+    })
+
+    return {
+        subscribe,
+        set,
+        increment_uses: () => {
+            update(value => { 
+                if (value.max_uses === 10) return value
+                return { ...value, max_uses: value.max_uses + 1 }
+            })
+        },
+        decrement_uses: () => {
+            update(value => {
+                if (value.max_uses === 0) return value
+                return { ...value, max_uses: value.max_uses - 1 }
             })
         }
     }

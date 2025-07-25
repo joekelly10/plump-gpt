@@ -6,6 +6,7 @@
     import { is_sending, is_streaming as api_is_streaming } from '$lib/stores/api'
     import { diffusing_on } from '$lib/stores/ai'
     import { deleteHighlight } from '$lib/utils/highlighter'
+    import { getToolUseHTML } from '$lib/templates/tool_use'
     import { marked } from 'marked'
     import DOMPurify from 'dompurify'
 
@@ -58,12 +59,12 @@
         show_info         = $state(false),
         temp_highlight    = $state(false)
     
-    const is_starred             = $derived($stars.includes(message.id)),
-          is_streaming           = $derived(message.is_last && message.role === 'assistant' && $api_is_streaming),
-          is_diffusing           = $derived(is_streaming && message.model.is_diffuser && $diffusing_on),
+    const message_content        = $derived(DOMPurify.sanitize(marked(expandPlaceholders(message.content)))),
           no_message             = $derived(!message.content && !message.reasoning_content),
           has_finished_reasoning = $derived(message.content.length > 0),
-          message_content        = $derived(DOMPurify.sanitize(marked(message.content))),
+          is_starred             = $derived($stars.includes(message.id)),
+          is_streaming           = $derived(message.is_last && message.role === 'assistant' && $api_is_streaming),
+          is_diffusing           = $derived(is_streaming && message.model.is_diffuser && $diffusing_on),
           add_reply_highlight    = $derived($is_hovering.add_reply.includes(message.id)),
           regenerate_highlight   = $derived($is_hovering.regenerate.includes(message.id)),
           star_highlight         = $derived($is_hovering.star.includes(message.id)),
@@ -84,6 +85,15 @@
         clearTimeout(temp_timer)
         temp_highlight = true
         temp_timer     = setTimeout(() => { temp_highlight = false }, 2500)
+    }
+
+    const expandPlaceholders = (content) => {
+        if (message.role !== 'assistant') return content
+        
+        return content.replace(/{{TOOL_USE:(\w+)}}/g, (match, tool_use_id) => {
+            const tool_use = message.tool_uses.find(tool_use => tool_use.id === tool_use_id)
+            return tool_use ? getToolUseHTML(tool_use) : match
+        })
     }
 
     const onclick = (e) => {
@@ -410,30 +420,56 @@
                     background-color: color.mix($background-700, $delete-highlight-bg, 25%)
                     color:            $delete-highlight-color
                     text-decoration:  line-through
+        
+        :global
+            ._text-highlight
+                padding:          5px 0
+                background-color: color.adjust($yellow, $alpha: -0.5)
+                font-weight:      450
+                cursor:           pointer
+
+                &:hover
+                    background-color: color.adjust($yellow, $alpha: -0.55)
+
+                &:active
+                    background-color: color.adjust($yellow, $alpha: -0.575)
+                
+                &.deleting
+                    border-radius:    2px
+                    box-shadow:       0 0 0 1px $coral
+                    background-color: color.adjust($coral, $alpha: -0.5)
+        
+            strong
+                ._text-highlight
+                    font-weight: 750
     
     .content
         transition: filter easing.$quart-out 0.1s
 
-    :global
-        ._text-highlight
-            padding:          5px 0
-            background-color: color.adjust($yellow, $alpha: -0.5)
-            font-weight:      450
-            cursor:           pointer
+        :global
+            .tool-use
+                display:          flex
+                align-items:      center
+                justify-content:  flex-start
+                gap:              24px
+                margin-bottom:    32px
+                padding:          24px
+                border-radius:    8px
+                background-color: $background-700
+                font-size:        14px
+                line-height:      font.$line-height-14px
+                font-weight:      450
+                color:            $blue-grey
 
-            &:hover
-                background-color: color.adjust($yellow, $alpha: -0.55)
+                &:first-child
+                    margin-top: -2px
 
-            &:active
-                background-color: color.adjust($yellow, $alpha: -0.575)
-            
-            &.deleting
-                border-radius:    2px
-                box-shadow:       0 0 0 1px $coral
-                background-color: color.adjust($coral, $alpha: -0.5)
+                .icon
+                    height: 19px
 
-    :global(strong ._text-highlight)
-        font-weight: 750
+                .tool-use-value
+                    font-weight: 600
+                    color:       $off-white
 
     .status-text
         font-size:   14px

@@ -11,6 +11,14 @@ export const config = writable({
 
 export const avatar_href = writable('/img/default_avatar.png')
 
+export const location = writable({
+    type:     'approximate',
+    city:     'London',
+    region:   'England',
+    country:  'UK',
+    timezone: 'Europe/London'
+})
+
 if (browser) {
     const stored_avatar_href = localStorage.getItem('avatar_href')
     const stored_config = localStorage.getItem('config')

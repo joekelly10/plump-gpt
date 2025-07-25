@@ -41,9 +41,11 @@ export const POST = async ({ request }) => {
                         model:            msg.model,
                         temperature:      msg.temperature,
                         topP:             msg.top_p,
-                        usage:            msg.usage,
+                        tools:            msg.tools,
                         reasoningContent: msg.reasoning_content,
-                        signature:        msg.signature
+                        signature:        msg.signature,
+                        toolUses:         msg.tool_uses,
+                        usage:            msg.usage
                     })
                 }))
             })
@@ -70,9 +72,11 @@ export const POST = async ({ request }) => {
                                 model:            msg.model,
                                 temperature:      msg.temperature,
                                 topP:             msg.top_p,
-                                usage:            msg.usage,
+                                tools:            msg.tools,
                                 reasoningContent: msg.reasoning_content,
-                                signature:        msg.signature
+                                signature:        msg.signature,
+                                toolUses:         msg.tool_uses,
+                                usage:            msg.usage
                             })
                         }))
                     }
