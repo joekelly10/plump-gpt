@@ -274,6 +274,14 @@ const model_prices = {
                 output_token: 100/1000000
             }
         }
+    },
+    'kimi-k2': {
+        price: {
+            cents: {
+                input_token:   57/1000000, // $0.57/mTok
+                output_token: 230/1000000
+            }
+        }
     }
 }
 

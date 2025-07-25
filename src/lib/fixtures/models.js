@@ -454,5 +454,31 @@ export default [
         is_diffuser:    true,
         pricing_id:     'inception-mercury',
         tools:          []
+    },
+    {
+        type:           'openrouter',
+        id:             'moonshotai/kimi-k2',
+        name:           'Kimi K2',
+        short_name:     'Kimi',
+        icon:           'kimi-k2.png',
+        family:         'Moonshot',
+        hosted_at:      'openrouter.ai',
+        context_window: 128000,
+        is_reasoner:    true,
+        pricing_id:     'kimi-k2',
+        tools:          []
+    },
+    {
+        type:           'openrouter',
+        id:             'moonshotai/kimi-k2:free',
+        name:           'Kimi K2 (free)',
+        short_name:     'Kimi',
+        icon:           'kimi-k2.png',
+        family:         'Moonshot',
+        hosted_at:      'openrouter.ai',
+        context_window: 128000,
+        is_reasoner:    true,
+        pricing_id:     'free',
+        tools:          []
     }
 ]

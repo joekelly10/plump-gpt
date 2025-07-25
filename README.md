@@ -73,6 +73,9 @@ It runs in your browser on `localhost:1337`.
 **Inception Labs** (Diffusion)
 - <img alt='Mercury' src='./static/img/icons/models/mercury.png' width='21' height='21' valign='middle'>&nbsp; Mercury
 
+**Moonshot AI**
+- <img alt='Kimi K2' src='./static/img/icons/models/kimi-k2.png' width='21' height='21' valign='middle'>&nbsp; Kimi K2
+
 
 # Features
 
