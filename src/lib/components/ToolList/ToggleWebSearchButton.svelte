@@ -14,7 +14,7 @@
 </script>
 
 <button
-    class='tool-button'
+    class='toggle-tool-button toggle-web-search-button'
     class:is-active={is_active}
     onclick={clicked}
 >
@@ -35,8 +35,8 @@
 </button>
 
 <style lang='sass'>
-    .tool-button
-        +shared.tool_button_styles
+    .toggle-tool-button
+        +shared.toggle_tool_button_styles
 
         .web-search-icon
             height: 16px
