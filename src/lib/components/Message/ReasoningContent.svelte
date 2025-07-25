@@ -129,6 +129,9 @@
             .reasoning-title
                 color: $delete-highlight-color
 
+                .thinking-icon
+                    opacity: 0.33
+
             .reasoning-summary
                 background-color: $delete-highlight-color
                 text-decoration:  line-through
@@ -139,6 +142,10 @@
 
             &::-webkit-scrollbar-thumb
                 background: $regenerate-highlight-color
+            
+            .reasoning-title
+                .thinking-icon
+                    opacity: 0.33
 
             .reasoning-summary
                 background-color: $regenerate-highlight-color
