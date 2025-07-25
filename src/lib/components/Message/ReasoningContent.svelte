@@ -69,15 +69,15 @@
                 Thought for
                 <span class='reasoning-token-count'>
                     {is_streaming || message.model.type === 'anthropic' ? '~' : ''}{message.usage.reasoning_tokens}
+                    tokens
                 </span>
-                tokens
             </div>
         </div>
     {/if}
 </div>
 
 <style lang='sass'>
-    $reasoning-summary-height: 40px
+    $reasoning-summary-height: 48px
 
     .reasoning-content
         position:         relative
@@ -157,8 +157,8 @@
         box-sizing:       border-box
         border-radius:    0 0 8px 8px
         background-color: $blue-grey
-        font-size:        12px
-        font-weight:      450
+        font-size:        14px
+        font-weight:      400
         color:            $background-700
 
         .reasoning-token-count
