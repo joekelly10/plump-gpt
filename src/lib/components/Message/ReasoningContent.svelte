@@ -1,9 +1,11 @@
 <script>
-    import { fly } from 'svelte/transition'
+    import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { smoothScroll } from '$lib/utils/helpers'
     import { marked } from 'marked'
     import DOMPurify from 'dompurify'
+
+    import WaitingDots from '$lib/components/Chat/WaitingDots.svelte'
 
     export const scrollToBottom = () => _scrollToBottom()
 
@@ -60,11 +62,16 @@
     onwheel={onwheel}
 >
     <p class='reasoning-title'>
-        Thinking...
+        <img class='thinking-icon' src='/img/icons/thinking-grey.png' alt='Thinking' />
+        {#if !has_finished_reasoning}
+            Thinking<WaitingDots />
+        {:else}
+            Thinking
+        {/if}
     </p>
     {@html reasoning_content}
     {#if has_finished_reasoning}
-        <div class='reasoning-summary' in:fly={{ x: -4, duration: 125, easing: quartOut }}>
+        <div class='reasoning-summary' in:fade={{ duration: 125, easing: quartOut }}>
             <div class='reasoning-summary-text'>
                 Thought for
                 <span class='reasoning-token-count'>
@@ -88,7 +95,7 @@
         border-radius:    8px
         background-color: $background-700
         font-size:        14px
-        line-height:      28px
+        line-height:      26px
         color:            color.adjust($off-white, $alpha: -0.5)
 
         &:first-child
@@ -141,9 +148,18 @@
         &.starred
             background-color: color.mix($background-700, $star-highlight-bg, 85%)
 
-    .reasoning-title
-        font-weight: 600
-        color:       $blue-grey
+        .reasoning-title
+            display:         flex
+            align-items:     center
+            justify-content: center
+            gap:             16px
+            font-size:       12px
+            font-weight:     700
+            color:           $blue-grey
+            text-transform:  uppercase
+
+            .thinking-icon
+                height: 20px
 
     .reasoning-summary
         display:          flex
@@ -157,10 +173,11 @@
         box-sizing:       border-box
         border-radius:    0 0 8px 8px
         background-color: $blue-grey
-        font-size:        14px
-        font-weight:      400
-        color:            $background-700
+        font-size:        12px
+        font-weight:      450
+        text-transform:   uppercase
+        color:            $background-800
 
         .reasoning-token-count
-            font-weight: 600
+            font-weight: 700
 </style>
