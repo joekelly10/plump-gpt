@@ -140,7 +140,7 @@
 
     .reasoning-title
         font-weight: 600
-        color:       $off-white
+        color:       $blue-grey
 
     .reasoning-summary
         display:          flex
@@ -153,7 +153,7 @@
         height:           $reasoning-summary-height
         box-sizing:       border-box
         border-radius:    0 0 8px 8px
-        background-color: color.adjust($off-white, $alpha: -0.125)
+        background-color: $blue-grey
         font-size:        12px
         font-weight:      450
         color:            $background-700
