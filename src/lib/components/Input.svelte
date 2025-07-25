@@ -4,7 +4,7 @@
     import { is_initialising, loader_active, user_settings_active, model_list_active, tool_list_active, input_expanded } from '$lib/stores/app'
     import { chat_id, messages, forks, active_fork, active_messages, stars, highlights } from '$lib/stores/chat'
     import { is_hovering, is_adding_reply, is_deleting, is_scrolled_to_bottom, is_provisionally_forking } from '$lib/stores/chat/interactions'
-    import { model, temperature, top_p, diffusing_on, active_tools, thinking_budget, web_search } from '$lib/stores/ai'
+    import { model, temperature, top_p, active_tools, thinking_budget, web_search } from '$lib/stores/ai'
     import { api_state, is_idle } from '$lib/stores/api'
     import { config } from '$lib/stores/user'
     import { addCopyButtons, sleep } from '$lib/utils/helpers'
@@ -118,7 +118,7 @@
             options.thinking_budget = $thinking_budget
         }
 
-        if ($model.is_diffuser && $diffusing_on) {
+        if ($model.is_diffuser) {
             options.diffusing = true
         }
 
@@ -423,7 +423,7 @@
 
     const processInceptionObject = async (data, gpt_message) => {
         const content = data.choices[0]?.delta.content ?? ''
-        if ($diffusing_on && content.trim().length > 0) {
+        if ($model.is_diffuser && content.trim().length > 0) {
             await diffuse(gpt_message, content)
         } else {
             await append(gpt_message, content)

@@ -4,7 +4,6 @@
     import { stars } from '$lib/stores/chat'
     import { is_hovering, is_deleting, is_provisionally_forking } from '$lib/stores/chat/interactions'
     import { is_sending, is_streaming as api_is_streaming } from '$lib/stores/api'
-    import { diffusing_on } from '$lib/stores/ai'
     import { deleteHighlight } from '$lib/utils/highlighter'
     import { getToolUseHTML } from '$lib/templates/tool_use'
     import { marked } from 'marked'
@@ -64,7 +63,7 @@
           has_finished_reasoning = $derived(message.content.length > 0),
           is_starred             = $derived($stars.includes(message.id)),
           is_streaming           = $derived(message.is_last && message.role === 'assistant' && $api_is_streaming),
-          is_diffusing           = $derived(is_streaming && message.model.is_diffuser && $diffusing_on),
+          is_diffusing           = $derived(is_streaming && message.model.is_diffuser),
           add_reply_highlight    = $derived($is_hovering.add_reply.includes(message.id)),
           regenerate_highlight   = $derived($is_hovering.regenerate.includes(message.id)),
           star_highlight         = $derived($is_hovering.star.includes(message.id)),

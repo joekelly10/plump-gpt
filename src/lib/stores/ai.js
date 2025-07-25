@@ -7,7 +7,6 @@ import models from '$lib/fixtures/models'
 export const model           = createModel()
 export const temperature     = createTemperature()
 export const top_p           = createTopP()
-export const diffusing_on    = writable(defaults.diffusing_on)
 export const active_tools    = createActiveTools()
 export const thinking_budget = createThinkingBudget()
 export const web_search      = createWebSearch()
