@@ -475,6 +475,11 @@
     .content
         transition: filter easing.$quart-out 0.1s
 
+        .message-content:first-child
+            :global
+                .tool-use
+                    margin-top: -2px
+
         :global
             .tool-use
                 display:          flex
@@ -489,9 +494,6 @@
                 line-height:      font.$line-height-14px
                 font-weight:      450
                 color:            $blue-grey
-
-                &:first-child
-                    margin-top: -2px
 
                 .icon
                     height: 19px
