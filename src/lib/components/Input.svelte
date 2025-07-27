@@ -165,9 +165,13 @@
         scrollChatToBottom({ context: 'streaming_started' })
 
         if (!response.ok) {
-            const json = await response.json()
-            console.log('🤖-❌ Error:', response.status, json)
-            gpt_message.content = `**🚨 Error: ${json.error?.message}**`
+            if (response.status === 404) {
+                gpt_message.content = `**🚨 Error: 404 Not Found**`
+            } else {
+                const json = await response.json()
+                console.log('🤖-❌ Error:', response.status, json)
+                gpt_message.content = `**🚨 Error: ${json.error?.message}**`
+            }
 
             $messages = [...$messages.slice(0,-1), gpt_message]
 
