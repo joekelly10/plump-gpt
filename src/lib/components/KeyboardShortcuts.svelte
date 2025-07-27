@@ -110,6 +110,7 @@
             chat.deselectText()
             $model_list_active    = false
             $user_settings_active = false
+            $tool_list_active     = false
             return false
         }
 
