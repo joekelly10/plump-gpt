@@ -158,7 +158,6 @@
         .reasoning-title
             display:         flex
             align-items:     center
-            justify-content: center
             gap:             16px
             font-size:       12px
             font-weight:     700
@@ -166,18 +165,18 @@
             text-transform:  uppercase
 
             .thinking-icon
-                height: 20px
+                height: 19px
 
     .reasoning-summary
         display:          flex
         align-items:      center
-        justify-content:  center
         position:         absolute
         bottom:           0
         left:             0
         width:            100%
         height:           $reasoning-summary-height
         box-sizing:       border-box
+        padding-left:     space.$default-padding
         border-radius:    0 0 8px 8px
         background-color: $blue-grey
         font-size:        12px
