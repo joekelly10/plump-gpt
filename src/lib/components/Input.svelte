@@ -588,11 +588,20 @@
     const createToolsArray = () => {
         const tools = []
 
-        if ($active_tools.includes('web_search') && $web_search.max_uses > 0) {
-            tools.push({
-                name:     'web_search',
-                max_uses: $web_search.max_uses
-            })
+        if ($model.type === 'open-ai') {
+            if ($active_tools.includes('web_search') && $web_search.open_ai.search_context_size !== 'off') {
+                tools.push({
+                    name:                'web_search',
+                    search_context_size: $web_search.open_ai.search_context_size
+                })
+            }
+        } else if ($model.type === 'anthropic') {
+            if ($active_tools.includes('web_search') && $web_search.anthropic.max_uses > 0) {
+                tools.push({
+                    name:     'web_search',
+                    max_uses: $web_search.anthropic.max_uses
+                })
+            }
         }
 
         return tools

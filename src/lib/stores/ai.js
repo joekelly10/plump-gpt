@@ -135,24 +135,77 @@ function createThinkingBudget() {
 
 function createWebSearch() {
     const { subscribe, set, update } = writable({
-        max_uses:        5,
-        allowed_domains: [],
-        blocked_domains: []
+        open_ai: {
+            search_context_size: 'medium'
+        },
+        anthropic: {
+            max_uses:        5,
+            allowed_domains: [],
+            blocked_domains: []
+        }
     })
 
     return {
         subscribe,
         set,
-        increment_uses: () => {
-            update(value => { 
-                if (value.max_uses === 10) return value
-                return { ...value, max_uses: value.max_uses + 1 }
+        increment_search_context_size: () => {
+            update(value => {
+                if (value.open_ai.search_context_size === 'high') return value
+                let new_size
+                switch (value.open_ai.search_context_size) {
+                    case 'off':    new_size = 'low';    break
+                    case 'low':    new_size = 'medium'; break
+                    case 'medium': new_size = 'high';   break
+                }
+                return {
+                    ...value,
+                    open_ai: {
+                        ...value.open_ai,
+                        search_context_size: new_size
+                    }
+                }
             })
         },
-        decrement_uses: () => {
+        decrement_search_context_size: () => {
             update(value => {
-                if (value.max_uses === 0) return value
-                return { ...value, max_uses: value.max_uses - 1 }
+                if (value.open_ai.search_context_size === 'off') return value
+                let new_size
+                switch (value.open_ai.search_context_size) {
+                    case 'high':   new_size = 'medium'; break
+                    case 'medium': new_size = 'low';    break
+                    case 'low':    new_size = 'off';    break
+                }
+                return {
+                    ...value,
+                    open_ai: {
+                        ...value.open_ai,
+                        search_context_size: new_size
+                    }
+                }
+            })
+        },
+        increment_max_uses: () => {
+            update(value => { 
+                if (value.anthropic.max_uses === 10) return value
+                return {
+                    ...value,
+                    anthropic: {
+                        ...value.anthropic,
+                        max_uses: value.anthropic.max_uses + 1
+                    }
+                }
+            })
+        },
+        decrement_max_uses: () => {
+            update(value => {
+                if (value.anthropic.max_uses === 0) return value
+                return {
+                    ...value,
+                    anthropic: {
+                        ...value.anthropic,
+                        max_uses: value.anthropic.max_uses - 1
+                    }
+                }
             })
         }
     }

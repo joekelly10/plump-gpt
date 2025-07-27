@@ -2,33 +2,50 @@
     import { onMount } from 'svelte'
     import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { web_search } from '$lib/stores/ai'
+    import { model, web_search } from '$lib/stores/ai'
 
     let mount_animation_state = $state('flash')
 
     onMount(() => {
-        if ($web_search.max_uses === 0) web_search.increment_uses()
+        if ($web_search.open_ai.search_context_size === 'off') web_search.increment_search_context_size()
+        if ($web_search.anthropic.max_uses === 0) web_search.increment_max_uses()
         animateAddedToToolbar()
     })
 
     const clicked = (e) => {
         e.preventDefault()
-        web_search.increment_uses()
+        if ($model.type === 'open-ai') {
+            web_search.increment_search_context_size()
+        } else if ($model.type === 'anthropic') {
+            web_search.increment_max_uses()
+        }
         return e.target.blur()
     }
 
     const rightClicked = (e) => {
         e.preventDefault()
-        web_search.decrement_uses()
+        if ($model.type === 'open-ai') {
+            web_search.decrement_search_context_size()
+        } else if ($model.type === 'anthropic') {
+            web_search.decrement_max_uses()
+        }
         return e.target.blur()
     }
 
     const onwheel = (e) => {
         e.preventDefault()
         if (e.deltaY < 0) {
-            web_search.increment_uses()
+            if ($model.type === 'open-ai') {
+                web_search.increment_search_context_size()
+            } else if ($model.type === 'anthropic') {
+                web_search.increment_max_uses()
+            }
         } else {
-            web_search.decrement_uses()
+            if ($model.type === 'open-ai') {
+                web_search.decrement_search_context_size()
+            } else if ($model.type === 'anthropic') {
+                web_search.decrement_max_uses()
+            }
         }
         return false
     }
@@ -53,12 +70,16 @@
         Web Search
     </div>
     <div class='value'>
-        {#if $web_search.max_uses === 0}
+        {#if ($model.type === 'anthropic' && $web_search.anthropic.max_uses === 0) || ($model.type === 'open-ai' && $web_search.open_ai.search_context_size === 'off')}
             <span class='off'>
                 Off
             </span>
         {:else}
-            {$web_search.max_uses} max
+            {#if $model.type === 'open-ai'}
+                {$web_search.open_ai.search_context_size.charAt(0).toUpperCase() + $web_search.open_ai.search_context_size.slice(1)}
+            {:else}
+                {$web_search.anthropic.max_uses} max
+            {/if}
         {/if}
     </div>
 </button>

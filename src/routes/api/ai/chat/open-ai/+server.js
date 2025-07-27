@@ -14,14 +14,26 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
         Authorization: 'Bearer ' + env.OPENAI_API_KEY
     })
 
-    const body = JSON.stringify({
+    let body = {
         model:          options.model,
         temperature:    options.temperature,
         top_p:          options.top_p,
         stream:         true,
         stream_options: { include_usage: true },
         messages:       messages
-    })
+    }
+
+    if (options.tools?.length > 0) {
+        options.tools.forEach(tool => {
+            if (tool.name === 'web_search') {
+                body.web_search_options = {
+                    search_context_size: tool.search_context_size
+                }
+            }
+        })
+    }
+
+    body = JSON.stringify(body)
 
     if (env.NODE_ENV === 'test') {
         //
