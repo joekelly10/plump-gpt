@@ -75,7 +75,7 @@
                     Thinking<WaitingDots />
                 </strong>
             {:else}
-                Thought for
+                Thought for<br>
                 <strong>
                     {is_streaming || message.model.type === 'anthropic' ? '~' : ''}{message.usage.reasoning_tokens}
                     tokens
@@ -129,16 +129,16 @@
                 background-color: color.mix($background-700, $star-highlight-bg, 85%)
 
     .reasoning-content
-        position:         relative
-        margin-bottom:    32px
-        padding:          24px space.$default-padding
-        max-height:       290px
-        overflow-y:       auto
-        border-radius:    8px
-        background-color: $background-700
-        font-size:        14px
-        line-height:      26px
-        color:            color.adjust($off-white, $alpha: -0.5)
+        position:      relative
+        margin-bottom: 32px
+        padding:       24px space.$default-padding
+        max-height:    290px
+        overflow-y:    auto
+        border-radius: 8px
+        border:        1px dotted color.adjust($blue-grey, $alpha: -0.75)
+        font-size:     14px
+        line-height:   26px
+        color:         $off-white
 
         &::-webkit-scrollbar
             width:      6px
@@ -146,7 +146,7 @@
             background: transparent
 
         &::-webkit-scrollbar-thumb
-            background:    color.adjust($off-white, $alpha: -0.5)
+            background:    $off-white
             border-radius: 99px
             cursor:        grab
 
@@ -159,18 +159,19 @@
                 margin-bottom: 0
 
     .reasoning-summary
-        display:        flex
-        align-items:    center
-        gap:            16px
-        box-sizing:     border-box
-        font-size:      12px
-        font-weight:    450
-        text-transform: uppercase
-        color:          $blue-grey
+        display:     flex
+        align-items: center
+        gap:         24px
+        box-sizing:  border-box
+        font-size:   14px
+        font-weight: 450
+        line-height: font.$line-height-14px
+        color:       $blue-grey
 
         strong
             font-weight: 700
+            color:       $off-white
 
         .thinking-icon
-            height: 16px
+            height: 19px
 </style>
