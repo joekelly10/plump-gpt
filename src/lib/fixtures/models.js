@@ -101,7 +101,7 @@ export default [
         context_window: 1000000,
         is_reasoner:    false,
         pricing_id:     'gemini-2.5-flash-lite',
-        tools:          []
+        tools:          ['google_search']
     },
     {
         type:           'google',
@@ -127,7 +127,7 @@ export default [
         context_window: 1000000,
         is_reasoner:    true,
         pricing_id:     'gemini-2.5-pro',
-        tools:          []
+        tools:          ['google_search']
     },
     {
         type:           'x',

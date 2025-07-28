@@ -481,21 +481,24 @@
 
         :global
             .tool-use
-                display:          flex
-                align-items:      center
-                justify-content:  flex-start
-                gap:              24px
-                margin-bottom:    32px
-                padding:          24px
-                border-radius:    8px
-                background-color: $background-700
-                font-size:        14px
-                line-height:      font.$line-height-14px
-                font-weight:      450
-                color:            $blue-grey
+                display:         flex
+                align-items:     center
+                justify-content: flex-start
+                gap:             24px
+                margin-bottom:   32px
+                padding:         24px
+                border-radius:   8px
+                border:          1px dotted color.adjust($blue-grey, $alpha: -0.75)
+                font-size:       14px
+                line-height:     font.$line-height-14px
+                font-weight:     450
+                color:           $blue-grey
+
+                &:last-child
+                    margin-bottom: 0
 
                 .icon
-                    height: 19px
+                    height: 18px
 
                 .tool-use-value
                     font-weight: 600

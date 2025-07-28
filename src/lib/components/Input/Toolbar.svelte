@@ -6,6 +6,7 @@
 
     import ThinkingBudgetButton from '$lib/components/Input/Toolbar/ThinkingBudgetButton.svelte'
     import WebSearchButton from '$lib/components/Input/Toolbar/WebSearchButton.svelte'
+    import GoogleSearchButton from '$lib/components/Input/Toolbar/GoogleSearchButton.svelte'
 
     const is_empty = $derived($active_tools.length === 0)
 </script>
@@ -29,6 +30,8 @@
             <ThinkingBudgetButton/>
         {:else if tool === 'web_search'}
             <WebSearchButton/>
+        {:else if tool === 'google_search'}
+            <GoogleSearchButton/>
         {/if}
     {/each}
 </div>

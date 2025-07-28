@@ -1,0 +1,100 @@
+<script>
+    import { onMount } from 'svelte'
+    import { fade } from 'svelte/transition'
+    import { quartOut } from 'svelte/easing'
+    import { model, web_search } from '$lib/stores/ai'
+
+    let mount_animation_state = $state('flash')
+
+    onMount(() => {
+        animateAddedToToolbar()
+    })
+
+    const clicked = (e) => {
+        e.preventDefault()
+    }
+
+    const rightClicked = (e) => {
+        e.preventDefault()
+    }
+
+    const animateAddedToToolbar = () => {
+        mount_animation_state = 'flash'
+        setTimeout(() => { mount_animation_state = 'fade' }, 50)
+        setTimeout(() => { mount_animation_state = 'done' }, 1000)
+    }
+</script>
+
+<button
+    class='google-search-button mount-animation-{mount_animation_state}'
+    onclick={clicked}
+    oncontextmenu={rightClicked}
+    in:fade={{ delay: 125, duration: 125, easing: quartOut }}
+    out:fade={{ duration: 125, easing: quartOut }}
+>
+    <img class='icon' src='/img/icons/google-grey.png' alt='Google Search' />
+    <div class='title'>
+        Google Search
+    </div>
+    <div class='value'>
+        (no options)
+    </div>
+</button>
+
+<style lang='sass'>
+    .google-search-button
+        display:         flex
+        flex-wrap:       nowrap
+        justify-content: flex-start
+        align-items:     center
+        gap:             16px
+        padding:         16px 24px
+        font-size:       12px
+        color:           $blue-grey
+        cursor:          pointer
+        transition:      background-color easing.$quart-out 0.1s, color easing.$quart-out 0.1s
+
+        .icon
+            height:     16px
+            transition: filter easing.$quart-out 0.1s
+
+        .title
+            font-weight:    600
+            text-transform: uppercase
+
+        .value
+            font-weight: 450
+
+        &:hover
+            background-color: $background-800
+            color:            $off-white
+            transition:       none
+
+            .icon
+                filter:     brightness(2)
+                transition: none
+        
+        &:active
+            background-color: $background-850
+            color:            $off-white
+            transition:       none
+
+            .icon
+                filter:     brightness(2)
+                transition: none
+
+        &.mount-animation-flash
+            background-color: color.mix($blue, color.adjust($background-500, $alpha: -0.75), 10%)
+            color:            $off-white
+            transition:       none
+
+            .icon
+                filter:     brightness(2)
+                transition: none
+
+        &.mount-animation-fade
+            transition: background-color easing.$quart-out 1s, color easing.$quart-out 1s
+
+            .icon
+                transition: filter easing.$quart-out 1s
+</style>

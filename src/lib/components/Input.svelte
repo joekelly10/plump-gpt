@@ -357,6 +357,19 @@
             if (data.usageMetadata.candidatesTokenCount) {
                 gpt_message.usage.output_tokens = data.usageMetadata.candidatesTokenCount
             }
+            if (data.usageMetadata.toolUsePromptTokenCount) {
+                gpt_message.usage.tool_use_tokens = data.usageMetadata.toolUsePromptTokenCount
+            }
+            if (data.candidates[0].groundingMetadata?.webSearchQueries?.length > 0) {
+                const tool_use_id = `google_search_${Date.now()}`
+                gpt_message.content += `\n\n{{TOOL_USE:${tool_use_id}}}\n\n`
+                gpt_message.tool_uses.push({
+                    type:               'server_tool_use',
+                    name:               'google_search',
+                    id:                 tool_use_id,
+                    grounding_metadata: data.candidates[0].groundingMetadata
+                })
+            }
         }
     }
 
@@ -600,6 +613,12 @@
                 tools.push({
                     name:     'web_search',
                     max_uses: $web_search.anthropic.max_uses
+                })
+            }
+        } else if ($model.type === 'google') {
+            if ($active_tools.includes('google_search')) {
+                tools.push({
+                    name: 'google_search'
                 })
             }
         }

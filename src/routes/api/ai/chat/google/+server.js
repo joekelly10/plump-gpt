@@ -18,7 +18,7 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
         'Content-Type': 'application/json'
     })
 
-    const body = JSON.stringify({
+    let body = {
         generationConfig: {
             thinkingConfig: {
                 includeThoughts: true
@@ -38,7 +38,21 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
             { category:  'HARM_CATEGORY_CIVIC_INTEGRITY', threshold: 'BLOCK_NONE' }
         ],
         contents
-    })
+    }
+
+    if (options.tools?.length > 0) {
+        body.tools = []
+
+        options.tools.forEach(tool => {
+            if (tool.name === 'google_search') {
+                body.tools.push({
+                    google_search: {}
+                })
+            }
+        })
+    }
+
+    body = JSON.stringify(body)
 
     if (env.NODE_ENV === 'test') {
         //
