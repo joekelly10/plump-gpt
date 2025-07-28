@@ -77,7 +77,7 @@
         {:else}
             {#if $model.type === 'open-ai'}
                 {$web_search.open_ai.search_context_size.charAt(0).toUpperCase() + $web_search.open_ai.search_context_size.slice(1)}
-            {:else}
+            {:else if $model.type === 'anthropic'}
                 {$web_search.anthropic.max_uses} max
             {/if}
         {/if}
