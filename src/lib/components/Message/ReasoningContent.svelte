@@ -53,43 +53,85 @@
 </script>
 
 <div
-    bind:this={reasoning_div}
-    class='reasoning-content'
+    class='reasoning-content-container'
     class:delete-highlight={delete_highlight}
     class:regenerate-highlight={regenerate_highlight}
     class:star-highlight={star_highlight}
     class:starred={is_starred}
-    onwheel={onwheel}
 >
-    <p class='reasoning-title'>
+    <div
+        bind:this={reasoning_div}
+        class='reasoning-content'
+        onwheel={onwheel}
+    >
+        {@html reasoning_content}
+    </div>
+
+    <div class='reasoning-summary' in:fade={{ delay: 500, duration: 125, easing: quartOut }}>
         <img class='thinking-icon' src='/img/icons/thinking-grey.png' alt='Thinking' />
-        {#if !has_finished_reasoning}
-            Thinking<WaitingDots />
-        {:else}
-            Thinking
-        {/if}
-    </p>
-    {@html reasoning_content}
-    {#if has_finished_reasoning}
-        <div class='reasoning-summary' in:fade={{ duration: 125, easing: quartOut }}>
-            <div class='reasoning-summary-text'>
+        <div class='reasoning-summary-text'>
+            {#if !has_finished_reasoning}
+                <strong>
+                    Thinking<WaitingDots />
+                </strong>
+            {:else}
                 Thought for
-                <span class='reasoning-token-count'>
+                <strong>
                     {is_streaming || message.model.type === 'anthropic' ? '~' : ''}{message.usage.reasoning_tokens}
                     tokens
-                </span>
-            </div>
+                </strong>
+            {/if}
         </div>
-    {/if}
+    </div>
 </div>
 
 <style lang='sass'>
-    $reasoning-summary-height: 48px
+    .reasoning-content-container
+        position:      relative
+        margin-bottom: 32px
+
+        &:first-child
+            margin-top: -2px
+        
+        &.delete-highlight
+            .reasoning-content
+                background-color: color.mix($background-700, $delete-highlight-bg, 25%)
+                color:            $delete-highlight-color
+
+                &::-webkit-scrollbar-thumb
+                    background: $delete-highlight-color
+
+            .reasoning-summary
+                text-decoration: line-through
+                color:           $delete-highlight-color
+
+                .thinking-icon
+                    opacity: 0.5
+        
+        &.regenerate-highlight
+            .reasoning-content
+                background-color: color.mix($background-700, $regenerate-highlight-bg, 25%)
+                color:            $regenerate-highlight-color
+
+                &::-webkit-scrollbar-thumb
+                    background: $regenerate-highlight-color
+
+            .reasoning-summary
+                text-decoration: line-through
+                color:           $regenerate-highlight-color
+
+                .thinking-icon
+                    opacity: 0.5
+        
+        &.star-highlight,
+        &.starred
+            .reasoning-content
+                background-color: color.mix($background-700, $star-highlight-bg, 85%)
 
     .reasoning-content
         position:         relative
         margin-bottom:    32px
-        padding:          24px space.$default-padding ($reasoning-summary-height + 12px)
+        padding:          24px space.$default-padding
         max-height:       290px
         overflow-y:       auto
         border-radius:    8px
@@ -97,9 +139,6 @@
         font-size:        14px
         line-height:      26px
         color:            color.adjust($off-white, $alpha: -0.5)
-
-        &:first-child
-            margin-top: -2px
 
         &::-webkit-scrollbar
             width:      6px
@@ -118,72 +157,20 @@
 
             &:last-child
                 margin-bottom: 0
-        
-        &.delete-highlight
-            background-color: color.mix($background-700, $delete-highlight-bg, 25%)
-            color:            $delete-highlight-color
-
-            &::-webkit-scrollbar-thumb
-                background: $delete-highlight-color
-            
-            .reasoning-title
-                color: $delete-highlight-color
-
-                .thinking-icon
-                    opacity: 0.33
-
-            .reasoning-summary
-                background-color: $delete-highlight-color
-                text-decoration:  line-through
-        
-        &.regenerate-highlight
-            background-color: color.mix($background-700, $regenerate-highlight-bg, 25%)
-            color:            $regenerate-highlight-color
-
-            &::-webkit-scrollbar-thumb
-                background: $regenerate-highlight-color
-            
-            .reasoning-title
-                .thinking-icon
-                    opacity: 0.33
-
-            .reasoning-summary
-                background-color: $regenerate-highlight-color
-                text-decoration:  line-through
-        
-        &.star-highlight,
-        &.starred
-            background-color: color.mix($background-700, $star-highlight-bg, 85%)
-
-        .reasoning-title
-            display:         flex
-            align-items:     center
-            gap:             16px
-            font-size:       12px
-            font-weight:     700
-            color:           $blue-grey
-            text-transform:  uppercase
-
-            .thinking-icon
-                height: 19px
 
     .reasoning-summary
-        display:          flex
-        align-items:      center
-        position:         absolute
-        bottom:           0
-        left:             0
-        width:            100%
-        height:           $reasoning-summary-height
-        box-sizing:       border-box
-        padding-left:     space.$default-padding
-        border-radius:    0 0 8px 8px
-        background-color: $blue-grey
-        font-size:        12px
-        font-weight:      450
-        text-transform:   uppercase
-        color:            $background-800
+        display:        flex
+        align-items:    center
+        gap:            16px
+        box-sizing:     border-box
+        font-size:      12px
+        font-weight:    450
+        text-transform: uppercase
+        color:          $blue-grey
 
-        .reasoning-token-count
+        strong
             font-weight: 700
+
+        .thinking-icon
+            height: 16px
 </style>
