@@ -504,6 +504,18 @@
                     font-weight: 600
                     color:       $off-white
 
+                    a
+                        color: $off-white
+
+                        &:hover
+                            text-decoration: underline
+                    
+                    .number-link
+                        padding: 0 4px
+
+                    .bull
+                        color:  $blue-grey
+
     .status-text
         font-size:   14px
         font-style:  italic

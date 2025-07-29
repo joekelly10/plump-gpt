@@ -14,14 +14,33 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
         Authorization: 'Bearer ' + env.GROK_API_KEY
     })
 
-    const body = JSON.stringify({
+    let body = {
         model:          options.model,
         temperature:    options.temperature,
         top_p:          options.top_p,
         stream:         true,
         stream_options: { include_usage: true },
         messages:       messages
-    })
+    }
+
+    if (options.tools?.length > 0) {
+        options.tools.forEach(tool => {
+            if (tool.name === 'x_search') {
+                body.search_parameters = {
+                    mode: 'on',
+                    sources: [{
+                        type:                'x',
+                        post_view_count:     tool.post_view_count,
+                        post_favorite_count: tool.post_favorite_count,
+                        included_x_handles:  tool.included_x_handles,
+                        excluded_x_handles:  tool.excluded_x_handles
+                    }]
+                }
+            }
+        })
+    }
+
+    body = JSON.stringify(body)
 
     if (env.NODE_ENV === 'test') {
         //

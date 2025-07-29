@@ -1,5 +1,5 @@
 import { sleep, wordsFrom, process, speed_limit } from '$tests/helpers/tools'
-import { startObject, deltaReasoningObject, deltaObject, finishObject, usageObject } from '$tests/mock/stream_objects/open-ai'
+import { startObject, deltaReasoningObject, deltaObject, finishObject, usageObject } from '$tests/mock/stream_objects/x'
 
 export const POST = async ({ request }) => {
     const { model, messages } = await request.json()

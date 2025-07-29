@@ -4,7 +4,7 @@
     import { is_initialising, loader_active, user_settings_active, model_list_active, tool_list_active, input_expanded } from '$lib/stores/app'
     import { chat_id, messages, forks, active_fork, active_messages, stars, highlights } from '$lib/stores/chat'
     import { is_hovering, is_adding_reply, is_deleting, is_scrolled_to_bottom, is_provisionally_forking } from '$lib/stores/chat/interactions'
-    import { model, temperature, top_p, active_tools, thinking_budget, web_search } from '$lib/stores/ai'
+    import { model, temperature, top_p, active_tools, thinking_budget, web_search, x_search } from '$lib/stores/ai'
     import { api_state, is_idle } from '$lib/stores/api'
     import { config } from '$lib/stores/user'
     import { addCopyButtons, sleep } from '$lib/utils/helpers'
@@ -247,12 +247,14 @@
                     const json_string = buffer.slice(start_index, end_index)
                     try {
                         const data = JSON.parse(json_string)
-                        if (['open-ai', 'x', 'mistral', 'ai21'].includes($model.type)) {
+                        if (['open-ai', 'mistral', 'ai21'].includes($model.type)) {
                             await processOpenAIObject(data, gpt_message)
                         } else if ($model.type === 'anthropic') {
                             await processAnthropicObject(data, gpt_message)
                         } else if ($model.type === 'google') {
                             await processGoogleObject(data, gpt_message)
+                        } else if ($model.type === 'x') {
+                            await processXObject(data, gpt_message)
                         } else if ($model.type === 'deepseek') {
                             await processDeepSeekObject(data, gpt_message)
                         } else if ($model.type === 'groq') {
@@ -368,6 +370,35 @@
                     name:               'google_search',
                     id:                 tool_use_id,
                     grounding_metadata: data.candidates[0].groundingMetadata
+                })
+            }
+        }
+    }
+
+    const processXObject = async (data, gpt_message) => {
+        console.log('🤖-🔍 X object:', data)
+        const reasoning_content = data.choices[0]?.delta.reasoning_content ?? '',
+              content           = data.choices[0]?.delta.content ?? ''
+        await append(gpt_message, reasoning_content, { is_reasoning: true })
+        await append(gpt_message, content)
+        if (data.usage) {
+            const cache_read_tokens = data.usage.prompt_tokens_details?.cached_tokens ?? 0
+            gpt_message.usage.cache_read_tokens = cache_read_tokens
+            gpt_message.usage.input_tokens      = data.usage.prompt_tokens - cache_read_tokens
+            gpt_message.usage.output_tokens     = data.usage.completion_tokens
+            const reasoning_tokens = data.usage.completion_tokens_details?.reasoning_tokens
+            if (reasoning_tokens) {
+                gpt_message.usage.reasoning_tokens = reasoning_tokens
+            }
+            if (data.usage.num_sources_used) {
+                const tool_use_id = `x_search_${Date.now()}`
+                gpt_message.content += `\n\n{{TOOL_USE:${tool_use_id}}}\n\n`
+                gpt_message.tool_uses.push({
+                    type:             'server_tool_use',
+                    name:             'x_search',
+                    id:               tool_use_id,
+                    num_sources_used: data.num_sources_used,
+                    citations:        data.citations
                 })
             }
         }
@@ -619,6 +650,16 @@
             if ($active_tools.includes('google_search')) {
                 tools.push({
                     name: 'google_search'
+                })
+            }
+        } else if ($model.type === 'x') {
+            if ($active_tools.includes('x_search')) {
+                tools.push({
+                    name:                'x_search',
+                    post_view_count:     $x_search.post_view_count,
+                    post_favorite_count: $x_search.post_favorite_count,
+                    included_x_handles:  $x_search.included_x_handles,
+                    excluded_x_handles:  $x_search.excluded_x_handles
                 })
             }
         }

@@ -140,7 +140,7 @@ export default [
         context_window: 131072,
         is_reasoner:    true,
         pricing_id:     'grok-mini',
-        tools:          []
+        tools:          ['x_search']
     },
     {
         type:           'x',
@@ -153,7 +153,7 @@ export default [
         context_window: 256000,
         is_reasoner:    true,
         pricing_id:     'grok',
-        tools:          []
+        tools:          ['x_search']
     },
     {
         type:           'openrouter',

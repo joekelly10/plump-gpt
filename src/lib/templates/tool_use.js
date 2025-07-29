@@ -19,5 +19,17 @@ export const getToolUseHTML = (tool_use) => {
         </div>`
     }
 
+    if (tool_use.name === 'x_search') {
+        return `<div class='tool-use server-tool-use x-search'>
+            <img class='icon x-search-icon' src='/img/icons/x-grey.png' alt='X Search'>
+            <div class='tool-use-text'>
+                <div class='tool-use-label'>Citations</div>
+                <div class='tool-use-value'>
+                    ${tool_use.citations.map((citation, index) => `<a class='number-link' href='${citation}' title='${citation}' target='_blank'>${index + 1}</a>`).join(` <span class='bull'>•</span> `)}
+                </div>
+            </div>
+        </div>`
+    }
+
     return ''
 }

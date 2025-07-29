@@ -10,6 +10,7 @@ export const top_p           = createTopP()
 export const active_tools    = createActiveTools()
 export const thinking_budget = createThinkingBudget()
 export const web_search      = createWebSearch()
+export const x_search        = createXSearch()
 
 model.subscribe(new_model => {
     active_tools.update(value => value.filter(tool => new_model.tools.includes(tool)))
@@ -205,6 +206,111 @@ function createWebSearch() {
                         ...value.anthropic,
                         max_uses: value.anthropic.max_uses - 1
                     }
+                }
+            })
+        }
+    }
+}
+
+function createXSearch() {
+    const { subscribe, set, update } = writable({
+        post_view_count:     0,
+        post_favorite_count: 0,
+        included_x_handles:  [],
+        excluded_x_handles:  []
+    })
+
+    return {
+        subscribe,
+        set,
+        increment_post_view_count: () => {
+            update(value => {
+                if (value.post_view_count === 1000000) return value
+                let new_count
+                switch (value.post_view_count) {
+                    case 0:      new_count = 10;      break
+                    case 10:     new_count = 100;     break
+                    case 100:    new_count = 1000;    break
+                    case 1000:   new_count = 10000;   break
+                    case 10000:  new_count = 20000;   break
+                    case 20000:  new_count = 50000;   break
+                    case 50000:  new_count = 100000;  break
+                    case 100000: new_count = 200000;  break
+                    case 200000: new_count = 500000;  break
+                    case 500000: new_count = 1000000; break
+                }
+                return {
+                    ...value,
+                    post_view_count: new_count
+                }
+            })
+        },
+        decrement_post_view_count: () => {
+            update(value => {
+                if (value.post_view_count === 0) return value
+                let new_count
+                switch (value.post_view_count) {
+                    case 1000000: new_count = 500000; break
+                    case 500000:  new_count = 200000; break
+                    case 200000:  new_count = 100000; break
+                    case 100000:  new_count = 50000;  break
+                    case 50000:   new_count = 20000;  break
+                    case 20000:   new_count = 10000;  break
+                    case 10000:   new_count = 5000;   break
+                    case 5000:    new_count = 1000;   break
+                    case 1000:    new_count = 100;    break
+                    case 100:     new_count = 10;     break
+                    case 10:      new_count = 0;      break
+                }
+                return {
+                    ...value,
+                    post_view_count: new_count
+                }
+            })
+        },
+        increment_post_favorite_count: () => {
+            update(value => {
+                if (value.post_favorite_count === 10000) return value
+                let new_count
+                switch (value.post_favorite_count) {
+                    case 0:    new_count = 1;     break
+                    case 1:    new_count = 2;     break
+                    case 2:    new_count = 5;     break
+                    case 5:    new_count = 10;    break
+                    case 10:   new_count = 20;    break
+                    case 20:   new_count = 50;    break
+                    case 50:   new_count = 100;   break
+                    case 100:  new_count = 200;   break
+                    case 200:  new_count = 500;   break
+                    case 500:  new_count = 1000;  break
+                    case 1000: new_count = 10000; break
+                }
+                return {
+                    ...value,
+                    post_favorite_count: new_count
+                }
+            })
+        },
+        decrement_post_favorite_count: () => {
+            update(value => {
+                if (value.post_favorite_count === 0) return value
+                let new_count
+                switch (value.post_favorite_count) {
+                    case 1:     new_count = 0;    break
+                    case 2:     new_count = 1;    break
+                    case 5:     new_count = 2;    break
+                    case 10:    new_count = 5;    break
+                    case 20:    new_count = 10;   break
+                    case 50:    new_count = 20;   break
+                    case 100:   new_count = 50;   break
+                    case 200:   new_count = 100;  break
+                    case 500:   new_count = 200;  break
+                    case 1000:  new_count = 500;  break
+                    case 10000: new_count = 1000; break
+                }
+                return {
+                    ...value,
+                    post_favorite_count: new_count
                 }
             })
         }

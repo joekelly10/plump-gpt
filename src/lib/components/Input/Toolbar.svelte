@@ -7,6 +7,7 @@
     import ThinkingBudgetButton from '$lib/components/Input/Toolbar/ThinkingBudgetButton.svelte'
     import WebSearchButton from '$lib/components/Input/Toolbar/WebSearchButton.svelte'
     import GoogleSearchButton from '$lib/components/Input/Toolbar/GoogleSearchButton.svelte'
+    import XSearchButton from '$lib/components/Input/Toolbar/XSearchButton.svelte'
 
     const is_empty = $derived($active_tools.length === 0)
 </script>
@@ -32,6 +33,8 @@
             <WebSearchButton/>
         {:else if tool === 'google_search'}
             <GoogleSearchButton/>
+        {:else if tool === 'x_search'}
+            <XSearchButton/>
         {/if}
     {/each}
 </div>
@@ -45,7 +48,7 @@
         position:         relative
         min-height:       48px
         border-radius:    0 0 12px 12px
-        background-color: $background-700
+        background-color: $background-350
         overflow:         hidden
         transition:       background-color easing.$quart-out 100ms
 

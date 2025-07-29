@@ -7,6 +7,7 @@
     import ThinkingBudgetButton from '$lib/components/ToolList/Anthropic/ToggleThinkingBudgetButton.svelte'
     import WebSearchButton from '$lib/components/ToolList/ToggleWebSearchButton.svelte'
     import GoogleSearchButton from '$lib/components/ToolList/Google/ToggleGoogleSearchButton.svelte'
+    import XSearchButton from '$lib/components/ToolList/ToggleXSearchButton.svelte'
 
     const close = () => {
         $tool_list_active = false
@@ -45,6 +46,9 @@
                     {/if}
                     {#if $model.tools.includes('google_search')}
                         <GoogleSearchButton/>
+                    {/if}
+                    {#if $model.tools.includes('x_search')}
+                        <XSearchButton/>
                     {/if}
                 </div>
             </div>
