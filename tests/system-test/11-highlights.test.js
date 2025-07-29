@@ -181,8 +181,7 @@ test.describe('Highlights', () => {
             const message_el = document.querySelector('#message-2 .reasoning-content')
             
             if (message_el && message_el.textContent.includes(reasoning_to_highlight)) {
-                // The "Thinking..." heading text is the first paragraph
-                const paragraph_node = message_el.querySelector('p:nth-of-type(2)'),
+                const paragraph_node = message_el.querySelector('p'),
                       text_node      = paragraph_node.firstChild,
                       start_index    = text_node.textContent.indexOf(reasoning_to_highlight),
                       end_index      = start_index + reasoning_to_highlight.length
