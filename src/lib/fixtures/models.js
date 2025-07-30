@@ -92,7 +92,7 @@ export default [
     },
     {
         type:           'google',
-        id:             'gemini-2.5-flash-lite-preview-06-17',
+        id:             'gemini-2.5-flash-lite',
         name:           'Gemini 2.5 Flash Lite',
         short_name:     'Gemini',
         icon:           'gemini-flash-lite.png',
@@ -114,7 +114,7 @@ export default [
         context_window: 1000000,
         is_reasoner:    true,
         pricing_id:     'gemini-2.5-flash',
-        tools:          []
+        tools:          ['google_search']
     },
     {
         type:           'google',
