@@ -409,7 +409,7 @@
                         background-color: color.mix($background-500, $blue, 5%)
 
                 &.star
-                    height: 78px
+                    height: 79px
                     .icon
                         &.empty
                             height: 18px
