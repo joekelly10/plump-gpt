@@ -2,7 +2,7 @@
     import { onMount } from 'svelte'
     import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { model, web_search } from '$lib/stores/ai'
+    import { model, active_tools, web_search } from '$lib/stores/ai'
 
     let mount_animation_state = $state('flash')
 
@@ -25,8 +25,16 @@
     const rightClicked = (e) => {
         e.preventDefault()
         if ($model.type === 'open-ai') {
+            if ($web_search.open_ai.search_context_size === 'off') {
+                active_tools.remove('web_search')
+                return false
+            }
             web_search.decrement_search_context_size()
         } else if ($model.type === 'anthropic') {
+            if ($web_search.anthropic.max_uses === 0) {
+                active_tools.remove('web_search')
+                return false
+            }
             web_search.decrement_max_uses()
         }
         return e.target.blur()

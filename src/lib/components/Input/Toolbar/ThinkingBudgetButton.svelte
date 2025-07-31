@@ -2,7 +2,7 @@
     import { onMount } from 'svelte'
     import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { thinking_budget } from '$lib/stores/ai'
+    import { active_tools, thinking_budget } from '$lib/stores/ai'
 
     let mount_animation_state = $state('flash')
 
@@ -19,6 +19,10 @@
     
     const rightClicked = (e) => {
         e.preventDefault()
+        if ($thinking_budget === 0) {
+            active_tools.remove('thinking_budget')
+            return false
+        }
         thinking_budget.decrement()
         return e.target.blur()
     }

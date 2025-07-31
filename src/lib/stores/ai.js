@@ -117,7 +117,7 @@ function createThinkingBudget() {
         set,
         increment: () => {
             update(value => {
-                if (value === 32000) return 0
+                if (value === 32000) return value
                 if (value < 4000) return value + 1000
                 if (value < 12000) return value + 2000
                 return value + 4000
@@ -125,7 +125,7 @@ function createThinkingBudget() {
         },
         decrement: () => {
             update(value => {
-                if (value === 0) return 32000
+                if (value === 0) return value
                 if (value <= 4000) return value - 1000
                 if (value <= 12000) return value - 2000
                 return value - 4000
