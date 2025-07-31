@@ -2,7 +2,7 @@
     import { onMount } from 'svelte'
     import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { model, web_search } from '$lib/stores/ai'
+    import { active_tools } from '$lib/stores/ai'
 
     let mount_animation_state = $state('flash')
 
@@ -12,10 +12,12 @@
 
     const clicked = (e) => {
         e.preventDefault()
+        active_tools.remove('google_search')
     }
 
     const rightClicked = (e) => {
         e.preventDefault()
+        active_tools.remove('google_search')
     }
 
     const animateAddedToToolbar = () => {
@@ -37,7 +39,7 @@
         Google Search
     </div>
     <div class='value'>
-        (no options)
+        ON
     </div>
 </button>
 
