@@ -282,6 +282,14 @@ const model_prices = {
                 output_token: 230/1000000
             }
         }
+    },
+    'glm-4.5': {
+        price: {
+            cents: {
+                input_token:   60/1000000, // $0.60/mTok
+                output_token: 220/1000000
+            }
+        }
     }
 }
 

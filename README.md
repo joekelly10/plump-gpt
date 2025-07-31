@@ -76,6 +76,9 @@ It runs in your browser on `localhost:1337`.
 **Moonshot AI**
 - <img alt='Kimi K2' src='./static/img/icons/models/kimi-k2.png' width='21' height='21' valign='middle'>&nbsp; Kimi K2
 
+**Z.AI**
+- <img alt='GLM 4.5' src='./static/img/icons/models/glm-4.5.png' width='21' height='21' valign='middle'>&nbsp; GLM 4.5
+
 
 # Features
 
