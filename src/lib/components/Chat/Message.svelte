@@ -488,7 +488,7 @@
                 margin-bottom:   32px
                 padding:         24px
                 border-radius:   8px
-                border:          1px dotted color.adjust($blue-grey, $alpha: -0.75)
+                border:          1px dotted color.adjust($blue-grey, $alpha: -0.5)
                 font-size:       14px
                 line-height:     font.$line-height-14px
                 font-weight:     450
