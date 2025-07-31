@@ -135,7 +135,7 @@
         max-height:    290px
         overflow-y:    auto
         border-radius: 8px
-        border:        1px dotted color.adjust($blue-grey, $alpha: -0.75)
+        border:        1px dotted color.adjust($blue-grey, $alpha: -0.5)
         font-size:     14px
         line-height:   26px
         color:         $off-white
