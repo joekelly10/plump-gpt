@@ -376,7 +376,6 @@
     }
 
     const processXObject = async (data, gpt_message) => {
-        console.log('🤖-🔍 X object:', data)
         const reasoning_content = data.choices[0]?.delta.reasoning_content ?? '',
               content           = data.choices[0]?.delta.content ?? ''
         await append(gpt_message, reasoning_content, { is_reasoning: true })
