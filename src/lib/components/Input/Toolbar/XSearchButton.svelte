@@ -1,9 +1,9 @@
 <script>
     import { onMount } from 'svelte'
-    import { fade, fly, slide } from 'svelte/transition'
+    import { fade, slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { tool_list_active } from '$lib/stores/app'
-    import { x_search } from '$lib/stores/ai'
+    import { active_tools, x_search } from '$lib/stores/ai'
 
     let mount_animation_state = $state('flash'),
         controls_visible      = $state(false)
@@ -22,6 +22,15 @@
     const rightClicked = (e) => {
         e.preventDefault()
         controls_visible = false
+        if ($x_search.post_view_count === 0 && $x_search.post_favorite_count === 0) {
+            active_tools.remove('x_search')
+            return false
+        }
+        x_search.set({
+            ...$x_search,
+            post_view_count:     0,
+            post_favorite_count: 0
+        })
         return e.target.blur()
     }
 
