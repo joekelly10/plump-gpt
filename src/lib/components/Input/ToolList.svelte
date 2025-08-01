@@ -77,7 +77,7 @@
         bottom:         0
         left:           50%
         transform:      translateX(48px)
-        width:          512px
+        width:          520px
         
         .header
             display:          flex
