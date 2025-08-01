@@ -330,7 +330,7 @@
                     .content
                         :global
                             .tool-use
-                                background-color: color.mix($background-700, $delete-highlight-bg, 25%)
+                                background-color: black(0.075)
                                 color:            $delete-highlight-color
 
                                 .icon
@@ -362,7 +362,7 @@
                     .content
                         :global
                             .tool-use
-                                background-color: color.mix($background-500, $regenerate-highlight-bg, 33%)
+                                background-color: black(0.075)
                                 color:            $regenerate-highlight-color
 
                                 .icon
@@ -396,7 +396,7 @@
                     .content
                         :global
                             .tool-use
-                                background-color: color.mix($background-700, $star-highlight-bg, 85%)
+                                background-color: color.adjust($background-350, $alpha: -0.85)
                 
                 &.temp-highlight
                     background-color: color.adjust($background-300, $lightness: -2.5%)
@@ -404,6 +404,11 @@
                     border-radius:    1.5px 1.5px 8px 8px
                 
                 &.starred
+                    .content
+                        :global
+                            .tool-use
+                                background-color: color.adjust($background-350, $alpha: -0.85)
+
                     &.star-highlight
                         background-color: color.adjust($yellow, $alpha: -0.666)
                         box-shadow:       0 0 0 1.5px $yellow
@@ -481,18 +486,19 @@
 
         :global
             .tool-use
-                display:         flex
-                align-items:     center
-                justify-content: flex-start
-                gap:             24px
-                margin-bottom:   32px
-                padding:         24px
-                border-radius:   8px
-                border:          1px dotted color.adjust($blue-grey, $alpha: -0.5)
-                font-size:       14px
-                line-height:     font.$line-height-14px
-                font-weight:     450
-                color:           $blue-grey
+                display:          flex
+                align-items:      center
+                justify-content:  flex-start
+                gap:              24px
+                margin-bottom:    32px
+                padding:          24px
+                border-radius:    8px
+                border:           1px dotted color.adjust($blue-grey, $alpha: -0.5)
+                background-color: $background-350
+                font-size:        14px
+                line-height:      font.$line-height-14px
+                font-weight:      450
+                color:            $blue-grey
 
                 &:last-child
                     margin-bottom: 0

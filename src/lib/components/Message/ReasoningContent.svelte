@@ -95,7 +95,7 @@
         
         &.delete-highlight
             .reasoning-content
-                background-color: color.mix($background-700, $delete-highlight-bg, 25%)
+                background-color: black(0.075)
                 color:            $delete-highlight-color
 
                 &::-webkit-scrollbar-thumb
@@ -107,10 +107,13 @@
 
                 .thinking-icon
                     opacity: 0.5
+                
+                strong
+                    color: $delete-highlight-color
         
         &.regenerate-highlight
             .reasoning-content
-                background-color: color.mix($background-700, $regenerate-highlight-bg, 25%)
+                background-color: black(0.075)
                 color:            $regenerate-highlight-color
 
                 &::-webkit-scrollbar-thumb
@@ -122,23 +125,27 @@
 
                 .thinking-icon
                     opacity: 0.5
+
+                strong
+                    color: $regenerate-highlight-color
         
         &.star-highlight,
         &.starred
             .reasoning-content
-                background-color: color.mix($background-700, $star-highlight-bg, 85%)
+                background-color: color.adjust($background-350, $alpha: -0.85)
 
     .reasoning-content
-        position:      relative
-        margin-bottom: 32px
-        padding:       24px space.$default-padding
-        max-height:    290px
-        overflow-y:    auto
-        border-radius: 8px
-        border:        1px dotted color.adjust($blue-grey, $alpha: -0.5)
-        font-size:     14px
-        line-height:   26px
-        color:         $off-white
+        position:         relative
+        margin-bottom:    32px
+        padding:          24px space.$default-padding
+        max-height:       290px
+        overflow-y:       auto
+        border-radius:    8px
+        border:           1px dotted color.adjust($blue-grey, $alpha: -0.5)
+        background-color: $background-350
+        font-size:        14px
+        line-height:      26px
+        color:            $off-white
 
         &::-webkit-scrollbar
             width:      6px
