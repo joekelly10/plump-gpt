@@ -38,7 +38,7 @@
         hold_timer = setTimeout(() => {
             hold_triggered = true
             $config.default_model_id = model.id
-        }, 1000)
+        }, 500)
     }
 
     const pointerUp = () => {
