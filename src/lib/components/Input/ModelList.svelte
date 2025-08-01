@@ -155,8 +155,9 @@
             +shared.scrollbar
         
         .hover-info
-            position: absolute
-            bottom:   32px
-            right:    32px
-            z-index:  1000
+            position:       absolute
+            bottom:         32px
+            right:          32px
+            z-index:        1000
+            pointer-events: none
 </style>

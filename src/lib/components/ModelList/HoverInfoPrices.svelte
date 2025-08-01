@@ -27,7 +27,6 @@
         background-color: $blue
         background-image: linear-gradient(to bottom right, color.adjust($off-white, $alpha: -0.9), transparent)
         color:            $background-800
-        pointer-events:   none
         
         .icon
             font-size: 24px
