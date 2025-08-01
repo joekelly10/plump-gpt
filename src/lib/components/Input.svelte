@@ -336,7 +336,10 @@
                 }
             }
         } else if (data.type === 'message_delta') {
-            gpt_message.usage.output_tokens = data.usage.output_tokens
+            if (data.usage) {
+                gpt_message.usage.output_tokens   = data.usage.output_tokens
+                gpt_message.usage.server_tool_use = data.usage.server_tool_use
+            }
         } else if (data.type === 'error') {
             console.log('🤖-❌ Error: ', data)
             gpt_message.content += `\n\n**🚨 Error: ${data.error.message}**`
@@ -371,6 +374,10 @@
                     id:                 tool_use_id,
                     grounding_metadata: data.candidates[0].groundingMetadata
                 })
+                gpt_message.usage.server_tool_use = {
+                    ...gpt_message.usage.server_tool_use,
+                    google_search_requests: data.candidates[0].groundingMetadata.webSearchQueries.length
+                }
             }
         }
     }
@@ -399,6 +406,10 @@
                     num_sources_used: data.num_sources_used,
                     citations:        data.citations
                 })
+                gpt_message.usage.server_tool_use = {
+                    ...gpt_message.usage.server_tool_use,
+                    x_search_requests: data.num_sources_used
+                }
             }
         }
     }

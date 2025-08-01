@@ -294,13 +294,23 @@ const model_prices = {
 }
 
 export const getCost = (model, usage) => {
-    if (model.pricing_id === 'free') return { input: 0, output: 0, cache_write: 0, cache_read: 0, total: 0, cache_savings: 0 }
+    let tool_use_cost = getToolUseCost(model, usage)
+
+    if (model.pricing_id === 'free') return {
+        input:         0,
+        output:        0,
+        tool_use:      tool_use_cost,
+        cache_write:   0,
+        cache_read:    0,
+        total:         0 + tool_use_cost,
+        cache_savings: 0
+    }
 
     const price = model_prices[model.pricing_id ?? model.id]?.price
 
     if (!price) {
         console.log(`❌ Model ID "${model.pricing_id}" not found in price list.`)
-        return { input: -1, output: -1, cache_write: -1, cache_read: -1, total: -1, cache_savings: -1 }
+        return { input: -1, output: -1, tool_use: -1, cache_write: -1, cache_read: -1, total: -1, cache_savings: -1 }
     }
 
     let input_cost       = 0,
@@ -333,9 +343,10 @@ export const getCost = (model, usage) => {
     return {
         input:         input_cost,
         output:        output_cost,
+        tool_use:      tool_use_cost,
         cache_write:   cache_write_cost,
         cache_read:    cache_read_cost,
-        total:         cache_write_cost + cache_read_cost + input_cost + output_cost,
+        total:         cache_write_cost + cache_read_cost + input_cost + output_cost + tool_use_cost,
         cache_savings: cache_savings
     }
 }
@@ -354,4 +365,30 @@ export const getPrices = (model) => {
         input:  price.cents.input_token,
         output: price.cents.output_token
     }
+}
+
+const getToolUseCost = (model, usage) => {
+    let tool_use_cost = 0
+
+    if (usage.server_tool_use) {
+        if (model.type === 'openai') {
+            // $25/1000 web search requests
+            const web_search_requests = usage.server_tool_use.web_search_requests ?? 0
+            tool_use_cost += web_search_requests * 2.5
+        } else if (model.type === 'anthropic') {
+            // $10/1000 web search requests
+            const web_search_requests = usage.server_tool_use.web_search_requests ?? 0
+            tool_use_cost += web_search_requests * 1
+        } else if (model.type === 'google') {
+            // 1,500 RPD free, then $0.035/req
+            const google_search_requests = usage.server_tool_use.google_search_requests ?? 0
+            tool_use_cost += google_search_requests * 0
+        } else if (model.type === 'x') {
+            // $25/1000 x search requests
+            const x_search_requests = usage.server_tool_use.x_search_requests ?? 0
+            tool_use_cost += x_search_requests * 2.5
+        }
+    }
+
+    return tool_use_cost
 }
