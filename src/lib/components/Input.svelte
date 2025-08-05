@@ -102,7 +102,7 @@
         api_state.startSending()
 
         await tick()
-        hljs.highlightAll()
+        codeHighlightLastMessage()
         is_hovering.clear()
         scrollChatToBottom({ context: 'sending_message' })
 
@@ -176,9 +176,6 @@
             $messages = [...$messages.slice(0,-1), gpt_message]
 
             api_state.finishStreaming()
-            hljs.highlightAll()
-            addCopyButtons()
-            await tick()
             scrollChatToBottom({ context: 'streaming_finished' })
 
             return
@@ -192,8 +189,7 @@
 
         api_state.finishStreaming()
         $is_adding_reply = false
-        hljs.highlightAll()
-        addCopyButtons()
+        codeHighlightLastMessage()
 
         await tick()
         scrollChatToBottom({ context: 'streaming_finished' })
@@ -518,7 +514,7 @@
                 }
                 $messages = [...$messages.slice(0, -1), gpt_message]
                 await tick()
-                hljs.highlightAll()
+                codeHighlightLastMessage()
                 if (!rate_limiter) {
                     scrollChatToBottom({ context: 'streaming_message' })
                     rate_limiter = setTimeout(() => { rate_limiter = null }, 200)
@@ -536,7 +532,7 @@
             }
             $messages = [...$messages.slice(0, -1), gpt_message]
             await tick()
-            hljs.highlightAll()
+            codeHighlightLastMessage()
             if (!rate_limiter) {
                 scrollChatToBottom({ context: 'streaming_message' })
                 rate_limiter = setTimeout(() => { rate_limiter = null }, 200)
@@ -549,7 +545,18 @@
         $messages = [...$messages.slice(0, -1), gpt_message]
 
         await tick()
-        hljs.highlightAll()
+        codeHighlightLastMessage()
+    }
+
+    const codeHighlightLastMessage = () => {
+        const last_message_id      = $messages[$messages.length - 1].id,
+              last_message_element = document.querySelector(`#message-${last_message_id}`),
+              code_blocks          = last_message_element?.querySelectorAll('code') ?? []
+
+        if (code_blocks.length > 0) {
+            code_blocks.forEach(code_block => hljs.highlightElement(code_block))
+            addCopyButtons(last_message_element)
+        }
     }
 
     const _quoteSelectedText = () => {

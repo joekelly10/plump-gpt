@@ -1,7 +1,13 @@
 export const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
-export const addCopyButtons = () => {
-    const code_blocks = document.querySelectorAll('.message pre')
+export const addCopyButtons = (element) => {
+    let code_blocks
+
+    if (element) {
+        code_blocks = element.querySelectorAll('pre')
+    } else {
+        code_blocks = document.querySelectorAll('.message pre')
+    }
 
     code_blocks.forEach((block) => {
         let div = document.createElement('div')
