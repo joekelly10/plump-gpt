@@ -1,7 +1,7 @@
 <script>
     import { tick } from 'svelte'
     import { page } from '$app/stores'
-    import { is_initialising, loader_active, user_settings_active, model_list_active, tool_list_active, input_expanded } from '$lib/stores/app'
+    import { is_initialising, main_menu_active, loader_active, model_list_active, tool_list_active, input_expanded } from '$lib/stores/app'
     import { chat_id, messages, forks, active_fork, active_messages, stars, highlights } from '$lib/stores/chat'
     import { is_hovering, is_adding_reply, is_deleting, is_scrolled_to_bottom, is_provisionally_forking } from '$lib/stores/chat/interactions'
     import { model, temperature, top_p, active_tools, thinking_budget, web_search, x_search } from '$lib/stores/ai'
@@ -16,7 +16,6 @@
     import ToolsButton from '$lib/components/Input/ToolsButton.svelte'
     import InputToolbar from '$lib/components/Input/Toolbar.svelte'
     import ModelSettings from '$lib/components/Input/ModelSettings.svelte'
-    import UserSettings from '$lib/components/Input/UserSettings.svelte'
     import ExpandButton from '$lib/components/Input/ExpandButton.svelte'
     import SystemPromptButton from '$lib/components/Input/SystemPromptButton.svelte'
     import ScrollDownButton from '$lib/components/Input/ScrollDownButton.svelte'
@@ -65,9 +64,9 @@
     const _sendMessage = async (is_new_user_message = true) => {
         console.log('🤖 Sending message...')
 
-        $model_list_active    = false
-        $tool_list_active     = false
-        $user_settings_active = false
+        $main_menu_active  = false
+        $model_list_active = false
+        $tool_list_active  = false
 
         const getNextId = () => {
             return $messages[$messages.length - 1].id + 1
@@ -632,6 +631,7 @@
         $highlights            = []
         $chat_id               = null
         $loader_active         = false
+        $main_menu_active      = false
         $is_scrolled_to_bottom = true
         is_hovering.clear()
         $page.url.searchParams.delete('user_message')
@@ -642,8 +642,8 @@
     }
 
     const _onChatUpdated = async (options = { switch_model: false }) => {
-        $user_settings_active = false
-        $model_list_active    = false
+        $main_menu_active  = false
+        $model_list_active = false
 
         focus()
         await tick()
@@ -771,10 +771,6 @@
 </script>
 
 <section class='primary-input-section' class:expanded={$input_expanded} class:model-list-active={$model_list_active} class:toolbar-active={toolbar_active}>
-    {#if !$input_expanded}
-        <UserSettings/>
-    {/if}
-
     <ModelList
         focusInput={focus}
     />

@@ -2,13 +2,13 @@
     import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { active_tools } from '$lib/stores/ai'
-    import { model_list_active, user_settings_active, tool_list_active, input_expanded } from '$lib/stores/app'
+    import { model_list_active, main_menu_active, tool_list_active, input_expanded } from '$lib/stores/app'
 
     const onclick = () => {
-        $model_list_active    = false
-        $user_settings_active = false
-        $input_expanded       = false
-        $tool_list_active     = !$tool_list_active
+        $model_list_active = false
+        $main_menu_active  = false
+        $input_expanded    = false
+        $tool_list_active  = !$tool_list_active
     }
 </script>
 

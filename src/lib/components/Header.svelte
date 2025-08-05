@@ -1,29 +1,25 @@
 <script>
     import { messages } from '$lib/stores/chat'
 
-    import DeleteButton from '$lib/components/Header/DeleteButton.svelte'
-    import LoadButton from '$lib/components/Header/LoadButton.svelte'
+    import MenuButton from '$lib/components/Header/MenuButton.svelte'
     import SaveButton from '$lib/components/Header/SaveButton.svelte'
     import TreeButton from '$lib/components/Header/TreeButton.svelte'
     import Logo from '$lib/components/Header/Logo.svelte'
 
-    export const saveChat = () => save_button.saveChat()
+    export const saveChat = () => save_button?.saveChat()
 
-    const { cancelFork, deleteChat } = $props()
+    const { cancelFork } = $props()
 
-    let save_button
+    let save_button = $state(null)
 
     const chat_has_messages = $derived($messages.length > 1)
 </script>
 
 <header class='header'>
     <div class='left'>
-        <LoadButton/>
-        <SaveButton bind:this={save_button} />
+        <MenuButton/>
         {#if chat_has_messages}
-            <DeleteButton
-                deleteChat={deleteChat}
-            />
+            <SaveButton bind:this={save_button} />
         {/if}
     </div>
     <div class='title'>

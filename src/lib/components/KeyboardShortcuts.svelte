@@ -1,5 +1,5 @@
 <script>
-    import { loader_active, prompt_editor_active, tree_active, model_list_active, tool_list_active, user_settings_active, input_expanded } from '$lib/stores/app'
+    import { main_menu_active, loader_active, prompt_editor_active, tree_active, model_list_active, tool_list_active, input_expanded } from '$lib/stores/app'
     import { forks, active_fork, chat_id } from '$lib/stores/chat'
     import { model, temperature, top_p } from '$lib/stores/ai'
     import { is_idle } from '$lib/stores/api'
@@ -50,8 +50,11 @@
         if ((e.ctrlKey && e.key === 'o') || (e.metaKey && e.key === 'o')) {
             e.preventDefault()
             if ($is_idle) {
-                $loader_active = !$loader_active
-                return
+                $main_menu_active  = false
+                $model_list_active = false
+                $tool_list_active  = false
+                $input_expanded    = false
+                return $loader_active = !$loader_active
             }
         }
         if ((e.ctrlKey && e.key === 's') || (e.metaKey && e.key === 's')) {
@@ -89,17 +92,17 @@
         // expand input
         if (e.ctrlKey && e.shiftKey && e.key === 'ArrowUp') {
             e.preventDefault()
-            $user_settings_active = false
-            $model_list_active    = false
-            $tool_list_active     = false
+            $main_menu_active  = false
+            $model_list_active = false
+            $tool_list_active  = false
             return $input_expanded = true
         }
         
         if (e.ctrlKey && e.shiftKey && e.key === 'ArrowDown') {
             e.preventDefault()
-            $user_settings_active = false
-            $model_list_active    = false
-            $tool_list_active     = false
+            $main_menu_active  = false
+            $model_list_active = false
+            $tool_list_active  = false
             return $input_expanded = false
         }
 
@@ -108,9 +111,9 @@
             e.preventDefault()
             if ($forks[$active_fork].provisional) chat.cancelFork()
             chat.deselectText()
-            $model_list_active    = false
-            $user_settings_active = false
-            $tool_list_active     = false
+            $main_menu_active  = false
+            $model_list_active = false
+            $tool_list_active  = false
             return false
         }
 

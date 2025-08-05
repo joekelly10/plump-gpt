@@ -1,11 +1,12 @@
 <script>
-    import { tree_active, loader_active, prompt_editor_active } from '$lib/stores/app'
+    import { main_menu_active, tree_active, loader_active, prompt_editor_active } from '$lib/stores/app'
     import { messages } from '$lib/stores/chat'
 
     import Header from '$lib/components/Header.svelte'
     import Chat from '$lib/components/Chat.svelte'
     import Input from '$lib/components/Input.svelte'
     import Initialiser from '$lib/components/Initialiser.svelte'
+    import MainMenu from '$lib/components/MainMenu.svelte'
     import Loader from '$lib/components/Loader.svelte'
     import Tree from '$lib/components/Tree.svelte'
     import PromptEditor from '$lib/components/PromptEditor.svelte'
@@ -30,6 +31,7 @@
           regenerateReply    = () => input.regenerateReply(),
           quoteSelectedText  = () => input.quoteSelectedText(),
           deleteChat         = () => input.deleteChat(),
+          newChat            = () => input.newChat(),
           onChatUpdated      = () => input.onChatUpdated()
 
     const onChatLoaded = () => {
@@ -57,7 +59,6 @@
     <Header
         bind:this={header}
         cancelFork={cancelFork}
-        deleteChat={deleteChat}
     />
     <Chat
         bind:this={chat}
@@ -80,6 +81,13 @@
     sendMessage={sendMessage}
     onReady={focusInput}
 />
+
+{#if $main_menu_active}
+    <MainMenu
+        deleteChat={deleteChat}
+        newChat={newChat}
+    />
+{/if}
 
 {#if $loader_active}
     <Loader
