@@ -149,7 +149,7 @@
             padding:          space.$header-height
             border-left:      1px solid $background-700
             border-right:     1px solid $background-700
-            background-color: color.adjust(color.adjust($background-500, $lightness: -1%), $alpha: -0.05)
+            background-color: $modal-blur-bg-color
             backdrop-filter:  blur(4px)
             overflow-y:       scroll
             +shared.scrollbar

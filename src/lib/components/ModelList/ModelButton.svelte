@@ -129,11 +129,11 @@
         transition:    background-color easing.$quart-out 0.1s
 
         &:hover
-            background-color: $background-700
+            background-color: $background-800
             transition:       none
             
         &:active
-            background-color: $background-800
+            background-color: $background-850
             transform:        scale(0.99)
             transition:       none
             
