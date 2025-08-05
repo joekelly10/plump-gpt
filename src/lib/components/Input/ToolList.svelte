@@ -8,6 +8,7 @@
     import WebSearchButton from '$lib/components/ToolList/ToggleWebSearchButton.svelte'
     import GoogleSearchButton from '$lib/components/ToolList/Google/ToggleGoogleSearchButton.svelte'
     import XSearchButton from '$lib/components/ToolList/ToggleXSearchButton.svelte'
+    import ExaSearchButton from '$lib/components/ToolList/ToggleExaSearchButton.svelte'
 
     const close = () => {
         $tool_list_active = false
@@ -49,6 +50,12 @@
                     {/if}
                     {#if $model.tools.includes('x_search')}
                         <XSearchButton/>
+                    {/if}
+                    {#if $model.tools.includes('exa_search')}
+                        <div class='tool-group-heading'>
+                            Remote MCP
+                        </div>
+                        <ExaSearchButton/>
                     {/if}
                 </div>
             </div>

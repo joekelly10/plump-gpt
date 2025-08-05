@@ -8,6 +8,7 @@
     import WebSearchButton from '$lib/components/Input/Toolbar/WebSearchButton.svelte'
     import GoogleSearchButton from '$lib/components/Input/Toolbar/GoogleSearchButton.svelte'
     import XSearchButton from '$lib/components/Input/Toolbar/XSearchButton.svelte'
+    import ExaSearchButton from '$lib/components/Input/Toolbar/ExaSearchButton.svelte'
 
     const is_empty = $derived($active_tools.length === 0)
 </script>
@@ -35,6 +36,8 @@
             <GoogleSearchButton/>
         {:else if tool === 'x_search'}
             <XSearchButton/>
+        {:else if tool === 'exa_search'}
+            <ExaSearchButton/>
         {/if}
     {/each}
 </div>

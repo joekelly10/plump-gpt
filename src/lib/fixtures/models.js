@@ -62,7 +62,7 @@ export default [
         context_window: 200000,
         is_reasoner:    false,
         pricing_id:     'claude-haiku',
-        tools:          ['web_search']
+        tools:          ['web_search', 'exa_search']
     },
     {
         type:           'anthropic',
@@ -75,7 +75,7 @@ export default [
         context_window: 200000,
         is_reasoner:    true,
         pricing_id:     'claude-sonnet',
-        tools:          ['thinking_budget', 'web_search']
+        tools:          ['thinking_budget', 'web_search', 'exa_search']
     },
     {
         type:           'anthropic',

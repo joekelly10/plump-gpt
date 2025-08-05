@@ -56,7 +56,7 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
     const headers = new Headers({
         'Content-Type':      'application/json',
         'anthropic-version': '2023-06-01',
-        'anthropic-beta':    'prompt-caching-2024-07-31',
+        'anthropic-beta':    'prompt-caching-2024-07-31,mcp-client-2025-04-04',
         'x-api-key':         env.ANTHROPIC_API_KEY
     })
 
@@ -79,7 +79,8 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
     }
 
     if (options.tools?.length > 0) {
-        body.tools = []
+        body.tools       = []
+        body.mcp_servers = []
 
         options.tools.forEach(tool => {
             if (tool.name === 'web_search' && tool.max_uses > 0) {
@@ -87,6 +88,13 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
                     type:     'web_search_20250305',
                     name:     'web_search',
                     max_uses: tool.max_uses
+                })
+            }
+            if (tool.name === 'exa_search') {
+                body.mcp_servers.push({
+                    type: 'url',
+                    name: 'exa_search',
+                    url:  'https://mcp.exa.ai/mcp?exaApiKey=' + env.EXA_API_KEY
                 })
             }
         })

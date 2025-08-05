@@ -301,14 +301,24 @@
             gpt_message.usage.cache_read_tokens  = data.message.usage.cache_read_input_tokens ?? 0
             gpt_message.usage.input_tokens       = data.message.usage.input_tokens
         } else if (data.type === 'content_block_start') {
-            if (data.content_block.type === 'server_tool_use') {
+            if (data.content_block.type === 'server_tool_use' || data.content_block.type === 'mcp_tool_use') {
                 gpt_message.content += `\n\n{{TOOL_USE:${data.content_block.id}}}\n\n`
                 gpt_message.tool_uses.push({
-                    type:  'server_tool_use',
-                    id:    data.content_block.id,
-                    name:  data.content_block.name,
-                    input: data.content_block.input
+                    type:   data.content_block.type,
+                    id:     data.content_block.id,
+                    name:   data.content_block.name,
+                    input:  data.content_block.input,
+                    result: null
                 })
+            } else if (data.content_block.type === 'mcp_tool_result') {
+                const tool_use = gpt_message.tool_uses.find(tool_use => tool_use.id === data.content_block.id)
+                if (tool_use) {
+                    const json = JSON.parse(data.content_block.content[0]?.text)
+                    tool_use.result = {
+                        is_error: data.content_block.is_error,
+                        content:  json
+                    }
+                }
             }
         } else if (data.type === 'content_block_delta') {
             if (data.delta.type === 'thinking_delta') {
@@ -661,6 +671,11 @@
                 tools.push({
                     name:     'web_search',
                     max_uses: $web_search.anthropic.max_uses
+                })
+            }
+            if ($active_tools.includes('exa_search')) {
+                tools.push({
+                    name: 'exa_search'
                 })
             }
         } else if ($model.type === 'google') {

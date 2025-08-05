@@ -66,6 +66,35 @@ export const serverToolDeltaObject = (content) => ({
     }
 })
 
+export const mcpToolStartObject = (mcp_tool_name = 'web_search_exa', mcp_server_name = 'exa_search') => ({
+    type: "content_block_start",
+    index: 1,
+    content_block: {
+        type:        "mcp_tool_use",
+        id:          "mcptoolu_1337",
+        server_name: mcp_server_name,
+        name:        mcp_tool_name,
+        input:       {}
+    }
+})
+
+export const mcpToolResultObject = (mcp_tool_name = 'web_search_exa', mcp_server_name = 'exa_search') => ({
+    type: "content_block_start",
+    index: 2,
+    content_block: {
+        type:        "mcp_tool_result",
+        tool_use_id: "mcptoolu_1337",
+        is_error:    false,
+        content:     [
+            {
+                type: "text",
+                text: "{\n  \"success\": true,\n  \"taskId\": \"01k1e4tnv9r650zzhjqdg3xejz\",\n  \"model\": \"exa-research-pro\",\n  \"instructions\": \"Research the thing.\",\n  \"outputSchema\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"report\": {\n        \"description\": \"No output schema provided. Using default output: markdown report.\",\n        \"type\": \"string\"\n      }\n    },\n    \"required\": [\n      \"report\"\n    ],\n    \"additionalProperties\": false\n  },\n  \"message\": \"Deep research task started successfully with exa-research-pro model. IMMEDIATELY use deep_researcher_check with task ID '01k1e4tnv9r650zzhjqdg3xejz' to monitor progress. Keep checking every few seconds until status is 'completed' to get the research results.\",\n  \"nextStep\": \"Call deep_researcher_check with taskId: \\\"01k1e4tnv9r650zzhjqdg3xejz\\\"\"\n}"
+            }
+        ]
+    }
+})
+
+
 export const textStartObject = () => ({
     type:  "content_block_start",
     index: 0,
