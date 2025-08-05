@@ -85,26 +85,9 @@
         font-size:       14px
         font-weight:     450
         color:           $background-200
-        cursor:          pointer
-        transition:      background-color easing.$quart-out 0.1s, color easing.$quart-out 0.1s
-        
-        &:hover
-            background-color: $background-800
-            transition:       none
-
-            .save-text
-                font-weight: 600
-                color:       $off-white
-        
-        &:active
-            background-color: $background-850
-            transition:       none
+        cursor:          default
 
         &.saving
-            .save-text
-                opacity:    0
-                transition: none
-
             .spinner
                 opacity: 1
 
@@ -112,16 +95,11 @@
                     animation: animation.$spinner-animation
 
         &.saved
-            .save-text
-                opacity:    0
-                transition: none
-            
             .saved-text
                 opacity: 1
 
     .save-text
-        opacity:    1
-        transition: opacity easing.$quart-out 0.125s 0.125s
+        opacity: 0
 
     .spinner
         position:  absolute
