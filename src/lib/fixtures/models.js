@@ -23,7 +23,7 @@ export default [
         context_window: 1000000,
         is_reasoner:    false,
         pricing_id:     'gpt-4.1-mini',
-        tools:          []
+        tools:          ['web_search']
     },
     {
         type:           'open-ai',
@@ -36,7 +36,7 @@ export default [
         context_window: 1000000,
         is_reasoner:    false,
         pricing_id:     'gpt-4.1',
-        tools:          []
+        tools:          ['web_search']
     },
     {
         type:           'open-ai',
@@ -49,7 +49,7 @@ export default [
         context_window: 128000,
         is_reasoner:    true,
         pricing_id:     'o4-mini',
-        tools:          []
+        tools:          ['web_search']
     },
     {
         type:           'open-ai',
@@ -62,7 +62,7 @@ export default [
         context_window: 200000,
         is_reasoner:    true,
         pricing_id:     'o3',
-        tools:          []
+        tools:          ['web_search']
     },
     {
         type:           'open-ai',
@@ -75,7 +75,7 @@ export default [
         context_window: 200000,
         is_reasoner:    true,
         pricing_id:     'o3-pro',
-        tools:          []
+        tools:          ['web_search']
     },
     {
         type:           'anthropic',

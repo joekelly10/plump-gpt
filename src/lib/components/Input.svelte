@@ -290,6 +290,21 @@
                 output_tokens:     usage.output_tokens,
                 reasoning_tokens:  usage.output_tokens_details.reasoning_tokens
             }
+        } else if (data.type === 'response.output_item.done') {
+            if (data.item.type === 'web_search_call') {
+                gpt_message.content += `\n\n{{TOOL_USE:${data.item.id}}}\n\n`
+                gpt_message.tool_uses.push({
+                    type:   'server_tool_use',
+                    id:     data.item.id,
+                    name:   'web_search',
+                    input:  { query: data.item.action.query },
+                    result: null
+                })
+                gpt_message.usage.server_tool_use = {
+                    ...gpt_message.usage.server_tool_use,
+                    web_search_requests: (gpt_message.usage.server_tool_use?.web_search_requests ?? 0) + 1
+                }
+            }
         }
     }
 

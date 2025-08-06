@@ -33,15 +33,23 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
         }
     }
 
-    // if (options.tools?.length > 0) {
-    //     options.tools.forEach(tool => {
-    //         if (tool.name === 'web_search') {
-    //             body.web_search_options = {
-    //                 search_context_size: tool.search_context_size
-    //             }
-    //         }
-    //     })
-    // }
+    if (options.tools?.length > 0) {
+        body.tools = []
+
+        options.tools.forEach(tool => {
+            if (tool.name === 'web_search') {
+                let tool = { type: 'web_search_preview' }
+                //
+                //  Context size configuration is not supported for
+                //  o3, o3-pro, o4-mini, and deep research models
+                //
+                if (!['o3', 'o3-pro', 'o4-mini'].includes(options.model.id)) {
+                    tool.search_context_size = tool.search_context_size ?? 'low'
+                }
+                body.tools.push(tool)
+            }
+        })
+    }
 
     body = JSON.stringify(body)
 

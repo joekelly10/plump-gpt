@@ -6,6 +6,15 @@
 
     let mount_animation_state = $state('flash')
 
+    const context_size = $derived.by(() => {
+        switch ($web_search.open_ai.search_context_size) {
+            case 'off':    return 'Off'
+            case 'low':    return 'Small Context'
+            case 'medium': return 'Medium Context'
+            case 'high':   return 'Large Context'
+        }
+    })
+
     onMount(() => {
         if ($web_search.open_ai.search_context_size === 'off') web_search.increment_search_context_size()
         if ($web_search.anthropic.max_uses === 0) web_search.increment_max_uses()
@@ -84,7 +93,7 @@
             </span>
         {:else}
             {#if $model.type === 'open-ai'}
-                {$web_search.open_ai.search_context_size.charAt(0).toUpperCase() + $web_search.open_ai.search_context_size.slice(1)}
+                {context_size}
             {:else if $model.type === 'anthropic'}
                 {$web_search.anthropic.max_uses} max
             {/if}
