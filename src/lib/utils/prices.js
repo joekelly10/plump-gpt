@@ -31,6 +31,22 @@ const model_prices = {
             }
         }
     },
+    'o3': {
+        price: {
+            cents: {
+                input_token:  200/1000000, // $2.00/mTok
+                output_token: 800/1000000
+            }
+        }
+    },
+    'o3-pro': {
+        price: {
+            cents: {
+                input_token:  2000/1000000, // $20.00/mTok
+                output_token: 8000/1000000
+            }
+        }
+    },
     'claude-haiku': {
         price: {
             cents: {

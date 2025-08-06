@@ -52,6 +52,32 @@ export default [
         tools:          []
     },
     {
+        type:           'open-ai',
+        id:             'o3',
+        name:           'o3',
+        short_name:     'o3',
+        icon:           'o3.png',
+        family:         'Open AI',
+        hosted_at:      'openai.com',
+        context_window: 200000,
+        is_reasoner:    true,
+        pricing_id:     'o3',
+        tools:          []
+    },
+    {
+        type:           'open-ai',
+        id:             'o3-pro',
+        name:           'o3 pro',
+        short_name:     'o3 pro',
+        icon:           'o3-pro.png',
+        family:         'Open AI',
+        hosted_at:      'openai.com',
+        context_window: 200000,
+        is_reasoner:    true,
+        pricing_id:     'o3-pro',
+        tools:          []
+    },
+    {
         type:           'anthropic',
         id:             'claude-3-5-haiku-latest',
         name:           'Claude 3.5 Haiku',
