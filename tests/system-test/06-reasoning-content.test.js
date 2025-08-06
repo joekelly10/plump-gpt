@@ -7,6 +7,31 @@ import defaults from '../../src/lib/fixtures/defaults'
 import models from '../../src/lib/fixtures/models'
 
 test.describe('Reasoning Content', () => {
+    test('we should see the reasoning from Open AI models', async ({ page }) => {
+        await page.goto('/')
+
+        const default_model = models.find(m => m.id === defaults.model),
+              input         = page.locator('.primary-input-section .input'),
+              user_message  = page.locator('.chat .messages .message.user'),
+              ai_message    = page.locator('.chat .messages .message.assistant')
+
+        if (default_model.type !== 'open-ai' || !default_model.is_reasoner) {
+            const open_ai_model = models.find(m => m.type === 'open-ai' && m.is_reasoner)
+            await switchModel(page, open_ai_model)
+        }
+
+        await input.fill(basic_reasoning_prompt)
+        await page.keyboard.press('Enter')
+
+        await expect(input).toHaveText('')
+        await expect(user_message).toHaveCount(1)
+        await expect(user_message.locator('.message-content')).toHaveText(basic_reasoning_prompt)
+
+        await expect(ai_message).toHaveCount(1)
+        await expect(ai_message.locator('.reasoning-content')).toContainText(basic_reasoning_content)
+        await expect(ai_message.locator('.message-content')).toHaveText(basic_reasoning_reply)
+    })
+
     test('we should see the reasoning from Anthropic models', async ({ page }) => {
         await page.goto('/')
 
