@@ -5,6 +5,7 @@
     import { active_tools } from '$lib/stores/ai'
 
     import ThinkingBudgetButton from '$lib/components/Input/Toolbar/ThinkingBudgetButton.svelte'
+    import ReasoningEffortButton from '$lib/components/Input/Toolbar/ReasoningEffortButton.svelte'
     import WebSearchButton from '$lib/components/Input/Toolbar/WebSearchButton.svelte'
     import GoogleSearchButton from '$lib/components/Input/Toolbar/GoogleSearchButton.svelte'
     import XSearchButton from '$lib/components/Input/Toolbar/XSearchButton.svelte'
@@ -30,6 +31,8 @@
     {#each $active_tools as tool (tool)}
         {#if tool === 'thinking_budget'}
             <ThinkingBudgetButton/>
+        {:else if tool === 'reasoning_effort'}
+            <ReasoningEffortButton/>
         {:else if tool === 'web_search'}
             <WebSearchButton/>
         {:else if tool === 'google_search'}

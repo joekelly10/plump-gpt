@@ -4,13 +4,14 @@ import { browser } from '$app/environment'
 import defaults from '$lib/fixtures/defaults'
 import models from '$lib/fixtures/models'
 
-export const model           = createModel()
-export const temperature     = createTemperature()
-export const top_p           = createTopP()
-export const active_tools    = createActiveTools()
-export const thinking_budget = createThinkingBudget()
-export const web_search      = createWebSearch()
-export const x_search        = createXSearch()
+export const model            = createModel()
+export const temperature      = createTemperature()
+export const top_p            = createTopP()
+export const active_tools     = createActiveTools()
+export const reasoning_effort = createReasoningEffort()
+export const thinking_budget  = createThinkingBudget()
+export const web_search       = createWebSearch()
+export const x_search         = createXSearch()
 
 model.subscribe(new_model => {
     active_tools.update(value => value.filter(tool => new_model.tools.includes(tool)))
@@ -104,6 +105,29 @@ function createActiveTools() {
             update(value => {
                 value = value.filter(tool => tool !== tool_name)
                 return value
+            })
+        }
+    }
+}
+
+function createReasoningEffort() {
+    const { subscribe, set, update } = writable(defaults.reasoning_effort)
+
+    return {
+        subscribe,
+        set,
+        increment: () => {
+            update(value => {
+                if (value === 'high') return value
+                if (value === 'medium') return 'high'
+                if (value === 'low') return 'medium'
+            })
+        },
+        decrement: () => {
+            update(value => {
+                if (value === 'low') return value
+                if (value === 'medium') return 'low'
+                if (value === 'high') return 'medium'
             })
         }
     }

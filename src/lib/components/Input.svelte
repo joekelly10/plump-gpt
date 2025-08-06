@@ -4,7 +4,7 @@
     import { is_initialising, main_menu_active, loader_active, model_list_active, tool_list_active, input_expanded } from '$lib/stores/app'
     import { chat_id, messages, forks, active_fork, active_messages, stars, highlights } from '$lib/stores/chat'
     import { is_hovering, is_adding_reply, is_deleting, is_scrolled_to_bottom, is_provisionally_forking } from '$lib/stores/chat/interactions'
-    import { model, temperature, top_p, active_tools, thinking_budget, web_search, x_search } from '$lib/stores/ai'
+    import { model, temperature, top_p, active_tools, reasoning_effort, thinking_budget, web_search, x_search } from '$lib/stores/ai'
     import { api_state, is_idle } from '$lib/stores/api'
     import { config } from '$lib/stores/user'
     import { addCopyButtons, sleep } from '$lib/utils/helpers'
@@ -109,6 +109,10 @@
             model:       $model,
             temperature: $temperature,
             top_p:       $top_p
+        }
+
+        if ($model.type === 'open-ai' && $active_tools.includes('reasoning_effort')) {
+            options.reasoning_effort = $reasoning_effort
         }
 
         if ($model.type === 'anthropic' && $active_tools.includes('thinking_budget')) {

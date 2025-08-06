@@ -5,6 +5,7 @@
     import { model } from '$lib/stores/ai'
 
     import ThinkingBudgetButton from '$lib/components/ToolList/ToggleThinkingBudgetButton.svelte'
+    import ReasoningEffortButton from '$lib/components/ToolList/ToggleReasoningEffortButton.svelte'
     import WebSearchButton from '$lib/components/ToolList/ToggleWebSearchButton.svelte'
     import GoogleSearchButton from '$lib/components/ToolList/ToggleGoogleSearchButton.svelte'
     import XSearchButton from '$lib/components/ToolList/ToggleXSearchButton.svelte'
@@ -41,6 +42,9 @@
                     </div>
                     {#if $model.type === 'anthropic' && $model.is_reasoner}
                         <ThinkingBudgetButton/>
+                    {/if}
+                    {#if $model.tools.includes('reasoning_effort')}
+                        <ReasoningEffortButton/>
                     {/if}
                     {#if $model.tools.includes('web_search')}
                         <WebSearchButton/>

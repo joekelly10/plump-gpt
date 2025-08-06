@@ -28,7 +28,7 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
         delete body.top_p
 
         body.reasoning = {
-            effort:  options.reasoning_effort ?? 'low',
+            effort:  options.reasoning_effort ?? 'medium',
             summary: options.reasoning_summary ?? 'detailed'
         }
     }

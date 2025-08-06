@@ -49,7 +49,7 @@ export default [
         context_window: 128000,
         is_reasoner:    true,
         pricing_id:     'o4-mini',
-        tools:          ['web_search']
+        tools:          ['reasoning_effort', 'web_search']
     },
     {
         type:           'open-ai',
@@ -62,7 +62,7 @@ export default [
         context_window: 200000,
         is_reasoner:    true,
         pricing_id:     'o3',
-        tools:          ['web_search']
+        tools:          ['reasoning_effort', 'web_search']
     },
     {
         type:           'open-ai',
@@ -75,7 +75,7 @@ export default [
         context_window: 200000,
         is_reasoner:    true,
         pricing_id:     'o3-pro',
-        tools:          ['web_search']
+        tools:          ['reasoning_effort', 'web_search']
     },
     {
         type:           'anthropic',
