@@ -26,9 +26,13 @@ test.describe('Init', () => {
     test('chat history should be empty', async ({ page }) => {
         await page.goto('/')
 
-        const load_button      = page.locator('.load-button'),
+        const menu_button      = page.locator('.main-menu-button'),
+              load_button      = page.locator('.main-menu .load-button'),
               loader           = page.locator('.loader'),
               no_chats_message = loader.locator('.chats .no-chats')
+
+        await menu_button.click()
+        await expect(load_button).toBeVisible()
 
         await load_button.click()
         await expect(loader).toBeVisible()

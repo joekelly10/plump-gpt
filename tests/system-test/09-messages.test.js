@@ -175,10 +175,14 @@ test.describe('Messages', () => {
 
         await page.reload()
 
-        const load_button = page.locator('.load-button'),
+        const menu_button = page.locator('.main-menu-button'),
+              load_button = page.locator('.main-menu .load-button'),
               loader      = page.locator('.loader'),
               chat_list   = loader.locator('.chats'),
               latest_chat = chat_list.locator('.loader-chat').first()
+
+        await menu_button.click()
+        await expect(load_button).toBeVisible()
 
         await load_button.click()
         await expect(loader).toBeVisible()
@@ -318,7 +322,8 @@ test.describe('Messages', () => {
               user_message     = chat.locator('.messages .message.user'),
               ai_message       = chat.locator('.messages .message.assistant'),
               delete_button    = ai_message.locator('.message-controls-right .delete'),
-              load_button      = page.locator('.load-button'),
+              menu_button      = page.locator('.main-menu-button'),
+              load_button      = page.locator('.main-menu .load-button'),
               loader           = page.locator('.loader'),
               no_chats_message = loader.locator('.chats .no-chats')
 
@@ -338,6 +343,9 @@ test.describe('Messages', () => {
         await expect(ai_message).toHaveCount(0)
         await expect(user_message).toHaveCount(0)
         await expect(delete_button).toBeHidden()
+
+        await menu_button.click()
+        await expect(load_button).toBeVisible()
 
         await load_button.click()
         await expect(loader).toBeVisible()

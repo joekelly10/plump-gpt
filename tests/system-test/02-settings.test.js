@@ -103,18 +103,12 @@ test.describe('Settings', () => {
     test('we should be able to change our avatar', async ({ page }) => {
         await page.goto('/')
 
-        const user_settings   = page.locator('.user-settings'),
-              settings_button = user_settings.locator('.user-settings-button'),
-              settings_list   = user_settings.locator('.settings-list'),
-              avatar_setter   = user_settings.locator('.avatar-setter'),
-              avatar_img      = avatar_setter.locator('.avatar'),
-              file_input      = avatar_setter.locator('#avatar-file-input')
+        const menu_button = page.locator('.main-menu-button'),
+              avatar_img  = page.locator('.main-menu .avatar-img'),
+              file_input  = page.locator('.main-menu #avatar-file-input')
 
-        await expect(settings_button).toBeVisible()
-
-        await settings_button.click()
-        await expect(settings_list).toBeVisible()
-        await expect(avatar_setter).toBeVisible()
+        await menu_button.click()
+        await expect(avatar_img).toBeVisible()
 
         let avatar_img_src = await avatar_img.getAttribute('src')
         expect(avatar_img_src).toContain('default_avatar.png')
@@ -125,13 +119,31 @@ test.describe('Settings', () => {
 
         // check persistence
         await page.reload()
-        await settings_button.click()
+        await menu_button.click()
         await expect(avatar_img).toHaveAttribute('src', '/uploads/avatars/2528da765c92ad2dd7c1c719b213eb81ae275a17179dbfd3753f02e15cf403e8.png')
     })
 
-    // test('smooth output switch should work', async ({ page }) => {
-    //     await page.goto('/')
+    test('smooth output switch should work', async ({ page }) => {
+        await page.goto('/')
 
-    //     // ...
-    // })
+        const menu_button          = page.locator('.main-menu-button'),
+              smooth_output_button = page.locator('.main-menu .smooth-output-button'),
+              off_half             = smooth_output_button.locator('.switch-half.off'),
+              on_half              = smooth_output_button.locator('.switch-half.on')
+
+        await menu_button.click()
+        await expect(smooth_output_button).toBeVisible()
+
+        // default value
+        await expect(smooth_output_button).toContainClass('is-active')
+
+        await smooth_output_button.click()
+        await expect(smooth_output_button).not.toContainClass('is-active')
+
+        // check persistence
+        await page.reload()
+        await menu_button.click()
+        await expect(smooth_output_button).toBeVisible()
+        await expect(smooth_output_button).not.toContainClass('is-active')
+    })
 })

@@ -213,18 +213,18 @@ test.describe('Keyboard Shortcuts', () => {
               chat              = page.locator('.chat'),
               user_message      = chat.locator('.messages .message.user'),
               ai_message        = chat.locator('.messages .message.assistant'),
-              settings_button   = page.locator('.user-settings-button'),
-              settings_list     = page.locator('.settings-list'),
+              menu_button       = page.locator('.main-menu-button'),
+              main_menu         = page.locator('.main-menu'),
               model_list_button = page.locator('.active-model-button'),
               model_list        = page.locator('.models-by-family'),
               loader            = page.locator('.loader'),
               prompt_editor     = page.locator('.prompt-editor')
               
         // close settings
-        await settings_button.click()
-        await expect(settings_list).toBeVisible()
+        await menu_button.click()
+        await expect(main_menu).toBeVisible()
         await page.keyboard.press('Escape')
-        await expect(settings_list).toBeHidden()
+        await expect(main_menu).toBeHidden()
         
         // close model list
         await model_list_button.click()

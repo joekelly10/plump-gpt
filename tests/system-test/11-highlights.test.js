@@ -107,10 +107,14 @@ test.describe('Highlights', () => {
 
         await page.reload()
 
-        const load_button = page.locator('.load-button'),
+        const menu_button = page.locator('.main-menu-button'),
+              load_button = page.locator('.main-menu .load-button'),
               loader      = page.locator('.loader'),
               chat_list   = loader.locator('.chats'),
               latest_chat = chat_list.locator('.loader-chat').first()
+
+        await menu_button.click()
+        await expect(load_button).toBeVisible()
 
         await load_button.click()
         await expect(loader).toBeVisible()
@@ -131,6 +135,9 @@ test.describe('Highlights', () => {
         await expect(save_button).toContainClass('saved')
 
         await page.reload()
+
+        await menu_button.click()
+        await expect(load_button).toBeVisible()
 
         await load_button.click()
         await expect(loader).toBeVisible()
@@ -294,10 +301,14 @@ test.describe('Highlights', () => {
 
         await page.reload()
 
-        const load_button = page.locator('.load-button'),
+        const menu_button = page.locator('.main-menu-button'),
+              load_button = page.locator('.main-menu .load-button'),
               loader      = page.locator('.loader'),
               chat_list   = loader.locator('.chats'),
               latest_chat = chat_list.locator('.loader-chat').first()
+
+        await menu_button.click()
+        await expect(load_button).toBeVisible()
 
         await load_button.click()
         await expect(loader).toBeVisible()
@@ -320,6 +331,9 @@ test.describe('Highlights', () => {
         await expect(save_button).toContainClass('saved')
 
         await page.reload()
+
+        await menu_button.click()
+        await expect(load_button).toBeVisible()
 
         await load_button.click()
         await expect(loader).toBeVisible()
