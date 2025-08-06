@@ -1,3 +1,6 @@
+//
+//  Deprecated Open AI Chat Completions API
+//
 export const startObject = (model) => ({
     id:                 'chatcmpl-123',
     object:             'chat.completion.chunk',

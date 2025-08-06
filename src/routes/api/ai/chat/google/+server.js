@@ -65,7 +65,7 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
         })
     }
     
-    return fetch(`https://generativelanguage.googleapis.com/v1beta/models/${options.model}:streamGenerateContent?alt=sse&key=${env.GEMINI_API_KEY}`, {
+    return fetch(`https://generativelanguage.googleapis.com/v1beta/models/${options.model.id}:streamGenerateContent?alt=sse&key=${env.GEMINI_API_KEY}`, {
         method: 'POST',
         headers,
         body

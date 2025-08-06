@@ -61,7 +61,7 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
     })
 
     let body = {
-        model:       options.model,
+        model:       options.model.id,
         temperature: options.temperature,
         top_p:       options.top_p,
         stream:      true,

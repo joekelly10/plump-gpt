@@ -1,8 +1,8 @@
 import { sleep, wordsFrom, process, speed_limit } from '$tests/helpers/tools'
-import { startObject, deltaObject, finishObject, usageObject } from '$tests/mock/stream_objects/open-ai'
+import { createdObject, outputTextDeltaObject, outputItemDoneObject, completedObject } from '$tests/mock/stream_objects/open-ai-responses-api'
 
 export const POST = async ({ request }) => {
-    const { model, messages } = await request.json()
+    const { model, input: messages } = await request.json()
 
     const { reply, input_tokens, output_tokens, is_delay_test, is_slow_test } = process(messages)
 
@@ -13,22 +13,27 @@ export const POST = async ({ request }) => {
             const encoder = new TextEncoder(),
                   enqueue = (data) => controller.enqueue(encoder.encode(`data: ${data}\n\n`)),
                   words   = wordsFrom(reply)
+                
+            let sequence_number = 0
 
-            let json = JSON.stringify(startObject(model))
+            let json = JSON.stringify(createdObject(model))
             enqueue(json)
 
             if (is_delay_test) await sleep(2000)
 
             for (let i = 0; i < words.length; i++) {
-                json = JSON.stringify(deltaObject(model, words[i]))
+                sequence_number++
+                json = JSON.stringify(outputTextDeltaObject(words[i], sequence_number))
                 enqueue(json)
                 await sleep(is_slow_test ? speed_limit.slow : speed_limit.fast)
             }
 
-            json = JSON.stringify(finishObject(model))
+            sequence_number++
+            json = JSON.stringify(outputItemDoneObject(reply, sequence_number))
             enqueue(json)
 
-            json = JSON.stringify(usageObject(model, input_tokens, output_tokens))
+            sequence_number++
+            json = JSON.stringify(completedObject(model, reply, input_tokens, output_tokens))
             enqueue(json)
 
             enqueue('[DONE]')

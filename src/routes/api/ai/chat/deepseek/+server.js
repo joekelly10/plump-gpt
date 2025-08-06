@@ -15,7 +15,7 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
     })
 
     const body = JSON.stringify({
-        model:          options.model,
+        model:          options.model.id,
         temperature:    options.temperature,
         top_p:          options.top_p,
         stream:         true,

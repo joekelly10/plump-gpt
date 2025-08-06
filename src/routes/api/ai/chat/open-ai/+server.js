@@ -15,23 +15,33 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
     })
 
     let body = {
-        model:          options.model,
-        temperature:    options.temperature,
-        top_p:          options.top_p,
-        stream:         true,
-        stream_options: { include_usage: true },
-        messages:       messages
+        model:       options.model.id,
+        temperature: options.temperature,
+        top_p:       options.top_p,
+        stream:      true,
+        store:       false,
+        input:       messages
     }
 
-    if (options.tools?.length > 0) {
-        options.tools.forEach(tool => {
-            if (tool.name === 'web_search') {
-                body.web_search_options = {
-                    search_context_size: tool.search_context_size
-                }
-            }
-        })
+    if (options.model.is_reasoner) {
+        delete body.temperature
+        delete body.top_p
+
+        body.reasoning = {
+            effort:  options.reasoning_effort ?? 'low',
+            summary: options.reasoning_summary ?? 'detailed'
+        }
     }
+
+    // if (options.tools?.length > 0) {
+    //     options.tools.forEach(tool => {
+    //         if (tool.name === 'web_search') {
+    //             body.web_search_options = {
+    //                 search_context_size: tool.search_context_size
+    //             }
+    //         }
+    //     })
+    // }
 
     body = JSON.stringify(body)
 
@@ -46,7 +56,7 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
         })
     }
 
-    return fetch('https://api.openai.com/v1/chat/completions', {
+    return fetch('https://api.openai.com/v1/responses', {
         method: 'POST',
         headers,
         body

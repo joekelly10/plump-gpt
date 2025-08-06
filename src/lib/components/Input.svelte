@@ -105,10 +105,8 @@
         is_hovering.clear()
         scrollChatToBottom({ context: 'sending_message' })
 
-        let options = $model.is_reasoner ? {
-            model: $model.id
-        } : {
-            model:       $model.id,
+        let options = {
+            model:       $model,
             temperature: $temperature,
             top_p:       $top_p
         }
@@ -242,7 +240,7 @@
                     const json_string = buffer.slice(start_index, end_index)
                     try {
                         const data = JSON.parse(json_string)
-                        if (['open-ai', 'mistral', 'ai21'].includes($model.type)) {
+                        if ($model.type === 'open-ai') {
                             await processOpenAIObject(data, gpt_message)
                         } else if ($model.type === 'anthropic') {
                             await processAnthropicObject(data, gpt_message)
@@ -260,6 +258,8 @@
                             await processCohereObject(data, gpt_message)
                         } else if ($model.type === 'inception') {
                             await processInceptionObject(data, gpt_message)
+                        } else if (['mistral', 'ai21'].includes($model.type)) {
+                            await processLegacyOpenAIObject(data, gpt_message)
                         }
                     } catch {
                         console.log('❌ Error parsing json: ', json_string)
@@ -278,6 +278,23 @@
     }
 
     const processOpenAIObject = async (data, gpt_message) => {
+        console.log('🤖-🤖 OpenAI object:', data)
+        if (data.type === 'response.output_text.delta') {
+            await append(gpt_message, data.delta)
+        } else if (data.type === 'response.reasoning_summary_text.delta') {
+            await append(gpt_message, data.delta, { is_reasoning: true })
+        } else if (data.type === 'response.completed') {
+            const usage = data.response.usage
+            gpt_message.usage = {
+                input_tokens:      usage.input_tokens,
+                cache_read_tokens: usage.input_tokens_details.cached_tokens,
+                output_tokens:     usage.output_tokens,
+                reasoning_tokens:  usage.output_tokens_details.reasoning_tokens
+            }
+        }
+    }
+
+    const processLegacyOpenAIObject = async (data, gpt_message) => {
         const reasoning_content = data.choices[0]?.delta.reasoning_content ?? '',
               content           = data.choices[0]?.delta.content ?? ''
         await append(gpt_message, reasoning_content, { is_reasoning: true })
