@@ -4,9 +4,9 @@
     import { tool_list_active } from '$lib/stores/app'
     import { model } from '$lib/stores/ai'
 
-    import ThinkingBudgetButton from '$lib/components/ToolList/Anthropic/ToggleThinkingBudgetButton.svelte'
+    import ThinkingBudgetButton from '$lib/components/ToolList/ToggleThinkingBudgetButton.svelte'
     import WebSearchButton from '$lib/components/ToolList/ToggleWebSearchButton.svelte'
-    import GoogleSearchButton from '$lib/components/ToolList/Google/ToggleGoogleSearchButton.svelte'
+    import GoogleSearchButton from '$lib/components/ToolList/ToggleGoogleSearchButton.svelte'
     import XSearchButton from '$lib/components/ToolList/ToggleXSearchButton.svelte'
     import ExaSearchButton from '$lib/components/ToolList/ToggleExaSearchButton.svelte'
 
