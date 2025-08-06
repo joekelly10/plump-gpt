@@ -286,6 +286,8 @@
             await append(gpt_message, data.delta)
         } else if (data.type === 'response.reasoning_summary_text.delta') {
             await append(gpt_message, data.delta, { is_reasoning: true })
+        } else if (data.type === 'response.reasoning_summary_text.done') {
+            await append(gpt_message, '\n\n', { is_reasoning: true })
         } else if (data.type === 'response.completed') {
             const usage = data.response.usage
             gpt_message.usage = {
