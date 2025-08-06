@@ -278,7 +278,6 @@
     }
 
     const processOpenAIObject = async (data, gpt_message) => {
-        console.log('🤖-🤖 OpenAI object:', data)
         if (data.type === 'response.output_text.delta') {
             await append(gpt_message, data.delta)
         } else if (data.type === 'response.reasoning_summary_text.delta') {
