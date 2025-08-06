@@ -74,6 +74,13 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
         max_tokens:  4096 + (options.thinking_budget || 0),
     }
 
+    if (options.model.id === 'claude-opus-4-1-20250805') {
+        //
+        //  Opus 4.1 does not allow both temperature and top_p to be specified
+        //
+        delete body.top_p
+    }
+
     if (options.thinking_budget) {
         body.thinking = { type: 'enabled', budget_tokens: options.thinking_budget }
     }

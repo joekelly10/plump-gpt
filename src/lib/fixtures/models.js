@@ -105,8 +105,8 @@ export default [
     },
     {
         type:           'anthropic',
-        id:             'claude-opus-4-20250514',
-        name:           'Claude Opus 4',
+        id:             'claude-opus-4-1-20250805',
+        name:           'Claude Opus 4.1',
         short_name:     'Claude',
         icon:           'claude-opus.png',
         family:         'Anthropic',
