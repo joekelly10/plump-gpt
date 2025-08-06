@@ -18,7 +18,9 @@ It runs in your browser on `localhost:1337`.
 - <img alt='GPT-4.1 nano' src='./static/img/icons/models/gpt-4.1-nano.png' width='21' height='21' valign='middle'>&nbsp; GPT-4.1 nano
 - <img alt='GPT-4.1 mini' src='./static/img/icons/models/gpt-4.1-mini.png' width='21' height='21' valign='middle'>&nbsp; GPT-4.1 mini
 - <img alt='GPT-4.1' src='./static/img/icons/models/gpt-4.1.png' width='21' height='21' valign='middle'>&nbsp; GPT-4.1
-- <img alt='o4-mini' src='./static/img/icons/models/o4-mini.png' width='21' height='21' valign='middle'>&nbsp; o4-mini
+- <img alt='o4 mini' src='./static/img/icons/models/o4-mini.png' width='21' height='21' valign='middle'>&nbsp; o4 mini
+- <img alt='o3' src='./static/img/icons/models/o3.png' width='21' height='21' valign='middle'>&nbsp; o3
+- <img alt='o3 pro' src='./static/img/icons/models/o3-pro.png' width='21' height='21' valign='middle'>&nbsp; o3 pro
 
 **Anthropic**
 - <img alt='Claude Haiku' src='./static/img/icons/models/claude-haiku.png' width='21' height='21' valign='middle'>&nbsp; Claude Haiku 3.5
@@ -78,6 +80,10 @@ It runs in your browser on `localhost:1337`.
 
 **Z.AI**
 - <img alt='GLM 4.5' src='./static/img/icons/models/glm-4.5.png' width='21' height='21' valign='middle'>&nbsp; GLM 4.5
+
+**Open AI OSS**
+- <img alt='GPT-OSS 20b' src='./static/img/icons/models/gpt-oss-20b.png' width='21' height='21' valign='middle'>&nbsp; GPT-OSS 20b
+- <img alt='GPT-OSS 120b' src='./static/img/icons/models/gpt-oss-120b.png' width='21' height='21' valign='middle'>&nbsp; GPT-OSS 120b
 
 
 # Features

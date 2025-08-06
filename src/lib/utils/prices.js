@@ -47,6 +47,22 @@ const model_prices = {
             }
         }
     },
+    'gpt-oss-20b': {
+        price: {
+            cents: {
+                input_token:   5/1000000, // $0.05/mTok
+                output_token: 20/1000000
+            }
+        }
+    },
+    'gpt-oss-120b': {
+        price: {
+            cents: {
+                input_token:  15/1000000, // $0.15/mTok
+                output_token: 60/1000000
+            }
+        }
+    },
     'claude-haiku': {
         price: {
             cents: {

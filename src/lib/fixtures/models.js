@@ -41,8 +41,8 @@ export default [
     {
         type:           'open-ai',
         id:             'o4-mini',
-        name:           'o4-mini',
-        short_name:     'o4-mini',
+        name:           'o4 mini',
+        short_name:     'o4 mini',
         icon:           'o4-mini.png',
         family:         'Open AI',
         hosted_at:      'openai.com',
@@ -518,6 +518,32 @@ export default [
         context_window: 128000,
         is_reasoner:    true,
         pricing_id:     'glm-4.5',
+        tools:          []
+    },
+    {
+        type:           'openrouter',
+        id:             'openai/gpt-oss-20b',
+        name:           'GPT-OSS 20b',
+        short_name:     'GPT',
+        icon:           'gpt-oss-20b.png',
+        family:         'Open AI OSS',
+        hosted_at:      'openrouter.ai',
+        context_window: 128000,
+        is_reasoner:    true,
+        pricing_id:     'gpt-oss-20b',
+        tools:          []
+    },
+    {
+        type:           'openrouter',
+        id:             'openai/gpt-oss-120b',
+        name:           'GPT-OSS 120b',
+        short_name:     'GPT',
+        icon:           'gpt-oss-120b.png',
+        family:         'Open AI OSS',
+        hosted_at:      'openrouter.ai',
+        context_window: 128000,
+        is_reasoner:    true,
+        pricing_id:     'gpt-oss-120b',
         tools:          []
     }
 ]
