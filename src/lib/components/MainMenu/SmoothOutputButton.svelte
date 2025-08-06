@@ -2,14 +2,14 @@
     import { config } from '$lib/stores/user'
     import { is_idle } from '$lib/stores/api'
 
-    const clickedSmoothing = () => {
+    const clicked = () => {
         if ($is_idle) {
             $config.smooth_output = !$config.smooth_output
         }
     }
 </script>
 
-<button class='main-menu-button smoothing-button' class:is-active={$config.smooth_output} onclick={clickedSmoothing}>
+<button class='main-menu-button smooth-output-button' class:is-active={$config.smooth_output} onclick={clicked}>
     <div class='title'>
         Smooth Output
     </div>
@@ -24,7 +24,7 @@
 </button>
 
 <style lang='sass'>
-    .smoothing-button
+    .smooth-output-button
         &.is-active
             background-color: color.adjust($blue, $alpha: -0.875)
 

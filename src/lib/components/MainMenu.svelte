@@ -6,7 +6,7 @@
     import { messages } from '$lib/stores/chat'
 
     import AvatarButton from '$lib/components/MainMenu/AvatarButton.svelte'
-    import SmoothingButton from '$lib/components/MainMenu/SmoothingButton.svelte'
+    import SmoothOutputButton from '$lib/components/MainMenu/SmoothOutputButton.svelte'
 
     const { deleteChat, newChat } = $props()
 
@@ -72,7 +72,7 @@
         User Settings
     </div>
     <AvatarButton/>
-    <SmoothingButton/>
+    <SmoothOutputButton/>
 </div>
 
 <style lang='sass'>
