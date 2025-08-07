@@ -1,4 +1,6 @@
 <script>
+    import { slide } from 'svelte/transition'
+    import { quartOut } from 'svelte/easing'
     import { top_p } from '$lib/stores/ai'
 
     const display_value = $derived($top_p.toFixed($top_p * 10 % 1 === 0 ? 1 : 2))
@@ -15,7 +17,14 @@
     }
 </script>
 
-<button class='top_p-button' title='Adjust top_p (Ctrl+P)' onclick={clicked} oncontextmenu={rightClicked}>
+<button
+    class='top_p-button'
+    title='Adjust top_p (Ctrl+P)'
+    onclick={clicked}
+    oncontextmenu={rightClicked}
+    in:slide={{ axis: 'x', delay: 250, duration: 125, easing: quartOut }}
+    out:slide={{ axis: 'x', duration: 75, easing: quartOut }}
+>
     <div class='icon'>
         <div class='fill' style='height:{$top_p * 100}%'></div>
     </div>
@@ -83,8 +92,4 @@
         &:active
             background-color: $background-850
             transition:       none
-    
-    @media (max-width: 1484px)
-        .top_p-button
-            display: none
 </style>

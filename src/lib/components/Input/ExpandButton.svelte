@@ -32,6 +32,8 @@
 {/if}
 
 <style lang='sass'>
+    $margin: 10px
+
     .expand-button
         display:          flex
         align-items:      center
@@ -41,7 +43,9 @@
         left:             50%
         z-index:          5
         transform:        translateX(-50%) translateY(-100%)
-        width:            700px
+        min-width:        space.$input-container-width-min - 2 * $margin
+        max-width:        space.$input-container-width-pre-max - 2 * $margin
+        width:            calc(space.$input-container-width - 2 * $margin)
         height:           56px
         padding-bottom:   12px
         border-radius:    8px 8px 0 0
@@ -73,4 +77,8 @@
 
             .down-arrow
                 display: block
+    
+    @media (min-width: space.$input-container-pre-max-breakpoint)
+        .expand-button
+            max-width: space.$input-container-width-max - 2 * $margin
 </style>

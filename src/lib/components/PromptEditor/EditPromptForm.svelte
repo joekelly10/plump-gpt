@@ -218,6 +218,8 @@
         display:          flex
         flex-direction:   column
         position:         relative
+        min-width:        space.$input-container-width-min
+        max-width:        space.$input-container-width-max
         width:            space.$input-container-width
         height:           space.$edit-prompt-form-height
         box-sizing:       border-box

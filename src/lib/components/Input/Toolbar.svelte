@@ -48,9 +48,9 @@
 <style lang='sass'>
     .input-toolbar
         display:          flex
-        flex-wrap:        nowrap
         justify-content:  flex-start
         align-items:      center
+        flex-wrap:        wrap
         position:         relative
         min-height:       48px
         border-radius:    0 0 12px 12px
@@ -63,7 +63,7 @@
                 background-color: $background-350
 
             &:not(.is-empty)
-                background-color: color.mix($blue, $background-500, 12.5%)
+                background-color: $toolbar-active-bg
 
     .empty-message
         display:         flex

@@ -1,5 +1,7 @@
 <script>
     import { onMount } from 'svelte'
+    import { slide } from 'svelte/transition'
+    import { quartOut } from 'svelte/easing'
     import { prompt_editor_active } from '$lib/stores/app'
     import { messages } from '$lib/stores/chat'
 
@@ -20,6 +22,7 @@
     class='system-prompt-button'
     class:editor-active={$prompt_editor_active}
     onclick={openPromptEditor}
+    in:slide={{ axis: 'x', delay: 250, duration: 125, easing: quartOut }}
 >
     <div class='text'>
         <div class='label'>
@@ -57,11 +60,13 @@
             font-weight:    600
             font-size:      12px
             text-transform: uppercase
+            white-space:    nowrap
 
         .prompt-title
             font-weight: 600
             color:       $blue-grey
             transition:  font-size easing.$quart-out 0.25s, color easing.$quart-out 0.1s
+            white-space: nowrap
 
             &.highlight
                 font-size: 1.25em

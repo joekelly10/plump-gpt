@@ -1,12 +1,16 @@
 <script>
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { main_menu_active, loader_active } from '$lib/stores/app'
+    import { screen_width, screen_height } from '$lib/stores/screen'
+    import { main_menu_active, loader_active, prompt_editor_active } from '$lib/stores/app'
     import { is_idle } from '$lib/stores/api'
     import { messages } from '$lib/stores/chat'
+    import breakpoints from '$lib/fixtures/breakpoints'
 
     import AvatarButton from '$lib/components/MainMenu/AvatarButton.svelte'
     import SmoothOutputButton from '$lib/components/MainMenu/SmoothOutputButton.svelte'
+    import TopPButton from '$lib/components/MainMenu/TopPButton.svelte'
+    import TemperatureButton from '$lib/components/MainMenu/TemperatureButton.svelte'
 
     const { deleteChat, newChat } = $props()
 
@@ -34,10 +38,16 @@
             $main_menu_active = false
         }
     }
+
+    const clickedSystemPrompt = () => {
+        $prompt_editor_active = true
+        $main_menu_active     = false
+    }
 </script>
 
 <div
     class='main-menu'
+    class:scrollable={$screen_height < 800}
     in:slide={{ axis: 'y', duration: 200, easing: quartOut }}
     out:slide={{ axis: 'y', delay: 50, duration: 125, easing: quartOut }}
 >
@@ -73,6 +83,25 @@
     </div>
     <AvatarButton/>
     <SmoothOutputButton/>
+    {#if $screen_width < breakpoints.top_p_button}
+        <div class='main-menu-group-heading'>
+            Model
+        </div>
+        <TopPButton/>
+        {#if $screen_width < breakpoints.temperature_button}
+            <TemperatureButton/>
+        {/if}
+        {#if $screen_width < breakpoints.system_prompt_button}
+            <button class='main-menu-button system-prompt-button' onclick={clickedSystemPrompt}>
+                <div class='title'>
+                    System Prompt
+                </div>
+                <div class='value'>
+                    {$messages[0].system_prompt_title ?? ''}
+                </div>
+            </button>
+        {/if}
+    {/if}
 </div>
 
 <style lang='sass'>
@@ -94,6 +123,11 @@
         overflow:         hidden
         user-select:      none
 
+        &.scrollable
+            height:     424px
+            overflow-y: auto
+            +shared.scrollbar
+
         :global
             .main-menu-button
                 display:         flex
@@ -102,6 +136,7 @@
                 position:        relative
                 width:           100%
                 height:          space.$header-height
+                flex-shrink:     0
                 box-sizing:      border-box
                 padding:         0 space.$default-padding
                 border-top:      1px solid $background-700
@@ -111,6 +146,9 @@
                 &:hover
                     background-color: $background-800
                     transition:       none
+
+                    .value
+                        color: $off-white
                 
                 &:active
                     background-color: $background-850
@@ -123,11 +161,16 @@
                 .shortcut
                     font-weight: 600
                     color:       $blue-grey
+
+                .value
+                    font-weight: 600
+                    color:       $blue-grey
     
     .main-menu-group-heading
         display:         flex
         align-items:     center
         justify-content: center
+        flex-shrink:     0
         width:           100%
         height:          space.$header-height
         border-top:      1px solid $background-700

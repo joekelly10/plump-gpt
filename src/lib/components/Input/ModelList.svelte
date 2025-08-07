@@ -81,7 +81,9 @@
 </section>
 
 <style lang='sass'>
-    $button-size: 60px
+    $button-size:  60px
+    $shrunk-width: 2 * space.$model-family-width + 3 * space.$header-height + 10px
+    $full-width:   3 * space.$model-family-width + 4 * space.$header-height + 10px
 
     .model-list-section
         display:        flex
@@ -143,8 +145,10 @@
             align-items:      flex-start
             flex-wrap:        wrap
             gap:              space.$header-height
-            width:            3 * space.$model-family-width + 4 * space.$header-height + 10px
-            height:           640px
+            width:            $shrunk-width
+            max-height:       640px
+            min-height:       320px
+            height:           calc(100vh - space.$header-height - 300px)
             box-sizing:       border-box
             padding:          space.$header-height
             border-left:      1px solid $background-700
@@ -160,4 +164,9 @@
             right:          32px
             z-index:        1000
             pointer-events: none
+    
+    @media (min-width: $full-width + 2 * space.$default-padding)
+        .models-by-family
+            .list
+                width: $full-width
 </style>

@@ -1,8 +1,10 @@
 <script>
     import { slide } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
+    import { screen_width } from '$lib/stores/screen'
     import { tool_list_active } from '$lib/stores/app'
     import { model } from '$lib/stores/ai'
+    import breakpoints from '$lib/fixtures/breakpoints'
 
     import ThinkingBudgetButton from '$lib/components/ToolList/ToggleThinkingBudgetButton.svelte'
     import ReasoningEffortButton from '$lib/components/ToolList/ToggleReasoningEffortButton.svelte'
@@ -20,6 +22,7 @@
     {#if $tool_list_active}
         <div 
             class='tool-list'
+            class:position-right={$screen_width < breakpoints.tool_list_position}
             in:slide={{ axis: 'y', duration: 200, easing: quartOut }}
             out:slide={{ axis: 'y', duration: 125, easing: quartOut }}
         >
@@ -89,6 +92,11 @@
         left:           50%
         transform:      translateX(48px)
         width:          520px
+
+        &.position-right
+            left:      auto
+            right:     space.$default-padding
+            transform: none
         
         .header
             display:          flex

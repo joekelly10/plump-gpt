@@ -1,6 +1,7 @@
 <script>
     import { tick } from 'svelte'
     import { page } from '$app/stores'
+    import { screen_width } from '$lib/stores/screen'
     import { is_initialising, main_menu_active, loader_active, model_list_active, tool_list_active, input_expanded } from '$lib/stores/app'
     import { chat_id, messages, forks, active_fork, active_messages, stars, highlights } from '$lib/stores/chat'
     import { is_hovering, is_adding_reply, is_deleting, is_scrolled_to_bottom, is_provisionally_forking } from '$lib/stores/chat/interactions'
@@ -8,6 +9,7 @@
     import { api_state, is_idle } from '$lib/stores/api'
     import { config } from '$lib/stores/user'
     import { addCopyButtons, sleep } from '$lib/utils/helpers'
+    import breakpoints from '$lib/fixtures/breakpoints'
     import hljs from 'highlight.js'
 
     import ModelList from '$lib/components/Input/ModelList.svelte'
@@ -808,10 +810,6 @@
 </script>
 
 <section class='primary-input-section' class:expanded={$input_expanded} class:model-list-active={$model_list_active} class:toolbar-active={toolbar_active}>
-    <ModelList
-        focusInput={focus}
-    />
-
     <ModelSettings
         is_hovering_model_switcher={is_hovering_model_switcher}
     />
@@ -840,14 +838,21 @@
         {/if}
     </div>
 
-    <ToolList/>
-
     <ExpandButton
         input_overflowed={input_overflowed}
     />
 
-    {#if !$input_expanded}
+    <ModelList
+        focusInput={focus}
+    />
+
+    <ToolList/>
+
+    {#if $screen_width >= breakpoints.system_prompt_button && !$input_expanded}
         <SystemPromptButton/>
+    {/if}
+
+    {#if !$input_expanded}
         <ScrollDownButton
             scrollChatToBottom={scrollChatToBottom}
         />
@@ -887,12 +892,14 @@
         position:         relative
         z-index:          10
         margin:           0 auto
+        min-width:        space.$input-container-width-min
+        max-width:        space.$input-container-width-pre-max
         width:            space.$input-container-width
         box-sizing:       border-box
         border:           1px solid $blue-grey
         border-radius:    12px
         background-color: $background-300
-        transition:       box-shadow easing.$quart-out 500ms, border-color easing.$quart-out 500ms
+        transition:       max-width easing.$quart-out 125ms, box-shadow easing.$quart-out 500ms, border-color easing.$quart-out 500ms
 
         &.nope-highlight
             box-shadow:   0 0 0 1px $coral, 0 0 0 1px $coral inset
@@ -931,4 +938,8 @@
         &::-webkit-scrollbar-thumb
             background:    white
             border-radius: 99px
+    
+    @media (min-width: space.$input-container-pre-max-breakpoint)
+        .input-container
+            max-width: space.$input-container-width-max
 </style>

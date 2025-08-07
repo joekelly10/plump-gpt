@@ -120,7 +120,7 @@
         transition:      background-color easing.$quart-out 0.1s, color easing.$quart-out 0.1s
 
         &.controls-visible
-            background-color: $background-700
+            background-color: $toolbar-active-bg
 
         .icon
             height:     16px
@@ -173,16 +173,19 @@
         bottom:           82px
         left:             50%
         z-index:          1000
-        transform:        translateX(-0.5 * space.$input-container-width)
+        transform:        translateX(-50%)
+        min-width:        space.$input-container-width-min
+        max-width:        space.$input-container-width-pre-max
         width:            space.$input-container-width
         box-sizing:       border-box
         border-radius:    12px 12px 0 0
         border:           1px solid $blue-grey
-        border-bottom:    1px solid $background-700
+        border-bottom:    none
         background-color: color.adjust(color.adjust($background-500, $lightness: -1%), $alpha: -0.05)
         backdrop-filter:  blur(4px)
         color:            $off-white
         overflow:         hidden
+        transition:       max-width easing.$quart-out 125ms
 
         .controls-header
             display:          flex
@@ -228,13 +231,14 @@
             border-bottom: 1px solid $background-700
             font-size:     14px
             cursor:        pointer
-
-            &:last-child
-                border-bottom: none
             
             &:hover
                 background-color: $background-800
 
             &:active
                 background-color: $background-850
+
+    @media (min-width: space.$input-container-pre-max-breakpoint)
+        .controls
+            max-width: space.$input-container-width-max
 </style>

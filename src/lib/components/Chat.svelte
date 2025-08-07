@@ -2,6 +2,7 @@
     import { tick } from 'svelte'
     import { fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
+    import { screen_width } from '$lib/stores/screen'
     import { tree_active, loader_active, prompt_editor_active } from '$lib/stores/app'
     import { forks, active_fork, active_messages, highlights, usage } from '$lib/stores/chat'
     import { is_provisionally_forking, is_scrolled_to_bottom } from '$lib/stores/chat/interactions'
@@ -9,6 +10,7 @@
     import { is_sending } from '$lib/stores/api'
     import { smoothScroll } from '$lib/utils/helpers'
     import { createHighlight, renderHighlights } from '$lib/utils/highlighter'
+    import breakpoints from '$lib/fixtures/breakpoints'
 
     import UsageStats from '$lib/components/Chat/UsageStats.svelte'
     import Message from '$lib/components/Chat/Message.svelte'
@@ -347,7 +349,7 @@
     onscroll={onscroll}
     onmouseup={onmouseup}
 >
-    {#if $usage.total_responses > 0}
+    {#if $usage.total_responses > 0 && $screen_width >= breakpoints.usage_stats}
         <UsageStats/>
     {/if}
 
@@ -403,6 +405,8 @@
         
     .messages
         margin:         0 auto
+        min-width:      space.$main-column-width-min
+        max-width:      space.$main-column-width-max
         width:          space.$main-column-width
         padding-bottom: 84px
 
