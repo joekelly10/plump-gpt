@@ -29,7 +29,7 @@
           sendMessage        = () => input.sendMessage(),
           addReply           = () => input.addReply(),
           regenerateReply    = () => input.regenerateReply(),
-          quoteSelectedText  = () => input.quoteSelectedText(),
+          quoteSelectedText  = (options) => input.quoteSelectedText(options),
           deleteChat         = () => input.deleteChat(),
           newChat            = () => input.newChat(),
           onChatUpdated      = () => input.onChatUpdated()

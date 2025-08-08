@@ -316,8 +316,8 @@
         return node_relationship & Node.DOCUMENT_POSITION_FOLLOWING
     }
     
-    const clickedQuoteButton = () => {
-        quoteSelectedText()
+    const clickedQuoteButton = (e) => {
+        quoteSelectedText({ insert_at_start: e.shiftKey })
         selection_action_visible = false
     }
 

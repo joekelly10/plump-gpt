@@ -27,7 +27,7 @@
                  sendMessage       = async (is_new_user_message) => _sendMessage(is_new_user_message),
                  addReply          = async () => _sendMessage(false),
                  regenerateReply   = async () => _sendMessage(false),
-                 quoteSelectedText = () => _quoteSelectedText(),
+                 quoteSelectedText = (options) => _quoteSelectedText(options),
                  deleteChat        = () => _deleteChat(),
                  newChat           = () => _newChat(),
                  onChatUpdated     = async (options) => _onChatUpdated(options)
@@ -608,7 +608,7 @@
         }
     }
 
-    const _quoteSelectedText = () => {
+    const _quoteSelectedText = (options = {}) => {
         let selection = window.getSelection()
 
         if (selection.rangeCount > 0 && !selection.isCollapsed) {
@@ -626,20 +626,34 @@
 
                 const new_range = document.createRange()
                 new_range.selectNodeContents(input)
-                new_range.collapse(false)
+                new_range.collapse(options?.insert_at_start ? true : false)
                 selection.removeAllRanges()
                 selection.addRange(new_range)
 
-                if (input_text && input_text.trim().length > 0) {
-                    if (input_text.slice(-2) === '\n\n') {
-                        document.execCommand('insertText', false, quoted_text + '\n\n')
-                    } else if (input_text.slice(-1) === '\n') {
-                        document.execCommand('insertText', false, '\n' + quoted_text + '\n\n')
+                if (options?.insert_at_start) {
+                    if (input_text && input_text.trim().length > 0) {
+                        if (input_text.slice(0, 2) === '\n\n') {
+                            document.execCommand('insertText', false, quoted_text)
+                        } else if (input_text.slice(0, 1) === '\n') {
+                            document.execCommand('insertText', false, quoted_text + '\n')
+                        } else {
+                            document.execCommand('insertText', false, quoted_text + '\n\n')
+                        }
                     } else {
-                        document.execCommand('insertText', false, '\n\n' + quoted_text + '\n\n')
+                        document.execCommand('insertText', false, quoted_text + '\n\n')
                     }
                 } else {
-                    document.execCommand('insertText', false, quoted_text + '\n\n')
+                    if (input_text && input_text.trim().length > 0) {
+                        if (input_text.slice(-2) === '\n\n') {
+                            document.execCommand('insertText', false, quoted_text + '\n\n')
+                        } else if (input_text.slice(-1) === '\n') {
+                            document.execCommand('insertText', false, '\n' + quoted_text + '\n\n')
+                        } else {
+                            document.execCommand('insertText', false, '\n\n' + quoted_text + '\n\n')
+                        }
+                    } else {
+                        document.execCommand('insertText', false, quoted_text + '\n\n')
+                    }
                 }
             }
 
