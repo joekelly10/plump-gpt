@@ -1,7 +1,12 @@
 <div class='screen-cover'>
     <img class='icon no-mobile-icon' src='/img/icons/no-mobile-white.png' alt='No mobile'>
     <div class='message'>
-        Embiggen thy screen, human.
+        <div class='large'>
+            Embiggen thy screen, human
+        </div>
+        <div class='small'>
+            Plump GPT is for desktop
+        </div>
     </div>
 </div>
 
@@ -27,6 +32,16 @@
     .icon
         margin-bottom: space.$default-padding
         height:        72px
+    
+    .message
+        text-align:  center
+        font-weight: 450
+        color:       white
+
+        .small
+            margin-top: 16px
+            font-size:  14px
+            color:      $blue
 
     @media (min-width: breakpoint.$cover-at-width) and (min-height: breakpoint.$cover-at-height)
         .screen-cover
