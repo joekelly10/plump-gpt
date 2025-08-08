@@ -78,14 +78,11 @@
     $button-size: space.$header-height
 
     .tool-list-section
-        display:        flex
-        flex-direction: column
-        align-items:    center
-        position:       absolute
-        bottom:         100%
-        left:           0
-        z-index:        1
-        width:          100%
+        position: absolute
+        bottom:   100%
+        left:     0
+        z-index:  1
+        width:    100%
 
     .tool-list
         display:        flex
