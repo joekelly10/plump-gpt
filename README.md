@@ -27,7 +27,7 @@ It runs in your browser on `localhost:1337`.
 - <img alt='Claude Opus' src='./static/img/icons/models/claude-opus.png' width='21' height='21' valign='middle'>&nbsp; Claude Opus 4.1
 
 **Google**
-- <img alt='Gemini Flash Lite' src='./static/img/icons/models/gemini-flash-lite.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.0 Flash Lite
+- <img alt='Gemini Flash Lite' src='./static/img/icons/models/gemini-flash-lite.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.5 Flash Lite
 - <img alt='Gemini Flash' src='./static/img/icons/models/gemini-flash.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.5 Flash
 - <img alt='Gemini Pro' src='./static/img/icons/models/gemini-pro.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.5 Pro
 
