@@ -19,7 +19,7 @@
     onclick={clicked}
 >
     <div class='icon-container'>
-        <img class='icon exa-search-icon' src='/img/icons/exa-search-grey.png' alt='Exa Search'>
+        <div class='icon exa-search-icon'></div>
     </div>
     <div class='title'>
         Exa Search
@@ -39,5 +39,12 @@
         +shared.toggle_tool_button_styles
 
         .exa-search-icon
-            height: 16px
+            $size:            16px
+            height:           $size
+            width:            $size
+            mask-image:       url('/img/icons/exa-search.png')
+            mask-size:        contain
+            mask-repeat:      no-repeat
+            mask-position:    center
+            background-color: $blue-grey
 </style>

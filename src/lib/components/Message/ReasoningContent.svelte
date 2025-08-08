@@ -68,7 +68,7 @@
     </div>
 
     <div class='reasoning-summary' in:fade={{ delay: 500, duration: 125, easing: quartOut }}>
-        <img class='thinking-icon' src='/img/icons/thinking-grey.png' alt='Thinking' />
+        <div class='thinking-icon'></div>
         <div class='reasoning-summary-text'>
             {#if !has_finished_reasoning}
                 <strong>
@@ -180,5 +180,12 @@
             color:       $off-white
 
         .thinking-icon
-            height: 19px
+            $size:            20px
+            height:           $size
+            width:            $size
+            mask-image:       url('/img/icons/thinking.png')
+            mask-size:        contain
+            mask-repeat:      no-repeat
+            mask-position:    center
+            background-color: $blue-grey
 </style>

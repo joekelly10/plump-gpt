@@ -504,7 +504,21 @@
                     margin-bottom: 0
 
                 .icon
-                    height: 18px
+                    $size:            18px
+                    height:           $size
+                    width:            $size
+                    mask-size:        contain
+                    mask-repeat:      no-repeat
+                    mask-position:    center
+                    background-color: $blue-grey
+                    &.web-search-icon
+                        mask-image: url('/img/icons/web-search.png')
+                    &.exa-search-icon
+                        mask-image: url('/img/icons/exa-search.png')
+                    &.google-search-icon
+                        mask-image: url('/img/icons/google.png')
+                    &.x-search-icon
+                        mask-image: url('/img/icons/x.png')
 
                 .tool-use-value
                     font-weight: 600

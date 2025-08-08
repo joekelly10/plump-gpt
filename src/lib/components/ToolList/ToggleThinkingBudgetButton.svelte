@@ -19,7 +19,7 @@
     onclick={clicked}
 >
     <div class='icon-container'>
-        <img class='icon thinking-icon' src='/img/icons/thinking-grey.png' alt='Thinking Budget'>
+        <div class='icon thinking-icon'></div>
     </div>
     <div class='title'>
         Thinking Budget
@@ -39,6 +39,12 @@
         +shared.toggle_tool_button_styles
 
         .thinking-icon
-            height: 16px
-            top:    1px
+            $size:            17px
+            height:           $size
+            width:            $size
+            mask-image:       url('/img/icons/thinking.png')
+            mask-size:        contain
+            mask-repeat:      no-repeat
+            mask-position:    center
+            background-color: $blue-grey
 </style>

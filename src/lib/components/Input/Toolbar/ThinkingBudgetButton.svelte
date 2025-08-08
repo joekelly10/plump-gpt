@@ -52,7 +52,7 @@
     in:fade={{ delay: 125, duration: 125, easing: quartOut }}
     out:fade={{ duration: 125, easing: quartOut }}
 >
-    <img class='icon' src='/img/icons/thinking-grey.png' alt='Thinking Budget' />
+    <div class='icon thinking-icon'></div>
     <div class='title'>
         Thinking Budget
     </div>
@@ -81,8 +81,15 @@
         transition:      background-color easing.$quart-out 0.1s, color easing.$quart-out 0.1s
 
         .icon
-            height:     16px
-            transition: filter easing.$quart-out 0.1s
+            $size:            17px
+            height:           $size
+            width:            $size
+            mask-image:       url('/img/icons/thinking.png')
+            mask-size:        contain
+            mask-repeat:      no-repeat
+            mask-position:    center
+            background-color: $blue-grey
+            transition:       background-color easing.$quart-out 0.1s
 
         .title
             font-weight:    600
@@ -100,8 +107,8 @@
             transition:       none
 
             .icon
-                filter:     brightness(2)
-                transition: none
+                background-color: $off-white
+                transition:       none
         
         &:active
             background-color: $background-850
@@ -109,8 +116,8 @@
             transition:       none
 
             .icon
-                filter:     brightness(2)
-                transition: none
+                background-color: $off-white
+                transition:       none
 
         &.mount-animation-flash
             background-color: color.mix($blue, color.adjust($background-500, $alpha: -0.75), 10%)
@@ -118,12 +125,12 @@
             transition:       none
 
             .icon
-                filter:     brightness(2)
-                transition: none
+                background-color: $off-white
+                transition:       none
 
         &.mount-animation-fade
             transition: background-color easing.$quart-out 1s, color easing.$quart-out 1s
 
             .icon
-                transition: filter easing.$quart-out 1s
+                transition: background-color easing.$quart-out 1s
 </style>

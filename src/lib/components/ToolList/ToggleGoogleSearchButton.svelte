@@ -19,7 +19,7 @@
     onclick={clicked}
 >
     <div class='icon-container'>
-        <img class='icon google-search-icon' src='/img/icons/google-grey.png' alt='Google Search'>
+        <div class='icon google-search-icon'></div>
     </div>
     <div class='title'>
         Google Search
@@ -39,5 +39,12 @@
         +shared.toggle_tool_button_styles
 
         .google-search-icon
-            height: 16px
+            $size:            16px
+            height:           $size
+            width:            $size
+            mask-image:       url('/img/icons/google.png')
+            mask-size:        contain
+            mask-repeat:      no-repeat
+            mask-position:    center
+            background-color: $blue-grey
 </style>

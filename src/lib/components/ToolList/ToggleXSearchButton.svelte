@@ -19,7 +19,7 @@
     onclick={clicked}
 >
     <div class='icon-container'>
-        <img class='icon x-search-icon' src='/img/icons/x-grey.png' alt='X Search'>
+        <div class='icon x-search-icon'></div>
     </div>
     <div class='title'>
         X Search
@@ -39,5 +39,12 @@
         +shared.toggle_tool_button_styles
 
         .x-search-icon
-            height: 16px
+            $size:            16px
+            height:           $size
+            width:            $size
+            mask-image:       url('/img/icons/x.png')
+            mask-size:        contain
+            mask-repeat:      no-repeat
+            mask-position:    center
+            background-color: $blue-grey
 </style>

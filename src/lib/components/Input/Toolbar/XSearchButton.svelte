@@ -73,7 +73,7 @@
     in:fade={{ delay: 125, duration: 125, easing: quartOut }}
     out:fade={{ duration: 125, easing: quartOut }}
 >
-    <img class='icon' src='/img/icons/x-grey.png' alt='X Search' />
+    <div class='icon x-search-icon'></div>
     <div class='title'>
         X Search
     </div>
@@ -85,7 +85,7 @@
 {#if controls_visible}
     <div class='controls x-search-controls' in:slide={{ duration: 125, easing: quartOut }} out:slide={{ duration: 75, easing: quartOut }}>
         <div class='controls-header'>
-            <img class='controls-header-icon' src='/img/icons/x-grey.png' alt='X Search' />
+            <div class='controls-header-icon x-search-icon'></div>
             Search Options
             <button class='close-button' onclick={close}>
                 <img class='close-icon' src='/img/icons/close-white.png' alt='Close'>
@@ -123,8 +123,15 @@
             background-color: $toolbar-active-bg
 
         .icon
-            height:     16px
-            transition: filter easing.$quart-out 0.1s
+            $size:            16px
+            height:           $size
+            width:            $size
+            mask-image:       url('/img/icons/x.png')
+            mask-size:        contain
+            mask-repeat:      no-repeat
+            mask-position:    center
+            background-color: $blue-grey
+            transition:       background-color easing.$quart-out 0.1s
 
         .title
             font-weight:    600
@@ -139,8 +146,8 @@
             transition:       none
 
             .icon
-                filter:     brightness(2)
-                transition: none
+                background-color: $off-white
+                transition:       none
         
         &:active
             background-color: $background-850
@@ -148,8 +155,8 @@
             transition:       none
 
             .icon
-                filter:     brightness(2)
-                transition: none
+                background-color: $off-white
+                transition:       none
 
         &.mount-animation-flash
             background-color: color.mix($blue, color.adjust($background-500, $alpha: -0.75), 10%)
@@ -157,14 +164,14 @@
             transition:       none
 
             .icon
-                filter:     brightness(2)
-                transition: none
+                background-color: $off-white
+                transition:       none
 
         &.mount-animation-fade
             transition: background-color easing.$quart-out 1s, color easing.$quart-out 1s
 
             .icon
-                transition: filter easing.$quart-out 1s
+                transition: background-color easing.$quart-out 1s
     
     .controls
         display:          flex
@@ -200,8 +207,15 @@
             color:            $blue-grey
 
             .controls-header-icon
-                height:       16px
-                margin-right: 12px
+                $size:            16px
+                margin-right:     12px
+                height:           $size
+                width:            $size
+                mask-image:       url('/img/icons/x.png')
+                mask-size:        contain
+                mask-repeat:      no-repeat
+                mask-position:    center
+                background-color: $blue-grey
             
             .close-button
                 display:         flex

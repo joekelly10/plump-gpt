@@ -19,7 +19,7 @@
     onclick={clicked}
 >
     <div class='icon-container'>
-        <img class='icon web-search-icon' src='/img/icons/web-search-grey.png' alt='Web Search'>
+        <div class='icon web-search-icon'></div>
     </div>
     <div class='title'>
         Web Search
@@ -39,5 +39,12 @@
         +shared.toggle_tool_button_styles
 
         .web-search-icon
-            height: 16px
+            $size:            16px
+            height:           $size
+            width:            $size
+            mask-image:       url('/img/icons/web-search.png')
+            mask-size:        contain
+            mask-repeat:      no-repeat
+            mask-position:    center
+            background-color: $blue-grey
 </style>
