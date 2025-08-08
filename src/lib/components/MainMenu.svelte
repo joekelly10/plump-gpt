@@ -123,11 +123,6 @@
         overflow:         hidden
         user-select:      none
 
-        &.scrollable
-            height:     424px
-            overflow-y: auto
-            +shared.scrollbar
-
         :global
             .main-menu-button
                 display:         flex
@@ -136,7 +131,6 @@
                 position:        relative
                 width:           100%
                 height:          space.$header-height
-                flex-shrink:     0
                 box-sizing:      border-box
                 padding:         0 space.$default-padding
                 border-top:      1px solid $background-700
@@ -157,6 +151,7 @@
                 .title
                     font-weight: 600
                     line-height: 20px
+                    white-space: nowrap
 
                 .shortcut
                     font-weight: 600
@@ -165,12 +160,23 @@
                 .value
                     font-weight: 600
                     color:       $blue-grey
-    
+
+        &.scrollable
+            height:     424px
+            overflow-y: auto
+            +shared.scrollbar
+            
+            .main-menu-group-heading
+                flex-shrink: 0
+
+            :global
+                .main-menu-button
+                    flex-shrink: 0
+
     .main-menu-group-heading
         display:         flex
         align-items:     center
         justify-content: center
-        flex-shrink:     0
         width:           100%
         height:          space.$header-height
         border-top:      1px solid $background-700
