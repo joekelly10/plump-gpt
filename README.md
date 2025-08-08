@@ -24,7 +24,7 @@ It runs in your browser on `localhost:1337`.
 **Anthropic**
 - <img alt='Claude Haiku' src='./static/img/icons/models/claude-haiku.png' width='21' height='21' valign='middle'>&nbsp; Claude Haiku 3.5
 - <img alt='Claude Sonnet' src='./static/img/icons/models/claude-sonnet.png' width='21' height='21' valign='middle'>&nbsp; Claude Sonnet 4
-- <img alt='Claude Opus' src='./static/img/icons/models/claude-opus.png' width='21' height='21' valign='middle'>&nbsp; Claude Opus 4
+- <img alt='Claude Opus' src='./static/img/icons/models/claude-opus.png' width='21' height='21' valign='middle'>&nbsp; Claude Opus 4.1
 
 **Google**
 - <img alt='Gemini Flash Lite' src='./static/img/icons/models/gemini-flash-lite.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.0 Flash Lite
