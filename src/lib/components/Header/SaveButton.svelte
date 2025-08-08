@@ -66,7 +66,7 @@
         Save
     </span>
     <div class='spinner'>
-        <img class='spinner-img' src='/img/icons/cog.png' alt='Saving'>
+        <div class='spinner-img'></div>
     </div>
     <span class='saved-text'>
         Saved
@@ -109,7 +109,14 @@
         opacity:   0
 
         .spinner-img
-            height: 19px
+            $size:            19px
+            height:           $size
+            width:            $size
+            mask-image:       url('/img/icons/cog.png')
+            mask-size:        contain
+            mask-repeat:      no-repeat
+            mask-position:    center
+            background-color: $blue-grey
     
     .saved-text
         position:    absolute

@@ -70,7 +70,7 @@
 >
     {#if $is_initialising}
         <div class='initialising-spinner'>
-            <img class='spinner-img' src='/img/icons/cog.png' alt='Initialising...'>
+            <div class='spinner-img'></div>
         </div>
     {:else}
         <img class='icon' src='/img/icons/models/{$model.icon}' alt='{$model.name}'>
@@ -127,8 +127,15 @@
         height:          24px
 
         .spinner-img
-            height:    19px
-            animation: animation.$spinner-animation
+            $size:            19px
+            height:           $size
+            width:            $size
+            mask-image:       url('/img/icons/cog.png')
+            mask-size:        contain
+            mask-repeat:      no-repeat
+            mask-position:    center
+            background-color: $blue-grey
+            animation:        animation.$spinner-animation
 
     .icon
         height:     24px

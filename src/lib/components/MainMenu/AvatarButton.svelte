@@ -55,7 +55,7 @@
         <div class='avatar-container'>
             <img class='avatar-img' alt='Avatar' src={$avatar_href} />
             <div class='icon-layer'>
-                <img class='edit-icon' alt='Edit' src='/img/icons/edit-white.png' />
+                <div class='edit-icon'></div>
             </div>
         </div>
         <input 
@@ -148,5 +148,12 @@
                 transition:       opacity easing.$quart-out 125ms
 
                 .edit-icon
-                    height: 16px
+                    $size:            16px
+                    height:           $size
+                    width:            $size
+                    mask-image:       url('/img/icons/edit.png')
+                    mask-size:        contain
+                    mask-repeat:      no-repeat
+                    mask-position:    center
+                    background-color: $off-white
 </style>

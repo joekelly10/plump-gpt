@@ -12,13 +12,13 @@
 
 <div class='page-controls'>
     <button class='prev-page-button' class:disabled={active_page === 1} onclick={prevPage}>
-        <img class='arrow' src='/img/icons/chevron-off-white.png' alt='Prev page'>
+        <div class='arrow-icon'></div>
     </button>
     <span class='current-page'>
         Page {active_page} / {total_pages || 1}
     </span>
     <button class='next-page-button' class:disabled={!(active_page < total_pages)} onclick={nextPage}>
-        <img class='arrow' src='/img/icons/chevron-off-white.png' alt='Next page'>
+        <div class='arrow-icon'></div>
     </button>
 </div>
 
@@ -36,9 +36,15 @@
         border-radius: 8px
         cursor:        pointer
 
-        .arrow
-            height: 12px
-            filter: brightness(2)
+        .arrow-icon
+            $size:            12px
+            height:           $size
+            width:            $size
+            mask-image:       url('/img/icons/chevron-right.png')
+            mask-size:        contain
+            mask-repeat:      no-repeat
+            mask-position:    center
+            background-color: $off-white
         
         &:hover
             background-color: black(0.05)
@@ -46,7 +52,7 @@
         &:active
             background-color: black(0.1)
 
-            .arrow
+            .arrow-icon
                 filter: brightness(0.8)
 
         &.disabled
@@ -55,6 +61,6 @@
             pointer-events: none
 
     .prev-page-button
-        .arrow
+        .arrow-icon
             transform: rotate(180deg)
 </style>

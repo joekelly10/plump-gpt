@@ -88,7 +88,7 @@
             <div class='controls-header-icon x-search-icon'></div>
             Search Options
             <button class='close-button' onclick={close}>
-                <img class='close-icon' src='/img/icons/close-white.png' alt='Close'>
+                <div class='close-icon'></div>
             </button>
         </div>
         <button class='control-button views-button' onclick={incrementViews} oncontextmenu={decrementViews}>
@@ -230,7 +230,14 @@
                 cursor:          pointer
                 
                 .close-icon
-                    height: 14px
+                    $size:            14px
+                    height:           $size
+                    width:            $size
+                    mask-image:       url('/img/icons/close.png')
+                    mask-size:        contain
+                    mask-repeat:      no-repeat
+                    mask-position:    center
+                    background-color: $off-white
                 
                 &:hover
                     .close-icon

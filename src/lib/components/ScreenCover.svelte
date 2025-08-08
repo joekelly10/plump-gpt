@@ -1,5 +1,5 @@
 <div class='screen-cover'>
-    <img class='icon no-mobile-icon' src='/img/icons/no-mobile-white.png' alt='No mobile'>
+    <div class='icon no-mobile-icon'></div>
     <div class='message'>
         <div class='large'>
             Embiggen thy screen, human
@@ -31,8 +31,15 @@
         transition:       transform easing.$quart-out 0.2s, filter easing.$quart-out 0.2s, opacity easing.$quart-out 0.2s
 
     .icon
-        margin-bottom: space.$default-padding
-        height:        72px
+        $size:            72px
+        margin-bottom:    space.$default-padding
+        height:           $size
+        width:            $size
+        mask-image:       url('/img/icons/no-mobile.png')
+        mask-size:        contain
+        mask-repeat:      no-repeat
+        mask-position:    center
+        background-color: $off-white
     
     .message
         text-align:  center
