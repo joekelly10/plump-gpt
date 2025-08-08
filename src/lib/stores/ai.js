@@ -9,6 +9,7 @@ export const temperature      = createTemperature()
 export const top_p            = createTopP()
 export const active_tools     = createActiveTools()
 export const reasoning_effort = createReasoningEffort()
+export const verbosity        = createVerbosity()
 export const thinking_budget  = createThinkingBudget()
 export const web_search       = createWebSearch()
 export const x_search         = createXSearch()
@@ -112,6 +113,31 @@ function createActiveTools() {
 
 function createReasoningEffort() {
     const { subscribe, set, update } = writable(defaults.reasoning_effort)
+
+    return {
+        subscribe,
+        set,
+        increment: () => {
+            update(value => {
+                if (value === 'high') return value
+                if (value === 'medium') return 'high'
+                if (value === 'low') return 'medium'
+                if (value === 'minimal') return 'low'
+            })
+        },
+        decrement: () => {
+            update(value => {
+                if (value === 'minimal') return value
+                if (value === 'low') return 'minimal'
+                if (value === 'medium') return 'low'
+                if (value === 'high') return 'medium'
+            })
+        }
+    }
+}
+
+function createVerbosity() {
+    const { subscribe, set, update } = writable(defaults.verbosity)
 
     return {
         subscribe,

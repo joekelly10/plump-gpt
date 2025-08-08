@@ -2,7 +2,7 @@
     import { onMount } from 'svelte'
     import { fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { active_tools, reasoning_effort } from '$lib/stores/ai'
+    import { active_tools, verbosity } from '$lib/stores/ai'
 
     let mount_animation_state = $state('flash')
 
@@ -12,26 +12,26 @@
 
     const clicked = (e) => {
         e.preventDefault()
-        reasoning_effort.increment()
+        verbosity.increment()
         return e.target.blur()
     }
     
     const rightClicked = (e) => {
         e.preventDefault()
-        if ($reasoning_effort === 'minimal') {
-            active_tools.remove('reasoning_effort')
+        if ($verbosity === 'low') {
+            active_tools.remove('verbosity')
             return false
         }
-        reasoning_effort.decrement()
+        verbosity.decrement()
         return e.target.blur()
     }
 
     const onwheel = (e) => {
         e.preventDefault()
         if (e.deltaY < 0) {
-            reasoning_effort.increment()
+            verbosity.increment()
         } else {
-            reasoning_effort.decrement()
+            verbosity.decrement()
         }
         return false
     }
@@ -48,24 +48,24 @@
 </script>
 
 <button
-    class='reasoning-effort-button mount-animation-{mount_animation_state}'
+    class='verbosity-button mount-animation-{mount_animation_state}'
     onclick={clicked}
     oncontextmenu={rightClicked}
     onwheel={onwheel}
     in:fade={{ delay: 125, duration: 125, easing: quartOut }}
     out:fade={{ duration: 125, easing: quartOut }}
 >
-    <img class='icon' src='/img/icons/reasoning-effort-{$reasoning_effort}-grey.png' alt='Reasoning Effort' />
+    <img class='icon' src='/img/icons/verbosity-grey.png' alt='Verbosity' />
     <div class='title'>
-        Reasoning Effort
+        Verbosity
     </div>
     <div class='value'>
-        {capitalise($reasoning_effort)}
+        {capitalise($verbosity)}
     </div>
 </button>
 
 <style lang='sass'>
-    .reasoning-effort-button
+    .verbosity-button
         display:         flex
         flex-wrap:       nowrap
         justify-content: flex-start
@@ -78,7 +78,7 @@
         transition:      background-color easing.$quart-out 0.1s, color easing.$quart-out 0.1s
 
         .icon
-            height:     12px
+            height:     16px
             transition: filter easing.$quart-out 0.1s
 
         .title

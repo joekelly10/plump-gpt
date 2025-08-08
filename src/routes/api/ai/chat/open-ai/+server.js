@@ -28,8 +28,12 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
         delete body.top_p
 
         body.reasoning = {
-            effort:  options.reasoning_effort ?? 'medium',
+            effort:  options.reasoning_effort ?? 'minimal',
             summary: options.reasoning_summary ?? 'detailed'
+        }
+
+        body.text = {
+            verbosity: options.verbosity ?? 'medium'
         }
     }
 

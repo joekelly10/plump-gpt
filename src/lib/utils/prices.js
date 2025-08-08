@@ -1,4 +1,28 @@
 const model_prices = {
+    'gpt-5-nano': {
+        price: {
+            cents: {
+                input_token:   5/1000000, // $0.05/mTok
+                output_token: 40/1000000
+            }
+        }
+    },
+    'gpt-5-mini': {
+        price: {
+            cents: {
+                input_token:   25/1000000, // $0.25/mTok
+                output_token: 100/1000000
+            }
+        }
+    },
+    'gpt-5': {
+        price: {
+            cents: {
+                input_token:   125/1000000, // $1.25/mTok
+                output_token: 1000/1000000
+            }
+        }
+    },
     'gpt-4.1-nano': {
         price: {
             cents: {
@@ -352,8 +376,8 @@ export const getCost = (model, usage) => {
         cache_savings    = 0
 
     if (model.type === 'openai') {
-        cache_read_cost = usage.cache_read_tokens * 0.25 * price.cents.input_token
-        cache_savings   = usage.cache_read_tokens * 0.25 * price.cents.input_token
+        cache_read_cost = usage.cache_read_tokens * 0.1 * price.cents.input_token
+        cache_savings   = usage.cache_read_tokens * 0.1 * price.cents.input_token
     }
 
     if (model.type === 'anthropic') {

@@ -1,28 +1,28 @@
 <script>
-    import { active_tools, reasoning_effort } from '$lib/stores/ai'
+    import { active_tools } from '$lib/stores/ai'
 
-    const is_active = $derived($active_tools.includes('reasoning_effort'))
+    const is_active = $derived($active_tools.includes('verbosity'))
 
     const clicked = (e) => {
         e.preventDefault()
         if (is_active) {
-            active_tools.remove('reasoning_effort')
+            active_tools.remove('verbosity')
         } else {
-            active_tools.add('reasoning_effort')
+            active_tools.add('verbosity')
         }
     }
 </script>
 
 <button
-    class='toggle-tool-button toggle-reasoning-effort-button'
+    class='toggle-tool-button toggle-verbosity-button'
     class:is-active={is_active}
     onclick={clicked}
 >
     <div class='icon-container'>
-        <img class='icon reasoning-effort-icon' src='/img/icons/reasoning-effort-{is_active ? $reasoning_effort : 'off'}-grey.png' alt='Reasoning Effort'>
+        <img class='icon verbosity-icon' src='/img/icons/verbosity-grey.png' alt='Verbosity'>
     </div>
     <div class='title'>
-        Reasoning Effort
+        Verbosity
     </div>
     <div class='switch'>
         <div class='switch-half off'>
@@ -38,6 +38,6 @@
     .toggle-tool-button
         +shared.toggle_tool_button_styles
 
-        .icon.reasoning-effort-icon
-            height: 12px
+        .verbosity-icon
+            height: 16px
 </style>
