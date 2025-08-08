@@ -368,15 +368,21 @@ function createXSearch() {
 }
 
 if (browser) {
-    const stored_temperature     = localStorage.getItem('temperature'),
-          stored_top_p           = localStorage.getItem('top_p'),
-          stored_thinking_budget = localStorage.getItem('thinking_budget')
+    const stored_temperature      = localStorage.getItem('temperature'),
+          stored_top_p            = localStorage.getItem('top_p'),
+          stored_thinking_budget  = localStorage.getItem('thinking_budget'),
+          stored_reasoning_effort = localStorage.getItem('reasoning_effort'),
+          stored_verbosity        = localStorage.getItem('verbosity')
 
-    if (stored_temperature) temperature.set(Number(stored_temperature))
-    if (stored_top_p) top_p.set(Number(stored_top_p))
-    if (stored_thinking_budget) thinking_budget.set(Number(stored_thinking_budget))
+    if (stored_temperature)      temperature.set(Number(stored_temperature))
+    if (stored_top_p)            top_p.set(Number(stored_top_p))
+    if (stored_thinking_budget)  thinking_budget.set(Number(stored_thinking_budget))
+    if (stored_reasoning_effort) reasoning_effort.set(stored_reasoning_effort)
+    if (stored_verbosity)        verbosity.set(stored_verbosity)
 
     temperature.subscribe(value => localStorage.setItem('temperature', value))
     top_p.subscribe(value => localStorage.setItem('top_p', value))
     thinking_budget.subscribe(value => localStorage.setItem('thinking_budget', value))
+    reasoning_effort.subscribe(value => localStorage.setItem('reasoning_effort', value))
+    verbosity.subscribe(value => localStorage.setItem('verbosity', value))
 }
