@@ -26,6 +26,7 @@
         transform:        scale(1.02)
         filter:           none
         opacity:          1
+        backdrop-filter:  blur(4px)
         pointer-events:   auto
         transition:       transform easing.$quart-out 0.2s, filter easing.$quart-out 0.2s, opacity easing.$quart-out 0.2s
 

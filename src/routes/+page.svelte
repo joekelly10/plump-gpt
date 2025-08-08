@@ -127,18 +127,12 @@
         min-width:        breakpoint.$cover-at-width
         box-sizing:       border-box
         background-color: $background-500
-        transform:        scale(0.99)
-        filter:           blur(4px)
-        transition:       transform easing.$quart-out 0.1s, filter easing.$quart-out 0.1s
-    
-    @media (min-width: breakpoint.$cover-at-width) and (min-height: breakpoint.$cover-at-height)
-        .plump-gpt
-            transform:  none
-            filter:     none
-            transition: filter easing.$quart-out 0.1s 0.05s, transform easing.$quart-out 0.1s 0.05s
+        transform:        none
+        filter:           none
+        transition:       filter easing.$quart-out 0.1s 0.05s, transform easing.$quart-out 0.1s 0.05s
 
-            &.blur
-                transform:  scale(0.99)
-                filter:     blur(4px)
-                transition: transform easing.$quart-out 0.1s, filter easing.$quart-out 0.1s
+        &.blur
+            transform:  scale(0.99)
+            filter:     blur(4px)
+            transition: transform easing.$quart-out 0.1s, filter easing.$quart-out 0.1s
 </style>
