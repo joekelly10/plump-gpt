@@ -347,7 +347,9 @@
         // don't use flexbox here, it messes up delete animations
         margin:         0 auto
         padding-bottom: 2 * space.$default-padding
-        width:          800px
+        min-width:      space.$main-column-width-min
+        max-width:      space.$main-column-width-max
+        width:          space.$main-column-width
 
         .no-chats
             padding-top: 192px
