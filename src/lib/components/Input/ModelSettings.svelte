@@ -12,24 +12,28 @@
 
     let { is_hovering_model_switcher } = $props()
 
-    const is_gpt5_model = $derived(['gpt-5', 'gpt-5-mini', 'gpt-5-nano'].includes($model.id))
+    const is_gpt5_model         = $derived(['gpt-5', 'gpt-5-mini', 'gpt-5-nano'].includes($model.id)),
+          show_verbosity        = $derived(is_gpt5_model && $screen_width >= breakpoints.gpt5_two_model_settings),
+          show_reasoning_effort = $derived($screen_width >= breakpoints.gpt5_one_model_setting),
+          show_top_p            = $derived($screen_width >= breakpoints.two_model_settings),
+          show_temperature      = $derived($screen_width >= breakpoints.one_model_setting)
 </script>
 
 <div class='model-settings'>
     {#if !is_hovering_model_switcher}
         <div class='controls' in:fade={{ duration: 125, easing: quartOut }} out:fade={{ duration: 75, easing: quartOut }}>
             {#if $model.type === 'open-ai'}
-                {#if $screen_width >= breakpoints.one_model_setting}
-                    <ReasoningEffortButton/>
-                {/if}
-                {#if is_gpt5_model && $screen_width >= breakpoints.two_model_settings}
+                {#if show_verbosity}
                     <VerbosityButton/>
                 {/if}
+                {#if show_reasoning_effort}
+                    <ReasoningEffortButton/>
+                {/if}
             {:else}
-                {#if $screen_width >= breakpoints.two_model_settings}
+                {#if show_top_p}
                     <TopPButton/>
                 {/if}
-                {#if $screen_width >= breakpoints.one_model_setting}
+                {#if show_temperature}
                     <TemperatureButton/>
                 {/if}
             {/if}

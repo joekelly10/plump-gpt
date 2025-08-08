@@ -17,8 +17,19 @@
 
     const { deleteChat, newChat } = $props()
 
-    const chat_has_messages = $derived($messages.length > 1),
-          is_gpt5_model = $derived(['gpt-5', 'gpt-5-mini', 'gpt-5-nano'].includes($model.id))
+    const chat_has_messages     = $derived($messages.length > 1),
+          is_gpt5_model         = $derived(['gpt-5', 'gpt-5-mini', 'gpt-5-nano'].includes($model.id)),
+          show_reasoning_effort = $derived($screen_width < breakpoints.gpt5_one_model_setting),
+          show_verbosity        = $derived(is_gpt5_model && $screen_width < breakpoints.gpt5_two_model_settings),
+          show_temperature      = $derived($screen_width < breakpoints.one_model_setting),
+          show_system_prompt    = $derived($screen_width < breakpoints.system_prompt_button)
+
+    const show_model_section = $derived.by(() => {
+        if ($model.type === 'open-ai') {
+            return is_gpt5_model ? $screen_width < breakpoints.gpt5_two_model_settings : $screen_width < breakpoints.one_model_setting
+        }
+        return $screen_width < breakpoints.two_model_settings
+    })
 
     const clickedLoad = () => {
         if ($is_idle) {
@@ -87,7 +98,7 @@
     </div>
     <AvatarButton/>
     <SmoothOutputButton/>
-    {#if $screen_width < breakpoints.two_model_settings}
+    {#if show_model_section}
         <div
             class='model-settings-section'
             in:slide={{ axis: 'x', delay: 250, duration: 125, easing: quartOut }}
@@ -97,15 +108,15 @@
                 Model
             </div>
             {#if $model.type === 'open-ai'}
-                {#if $screen_width < breakpoints.one_model_setting}
+                {#if show_reasoning_effort}
                     <ReasoningEffortButton/>
                 {/if}
-                {#if is_gpt5_model}
+                {#if show_verbosity}
                     <VerbosityButton/>
                 {/if}
             {:else}
                 <TopPButton/>
-                {#if $screen_width < breakpoints.one_model_setting}
+                {#if show_temperature}
                     <TemperatureButton/>
                 {/if}
             {/if}
