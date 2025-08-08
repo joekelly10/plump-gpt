@@ -1,4 +1,6 @@
 <script>
+    import { slide } from 'svelte/transition'
+    import { quartOut } from 'svelte/easing'
     import { top_p } from '$lib/stores/ai'
 
     const display_value = $derived($top_p.toFixed($top_p * 10 % 1 === 0 ? 1 : 2))
@@ -19,6 +21,8 @@
     class='main-menu-button top_p-button'
     onclick={clicked}
     oncontextmenu={rightClicked}
+    in:slide={{ axis: 'x', delay: 250, duration: 125, easing: quartOut }}
+    out:slide={{ axis: 'x', duration: 75, easing: quartOut }}
 >
     <div class='title'>
         Top %

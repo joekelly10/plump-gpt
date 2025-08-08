@@ -10,7 +10,7 @@ export default [
         context_window: 400000,
         is_reasoner:    true,
         pricing_id:     'gpt-5-nano',
-        tools:          ['reasoning_effort', 'verbosity', 'web_search']
+        tools:          ['web_search']
     },
     {
         type:           'open-ai',
@@ -23,7 +23,7 @@ export default [
         context_window: 400000,
         is_reasoner:    true,
         pricing_id:     'gpt-5-mini',
-        tools:          ['reasoning_effort', 'verbosity', 'web_search']
+        tools:          ['web_search']
     },
     {
         type:           'open-ai',
@@ -36,7 +36,7 @@ export default [
         context_window: 400000,
         is_reasoner:    true,
         pricing_id:     'gpt-5',
-        tools:          ['reasoning_effort', 'verbosity', 'web_search']
+        tools:          ['web_search']
     },
     {
         type:           'open-ai',
@@ -49,7 +49,7 @@ export default [
         context_window: 200000,
         is_reasoner:    true,
         pricing_id:     'o3',
-        tools:          ['reasoning_effort', 'web_search']
+        tools:          ['web_search']
     },
     {
         type:           'open-ai',
@@ -62,7 +62,7 @@ export default [
         context_window: 200000,
         is_reasoner:    true,
         pricing_id:     'o3-pro',
-        tools:          ['reasoning_effort', 'web_search']
+        tools:          ['web_search']
     },
     {
         type:           'anthropic',

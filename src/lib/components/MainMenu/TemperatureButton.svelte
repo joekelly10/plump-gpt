@@ -1,4 +1,6 @@
 <script>
+    import { slide } from 'svelte/transition'
+    import { quartOut } from 'svelte/easing'
     import { temperature } from '$lib/stores/ai'
 
     import TemperatureIcon from '$lib/components/Icons/Temperature.svelte'
@@ -22,6 +24,8 @@
     class='main-menu-button temperature-button'
     onclick={clicked}
     oncontextmenu={rightClicked}
+    in:slide={{ axis: 'x', delay: 250, duration: 125, easing: quartOut }}
+    out:slide={{ axis: 'x', duration: 75, easing: quartOut }}
 >
     <div class='title'>
         Temperature

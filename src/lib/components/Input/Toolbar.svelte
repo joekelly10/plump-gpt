@@ -5,8 +5,6 @@
     import { active_tools } from '$lib/stores/ai'
 
     import ThinkingBudgetButton from '$lib/components/Input/Toolbar/ThinkingBudgetButton.svelte'
-    import ReasoningEffortButton from '$lib/components/Input/Toolbar/ReasoningEffortButton.svelte'
-    import VerbosityButton from '$lib/components/Input/Toolbar/VerbosityButton.svelte'
     import WebSearchButton from '$lib/components/Input/Toolbar/WebSearchButton.svelte'
     import GoogleSearchButton from '$lib/components/Input/Toolbar/GoogleSearchButton.svelte'
     import XSearchButton from '$lib/components/Input/Toolbar/XSearchButton.svelte'

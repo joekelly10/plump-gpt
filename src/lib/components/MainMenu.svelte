@@ -4,6 +4,7 @@
     import { screen_width, screen_height } from '$lib/stores/screen'
     import { main_menu_active, loader_active, prompt_editor_active } from '$lib/stores/app'
     import { is_idle } from '$lib/stores/api'
+    import { model } from '$lib/stores/ai'
     import { messages } from '$lib/stores/chat'
     import breakpoints from '$lib/fixtures/breakpoints'
 
@@ -11,10 +12,13 @@
     import SmoothOutputButton from '$lib/components/MainMenu/SmoothOutputButton.svelte'
     import TopPButton from '$lib/components/MainMenu/TopPButton.svelte'
     import TemperatureButton from '$lib/components/MainMenu/TemperatureButton.svelte'
+    import VerbosityButton from '$lib/components/MainMenu/VerbosityButton.svelte'
+    import ReasoningEffortButton from '$lib/components/MainMenu/ReasoningEffortButton.svelte'
 
     const { deleteChat, newChat } = $props()
 
-    const chat_has_messages = $derived($messages.length > 1)
+    const chat_has_messages = $derived($messages.length > 1),
+          is_gpt5_model = $derived(['gpt-5', 'gpt-5-mini', 'gpt-5-nano'].includes($model.id))
 
     const clickedLoad = () => {
         if ($is_idle) {
@@ -83,24 +87,44 @@
     </div>
     <AvatarButton/>
     <SmoothOutputButton/>
-    {#if $screen_width < breakpoints.top_p_button}
-        <div class='main-menu-group-heading'>
-            Model
+    {#if $screen_width < breakpoints.two_model_settings}
+        <div
+            class='model-settings-section'
+            in:slide={{ axis: 'x', delay: 250, duration: 125, easing: quartOut }}
+            out:slide={{ axis: 'x', duration: 75, easing: quartOut }}
+        >
+            <div class='main-menu-group-heading'>
+                Model
+            </div>
+            {#if $model.type === 'open-ai'}
+                {#if $screen_width < breakpoints.one_model_setting}
+                    <ReasoningEffortButton/>
+                {/if}
+                {#if is_gpt5_model}
+                    <VerbosityButton/>
+                {/if}
+            {:else}
+                <TopPButton/>
+                {#if $screen_width < breakpoints.one_model_setting}
+                    <TemperatureButton/>
+                {/if}
+            {/if}
+            {#if $screen_width < breakpoints.system_prompt_button}
+                <button
+                    class='main-menu-button system-prompt-button'
+                    onclick={clickedSystemPrompt}
+                    in:slide={{ axis: 'x', delay: 250, duration: 125, easing: quartOut }}
+                    out:slide={{ axis: 'x', duration: 75, easing: quartOut }}
+                >
+                    <div class='title'>
+                        System Prompt
+                    </div>
+                    <div class='value'>
+                        {$messages[0].system_prompt_title ?? ''}
+                    </div>
+                </button>
+            {/if}
         </div>
-        <TopPButton/>
-        {#if $screen_width < breakpoints.temperature_button}
-            <TemperatureButton/>
-        {/if}
-        {#if $screen_width < breakpoints.system_prompt_button}
-            <button class='main-menu-button system-prompt-button' onclick={clickedSystemPrompt}>
-                <div class='title'>
-                    System Prompt
-                </div>
-                <div class='value'>
-                    {$messages[0].system_prompt_title ?? ''}
-                </div>
-            </button>
-        {/if}
     {/if}
 </div>
 
