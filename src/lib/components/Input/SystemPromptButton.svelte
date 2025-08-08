@@ -7,7 +7,8 @@
 
     let two_secs_elapsed = $state(false)
 
-    const highlight = $derived($messages[0].system_prompt_title && !$messages[0].is_default && !two_secs_elapsed)
+    const highlight = $derived($messages[0].system_prompt_title && !$messages[0].is_default && !two_secs_elapsed),
+          read_only = $derived($messages.length > 1)
 
     onMount(() => {
         setTimeout(() => two_secs_elapsed = true, 2000)
@@ -20,6 +21,7 @@
 
 <button
     class='system-prompt-button'
+    class:is-read-only={read_only}
     class:editor-active={$prompt_editor_active}
     onclick={openPromptEditor}
     in:slide={{ axis: 'x', delay: 250, duration: 125, easing: quartOut }}
@@ -64,7 +66,7 @@
 
         .prompt-title
             font-weight: 600
-            color:       $blue-grey
+            color:       $off-white
             transition:  font-size easing.$quart-out 0.25s, color easing.$quart-out 0.1s
             white-space: nowrap
 
@@ -78,7 +80,6 @@
             transition:       none
 
             .prompt-title
-                color:      $pale-blue
                 transition: font-size easing.$quart-out 0.25s
         
         &:active
@@ -88,6 +89,10 @@
 
             .prompt-title
                 transition: none
+
+        &.is-read-only
+            .prompt-title
+                color: $blue-grey
 
         &.editor-active
             border-color: $background-800
