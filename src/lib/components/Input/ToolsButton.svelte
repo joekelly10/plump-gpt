@@ -13,7 +13,7 @@
 </script>
 
 <button class='tools-button' class:is-active={$tool_list_active} class:has-active-tools={$active_tools.length > 0} onclick={onclick}>
-    <img class='icon' src='/img/icons/tools-grey.png' alt='Tools' />
+    <div class='icon'></div>
     {#if $tool_list_active || $active_tools.length > 0}
         <div class='active-tools-count' in:fade={{ duration: 75, easing: quartOut }}>
             {$active_tools.length}
@@ -43,7 +43,14 @@
         transition:      border-color easing.$quart-out 100ms, background-color easing.$quart-out 100ms, padding easing.$quart-out 150ms
 
         :global(.icon)
-            height: 19.5px
+            $size:            26px
+            height:           $size
+            width:            $size
+            mask-image:       url('/img/icons/tools-grey.png')
+            mask-size:        contain
+            mask-repeat:      no-repeat
+            mask-position:    center
+            background-color: $blue-grey
 
         &:hover
             border-color:     $background-800
