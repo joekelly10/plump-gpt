@@ -7,8 +7,6 @@
     import breakpoints from '$lib/fixtures/breakpoints'
 
     import ThinkingBudgetButton from '$lib/components/ToolList/ToggleThinkingBudgetButton.svelte'
-    import ReasoningEffortButton from '$lib/components/ToolList/ToggleReasoningEffortButton.svelte'
-    import VerbosityButton from '$lib/components/ToolList/ToggleVerbosityButton.svelte'
     import WebSearchButton from '$lib/components/ToolList/ToggleWebSearchButton.svelte'
     import GoogleSearchButton from '$lib/components/ToolList/ToggleGoogleSearchButton.svelte'
     import XSearchButton from '$lib/components/ToolList/ToggleXSearchButton.svelte'
