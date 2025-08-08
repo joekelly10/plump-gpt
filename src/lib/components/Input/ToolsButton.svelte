@@ -46,7 +46,7 @@
             $size:            26px
             height:           $size
             width:            $size
-            mask-image:       url('/img/icons/tools-grey.png')
+            mask-image:       url('/img/icons/tools.png')
             mask-size:        contain
             mask-repeat:      no-repeat
             mask-position:    center
