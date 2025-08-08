@@ -15,10 +15,9 @@ It runs in your browser on `localhost:1337`.
 # Models
 
 **Open AI**
-- <img alt='GPT-4.1 nano' src='./static/img/icons/models/gpt-4.1-nano.png' width='21' height='21' valign='middle'>&nbsp; GPT-4.1 nano
-- <img alt='GPT-4.1 mini' src='./static/img/icons/models/gpt-4.1-mini.png' width='21' height='21' valign='middle'>&nbsp; GPT-4.1 mini
-- <img alt='GPT-4.1' src='./static/img/icons/models/gpt-4.1.png' width='21' height='21' valign='middle'>&nbsp; GPT-4.1
-- <img alt='o4 mini' src='./static/img/icons/models/o4-mini.png' width='21' height='21' valign='middle'>&nbsp; o4 mini
+- <img alt='GPT-5 nano' src='./static/img/icons/models/gpt-5-nano.png' width='21' height='21' valign='middle'>&nbsp; GPT-5 nano
+- <img alt='GPT-5 mini' src='./static/img/icons/models/gpt-5-mini.png' width='21' height='21' valign='middle'>&nbsp; GPT-5 mini
+- <img alt='GPT-5' src='./static/img/icons/models/gpt-5.png' width='21' height='21' valign='middle'>&nbsp; GPT-5
 - <img alt='o3' src='./static/img/icons/models/o3.png' width='21' height='21' valign='middle'>&nbsp; o3
 - <img alt='o3 pro' src='./static/img/icons/models/o3-pro.png' width='21' height='21' valign='middle'>&nbsp; o3 pro
 
