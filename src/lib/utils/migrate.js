@@ -27,7 +27,7 @@ export const migrateIfNeeded = (chats) => {
                     message.usage = {
                         ...message.usage,
                         cache_write_tokens: 0,
-                        cache_read_tokens:  0
+                        cache_read_tokens:  message.usage.cache_read_tokens ?? 0
                     }
                 }
                 // map old icons to new
