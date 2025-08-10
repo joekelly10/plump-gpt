@@ -180,8 +180,15 @@
                 background-color: $background-700
                 font-family:      font.$mono
                 +scrollbar
+                &::-webkit-scrollbar
+                    width:  6px
+                    height: 6px
                 &::-webkit-scrollbar-thumb
-                    background-color: $blue-grey
+                    background-color: $off-white
+                    &:hover
+                        background-color: color.adjust($off-white, $lightness: 4%)
+                    &:active
+                        background-color: $off-white
         
             code.hljs
                 margin:           0
@@ -190,8 +197,15 @@
                 border:           1px solid $background-700
                 background-color: $background-700
                 +scrollbar
+                &::-webkit-scrollbar
+                    width:  6px
+                    height: 6px
                 &::-webkit-scrollbar-thumb
-                    background-color: $blue-grey
+                    background-color: $off-white
+                    &:hover
+                        background-color: color.adjust($off-white, $lightness: 4%)
+                    &:active
+                        background-color: $off-white
             
             .copy-code
                 position:    absolute
