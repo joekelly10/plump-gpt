@@ -8,16 +8,17 @@
 
     import TemperatureIcon from '$lib/components/Icons/Temperature.svelte'
 
-    export let message
+    let { message } = $props()
 
-    let cache_duration,
-        timeleft,
-        timer
+    let cache_duration
 
-    $: temperature_icon_level = message.temperature > 1 ? 4 : Math.round(message.temperature / 0.3)
-    $: cost                   = getCost(message.model, message.usage)
-    $: cost_string            = '$' + (cost.total / 100).toFixed(5)
-    $: savings_string         = '$' + (cost.cache_savings / 100).toFixed(5)
+    let timer    = $state(null),
+        timeleft = $state('')
+
+    const temperature_icon_level = $derived(message.temperature > 1 ? 4 : Math.round(message.temperature / 0.3)),
+          cost                   = $derived(getCost(message.model, message.usage)),
+          cost_string            = $derived('$' + (cost.total / 100).toFixed(5)),
+          savings_string         = $derived('$' + (cost.cache_savings / 100).toFixed(5))
 
     onMount(() => {
         if (message.is_last) {
@@ -52,6 +53,16 @@
             clearInterval(timer)
         }
     }
+
+    const getDisplayValue = (string) => {
+        switch (string) {
+            case 'minimal': return 'min'
+            case 'low':     return 'low'
+            case 'medium':  return 'med'
+            case 'high':    return 'high'
+            default:        return string
+        }
+    }
 </script>
 
 <div class='message-info' in:slide={{ axis: 'x', duration: 150, easing: quartOut }} out:fade={{ duration: 150, easing: quartOut }}>
@@ -60,12 +71,25 @@
             {message.model.name}
         </div>
         <div class='model-settings'>
-            <div class='top-p-icon'>
-                <div class='fill' style='height:{message.top_p * 100}%'></div>
-            </div>
-            {message.top_p.toFixed(message.top_p * 10 % 1 === 0 ? 1 : 2)}
-            <TemperatureIcon level={temperature_icon_level} className='temperature-icon' />
-            {message.temperature.toFixed(1)}
+            {#if message.model.type === 'open-ai' && message.model.is_reasoner}
+                {#if message.verbosity}
+                    <div class='verbosity'>
+                        <div class='verbosity-icon {message.verbosity}'></div>
+                        {getDisplayValue(message.verbosity)} verbosity
+                    </div>
+                {/if}
+                <div class='reasoning-effort'>
+                    <div class='reasoning-effort-icon {message.reasoning_effort}'></div>
+                    {getDisplayValue(message.reasoning_effort)} effort
+                </div>
+            {:else}
+                <div class='top-p-icon'>
+                    <div class='fill' style='height:{message.top_p * 100}%'></div>
+                </div>
+                {message.top_p.toFixed(message.top_p * 10 % 1 === 0 ? 1 : 2)}
+                <TemperatureIcon level={temperature_icon_level} className='temperature-icon' />
+                {message.temperature.toFixed(1)}
+            {/if}
         </div>
         {#if $is_streaming}
             <div class='streaming'>
@@ -116,21 +140,60 @@
 
         .inner
             min-width: 128px
-    
-        :global
-            .model-settings
-                .top-p-icon
-                    display:        inline-block
-                    vertical-align: middle  
-                    margin:         -3px 5px 0 0
-                    width:          4px
-                    height:         13px
-                    border-radius:  3px
-                    border:         1px solid $background-200
+        
+        .model-settings
+            .reasoning-effort-icon
+                $size:            18px
+                display:          inline-block
+                vertical-align:   middle
+                margin:           -3px 5px 0 0
+                height:           $size
+                width:            $size
+                mask-image:       url('/img/icons/reasoning-effort-minimal.png')
+                mask-size:        contain
+                mask-repeat:      no-repeat
+                mask-position:    center
+                background-color: $background-200
+                transition:       background-color easing.$quart-out 0.1s
+                &.low
+                    mask-image: url('/img/icons/reasoning-effort-low.png')
+                &.medium
+                    mask-image: url('/img/icons/reasoning-effort-medium.png')
+                &.high
+                    mask-image: url('/img/icons/reasoning-effort-high.png')
+            
+            .verbosity-icon
+                $size:            16px
+                display:          inline-block
+                vertical-align:   middle
+                margin:           -3px 5px 0 0
+                width:            $size
+                height:           $size
+                mask-size:        contain
+                mask-repeat:      no-repeat
+                mask-position:    center
+                background-color: $background-200
+                transition:       background-color easing.$quart-out 0.1s
+                &.low
+                    mask-image: url('/img/icons/verbosity-low.png')
+                &.medium
+                    mask-image: url('/img/icons/verbosity-medium.png')
+                &.high
+                    mask-image: url('/img/icons/verbosity-high.png')
+            
+            .top-p-icon
+                display:        inline-block
+                vertical-align: middle  
+                margin:         -3px 5px 0 0
+                width:          4px
+                height:         13px
+                border-radius:  3px
+                border:         1px solid $background-200
 
-                    .fill
-                        background-color: $background-200
-                
+                .fill
+                    background-color: $background-200
+    
+            :global
                 .temperature-icon
                     display:        inline-block
                     vertical-align: middle

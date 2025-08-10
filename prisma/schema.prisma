@@ -36,6 +36,8 @@ model Message {
   model                 Json?
   temperature           Float?
   topP                  Float?
+  reasoningEffort       String?
+  verbosity             String?
   tools                 Json?
   toolUses              Json?
   usage                 Json?

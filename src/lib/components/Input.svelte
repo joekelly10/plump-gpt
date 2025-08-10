@@ -158,6 +158,13 @@
             }
         }
 
+        if ($model.type === 'open-ai' && $model.is_reasoner) {
+            gpt_message.temperature      = 1
+            gpt_message.top_p            = 1
+            gpt_message.reasoning_effort = $reasoning_effort
+            gpt_message.verbosity        = $model.id.includes('gpt-5') ? $verbosity : null
+        }
+
         api_state.startStreaming()
 
         $messages = [...$messages, gpt_message]

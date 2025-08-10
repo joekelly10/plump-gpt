@@ -6,27 +6,29 @@ export const formatForAPI = (db_chat) => {
         stars:       db_chat.stars,
         highlights:  db_chat.highlights,
         updated_at:  db_chat.updatedAt,
-        messages:    db_chat.messages.map(message => ({
-            db_id:     message.id,
-            id:        message.chronologicalId,
-            parent_id: message.chronologicalParentId,
-            role:      message.role,
-            content:   message.content,
-            timestamp: message.updatedAt,
-            ...(message.role === 'system' && {
-                system_prompt_id:    message.systemPromptId,
-                system_prompt_title: message.systemPromptTitle,
-                is_default:          message.systemPromptIsDefault
+        messages:    db_chat.messages.map(db_message => ({
+            db_id:     db_message.id,
+            id:        db_message.chronologicalId,
+            parent_id: db_message.chronologicalParentId,
+            role:      db_message.role,
+            content:   db_message.content,
+            timestamp: db_message.updatedAt,
+            ...(db_message.role === 'system' && {
+                system_prompt_id:    db_message.systemPromptId,
+                system_prompt_title: db_message.systemPromptTitle,
+                is_default:          db_message.systemPromptIsDefault
             }),
-            ...(message.role === 'assistant' && {
-                model:             message.model,
-                temperature:       message.temperature,
-                top_p:             message.topP,
-                tools:             message.tools,
-                reasoning_content: message.reasoningContent,
-                signature:         message.signature,
-                tool_uses:         message.toolUses,
-                usage:             message.usage
+            ...(db_message.role === 'assistant' && {
+                model:             db_message.model,
+                temperature:       db_message.temperature,
+                top_p:             db_message.topP,
+                reasoning_effort:  db_message.reasoningEffort,
+                verbosity:         db_message.verbosity,
+                tools:             db_message.tools,
+                reasoning_content: db_message.reasoningContent,
+                signature:         db_message.signature,
+                tool_uses:         db_message.toolUses,
+                usage:             db_message.usage
             })
         }))
     }
