@@ -83,12 +83,14 @@
                     {getDisplayValue(message.reasoning_effort)} effort
                 </div>
             {:else}
-                <div class='top-p-icon'>
-                    <div class='fill' style='height:{message.top_p * 100}%'></div>
+                <div class='top-p-and-temperature'>
+                    <div class='top-p-icon'>
+                        <div class='fill' style='height:{message.top_p * 100}%'></div>
+                    </div>
+                    {message.top_p.toFixed(message.top_p * 10 % 1 === 0 ? 1 : 2)}
+                    <TemperatureIcon level={temperature_icon_level} className='temperature-icon' />
+                    {message.temperature.toFixed(1)}
                 </div>
-                {message.top_p.toFixed(message.top_p * 10 % 1 === 0 ? 1 : 2)}
-                <TemperatureIcon level={temperature_icon_level} className='temperature-icon' />
-                {message.temperature.toFixed(1)}
             {/if}
         </div>
         {#if $is_streaming}
@@ -142,11 +144,37 @@
             min-width: 128px
         
         .model-settings
+            .verbosity,
+            .reasoning-effort
+                display:         flex
+                align-items:     center
+                justify-content: flex-end
+                gap:             11px
+            
+            .top-p-and-temperature
+                display:         flex
+                align-items:     center
+                justify-content: flex-end
+                gap:             10px
+            
+            .verbosity-icon
+                $size:            16px
+                width:            $size
+                height:           $size
+                mask-size:        contain
+                mask-repeat:      no-repeat
+                mask-position:    center
+                background-color: $background-200
+                transition:       background-color easing.$quart-out 0.1s
+                &.low
+                    mask-image: url('/img/icons/verbosity-low.png')
+                &.medium
+                    mask-image: url('/img/icons/verbosity-medium.png')
+                &.high
+                    mask-image: url('/img/icons/verbosity-high.png')
+            
             .reasoning-effort-icon
                 $size:            18px
-                display:          inline-block
-                vertical-align:   middle
-                margin:           -3px 5px 0 0
                 height:           $size
                 width:            $size
                 mask-image:       url('/img/icons/reasoning-effort-minimal.png')
@@ -162,44 +190,21 @@
                 &.high
                     mask-image: url('/img/icons/reasoning-effort-high.png')
             
-            .verbosity-icon
-                $size:            16px
-                display:          inline-block
-                vertical-align:   middle
-                margin:           -3px 5px 0 0
-                width:            $size
-                height:           $size
-                mask-size:        contain
-                mask-repeat:      no-repeat
-                mask-position:    center
-                background-color: $background-200
-                transition:       background-color easing.$quart-out 0.1s
-                &.low
-                    mask-image: url('/img/icons/verbosity-low.png')
-                &.medium
-                    mask-image: url('/img/icons/verbosity-medium.png')
-                &.high
-                    mask-image: url('/img/icons/verbosity-high.png')
-            
             .top-p-icon
-                display:        inline-block
-                vertical-align: middle  
-                margin:         -3px 5px 0 0
-                width:          4px
-                height:         13px
-                border-radius:  3px
-                border:         1px solid $background-200
+                width:         4px
+                height:        13px
+                border-radius: 3px
+                border:        1px solid $background-200
 
                 .fill
                     background-color: $background-200
     
             :global
                 .temperature-icon
-                    display:        inline-block
-                    vertical-align: middle
-                    margin:         -3px 2px 0 8px
-                    height:         16px
-                    fill:           $background-200
+                    margin-right: -5px
+                    margin-left:  5px
+                    height:       16px
+                    fill:         $background-200
 
     .streaming
         margin-top:  $vertical-margin
