@@ -6,8 +6,30 @@ import { env } from '$env/dynamic/private'
 export const POST = async ({ request, fetch: internal_fetch }) => {
     let { messages, options } = await request.json()
 
-    // strip all properties except `role` + `content` else you get a 400
-    messages = messages.map(({ role, content }) => ({ role, content }))
+    const input = messages.map(msg => {
+        if (msg.role === 'assistant' && msg.raw?.open_ai?.response) {
+            let content = []
+
+            const output       = msg.raw.open_ai.response.output,
+                  message_item = output.find(item => item.type === 'message')
+
+            content.push({
+                type: 'output_text',
+                text: message_item.content[0].text
+            })
+
+            return {
+                id:      message_item.id,
+                role:    'assistant',
+                content: content
+            }
+        } else {
+            return {
+                role:    msg.role,
+                content: msg.content
+            }
+        }
+    })
 
     const headers = new Headers({
         'Content-Type': 'application/json',
@@ -20,7 +42,7 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
         top_p:       options.top_p,
         stream:      true,
         store:       false,
-        input:       messages
+        input:       input
     }
 
     if (options.model.is_reasoner) {
