@@ -47,7 +47,8 @@ export const POST = async ({ request }) => {
                         reasoningContent: msg.reasoning_content,
                         signature:        msg.signature,
                         toolUses:         msg.tool_uses,
-                        usage:            msg.usage
+                        usage:            msg.usage,
+                        raw:              msg.raw
                     })
                 }))
             })
@@ -80,7 +81,8 @@ export const POST = async ({ request }) => {
                                 reasoningContent: msg.reasoning_content,
                                 signature:        msg.signature,
                                 toolUses:         msg.tool_uses,
-                                usage:            msg.usage
+                                usage:            msg.usage,
+                                raw:              msg.raw
                             })
                         }))
                     }

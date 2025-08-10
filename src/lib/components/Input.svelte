@@ -155,7 +155,8 @@
                 input_tokens:       0,
                 reasoning_tokens:   0,
                 output_tokens:      0
-            }
+            },
+            raw: {}
         }
 
         if ($model.type === 'open-ai' && $model.is_reasoner) {
@@ -305,6 +306,9 @@
                 cache_read_tokens: usage.input_tokens_details.cached_tokens,
                 output_tokens:     usage.output_tokens,
                 reasoning_tokens:  usage.output_tokens_details.reasoning_tokens
+            }
+            gpt_message.raw.open_ai = {
+                response: data.response
             }
         } else if (data.type === 'response.output_item.done') {
             if (data.item.type === 'web_search_call') {

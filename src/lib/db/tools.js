@@ -28,7 +28,8 @@ export const formatForAPI = (db_chat) => {
                 reasoning_content: db_message.reasoningContent,
                 signature:         db_message.signature,
                 tool_uses:         db_message.toolUses,
-                usage:             db_message.usage
+                usage:             db_message.usage,
+                raw:               db_message.raw
             })
         }))
     }

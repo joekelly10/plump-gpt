@@ -44,6 +44,7 @@ model Message {
   systemPromptId        String?
   systemPromptTitle     String?
   systemPromptIsDefault Boolean?  @default(false)
+  raw                   Json?
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
   chat                  Chat      @relation(fields: [chatId], references: [id], onDelete: Cascade)
