@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test'
 import defaults from '../../src/lib/fixtures/defaults'
+import encoded_avatar from '../fixtures/encoded_avatar'
 
 test.describe('Settings', () => {
 
@@ -113,14 +114,14 @@ test.describe('Settings', () => {
         let avatar_img_src = await avatar_img.getAttribute('src')
         expect(avatar_img_src).toContain('default_avatar.png')
 
-        // = SHA256 hash of user_avatar.png
+        // = encoding of user_avatar.png
         await file_input.setInputFiles('tests/fixtures/user_avatar.png')
-        await expect(avatar_img).toHaveAttribute('src', '/uploads/avatars/2528da765c92ad2dd7c1c719b213eb81ae275a17179dbfd3753f02e15cf403e8.png')
+        await expect(avatar_img).toHaveAttribute('src', encoded_avatar)
 
         // check persistence
         await page.reload()
         await menu_button.click()
-        await expect(avatar_img).toHaveAttribute('src', '/uploads/avatars/2528da765c92ad2dd7c1c719b213eb81ae275a17179dbfd3753f02e15cf403e8.png')
+        await expect(avatar_img).toHaveAttribute('src', encoded_avatar)
     })
 
     test('smooth output switch should work', async ({ page }) => {
