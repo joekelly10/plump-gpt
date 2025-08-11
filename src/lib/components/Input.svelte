@@ -302,6 +302,7 @@
         } else if (data.type === 'response.completed') {
             const usage = data.response.usage
             gpt_message.usage = {
+                ...gpt_message.usage,
                 input_tokens:      usage.input_tokens - usage.input_tokens_details.cached_tokens,
                 cache_read_tokens: usage.input_tokens_details.cached_tokens,
                 output_tokens:     usage.output_tokens,
