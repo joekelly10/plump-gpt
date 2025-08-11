@@ -14,3 +14,4 @@ vite.config.ts.timestamp-*
 go.log
 test-containers.log
 test-containers-build.log
+.vercel
