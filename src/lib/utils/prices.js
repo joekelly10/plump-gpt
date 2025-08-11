@@ -267,7 +267,7 @@ const model_prices = {
             }
         }
     },
-    'jamba-1.6-mini': {
+    'jamba-mini': {
         price: {
             cents: {
                 input_token:  20/1000000, // $0.20/mTok
@@ -275,7 +275,7 @@ const model_prices = {
             }
         }
     },
-    'jamba-1.6-large': {
+    'jamba-large': {
         price: {
             cents: {
                 input_token:  200/1000000, // $2.00/mTok
