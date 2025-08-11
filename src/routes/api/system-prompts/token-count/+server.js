@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit'
 import { Tiktoken } from 'tiktoken/lite'
-import cl100k_base from 'tiktoken/encoders/cl100k_base.json'
+import cl100k_base from 'tiktoken/encoders/cl100k_base.json' assert { type: 'json' }
 
 export const POST = async ({ request }) => {
     const { message } = await request.json()
