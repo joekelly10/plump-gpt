@@ -39,7 +39,7 @@
         align-items:      center
         justify-content:  center
         position:         absolute
-        top:              space.$default-padding + 12px
+        top:              space.$input-section-padding + 12px
         left:             50%
         z-index:          5
         transform:        translateX(-50%) translateY(-100%)

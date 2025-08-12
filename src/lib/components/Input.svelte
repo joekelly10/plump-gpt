@@ -892,7 +892,7 @@
         position:         relative
         width:            100%
         box-sizing:       border-box
-        padding:          space.$default-padding 0
+        padding:          space.$input-section-padding 0
         background-color: $background-700
         user-select:      none
 

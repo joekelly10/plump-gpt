@@ -44,7 +44,7 @@
 <style lang='sass'>
     .model-settings
         position:     absolute
-        top:          space.$default-padding
+        top:          space.$input-section-padding
         left:         0
         padding-left: 16px
         

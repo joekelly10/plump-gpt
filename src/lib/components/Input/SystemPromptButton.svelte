@@ -42,7 +42,7 @@
         align-items:   center
         gap:           16px
         position:      absolute
-        top:           space.$default-padding
+        top:           space.$input-section-padding
         right:         16px
         max-width:     320px
         height:        space.$input-initial-height
