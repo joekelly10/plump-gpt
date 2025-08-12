@@ -212,52 +212,31 @@ fi
 sleep 0.1
 
 
-# Check PostgreSQL status
-DB_URL=$(grep "DATABASE_URL" .env | cut -d= -f2)
-
-if ! [[ $DB_URL =~ postgresql://([^:@]+)?(:[^@]+)?@([^:/]+)(:([0-9]+))?/([^?]+)(\?.*)?$ ]]; then
+# Check database connection
+if [ -z "$DATABASE_URL" ]; then
     echo
-    echo -e "  ${red_bold}❌ ${white_bold}Couldn't parse DATABASE_URL in .env file${reset}"
-    echo -e "     ${white}Please check that your DATABASE_URL is correct${reset}"
+    echo -e "  ${red_bold}❌ ${white_bold}DATABASE_URL is not set in .env file${reset}"
+    echo -e "     ${white}Please check that you’ve added it${reset}"
     echo -e "     ${white}e.g. postgresql://user:password@localhost:5432/database_name${reset}"
+    echo
+
+    exit 1
+fi
+
+echo
+echo -e "  ${blue_bold}➜ ${white_bold}Checking database connection...${reset}"
+
+if ! psql "$DATABASE_URL" -c '\q' 2>/dev/null; then
+    echo
+    echo -e "  ${red_bold}❌ ${white_bold}Couldn't connect to database${reset}"
+    echo
+    echo -e "     ${white}Please make sure PostgreSQL is running and DATABASE_URL is correct${reset}"
+    echo -e "     ${grey}Attempted connection to: ${cyan}${DATABASE_URL}${reset}"
+    echo
 
     exit 1
 else
-    DB_USER="${BASH_REMATCH[1]}"
-    DB_HOST="${BASH_REMATCH[3]}"
-    DB_PORT="${BASH_REMATCH[5]:-5432}"
-    DB_NAME="${BASH_REMATCH[6]}"
-
-    echo
-    echo -e "  ${blue_bold}➜ ${white_bold}Checking database...${reset}"
-
-    if ! nc -z $DB_HOST $DB_PORT 2>/dev/null; then
-        echo
-        echo -e "  ${red_bold}❌ ${white_bold}Couldn't connect to PostgreSQL database${reset}"
-        echo
-        echo -e "     ${white}Please make sure PostgreSQL is up and running, then try again${reset}"
-        echo -e "     ${grey}Attempted connection to: ${cyan}${DB_URL}${reset}"
-        echo
-
-        exit 1
-    else
-        echo -e "  ${green_bold}✔ ${white}PostgreSQL is running...${reset}"
-
-        if [ ! -z "$DB_NAME" ]; then
-            if ! psql "$DB_URL" -c '\q' 2>/dev/null; then
-                echo
-                echo -e "  ${red_bold}❌ ${white_bold}Couldn't connect to database ${yellow_bold}'${DB_NAME}'${reset}"
-                echo
-                echo -e "     ${white}Please make sure a database with that name exists${reset}"
-                echo -e "     ${grey}Attempted connection to: ${cyan}${DB_URL}${reset}"
-                echo
-
-                exit 1
-            else
-                echo -e "${up_one_line}${carriage_return}${clear_line}  ${green_bold}✔ ${white}Successfully connected to database ${blue_bold}'${DB_NAME}'${reset}"
-            fi
-        fi
-    fi
+    echo -e "  ${green_bold}✔ ${white}Successfully connected to database${reset}"
 fi
 
 
@@ -265,7 +244,7 @@ sleep 0.1
 
 
 # check if the database has been seeded already; if not, this is the first run
-if psql "$DB_URL" -t -c "
+if psql "$DATABASE_URL" -t -c "
     SELECT EXISTS (
         SELECT FROM pg_tables WHERE tablename = 'SystemPrompt' 
         AND EXISTS (
