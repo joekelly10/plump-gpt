@@ -6,6 +6,16 @@
 
     const { tree_view = false } = $props()
 
+    const unique_models = $derived.by(() => {
+        let models = new Set()
+
+        $messages.forEach(m => {
+            if (m.model?.id) models.add(m.model.id)
+        })
+
+        return models.size
+    })
+
     const cache_used       = $derived($usage.cache_read_tokens > 0 || $usage.cache_write_tokens > 0),
           cost_string      = $derived('$' + ($usage.total_cost / 100).toFixed(5)),
           savings_string   = $derived('$' + ($usage.total_savings / 100).toFixed(5)),
@@ -29,6 +39,11 @@
         {#if $forks.length > 1}
             <div class='fork-count' transition:slide={{ axis: 'y', duration: 125, easing: quartOut }}>
                 {$forks.length} forks
+            </div>
+        {/if}
+        {#if unique_models > 1}
+            <div class='model-count'>
+                {unique_models} models
             </div>
         {/if}
     </div>
