@@ -2,6 +2,7 @@
     import { slide, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { usage, forks } from '$lib/stores/chat'
+    import { messages } from '$lib/stores/chat'
 
     const { tree_view = false } = $props()
 
@@ -50,9 +51,11 @@
             <div class='read'>
                 {$usage.cache_read_tokens.toLocaleString()} read
             </div>
-            <div class='write'>
-                {$usage.cache_write_tokens.toLocaleString()} write
-            </div>
+            {#if $usage.cache_write_tokens > 0}
+                <div class='write'>
+                    {$usage.cache_write_tokens.toLocaleString()} write
+                </div>
+            {/if}
         </div>
     {/if}
     <div class='stat cost'>
