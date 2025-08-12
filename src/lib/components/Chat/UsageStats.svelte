@@ -36,10 +36,10 @@
             tokens
         </div>
         <div class='input'>
-            {$usage.input_tokens} input
+            {$usage.input_tokens.toLocaleString()} input
         </div>
         <div class='output'>
-            {$usage.output_tokens} output
+            {$usage.output_tokens.toLocaleString()} output
         </div>
     </div>
     {#if cache_used}
@@ -48,10 +48,10 @@
                 cache
             </div>
             <div class='read'>
-                {$usage.cache_read_tokens} read
+                {$usage.cache_read_tokens.toLocaleString()} read
             </div>
             <div class='write'>
-                {$usage.cache_write_tokens} write
+                {$usage.cache_write_tokens.toLocaleString()} write
             </div>
         </div>
     {/if}
