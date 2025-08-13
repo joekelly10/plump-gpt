@@ -1,6 +1,6 @@
 <script>
     import { onMount, onDestroy, tick } from 'svelte'
-    import { scale } from 'svelte/transition'
+    import { scale, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { loader_active } from '$lib/stores/app'
     import { chat_id, messages, forks, active_fork, stars, highlights } from '$lib/stores/chat'
@@ -26,7 +26,8 @@
         total_pages    = $state(0),
         active_page    = $state(1),
         keyboard_index = $state(null),
-        suspend_mouse  = $state(false)
+        suspend_mouse  = $state(false),
+        is_fetching    = $state(false)
 
     onMount(() => {
         document.addEventListener('keydown', keydown)
@@ -68,6 +69,7 @@
 
     const fetchChats = async () => {
         let url
+
         if (search_value) {
             console.log('\n📂 + 🔍 Fetching chats w/ search term:', search_value)
             url = `/api/chats/search?query=${encodeURIComponent(search_value)}&filter=${filter}&page=${active_page}&per_page=10`
@@ -76,7 +78,8 @@
             url = `/api/chats?filter=${filter}&page=${active_page}&per_page=10`
         }
 
-        chats = []
+        chats       = []
+        is_fetching = true
 
         const response = await fetch(url, {
             method:  'GET',
@@ -90,6 +93,7 @@
             total_chats    = json.total_items
             total_pages    = json.total_pages
             searched_value = search_value
+            is_fetching    = false
 
             await tick()
             hljs.highlightAll()
@@ -98,6 +102,7 @@
             console.log(`📂–❌ Fetch chats failed: ${response.status} ${response.statusText}`)
             const json = await response.json()
             if (json) console.log(json)
+            is_fetching = false
         }
     }
 
@@ -307,9 +312,17 @@
                     deleteChat={deleteChat}
                 />
             {/each}
-            {#if filter === 'all' && chats.length === 0}
-                <div class='no-chats'>
-                    You haven't started any chats yet!
+            {#if chats.length === 0}
+                <div class='no-chats' in:fade={{ delay: 250, duration: 125, easing: quartOut }}>
+                    {#if is_fetching}
+                        <div class='loading-spinner'>
+                            <div class='spinner-img'></div>
+                        </div>
+                    {:else if filter === 'all' && search_value.trim() === ''}
+                        You haven't started any chats yet!
+                    {:else}
+                        No chats found
+                    {/if}
                 </div>
             {/if}
         </div>
@@ -356,4 +369,21 @@
             text-align:  center
             font-weight: 450
             color:       $background-200
+
+            .loading-spinner
+                display:         flex
+                align-items:     center
+                justify-content: center
+                height:          24px
+
+                .spinner-img
+                    $size:            19px
+                    height:           $size
+                    width:            $size
+                    mask-image:       url('/img/icons/cog.png')
+                    mask-size:        contain
+                    mask-repeat:      no-repeat
+                    mask-position:    center
+                    background-color: $blue-grey
+                    animation:        animation.$spinner-animation
 </style>
