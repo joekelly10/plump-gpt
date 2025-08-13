@@ -377,7 +377,7 @@
                 height:          24px
 
                 .spinner-img
-                    $size:            19px
+                    $size:            24px
                     height:           $size
                     width:            $size
                     mask-image:       url('/img/icons/cog.png')
