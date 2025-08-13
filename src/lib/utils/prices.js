@@ -307,6 +307,14 @@ const model_prices = {
             }
         }
     },
+    'groq-gpt-oss-120b': {
+        price: {
+            cents: {
+                input_token:  15/1000000, // $0.15/mTok
+                output_token: 75/1000000
+            }
+        }
+    },
     'minimax-01': {
         price: {
             cents: {

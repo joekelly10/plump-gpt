@@ -391,15 +391,15 @@ export default [
     },
     {
         type:           'groq',
-        id:             'qwen-qwq-32b',
-        name:           'QwQ 32b',
-        short_name:     'QwQ',
-        icon:           'groq-qwen.png',
+        id:             'openai/gpt-oss-120b',
+        name:           'GPT-OSS 120b',
+        short_name:     'GPT',
+        icon:           'groq-gpt.png',
         family:         'Groq',
         hosted_at:      'groq.com',
         context_window: 128000,
         is_reasoner:    true,
-        pricing_id:     'groq-qwq-32b',
+        pricing_id:     'groq-gpt-oss-120b',
         tools:          []
     },
     {

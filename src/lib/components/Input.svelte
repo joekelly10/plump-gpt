@@ -506,14 +506,13 @@
     const processGroqObject = async (data, gpt_message) => {
         const content = data.choices[0]?.delta.content ?? ''
         if ($model.is_reasoner) {
-            if (gpt_message.reasoning_finished) {
-                await append(gpt_message, content, { speed_limit: 0 })
-            } else if (content === '<think>') {
-                gpt_message.reasoning_content = ''
+            if (content === '<think>') {
+                gpt_message.reasoning_started = true
             } else if (content === '</think>') {
                 gpt_message.reasoning_finished = true
             } else {
-                await append(gpt_message, content, { is_reasoning: true, speed_limit: 0 })
+                const is_reasoning = gpt_message.reasoning_started && !gpt_message.reasoning_finished
+                await append(gpt_message, content, { is_reasoning, speed_limit: 0 })
             }
         } else {
             await append(gpt_message, content, { speed_limit: 0 })
