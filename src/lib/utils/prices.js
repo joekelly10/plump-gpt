@@ -383,9 +383,9 @@ export const getCost = (model, usage) => {
         cache_read_cost  = 0,
         cache_savings    = 0
 
-    if (model.type === 'openai') {
+    if (model.type === 'open-ai') {
         cache_read_cost = usage.cache_read_tokens * 0.1 * price.cents.input_token
-        cache_savings   = usage.cache_read_tokens * 0.1 * price.cents.input_token
+        cache_savings   = usage.cache_read_tokens * 0.9 * price.cents.input_token
     }
 
     if (model.type === 'anthropic') {
