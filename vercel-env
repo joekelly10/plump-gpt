@@ -34,6 +34,7 @@ env_var_name_id_pairs=(
     'MISTRAL_API_KEY:JdlycdMFIGUsDLka'
     'INCEPTION_API_KEY:eTYlsVsn7EP1CZOf'
     'COHERE_API_KEY:yNhL43mmNDUCfCnM'
+    'EXA_API_KEY:YuL86O0dQr3Mj2dN'
 )
 
 # Arguments
