@@ -21,7 +21,7 @@
         left:             0
         z-index:          9999
         width:            100vw
-        height:           100vh
+        height:           100%
         background-color: color.adjust($background-800, $alpha: -0.125)
         transform:        scale(1.02)
         filter:           none

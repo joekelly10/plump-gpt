@@ -123,11 +123,11 @@
     .plump-gpt
         display:          flex
         flex-flow:        column nowrap
+        transform:        none
         height:           100vh
-        min-width:        breakpoint.$cover-at-width
         box-sizing:       border-box
         background-color: $background-500
-        transform:        none
+        overflow:         hidden
         filter:           none
         transition:       filter easing.$quart-out 0.1s 0.05s, transform easing.$quart-out 0.1s 0.05s
 
@@ -135,4 +135,8 @@
             transform:  scale(0.99)
             filter:     blur(4px)
             transition: transform easing.$quart-out 0.1s, filter easing.$quart-out 0.1s
+    
+    @media (min-width: breakpoint.$cover-at-width)
+        .plump-gpt
+            overflow: auto
 </style>
