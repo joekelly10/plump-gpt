@@ -169,6 +169,8 @@ redeploy_last() {
 
         echo -e "  ${green_bold}✔ ${white}On its way: ${cyan}https://vercel.com/fallible/plump-gpt/deployments${reset}"
         echo
+    else
+        echo
     fi
 }
 
