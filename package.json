@@ -26,6 +26,7 @@
 	"type": "module",
 	"dependencies": {
 		"@prisma/client": "^6.7.0",
+		"@sveltejs/adapter-vercel": "^5.9.1",
 		"dompurify": "^3.2.6",
 		"highlight.js": "^11.8.0",
 		"marked": "^16.1.2",
