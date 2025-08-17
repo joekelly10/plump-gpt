@@ -874,7 +874,7 @@
 
     <ToolList/>
 
-    {#if $screen_width >= breakpoints.system_prompt_button && !$input_expanded}
+    {#if $screen_width >= breakpoints.system_prompt_button}
         <SystemPromptButton/>
     {/if}
 
