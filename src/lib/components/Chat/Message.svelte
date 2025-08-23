@@ -1,5 +1,6 @@
 <script>
-    import { slide } from 'svelte/transition'
+    import { onMount } from 'svelte'
+    import { slide, fly } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
     import { stars } from '$lib/stores/chat'
     import { is_hovering, is_deleting, is_provisionally_forking } from '$lib/stores/chat/interactions'
@@ -53,10 +54,11 @@
 
     let temp_timer
 
-    let message_el        = $state(null), // component reference (nb: not reactive, but svelte 5 compiler sees {#if} conditional binding and expects $state)
-        reasoning_content = $state(null),
-        show_info         = $state(false),
-        temp_highlight    = $state(false)
+    let message_el              = $state(null),   // component reference (nb: not reactive, but svelte 5 compiler sees {#if} conditional binding and expects $state)
+        reasoning_content       = $state(null),
+        show_info               = $state(false),
+        temp_highlight          = $state(false),
+        mount_delay_has_elapsed = $state(false)
     
     const message_content        = $derived(DOMPurify.sanitize(marked(expandPlaceholders(message.content)))),
           no_message             = $derived(!message.content && !message.reasoning_content),
@@ -74,6 +76,10 @@
           is_small_message       = $derived(message_el?.clientHeight < 200)
     
     $effect(() => { scroll_reasoning_pending_id === message.id && scrollReasoningToBottom() })
+
+    onMount(() => {
+        setTimeout(() => { mount_delay_has_elapsed = true }, 750)
+    })
 
     const _scrollReasoningToBottom = () => {
         if (!scroll_reasoning_interrupted) reasoning_content?.scrollToBottom()
@@ -144,7 +150,12 @@
         {#if no_message}
             <p class='status-text'>
                 {#if is_streaming}
-                    Waiting for {message.model.short_name} to speak<WaitingDots/>
+                    {#if mount_delay_has_elapsed}
+                        <span class='waiting-text' in:fly={{ x: -4, duration: 125, easing: quartOut }}>
+                            Waiting for {message.model.short_name} to speak<WaitingDots/>
+                        </span>
+                    {/if}
+                    &nbsp;
                 {:else}
                     <span class='status-text-emoji'>❌</span> No message received
                 {/if}
@@ -541,6 +552,10 @@
         font-style:  italic
         font-weight: 450
         color:       $pale-blue
+
+        .waiting-text
+            display:   inline-block
+            animation: animation.$pulse
 
         .status-text-emoji
             margin-right: 8px

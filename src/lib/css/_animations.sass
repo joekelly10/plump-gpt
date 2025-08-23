@@ -1,9 +1,22 @@
 @use 'src/lib/css/_easing_functions' as easing
 
 $spinner-animation: loading_spin 1s linear infinite
+$pulse:             pulse 2s linear infinite
 
 @keyframes loading_spin
     0%
         transform: rotate(0deg)
     100%
         transform: rotate(360deg)
+
+@keyframes pulse
+    0%
+        opacity: 0.8
+    20%
+        opacity: 0.8
+    60%
+        opacity: 1
+    90%
+        opacity: 1
+    100%
+        opacity: 0.8

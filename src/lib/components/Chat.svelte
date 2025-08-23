@@ -420,20 +420,8 @@
         font-weight:     450
         color:           $blue-grey
         user-select:     none
-        animation:       pulse 2s linear infinite
+        animation:       animation.$pulse
 
         .model-icon
             height: 21px
-    
-    @keyframes pulse
-        0%
-            opacity: 0.8
-        20%
-            opacity: 0.8
-        60%
-            opacity: 1
-        90%
-            opacity: 1
-        100%
-            opacity: 0.8
 </style>
