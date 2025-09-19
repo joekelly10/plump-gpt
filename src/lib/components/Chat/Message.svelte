@@ -518,6 +518,7 @@
                     $size:            18px
                     height:           $size
                     width:            $size
+                    flex-shrink:      0
                     mask-size:        contain
                     mask-repeat:      no-repeat
                     mask-position:    center
