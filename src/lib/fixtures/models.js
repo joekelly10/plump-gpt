@@ -210,7 +210,7 @@ export default [
     {
         type:           'deepseek',
         id:             'deepseek-chat',
-        name:           'DeepSeek V3',
+        name:           'DeepSeek V3.1',
         short_name:     'V3',
         icon:           'deepseek-chat.png',
         family:         'DeepSeek',
@@ -222,8 +222,8 @@ export default [
     },
     {
         type:           'openrouter',
-        id:             'deepseek/deepseek-chat-v3-0324:free',
-        name:           'DeepSeek V3 (free)',
+        id:             'deepseek/deepseek-chat-v3.1:free',
+        name:           'DeepSeek V3.1 (free)',
         short_name:     'V3',
         icon:           'deepseek-chat.png',
         family:         'DeepSeek',
@@ -262,20 +262,20 @@ export default [
     {
         type:           'openrouter',
         id:             'qwen/qwen-turbo',
-        name:           'Qwen 2.5 Turbo',
+        name:           'Qwen3 30B A3B',
         short_name:     'Qwen',
         icon:           'qwen-turbo.png',
         family:         'Qwen',
         hosted_at:      'openrouter.ai',
         context_window: 1000000,
         is_reasoner:    false,
-        pricing_id:     'qwen-turbo',
+        pricing_id:     'qwen-a3b',
         tools:          []
     },
     {
         type:           'openrouter',
-        id:             'qwen/qwen-plus',
-        name:           'Qwen 2.5 Plus',
+        id:             'qwen/qwen-plus-2025-07-28',
+        name:           'Qwen3 Plus',
         short_name:     'Qwen',
         icon:           'qwen-plus.png',
         family:         'Qwen',
@@ -287,13 +287,13 @@ export default [
     },
     {
         type:           'openrouter',
-        id:             'qwen/qwen-max',
-        name:           'Qwen 2.5 Max',
+        id:             'qwen/qwen3-max',
+        name:           'Qwen 3 Max',
         short_name:     'Qwen',
         icon:           'qwen-max.png',
         family:         'Qwen',
         hosted_at:      'openrouter.ai',
-        context_window: 32000,
+        context_window: 1000000,
         is_reasoner:    false,
         pricing_id:     'qwen-max',
         tools:          []
@@ -426,6 +426,19 @@ export default [
         context_window: 128000,
         is_reasoner:    true,
         pricing_id:     'groq-r1-distill-70b',
+        tools:          []
+    },
+    {
+        type:           'groq',
+        id:             'moonshotai/kimi-k2-instruct-0905',
+        name:           'Kimi K2 Instruct',
+        short_name:     'Kimi',
+        icon:           'groq-moonshot.png',
+        family:         'Groq',
+        hosted_at:      'groq.com',
+        context_window: 128000,
+        is_reasoner:    true,
+        pricing_id:     'groq-kimi-k2-instruct',
         tools:          []
     },
     {

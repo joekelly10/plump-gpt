@@ -233,27 +233,35 @@ const model_prices = {
             }
         }
     },
+    'qwen-a3b': {
+        price: {
+            cents: {
+                input_token:   6/1000000, // $0.06/mTok
+                output_token: 22/1000000
+            }
+        }
+    },
     'qwen-plus': {
         price: {
             cents: {
                 input_token:   40/1000000, // $0.40/mTok
-                output_token: 120/1000000
+                output_token: 400/1000000
             }
         }
     },
     'qwen-max': {
         price: {
             cents: {
-                input_token:  160/1000000, // $1.60/mTok
-                output_token: 640/1000000
+                input_token:  120/1000000, // $1.20/mTok
+                output_token: 600/1000000
             }
         }
     },
     'deepseek-chat': {
         price: {
             cents: {
-                input_token:   27/1000000, // $0.27/mTok
-                output_token: 110/1000000,
+                input_token:   56/1000000, // $0.56/mTok
+                output_token: 168/1000000,
                 cache_read:     7/1000000
             }
         }
@@ -261,9 +269,9 @@ const model_prices = {
     'deepseek-reasoner': {
         price: {
             cents: {
-                input_token:   55/1000000, // $0.55/mTok
-                output_token: 219/1000000,
-                cache_read:    15/1000000
+                input_token:   56/1000000, // $0.56/mTok (^ unified pricing as of Sep 5th)
+                output_token: 168/1000000,
+                cache_read:     7/1000000
             }
         }
     },
@@ -312,6 +320,14 @@ const model_prices = {
             cents: {
                 input_token:  15/1000000, // $0.15/mTok
                 output_token: 75/1000000
+            }
+        }
+    },
+    'groq-kimi-k2-instruct': {
+        price: {
+            cents: {
+                input_token:  100/1000000, // $1.00/mTok
+                output_token: 300/1000000
             }
         }
     },
@@ -383,22 +399,28 @@ export const getCost = (model, usage) => {
         cache_read_cost  = 0,
         cache_savings    = 0
 
-    if (model.type === 'open-ai') {
-        cache_read_cost = usage.cache_read_tokens * 0.1 * price.cents.input_token
-        cache_savings   = usage.cache_read_tokens * 0.9 * price.cents.input_token
-    }
-
-    if (model.type === 'anthropic') {
-        cache_write_cost = usage.cache_write_tokens * price.cents.cache_write
-        cache_read_cost  = usage.cache_read_tokens * price.cents.cache_read
-
-        cache_savings += usage.cache_read_tokens * (price.cents.input_token - price.cents.cache_read)
-        cache_savings -= usage.cache_write_tokens * (price.cents.cache_write - price.cents.input_token)
-    }
-
-    if (model.type === 'deepseek') {
-        cache_read_cost = usage.cache_read_tokens * price.cents.cache_read
-        cache_savings   = usage.cache_read_tokens * (price.cents.input_token - price.cents.cache_read)
+    switch (model.type) {
+        case 'open-ai':
+            cache_read_cost = usage.cache_read_tokens * 0.1 * price.cents.input_token
+            cache_savings   = usage.cache_read_tokens * 0.9 * price.cents.input_token
+            break
+        
+        case 'anthropic':
+            cache_write_cost  = usage.cache_write_tokens * price.cents.cache_write
+            cache_read_cost   = usage.cache_read_tokens * price.cents.cache_read
+            cache_savings    += usage.cache_read_tokens * (price.cents.input_token - price.cents.cache_read)
+            cache_savings    -= usage.cache_write_tokens * (price.cents.cache_write - price.cents.input_token)
+            break
+        
+        case 'deepseek':
+            cache_read_cost = usage.cache_read_tokens * price.cents.cache_read
+            cache_savings   = usage.cache_read_tokens * (price.cents.input_token - price.cents.cache_read)
+            break
+        
+        case 'groq':
+            cache_read_cost = usage.cache_read_tokens * 0.5 * price.cents.input_token
+            cache_savings   = usage.cache_read_tokens * 0.5 * price.cents.input_token
+            break
     }
 
     input_cost  = usage.input_tokens * price.cents.input_token

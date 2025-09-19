@@ -36,13 +36,13 @@ It runs in your browser on `localhost:1337`.
 - <img alt='Grok 4' src='./static/img/icons/models/grok.png' width='21' height='21' valign='middle'>&nbsp; Grok 4
 
 **DeepSeek**
-- <img alt='DeepSeek V3' src='./static/img/icons/models/deepseek-chat.png' width='21' height='21' valign='middle'>&nbsp; DeepSeek V3
+- <img alt='DeepSeek V3.1' src='./static/img/icons/models/deepseek-chat.png' width='21' height='21' valign='middle'>&nbsp; DeepSeek V3.1
 - <img alt='DeepSeek R1' src='./static/img/icons/models/deepseek-reasoner.png' width='21' height='21' valign='middle'>&nbsp; DeepSeek R1
 
 **Qwen**
-- <img alt='Qwen 2.5 Turbo' src='./static/img/icons/models/qwen-turbo.png' width='21' height='21' valign='middle'>&nbsp; Qwen 2.5 Turbo
-- <img alt='Qwen 2.5 Plus' src='./static/img/icons/models/qwen-plus.png' width='21' height='21' valign='middle'>&nbsp; Qwen 2.5 Plus
-- <img alt='Qwen 2.5 Max' src='./static/img/icons/models/qwen-max.png' width='21' height='21' valign='middle'>&nbsp; Qwen 2.5 Max
+- <img alt='Qwen3 30B A3B' src='./static/img/icons/models/qwen-turbo.png' width='21' height='21' valign='middle'>&nbsp; Qwen3 30B A3B
+- <img alt='Qwen3 Plus' src='./static/img/icons/models/qwen-plus.png' width='21' height='21' valign='middle'>&nbsp; Qwen3 Plus
+- <img alt='Qwen3 Max' src='./static/img/icons/models/qwen-max.png' width='21' height='21' valign='middle'>&nbsp; Qwen3 Max
 
 **Meta**
 - <img alt='Llama 4 Scout' src='./static/img/icons/models/llama-light.png' width='21' height='21' valign='middle'>&nbsp; Llama 4 Scout
@@ -63,9 +63,10 @@ It runs in your browser on `localhost:1337`.
 - <img alt='Jamba Large' src='./static/img/icons/models/jamba-large.png' width='21' height='21' valign='middle'>&nbsp; Jamba 1.6 Large
 
 **Groq** (Fast inference)
-- <img alt='QwQ 32b' src='./static/img/icons/models/groq-qwen.png' width='21' height='21' valign='middle'>&nbsp; QwQ 32b
+- <img alt='GPT-OSS 120b' src='./static/img/icons/models/groq-gpt.png' width='21' height='21' valign='middle'>&nbsp; GPT-OSS 120b
 - <img alt='Llama 4 Maverick' src='./static/img/icons/models/groq-llama.png' width='21' height='21' valign='middle'>&nbsp; Llama 4 Maverick
 - <img alt='R1 Distill 70b' src='./static/img/icons/models/groq-deepseek.png' width='21' height='21' valign='middle'>&nbsp; R1 Distill 70b
+- <img alt='Kimi K2 Instruct' src='./static/img/icons/models/groq-moonshot.png' width='21' height='21' valign='middle'>&nbsp; Kimi K2 Instruct
 
 **MiniMax**
 - <img alt='MiniMax 01' src='./static/img/icons/models/minimax-01.png' width='21' height='21' valign='middle'>&nbsp; MiniMax 01
@@ -122,9 +123,6 @@ It runs in your browser on `localhost:1337`.
     - For the whole chat
 - 💵 **API pricing**
     - Pay as you go = much cheaper than all the various subscriptions
-- 🎨 **UI/UX**
-    - No-nonsense design for power users
-
 
 
 # Install
