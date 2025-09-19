@@ -545,5 +545,18 @@ export default [
         is_reasoner:    true,
         pricing_id:     'gpt-oss-120b',
         tools:          []
+    },
+    {
+        type:           'openrouter',
+        id:             'deepcogito/cogito-v2-preview-deepseek-671b',
+        name:           'Cogito V2',
+        short_name:     'Cogito',
+        icon:           'cogito-v2.png',
+        family:         'DeepCogito',
+        hosted_at:      'openrouter.ai',
+        context_window: 128000,
+        is_reasoner:    false,
+        pricing_id:     'cogito-v2',
+        tools:          []
     }
 ]

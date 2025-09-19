@@ -370,6 +370,14 @@ const model_prices = {
                 output_token: 220/1000000
             }
         }
+    },
+    'cogito-v2': {
+        price: {
+            cents: {
+                input_token:  125/1000000, // $1.25/mTok
+                output_token: 125/1000000
+            }
+        }
     }
 }
 

@@ -81,6 +81,9 @@ It runs in your browser on `localhost:1337`.
 **Z.AI**
 - <img alt='GLM 4.5' src='./static/img/icons/models/glm-4.5.png' width='21' height='21' valign='middle'>&nbsp; GLM 4.5
 
+**Deep Cogito**
+- <img alt='Cogito V2' src='./static/img/icons/models/cogito-v2.png' width='21' height='21' valign='middle'>&nbsp; Cogito V2
+
 **Open AI OSS**
 - <img alt='GPT-OSS 20b' src='./static/img/icons/models/gpt-oss-20b.png' width='21' height='21' valign='middle'>&nbsp; GPT-OSS 20b
 - <img alt='GPT-OSS 120b' src='./static/img/icons/models/gpt-oss-120b.png' width='21' height='21' valign='middle'>&nbsp; GPT-OSS 120b
