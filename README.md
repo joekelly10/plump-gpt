@@ -32,7 +32,8 @@ It runs in your browser on `localhost:1337`.
 - <img alt='Gemini Pro' src='./static/img/icons/models/gemini-pro.png' width='21' height='21' valign='middle'>&nbsp; Gemini 2.5 Pro
 
 **X**
-- <img alt='Grok Mini' src='./static/img/icons/models/grok-mini.png' width='21' height='21' valign='middle'>&nbsp; Grok 3 Mini
+- <img alt='Grok 4 Fast' src='./static/img/icons/models/grok-fast.png' width='21' height='21' valign='middle'>&nbsp; Grok 4 Fast
+- <img alt='Grok 4 Fast (Reasoning)' src='./static/img/icons/models/grok-fast-reasoning.png' width='21' height='21' valign='middle'>&nbsp; Grok 4 Fast (Reasoning)
 - <img alt='Grok 4' src='./static/img/icons/models/grok.png' width='21' height='21' valign='middle'>&nbsp; Grok 4
 
 **DeepSeek**

@@ -2,7 +2,8 @@ const icon_mappings = {
     'claude-3-sonnet.png':   'claude-sonnet.png',
     'claude-3.7-sonnet.png': 'claude-sonnet.png',
     'claude-3-haiku.png':    'claude-haiku.png',
-    'claude-3-opus.png':     'claude-opus.png'
+    'claude-3-opus.png':     'claude-opus.png',
+    'grok-mini.png':         'grok-fast.png',
 }
 
 export const migrateIfNeeded = (chats) => {

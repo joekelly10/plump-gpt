@@ -144,15 +144,28 @@ export default [
     },
     {
         type:           'x',
-        id:             'grok-3-mini-beta',
-        name:           'Grok 3 Mini',
+        id:             'grok-4-fast-non-reasoning',
+        name:           'Grok 4 Fast',
         short_name:     'Grok',
-        icon:           'grok-mini.png',
+        icon:           'grok-fast.png',
         family:         'X',
         hosted_at:      'x.ai',
-        context_window: 131072,
+        context_window: 2000000,
+        is_reasoner:    false,
+        pricing_id:     'grok-4-fast',
+        tools:          ['x_search']
+    },
+    {
+        type:           'x',
+        id:             'grok-4-fast-reasoning',
+        name:           'Grok 4 Fast (Reasoning)',
+        short_name:     'Grok',
+        icon:           'grok-fast-reasoning.png',
+        family:         'X',
+        hosted_at:      'x.ai',
+        context_window: 2000000,
         is_reasoner:    true,
-        pricing_id:     'grok-mini',
+        pricing_id:     'grok-4-fast',
         tools:          ['x_search']
     },
     {
