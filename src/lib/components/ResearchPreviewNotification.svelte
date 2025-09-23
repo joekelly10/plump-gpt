@@ -31,7 +31,7 @@
             </div>
             <div class='notification-text'>
                 <p>
-                    This research preview is for demonstration purposes. You won't be able to send messages unless the API keys have been activated for you &mdash; ask Joe (<a href='mailto:hi@joekel.ly'>hi@joekel.ly</a>)
+                    This is a research preview for demonstration purposes. You won't be able to send messages unless the API keys have been activated for you &mdash; ask Joe (<a href='mailto:hi@joekel.ly'>hi@joekel.ly</a>)
                 </p>
             </div>
         </div>
