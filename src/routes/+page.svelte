@@ -13,6 +13,7 @@
     import KeyboardShortcuts from '$lib/components/KeyboardShortcuts.svelte'
     import ScreenCover from '$lib/components/ScreenCover.svelte'
     import FaviconChanger from '$lib/components/FaviconChanger.svelte'
+    import ResearchPreviewNotification from '$lib/components/ResearchPreviewNotification.svelte'
 
     let header = $state(null), // component references (nb: not reactive, but svelte 5 compiler sees them passed as props, so expects $state)
         chat   = $state(null),
@@ -116,6 +117,7 @@
 
 <ScreenCover/>
 <FaviconChanger/>
+<ResearchPreviewNotification/>
 
 <style lang='sass'>
     +shared.globals
