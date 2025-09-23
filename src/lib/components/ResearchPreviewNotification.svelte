@@ -8,7 +8,7 @@
         checkbox                 = $state(null)
 
     onMount(() => {
-        if (browser && window.location.hostname !== '') {
+        if (browser && window.location.hostname !== 'localhost') {
             const dismissed = localStorage.getItem('research_preview_dismissed')
             if (dismissed !== 'true') should_show_notification = true
         }
