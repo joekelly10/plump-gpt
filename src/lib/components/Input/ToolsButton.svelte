@@ -43,7 +43,7 @@
         transition:      border-color easing.$quart-out 100ms, background-color easing.$quart-out 100ms, padding easing.$quart-out 150ms
 
         :global(.icon)
-            $size:            26px
+            $size:            21.5px
             height:           $size
             width:            $size
             mask-image:       url('/img/icons/tools.png')
