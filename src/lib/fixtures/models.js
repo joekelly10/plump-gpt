@@ -10,6 +10,7 @@ export default [
         context_window: 400000,
         is_reasoner:    true,
         pricing_id:     'gpt-5-nano',
+        settings:       ['verbosity', 'reasoning_effort'],
         tools:          ['web_search']
     },
     {
@@ -23,6 +24,7 @@ export default [
         context_window: 400000,
         is_reasoner:    true,
         pricing_id:     'gpt-5-mini',
+        settings:       ['verbosity', 'reasoning_effort'],
         tools:          ['web_search']
     },
     {
@@ -36,6 +38,7 @@ export default [
         context_window: 400000,
         is_reasoner:    true,
         pricing_id:     'gpt-5',
+        settings:       ['verbosity', 'reasoning_effort'],
         tools:          ['web_search']
     },
     {
@@ -49,6 +52,7 @@ export default [
         context_window: 200000,
         is_reasoner:    true,
         pricing_id:     'o3',
+        settings:       ['reasoning_effort'],
         tools:          ['web_search']
     },
     {
@@ -62,6 +66,7 @@ export default [
         context_window: 200000,
         is_reasoner:    true,
         pricing_id:     'o3-pro',
+        settings:       ['reasoning_effort'],
         tools:          ['web_search']
     },
     {
@@ -75,12 +80,13 @@ export default [
         context_window: 200000,
         is_reasoner:    false,
         pricing_id:     'claude-haiku',
+        settings:       ['temperature'],
         tools:          ['web_search', 'exa_search']
     },
     {
         type:           'anthropic',
-        id:             'claude-sonnet-4-0',
-        name:           'Claude Sonnet 4',
+        id:             'claude-sonnet-4-5',
+        name:           'Claude Sonnet 4.5',
         short_name:     'Claude',
         icon:           'claude-sonnet.png',
         family:         'Anthropic',
@@ -88,6 +94,7 @@ export default [
         context_window: 200000,
         is_reasoner:    true,
         pricing_id:     'claude-sonnet',
+        settings:       ['temperature'],
         tools:          ['thinking_budget', 'web_search', 'exa_search']
     },
     {
@@ -101,6 +108,7 @@ export default [
         context_window: 200000,
         is_reasoner:    true,
         pricing_id:     'claude-opus',
+        settings:       ['temperature'],
         tools:          ['thinking_budget', 'web_search']
     },
     {
@@ -114,6 +122,7 @@ export default [
         context_window: 1000000,
         is_reasoner:    false,
         pricing_id:     'gemini-2.5-flash-lite',
+        settings:       ['temperature', 'top_p'],
         tools:          ['google_search']
     },
     {
@@ -127,6 +136,7 @@ export default [
         context_window: 1000000,
         is_reasoner:    true,
         pricing_id:     'gemini-2.5-flash',
+        settings:       ['temperature', 'top_p'],
         tools:          ['google_search']
     },
     {
@@ -140,6 +150,7 @@ export default [
         context_window: 1000000,
         is_reasoner:    true,
         pricing_id:     'gemini-2.5-pro',
+        settings:       ['temperature', 'top_p'],
         tools:          ['google_search']
     },
     {
@@ -153,6 +164,7 @@ export default [
         context_window: 2000000,
         is_reasoner:    false,
         pricing_id:     'grok-4-fast',
+        settings:       ['temperature', 'top_p'],
         tools:          ['x_search']
     },
     {
@@ -166,6 +178,7 @@ export default [
         context_window: 2000000,
         is_reasoner:    true,
         pricing_id:     'grok-4-fast',
+        settings:       ['temperature', 'top_p'],
         tools:          ['x_search']
     },
     {
@@ -179,6 +192,7 @@ export default [
         context_window: 256000,
         is_reasoner:    true,
         pricing_id:     'grok',
+        settings:       ['temperature', 'top_p'],
         tools:          ['x_search']
     },
     {
@@ -192,6 +206,7 @@ export default [
         context_window: 512000,
         is_reasoner:    false,
         pricing_id:     'free',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -205,6 +220,7 @@ export default [
         context_window: 128000,
         is_reasoner:    false,
         pricing_id:     'free',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -218,6 +234,7 @@ export default [
         context_window: 33000,
         is_reasoner:    false,
         pricing_id:     'llama-3-405b',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -231,6 +248,7 @@ export default [
         context_window: 164000,
         is_reasoner:    false,
         pricing_id:     'deepseek-chat',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -244,6 +262,7 @@ export default [
         context_window: 164000,
         is_reasoner:    false,
         pricing_id:     'free',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -257,6 +276,7 @@ export default [
         context_window: 164000,
         is_reasoner:    true,
         pricing_id:     'deepseek-reasoner',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -270,6 +290,7 @@ export default [
         context_window: 164000,
         is_reasoner:    true,
         pricing_id:     'free',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -283,6 +304,7 @@ export default [
         context_window: 1000000,
         is_reasoner:    false,
         pricing_id:     'qwen-a3b',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -296,6 +318,7 @@ export default [
         context_window: 1000000,
         is_reasoner:    false,
         pricing_id:     'qwen-plus',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -309,6 +332,7 @@ export default [
         context_window: 1000000,
         is_reasoner:    false,
         pricing_id:     'qwen-max',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -322,6 +346,7 @@ export default [
         context_window: 128000,
         is_reasoner:    false,
         pricing_id:     'free',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -335,6 +360,7 @@ export default [
         context_window: 128000,
         is_reasoner:    false,
         pricing_id:     'free',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -348,6 +374,7 @@ export default [
         context_window: 128000,
         is_reasoner:    false,
         pricing_id:     'free',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -361,6 +388,7 @@ export default [
         context_window: 128000,
         is_reasoner:    false,
         pricing_id:     'command-r',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -374,6 +402,7 @@ export default [
         context_window: 128000,
         is_reasoner:    false,
         pricing_id:     'command-r-plus',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -387,6 +416,7 @@ export default [
         context_window: 256000,
         is_reasoner:    false,
         pricing_id:     'jamba-mini',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -400,6 +430,7 @@ export default [
         context_window: 256000,
         is_reasoner:    false,
         pricing_id:     'jamba-large',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -413,6 +444,7 @@ export default [
         context_window: 128000,
         is_reasoner:    true,
         pricing_id:     'groq-gpt-oss-120b',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -426,6 +458,7 @@ export default [
         context_window: 128000,
         is_reasoner:    false,
         pricing_id:     'groq-llama-4-maverick',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -439,6 +472,7 @@ export default [
         context_window: 128000,
         is_reasoner:    true,
         pricing_id:     'groq-r1-distill-70b',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -452,6 +486,7 @@ export default [
         context_window: 128000,
         is_reasoner:    true,
         pricing_id:     'groq-kimi-k2-instruct',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -465,6 +500,7 @@ export default [
         context_window: 4000000,
         is_reasoner:    true,
         pricing_id:     'minimax-01',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -478,6 +514,7 @@ export default [
         context_window: 1000000,
         is_reasoner:    true,
         pricing_id:     'minimax-m1',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -492,6 +529,7 @@ export default [
         is_reasoner:    false,
         is_diffuser:    true,
         pricing_id:     'inception-mercury',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -505,6 +543,7 @@ export default [
         context_window: 128000,
         is_reasoner:    true,
         pricing_id:     'kimi-k2',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -518,6 +557,7 @@ export default [
         context_window: 128000,
         is_reasoner:    true,
         pricing_id:     'free',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -531,6 +571,7 @@ export default [
         context_window: 128000,
         is_reasoner:    true,
         pricing_id:     'glm-4.5',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -544,6 +585,7 @@ export default [
         context_window: 128000,
         is_reasoner:    true,
         pricing_id:     'gpt-oss-20b',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -557,6 +599,7 @@ export default [
         context_window: 128000,
         is_reasoner:    true,
         pricing_id:     'gpt-oss-120b',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     },
     {
@@ -570,6 +613,7 @@ export default [
         context_window: 128000,
         is_reasoner:    false,
         pricing_id:     'cogito-v2',
+        settings:       ['temperature', 'top_p'],
         tools:          []
     }
 ]

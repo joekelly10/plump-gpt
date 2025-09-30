@@ -12,30 +12,26 @@
 
     let { is_hovering_model_switcher } = $props()
 
-    const is_gpt5_model         = $derived(['gpt-5', 'gpt-5-mini', 'gpt-5-nano'].includes($model.id)),
-          show_verbosity        = $derived(is_gpt5_model && $screen_width >= breakpoints.gpt5_two_model_settings),
-          show_reasoning_effort = $derived($screen_width >= breakpoints.gpt5_one_model_setting),
-          show_top_p            = $derived($screen_width >= breakpoints.two_model_settings),
-          show_temperature      = $derived($screen_width >= breakpoints.one_model_setting)
+    const show_top_p            = $derived($model.settings.includes('top_p') && $screen_width >= breakpoints.two_model_settings),
+          show_temperature      = $derived($model.settings.includes('temperature') && $screen_width >= breakpoints.one_model_setting),
+          show_verbosity        = $derived($model.settings.includes('verbosity') && $screen_width >= breakpoints.gpt5_two_model_settings),
+          show_reasoning_effort = $derived($model.settings.includes('reasoning_effort') && $screen_width >= breakpoints.gpt5_one_model_setting)
 </script>
 
 <div class='model-settings'>
     {#if !is_hovering_model_switcher}
         <div class='controls' in:fade={{ duration: 125, easing: quartOut }} out:fade={{ duration: 75, easing: quartOut }}>
-            {#if $model.type === 'open-ai'}
-                {#if show_verbosity}
-                    <VerbosityButton/>
-                {/if}
-                {#if show_reasoning_effort}
-                    <ReasoningEffortButton/>
-                {/if}
-            {:else}
-                {#if show_top_p}
-                    <TopPButton/>
-                {/if}
-                {#if show_temperature}
-                    <TemperatureButton/>
-                {/if}
+            {#if show_top_p}
+                <TopPButton/>
+            {/if}
+            {#if show_temperature}
+                <TemperatureButton/>
+            {/if}
+            {#if show_verbosity}
+                <VerbosityButton/>
+            {/if}
+            {#if show_reasoning_effort}
+                <ReasoningEffortButton/>
             {/if}
         </div>
     {/if}

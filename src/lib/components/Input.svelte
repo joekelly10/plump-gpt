@@ -109,8 +109,8 @@
 
         let options = {
             model:       $model,
-            temperature: $temperature,
-            top_p:       $top_p
+            temperature: $model.settings.includes('temperature') ? $temperature : 1,
+            top_p:       $model.settings.includes('top_p') ? $top_p : 1
         }
 
         if ($model.type === 'open-ai' && $model.is_reasoner) {

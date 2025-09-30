@@ -7,8 +7,7 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
     let { messages, options } = await request.json()
 
     if (options.thinking_budget) {
-        options.top_p           = 1
-        options.temperature     = 1
+        options.temperature = 1
         //  1024 is the minimum; the API request will fail otherwise
         if (options.thinking_budget === 1000) options.thinking_budget = 1024
     }
@@ -63,7 +62,6 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
     let body = {
         model:       options.model.id,
         temperature: options.temperature,
-        top_p:       options.top_p,
         stream:      true,
         system:      [{
             type:          'text',

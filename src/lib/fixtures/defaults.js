@@ -1,5 +1,5 @@
 export default {
-    model:            'claude-sonnet-4-0',
+    model:            'claude-sonnet-4-5',
     temperature:      0.4,
     top_p:            0.9,
     reasoning_effort: 'minimal',
