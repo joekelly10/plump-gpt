@@ -386,6 +386,14 @@ const model_prices = {
                 output_token: 125/1000000
             }
         }
+    },
+    'ling-1t': {
+        price: {
+            cents: {
+                input_token:  100/1000000, // $1.00/mTok
+                output_token: 300/1000000
+            }
+        }
     }
 }
 

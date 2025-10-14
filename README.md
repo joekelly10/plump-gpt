@@ -89,6 +89,9 @@ It runs in your browser on `localhost:1337`.
 **Deep Cogito**
 - <img alt='Cogito V2' src='./static/img/icons/models/cogito-v2.png' width='21' height='21' valign='middle'>&nbsp; Cogito V2
 
+**Inclusion AI**
+- <img alt='Ling-1T' src='./static/img/icons/models/ling.png' width='21' height='21' valign='middle'>&nbsp; Ling-1T
+
 
 # Features
 

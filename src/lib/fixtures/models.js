@@ -615,5 +615,19 @@ export default [
         pricing_id:     'cogito-v2',
         settings:       ['temperature', 'top_p'],
         tools:          []
+    },
+    {
+        type:           'openrouter',
+        id:             'inclusionai/ling-1t',
+        name:           'Ling-1T',
+        short_name:     'Ling',
+        icon:           'ling.png',
+        family:         'Inclusion AI',
+        hosted_at:      'openrouter.ai',
+        context_window: 131072,
+        is_reasoner:    false,
+        pricing_id:     'ling-1t',
+        settings:       ['temperature', 'top_p'],
+        tools:          []
     }
 ]
