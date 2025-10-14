@@ -562,15 +562,15 @@ export default [
     },
     {
         type:           'openrouter',
-        id:             'z-ai/glm-4.5',
-        name:           'GLM 4.5',
+        id:             'z-ai/glm-4.6',
+        name:           'GLM 4.6',
         short_name:     'GLM',
         icon:           'glm-4.5.png',
         family:         'Z.AI',
         hosted_at:      'openrouter.ai',
         context_window: 128000,
         is_reasoner:    true,
-        pricing_id:     'glm-4.5',
+        pricing_id:     'glm-4.6',
         settings:       ['temperature', 'top_p'],
         tools:          []
     },

@@ -268,18 +268,18 @@ const model_prices = {
     'deepseek-chat': {
         price: {
             cents: {
-                input_token:   56/1000000, // $0.56/mTok
-                output_token: 168/1000000,
-                cache_read:     7/1000000
+                input_token:  28/1000000, // $0.28/mTok
+                output_token: 42/1000000,
+                cache_read:   28/10000000
             }
         }
     },
     'deepseek-reasoner': {
         price: {
             cents: {
-                input_token:   56/1000000, // $0.56/mTok (^ unified pricing as of Sep 5th)
-                output_token: 168/1000000,
-                cache_read:     7/1000000
+                input_token:  28/1000000, // $0.28/mTok
+                output_token: 42/1000000,
+                cache_read:   28/10000000
             }
         }
     },
@@ -371,11 +371,11 @@ const model_prices = {
             }
         }
     },
-    'glm-4.5': {
+    'glm-4.6': {
         price: {
             cents: {
                 input_token:   60/1000000, // $0.60/mTok
-                output_token: 220/1000000
+                output_token: 200/1000000
             }
         }
     },
