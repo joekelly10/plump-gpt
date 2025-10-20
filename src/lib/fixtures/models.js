@@ -71,8 +71,8 @@ export default [
     },
     {
         type:           'anthropic',
-        id:             'claude-3-5-haiku-latest',
-        name:           'Claude 3.5 Haiku',
+        id:             'claude-haiku-4-5-20251001',
+        name:           'Claude Haiku 4.5',
         short_name:     'Claude',
         icon:           'claude-haiku.png',
         family:         'Anthropic',

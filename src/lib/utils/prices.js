@@ -90,10 +90,10 @@ const model_prices = {
     'claude-haiku': {
         price: {
             cents: {
-                input_token:   80/1000000, // $0.80/mTok
-                output_token: 400/1000000,
-                cache_write:  100/1000000,
-                cache_read:     8/1000000
+                input_token:  100/1000000, // $0.80/mTok
+                output_token: 500/1000000,
+                cache_write:  125/1000000,
+                cache_read:    10/1000000
             }
         }
     },
