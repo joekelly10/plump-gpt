@@ -81,7 +81,7 @@ export default [
         is_reasoner:    false,
         pricing_id:     'claude-haiku',
         settings:       ['temperature'],
-        tools:          ['web_search', 'exa_search']
+        tools:          ['thinking_budget', 'web_search', 'exa_search']
     },
     {
         type:           'anthropic',

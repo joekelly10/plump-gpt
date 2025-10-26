@@ -42,7 +42,7 @@
                     <div class='tool-group-heading'>
                         {$model.family} API
                     </div>
-                    {#if $model.type === 'anthropic' && $model.is_reasoner}
+                    {#if $model.tools.includes('thinking_budget')}
                         <ThinkingBudgetButton/>
                     {/if}
                     {#if $model.tools.includes('reasoning_effort')}
