@@ -281,20 +281,6 @@ export default [
     },
     {
         type:           'openrouter',
-        id:             'deepseek/deepseek-r1:free',
-        name:           'DeepSeek R1 (free)',
-        short_name:     'R1',
-        icon:           'deepseek-reasoner.png',
-        family:         'DeepSeek',
-        hosted_at:      'openrouter.ai',
-        context_window: 164000,
-        is_reasoner:    true,
-        pricing_id:     'free',
-        settings:       ['temperature', 'top_p'],
-        tools:          []
-    },
-    {
-        type:           'openrouter',
         id:             'qwen/qwen-turbo',
         name:           'Qwen3 30B A3B',
         short_name:     'Qwen',
