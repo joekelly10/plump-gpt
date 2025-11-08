@@ -193,6 +193,30 @@ const model_prices = {
             }
         }
     },
+    'nova-lite': {
+        price: {
+            cents: {
+                input_token:   6/1000000, // $0.06/mTok
+                output_token: 24/1000000
+            }
+        }
+    },
+    'nova-pro': {
+        price: {
+            cents: {
+                input_token:   80/1000000, // $0.80/mTok
+                output_token: 320/1000000
+            }
+        }
+    },
+    'nova-premier': {
+        price: {
+            cents: {
+                input_token:   250/1000000, // $2.50/mTok
+                output_token: 1250/1000000
+            }
+        }
+    },
     'command-r': {
         price: {
             cents: {

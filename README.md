@@ -69,6 +69,11 @@ It runs in your browser on `localhost:1337`.
 - <img alt='R1 Distill 70b' src='./static/img/icons/models/groq-deepseek.png' width='21' height='21' valign='middle'>&nbsp; R1 Distill 70b
 - <img alt='Kimi K2 Instruct' src='./static/img/icons/models/groq-moonshot.png' width='21' height='21' valign='middle'>&nbsp; Kimi K2 Instruct
 
+**Amazon**
+- <img alt='Nova Lite' src='./static/img/icons/models/nova-lite.png' width='21' height='21' valign='middle'>&nbsp; Nova Lite 1.0
+- <img alt='Nova Pro' src='./static/img/icons/models/nova-pro.png' width='21' height='21' valign='middle'>&nbsp; Nova Pro 1.0
+- <img alt='Nova Premier' src='./static/img/icons/models/nova-premier.png' width='21' height='21' valign='middle'>&nbsp; Nova Premier 1.0
+
 **MiniMax**
 - <img alt='MiniMax 01' src='./static/img/icons/models/minimax-01.png' width='21' height='21' valign='middle'>&nbsp; MiniMax 01
 - <img alt='MiniMax M1' src='./static/img/icons/models/minimax-m1.png' width='21' height='21' valign='middle'>&nbsp; MiniMax M1
