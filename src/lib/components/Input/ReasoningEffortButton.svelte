@@ -95,9 +95,9 @@
             background-color: $background-850
             transition:       none
     
-    @media (min-width: 1580px)
+    @media (min-width: 1540px)
         .reasoning-effort-button
-            padding: 0 space.$default-padding
+            padding: 0 28px
 </style>
 
 

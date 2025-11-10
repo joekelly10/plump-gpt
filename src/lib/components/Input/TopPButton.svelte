@@ -95,5 +95,5 @@
     
     @media (min-width: 1400px)
         .top_p-button
-            padding: 0 space.$default-padding
+            padding: 0 28px
 </style>
