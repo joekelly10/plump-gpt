@@ -88,4 +88,8 @@
     @media (min-width: 1400px)
         .temperature-button
             padding: 0 28px
+    
+    @media (min-width: 1480px)
+        .temperature-button
+            padding: 0 space.$default-padding
 </style>
