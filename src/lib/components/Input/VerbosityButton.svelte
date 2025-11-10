@@ -97,6 +97,10 @@
     @media (min-width: 1540px)
         .verbosity-button
             padding: 0 28px
+
+    @media (min-width: 1600px)
+        .verbosity-button
+            padding: 0 space.$default-padding
 </style>
 
 

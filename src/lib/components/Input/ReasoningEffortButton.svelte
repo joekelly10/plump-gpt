@@ -98,6 +98,10 @@
     @media (min-width: 1540px)
         .reasoning-effort-button
             padding: 0 28px
+
+    @media (min-width: 1600px)
+        .reasoning-effort-button
+            padding: 0 space.$default-padding
 </style>
 
 
