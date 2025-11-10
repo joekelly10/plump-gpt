@@ -47,8 +47,8 @@ It runs in your browser on `localhost:1337`.
 - <img alt='Nova Premier' src='./static/img/icons/models/nova-premier.png' width='21' height='21' valign='middle'>&nbsp; Nova Premier 1.0
 
 **DeepSeek**
-- <img alt='DeepSeek v3.2 Chat' src='./static/img/icons/models/deepseek-chat.png' width='21' height='21' valign='middle'>&nbsp; DeepSeek V3.2 Chat
-- <img alt='DeepSeek v3.2 Reasoner' src='./static/img/icons/models/deepseek-reasoner.png' width='21' height='21' valign='middle'>&nbsp; DeepSeek V3.2 Reasoner
+- <img alt='DeepSeek v3.2 Chat' src='./static/img/icons/models/deepseek-chat.png' width='21' height='21' valign='middle'>&nbsp; DeepSeek v3.2 Chat
+- <img alt='DeepSeek v3.2 Reasoner' src='./static/img/icons/models/deepseek-reasoner.png' width='21' height='21' valign='middle'>&nbsp; DeepSeek v3.2 Reasoner
 
 **Qwen**
 - <img alt='Qwen3 30B A3B' src='./static/img/icons/models/qwen-turbo.png' width='21' height='21' valign='middle'>&nbsp; Qwen3 30b a3b
