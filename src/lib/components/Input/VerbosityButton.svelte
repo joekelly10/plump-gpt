@@ -44,7 +44,7 @@
         justify-content: center
         align-items:     center
         height:          space.$input-initial-height
-        padding:         0 space.$default-padding
+        padding:         0 20px
         border-radius:   8px
         font-size:       12px
         color:           $background-200
@@ -93,6 +93,10 @@
         &:active
             background-color: $background-850
             transition:       none
+    
+    @media (min-width: 1580px)
+        .verbosity-button
+            padding: 0 space.$default-padding
 </style>
 
 

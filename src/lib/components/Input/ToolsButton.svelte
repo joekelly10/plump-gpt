@@ -76,6 +76,7 @@
             padding: 0 16px
     
     .label
+        display:        none
         position:       absolute
         top:            50%
         left:           100%
@@ -94,4 +95,8 @@
     .active-tools-count
         font-size:   14px
         font-weight: 600
+    
+    @media (min-width: 1400px)
+        .label
+            display: block
 </style>

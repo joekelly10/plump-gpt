@@ -24,7 +24,7 @@
     class:is-read-only={read_only}
     class:editor-active={$prompt_editor_active}
     onclick={openPromptEditor}
-    in:slide={{ axis: 'x', delay: 250, duration: 125, easing: quartOut }}
+    transition:slide={{ axis: 'x', delay: 250, duration: 125, easing: quartOut }}
 >
     <div class='text'>
         <div class='label'>
