@@ -36,43 +36,48 @@ It runs in your browser on `localhost:1337`.
 - <img alt='Grok 4 Fast (Reasoning)' src='./static/img/icons/models/grok-fast-reasoning.png' width='21' height='21' valign='middle'>&nbsp; Grok 4 Fast (Reasoning)
 - <img alt='Grok 4' src='./static/img/icons/models/grok.png' width='21' height='21' valign='middle'>&nbsp; Grok 4
 
-**DeepSeek**
-- <img alt='DeepSeek V3.1' src='./static/img/icons/models/deepseek-chat.png' width='21' height='21' valign='middle'>&nbsp; DeepSeek V3.1
-- <img alt='DeepSeek R1' src='./static/img/icons/models/deepseek-reasoner.png' width='21' height='21' valign='middle'>&nbsp; DeepSeek R1
-
-**Qwen**
-- <img alt='Qwen3 30B A3B' src='./static/img/icons/models/qwen-turbo.png' width='21' height='21' valign='middle'>&nbsp; Qwen3 30B A3B
-- <img alt='Qwen3 Plus' src='./static/img/icons/models/qwen-plus.png' width='21' height='21' valign='middle'>&nbsp; Qwen3 Plus
-- <img alt='Qwen3 Max' src='./static/img/icons/models/qwen-max.png' width='21' height='21' valign='middle'>&nbsp; Qwen3 Max
-
 **Meta**
 - <img alt='Llama 4 Scout' src='./static/img/icons/models/llama-light.png' width='21' height='21' valign='middle'>&nbsp; Llama 4 Scout
 - <img alt='Llama 4 Maverick' src='./static/img/icons/models/llama-medium.png' width='21' height='21' valign='middle'>&nbsp; Llama 4 Maverick
 - <img alt='Llama 3.1 405b' src='./static/img/icons/models/llama-heavy.png' width='21' height='21' valign='middle'>&nbsp; Llama 3.1 405b
+
+**Amazon**
+- <img alt='Nova Lite' src='./static/img/icons/models/nova-lite.png' width='21' height='21' valign='middle'>&nbsp; Nova Lite 1.0
+- <img alt='Nova Pro' src='./static/img/icons/models/nova-pro.png' width='21' height='21' valign='middle'>&nbsp; Nova Pro 1.0
+- <img alt='Nova Premier' src='./static/img/icons/models/nova-premier.png' width='21' height='21' valign='middle'>&nbsp; Nova Premier 1.0
+
+**DeepSeek**
+- <img alt='DeepSeek v3.2 Chat' src='./static/img/icons/models/deepseek-chat.png' width='21' height='21' valign='middle'>&nbsp; DeepSeek V3.2 Chat
+- <img alt='DeepSeek v3.2 Reasoner' src='./static/img/icons/models/deepseek-reasoner.png' width='21' height='21' valign='middle'>&nbsp; DeepSeek V3.2 Reasoner
+
+**Qwen**
+- <img alt='Qwen3 30B A3B' src='./static/img/icons/models/qwen-turbo.png' width='21' height='21' valign='middle'>&nbsp; Qwen3 30b a3b
+- <img alt='Qwen3 Plus' src='./static/img/icons/models/qwen-plus.png' width='21' height='21' valign='middle'>&nbsp; Qwen3 Plus
+- <img alt='Qwen3 Max' src='./static/img/icons/models/qwen-max.png' width='21' height='21' valign='middle'>&nbsp; Qwen3 Max
+
+**Moonshot AI**
+- <img alt='Kimi Linear 48B A3B' src='./static/img/icons/models/kimi-linear.png' width='21' height='21' valign='middle'>&nbsp; Kimi Linear 48b a3b
+- <img alt='Kimi K2' src='./static/img/icons/models/kimi-k2.png' width='21' height='21' valign='middle'>&nbsp; Kimi K2
+- <img alt='Kimi K2 Thinking' src='./static/img/icons/models/kimi-k2-thinking.png' width='21' height='21' valign='middle'>&nbsp; Kimi K2 Thinking
 
 **Mistral**
 - <img alt='Mistral Small' src='./static/img/icons/models/mistral-small.png' width='21' height='21' valign='middle'>&nbsp; Mistral Small
 - <img alt='Mistral Medium' src='./static/img/icons/models/mistral-medium.png' width='21' height='21' valign='middle'>&nbsp; Mistral Medium
 - <img alt='Mistral Large' src='./static/img/icons/models/mistral-large.png' width='21' height='21' valign='middle'>&nbsp; Mistral Large
 
+**Groq** (Fast inference)
+- <img alt='GPT-OSS 120b' src='./static/img/icons/models/groq-gpt.png' width='21' height='21' valign='middle'>&nbsp; GPT-OSS 120b
+- <img alt='Llama 4 Maverick' src='./static/img/icons/models/groq-llama.png' width='21' height='21' valign='middle'>&nbsp; Llama 4 Maverick
+- <img alt='Qwen3 32B' src='./static/img/icons/models/groq-qwen.png' width='21' height='21' valign='middle'>&nbsp; Qwen3 32b
+- <img alt='Kimi K2 Instruct' src='./static/img/icons/models/groq-moonshot.png' width='21' height='21' valign='middle'>&nbsp; Kimi K2 Instruct
+
 **Cohere**
 - <img alt='Command-R' src='./static/img/icons/models/command-r.png' width='21' height='21' valign='middle'>&nbsp; Command-R
 - <img alt='Command-R+' src='./static/img/icons/models/command-r-plus.png' width='21' height='21' valign='middle'>&nbsp; Command-R+
 
 **AI21 Labs**
-- <img alt='Jamba Mini' src='./static/img/icons/models/jamba-mini.png' width='21' height='21' valign='middle'>&nbsp; Jamba 1.6 Mini
-- <img alt='Jamba Large' src='./static/img/icons/models/jamba-large.png' width='21' height='21' valign='middle'>&nbsp; Jamba 1.6 Large
-
-**Groq** (Fast inference)
-- <img alt='GPT-OSS 120b' src='./static/img/icons/models/groq-gpt.png' width='21' height='21' valign='middle'>&nbsp; GPT-OSS 120b
-- <img alt='Llama 4 Maverick' src='./static/img/icons/models/groq-llama.png' width='21' height='21' valign='middle'>&nbsp; Llama 4 Maverick
-- <img alt='R1 Distill 70b' src='./static/img/icons/models/groq-deepseek.png' width='21' height='21' valign='middle'>&nbsp; R1 Distill 70b
-- <img alt='Kimi K2 Instruct' src='./static/img/icons/models/groq-moonshot.png' width='21' height='21' valign='middle'>&nbsp; Kimi K2 Instruct
-
-**Amazon**
-- <img alt='Nova Lite' src='./static/img/icons/models/nova-lite.png' width='21' height='21' valign='middle'>&nbsp; Nova Lite 1.0
-- <img alt='Nova Pro' src='./static/img/icons/models/nova-pro.png' width='21' height='21' valign='middle'>&nbsp; Nova Pro 1.0
-- <img alt='Nova Premier' src='./static/img/icons/models/nova-premier.png' width='21' height='21' valign='middle'>&nbsp; Nova Premier 1.0
+- <img alt='Jamba Mini' src='./static/img/icons/models/jamba-mini.png' width='21' height='21' valign='middle'>&nbsp; Jamba 1.7 Mini
+- <img alt='Jamba Large' src='./static/img/icons/models/jamba-large.png' width='21' height='21' valign='middle'>&nbsp; Jamba 1.7 Large
 
 **MiniMax**
 - <img alt='MiniMax 01' src='./static/img/icons/models/minimax-01.png' width='21' height='21' valign='middle'>&nbsp; MiniMax 01
@@ -81,18 +86,15 @@ It runs in your browser on `localhost:1337`.
 **Inception Labs** (Diffusion)
 - <img alt='Mercury' src='./static/img/icons/models/mercury.png' width='21' height='21' valign='middle'>&nbsp; Mercury
 
-**Moonshot AI**
-- <img alt='Kimi K2' src='./static/img/icons/models/kimi-k2.png' width='21' height='21' valign='middle'>&nbsp; Kimi K2
-
 **Z.AI**
-- <img alt='GLM 4.5' src='./static/img/icons/models/glm-4.5.png' width='21' height='21' valign='middle'>&nbsp; GLM 4.5
+- <img alt='GLM 4.6' src='./static/img/icons/models/glm-4.5.png' width='21' height='21' valign='middle'>&nbsp; GLM 4.6
 
 **Open AI OSS**
 - <img alt='GPT-OSS 20b' src='./static/img/icons/models/gpt-oss-20b.png' width='21' height='21' valign='middle'>&nbsp; GPT-OSS 20b
 - <img alt='GPT-OSS 120b' src='./static/img/icons/models/gpt-oss-120b.png' width='21' height='21' valign='middle'>&nbsp; GPT-OSS 120b
 
 **Deep Cogito**
-- <img alt='Cogito V2' src='./static/img/icons/models/cogito-v2.png' width='21' height='21' valign='middle'>&nbsp; Cogito V2
+- <img alt='Cogito v2' src='./static/img/icons/models/cogito-v2.png' width='21' height='21' valign='middle'>&nbsp; Cogito v2
 
 **Inclusion AI**
 - <img alt='Ling-1T' src='./static/img/icons/models/ling.png' width='21' height='21' valign='middle'>&nbsp; Ling-1T
