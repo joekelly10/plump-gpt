@@ -633,7 +633,7 @@ export default [
     {
         type:           'openrouter',
         id:             'deepcogito/cogito-v2-preview-deepseek-671b',
-        name:           'Cogito V2',
+        name:           'Cogito v2',
         short_name:     'Cogito',
         icon:           'cogito-v2.png',
         family:         'DeepCogito',
@@ -655,20 +655,6 @@ export default [
         context_window: 131072,
         is_reasoner:    false,
         pricing_id:     'ling-1t',
-        settings:       ['temperature', 'top_p'],
-        tools:          []
-    },
-    {
-        type:           'openrouter',
-        id:             'openrouter/polaris-alpha',
-        name:           'Polaris Alpha',
-        short_name:     'Polaris',
-        icon:           'optimus-alpha.png',
-        family:         'OpenRouter',
-        hosted_at:      'openrouter.ai',
-        context_window: 128000,
-        is_reasoner:    true,
-        pricing_id:     'free',
         settings:       ['temperature', 'top_p'],
         tools:          []
     }
