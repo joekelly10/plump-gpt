@@ -323,11 +323,11 @@ const model_prices = {
             }
         }
     },
-    'groq-qwq-32b': {
+    'groq-qwen3-32b': {
         price: {
             cents: {
                 input_token:  29/1000000, // $0.29/mTok
-                output_token: 39/1000000
+                output_token: 59/1000000
             }
         }
     },
@@ -390,8 +390,24 @@ const model_prices = {
     'kimi-k2': {
         price: {
             cents: {
-                input_token:   57/1000000, // $0.57/mTok
-                output_token: 230/1000000
+                input_token:   39/1000000, // $0.39/mTok
+                output_token: 190/1000000
+            }
+        }
+    },
+    'kimi-k2-thinking': {
+        price: {
+            cents: {
+                input_token:   60/1000000, // $0.60/mTok
+                output_token: 250/1000000
+            }
+        }
+    },
+    'kimi-linear-48b': {
+        price: {
+            cents: {
+                input_token:  30/1000000, // $0.30/mTok
+                output_token: 60/1000000
             }
         }
     },
