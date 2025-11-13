@@ -29,9 +29,9 @@ export default [
     },
     {
         type:           'open-ai',
-        id:             'gpt-5',
-        name:           'GPT-5',
-        short_name:     'GPT-5',
+        id:             'gpt-5.1',
+        name:           'GPT-5.1',
+        short_name:     'GPT-5.1',
         icon:           'gpt-5.png',
         family:         'Open AI',
         hosted_at:      'openai.com',
