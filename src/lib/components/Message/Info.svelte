@@ -113,7 +113,7 @@
                 {#if cost.cache_savings !== 0}
                     <br>
                     <span class='small'>
-                        ({savings_string} saved)
+                        ({savings_string.substring(0,5)}<span class='x-small'>{savings_string.substring(5)}</span> saved)
                     </span>
                 {/if}
             </div>
@@ -223,4 +223,7 @@
     .small
         margin-left: 0.5px
         font-size:   smaller
+
+    .x-small
+        font-size: x-small
 </style>
