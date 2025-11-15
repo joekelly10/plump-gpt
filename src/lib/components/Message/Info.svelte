@@ -18,7 +18,8 @@
     const temperature_icon_level = $derived(message.temperature > 1 ? 4 : Math.round(message.temperature / 0.3)),
           cost                   = $derived(getCost(message.model, message.usage)),
           cost_string            = $derived('$' + (cost.total / 100).toFixed(5)),
-          savings_string         = $derived('$' + (cost.cache_savings / 100).toFixed(5))
+          savings_string         = $derived('$' + (cost.cache_savings / 100).toFixed(5)),
+          negative_savings       = $derived(cost.cache_savings < 0)
 
     onMount(() => {
         if (message.is_last) {
@@ -113,7 +114,7 @@
                 {#if cost.cache_savings !== 0}
                     <br>
                     <span class='small'>
-                        ({savings_string.substring(0,5)}<span class='x-small'>{savings_string.substring(5)}</span> saved)
+                        ({savings_string.substring(0, negative_savings ? 6 : 5)}<span class='x-small'>{savings_string.substring(negative_savings ? 6 : 5)}</span> saved)
                     </span>
                 {/if}
             </div>

@@ -83,7 +83,7 @@
         {#if $usage.total_savings !== 0}
             <div class='cache-savings'>
                 <span class='small' title={negative_savings ? 'Negative savings due to cache write cost' : ''}>
-                    ({savings_string.substring(0,5)}<span class='x-small'>{savings_string.substring(5)}</span> saved)
+                    ({savings_string.substring(0, negative_savings ? 6 : 5)}<span class='x-small'>{savings_string.substring(negative_savings ? 6 : 5)}</span> saved)
                 </span>
             </div>
         {/if}
