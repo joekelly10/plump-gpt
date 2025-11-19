@@ -142,7 +142,7 @@ export default [
     {
         type:           'google',
         id:             'gemini-3-pro-preview',
-        name:           'Gemini 3 Pro (Preview)',
+        name:           'Gemini 3 Pro',
         short_name:     'Gemini',
         icon:           'gemini-pro.png',
         family:         'Google',
