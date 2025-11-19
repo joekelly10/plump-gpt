@@ -169,6 +169,14 @@ const model_prices = {
             }
         }
     },
+    'gemini-3-pro': {
+        price: {
+            cents: {
+                input_token:   200/1000000, // $2.00/mTok
+                output_token: 1200/1000000
+            }
+        }
+    },
     'grok-3-mini': {
         price: {
             cents: {

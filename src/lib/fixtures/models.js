@@ -141,15 +141,15 @@ export default [
     },
     {
         type:           'google',
-        id:             'gemini-2.5-pro',
-        name:           'Gemini 2.5 Pro',
+        id:             'gemini-3-pro-preview',
+        name:           'Gemini 3 Pro (Preview)',
         short_name:     'Gemini',
         icon:           'gemini-pro.png',
         family:         'Google',
         hosted_at:      'googleapis.com',
         context_window: 1000000,
         is_reasoner:    true,
-        pricing_id:     'gemini-2.5-pro',
+        pricing_id:     'gemini-3-pro',
         settings:       ['temperature', 'top_p'],
         tools:          ['google_search']
     },
