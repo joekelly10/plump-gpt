@@ -442,6 +442,30 @@ const model_prices = {
                 output_token: 300/1000000
             }
         }
+    },
+    'olmo-3-7b': {
+        price: {
+            cents: {
+                input_token:  10/1000000, // $0.10/mTok
+                output_token: 20/1000000
+            }
+        }
+    },
+    'olmo-3-7b-think': {
+        price: {
+            cents: {
+                input_token:  12/1000000, // $0.12/mTok
+                output_token: 40/1000000
+            }
+        }
+    },
+    'olmo-3-32b-think': {
+        price: {
+            cents: {
+                input_token:  20/1000000, // $0.20/mTok
+                output_token: 35/1000000
+            }
+        }
     }
 }
 

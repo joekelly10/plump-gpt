@@ -32,8 +32,8 @@ It runs in your browser on `localhost:1337`.
 - <img alt='Gemini Pro' src='./static/img/icons/models/gemini-pro.png' width='21' height='21' valign='middle'>&nbsp; Gemini 3 Pro
 
 **X**
-- <img alt='Grok 4 Fast' src='./static/img/icons/models/grok-fast.png' width='21' height='21' valign='middle'>&nbsp; Grok 4 Fast
-- <img alt='Grok 4 Fast (Reasoning)' src='./static/img/icons/models/grok-fast-reasoning.png' width='21' height='21' valign='middle'>&nbsp; Grok 4 Fast (Reasoning)
+- <img alt='Grok 4.1 Fast' src='./static/img/icons/models/grok-fast.png' width='21' height='21' valign='middle'>&nbsp; Grok 4.1 Fast
+- <img alt='Grok 4.1 Fast (Reasoning)' src='./static/img/icons/models/grok-fast-reasoning.png' width='21' height='21' valign='middle'>&nbsp; Grok 4.1 Fast (Reasoning)
 - <img alt='Grok 4' src='./static/img/icons/models/grok.png' width='21' height='21' valign='middle'>&nbsp; Grok 4
 
 **Meta**
@@ -75,9 +75,10 @@ It runs in your browser on `localhost:1337`.
 - <img alt='Command-R' src='./static/img/icons/models/command-r.png' width='21' height='21' valign='middle'>&nbsp; Command-R
 - <img alt='Command-R+' src='./static/img/icons/models/command-r-plus.png' width='21' height='21' valign='middle'>&nbsp; Command-R+
 
-**AI21 Labs**
-- <img alt='Jamba Mini' src='./static/img/icons/models/jamba-mini.png' width='21' height='21' valign='middle'>&nbsp; Jamba 1.7 Mini
-- <img alt='Jamba Large' src='./static/img/icons/models/jamba-large.png' width='21' height='21' valign='middle'>&nbsp; Jamba 1.7 Large
+**AllenAI**
+- <img alt='Olmo 3 7b' src='./static/img/icons/models/olmo-small.png' width='21' height='21' valign='middle'>&nbsp; Olmo 3 7b
+- <img alt='Olmo 3 7b Think' src='./static/img/icons/models/olmo-medium.png' width='21' height='21' valign='middle'>&nbsp; Olmo 3 7b Think
+- <img alt='Olmo 3 32b Think' src='./static/img/icons/models/olmo-large.png' width='21' height='21' valign='middle'>&nbsp; Olmo 3 32b Think
 
 **MiniMax**
 - <img alt='MiniMax 01' src='./static/img/icons/models/minimax-01.png' width='21' height='21' valign='middle'>&nbsp; MiniMax 01
@@ -85,6 +86,10 @@ It runs in your browser on `localhost:1337`.
 
 **Inception Labs** (Diffusion)
 - <img alt='Mercury' src='./static/img/icons/models/mercury.png' width='21' height='21' valign='middle'>&nbsp; Mercury
+
+**AI21 Labs**
+- <img alt='Jamba Mini' src='./static/img/icons/models/jamba-mini.png' width='21' height='21' valign='middle'>&nbsp; Jamba 1.7 Mini
+- <img alt='Jamba Large' src='./static/img/icons/models/jamba-large.png' width='21' height='21' valign='middle'>&nbsp; Jamba 1.7 Large
 
 **Z.AI**
 - <img alt='GLM 4.6' src='./static/img/icons/models/glm-4.5.png' width='21' height='21' valign='middle'>&nbsp; GLM 4.6
