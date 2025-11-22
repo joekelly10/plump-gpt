@@ -155,8 +155,8 @@ export default [
     },
     {
         type:           'x',
-        id:             'grok-4-fast-non-reasoning',
-        name:           'Grok 4 Fast',
+        id:             'grok-4-1-fast-non-reasoning',
+        name:           'Grok 4.1 Fast',
         short_name:     'Grok',
         icon:           'grok-fast.png',
         family:         'X',
@@ -169,8 +169,8 @@ export default [
     },
     {
         type:           'x',
-        id:             'grok-4-fast-reasoning',
-        name:           'Grok 4 Fast (Reasoning)',
+        id:             'grok-4-1-fast-reasoning',
+        name:           'Grok 4.1 Fast (Reasoning)',
         short_name:     'Grok',
         icon:           'grok-fast-reasoning.png',
         family:         'X',
