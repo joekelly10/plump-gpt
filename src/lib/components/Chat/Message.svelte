@@ -494,6 +494,10 @@
             :global
                 .tool-use
                     margin-top: -2px
+                
+                img
+                    max-width: 100%
+                    height:    auto
 
         :global
             .tool-use
