@@ -250,6 +250,9 @@
                 font-size:   16px
                 font-weight: 600
                 color:       $off-white
+        
+        .content
+            overflow-wrap: anywhere
     
     .message-count
         margin-top:  space.$default-padding
