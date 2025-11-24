@@ -471,7 +471,7 @@ const model_prices = {
         price: {
             cents: {
                 input_token:  12/1000000, // $0.12/mTok
-                output_token: 40/1000000
+                output_token: 20/1000000
             }
         }
     },
