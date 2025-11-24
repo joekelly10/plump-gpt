@@ -253,6 +253,10 @@
         
         .content
             overflow-wrap: anywhere
+
+            :global
+                img
+                    max-width: 100%
     
     .message-count
         margin-top:  space.$default-padding
