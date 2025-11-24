@@ -339,6 +339,14 @@ const model_prices = {
             }
         }
     },
+    'groq-llama-3.1-8b': {
+        price: {
+            cents: {
+                input_token:  5/1000000, // $0.05/mTok
+                output_token: 8/1000000
+            }
+        }
+    },
     'groq-llama-4-maverick': {
         price: {
             cents: {
@@ -355,11 +363,19 @@ const model_prices = {
             }
         }
     },
+    'groq-gpt-oss-20b': {
+        price: {
+            cents: {
+                input_token:  75/10000000, // $0.075/mTok
+                output_token: 30/1000000
+            }
+        }
+    },
     'groq-gpt-oss-120b': {
         price: {
             cents: {
                 input_token:  15/1000000, // $0.15/mTok
-                output_token: 75/1000000
+                output_token: 60/1000000
             }
         }
     },
