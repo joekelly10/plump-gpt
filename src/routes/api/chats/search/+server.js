@@ -15,7 +15,7 @@ export const GET = async ({ url }) => {
         // search messages -> get distinct chat ids
         const matched_messages = await prisma.message.findMany({
             where: {
-                OR: search_terms.map(term => ({
+                AND: search_terms.map(term => ({
                     content: {
                         contains: term,
                         mode
