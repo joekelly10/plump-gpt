@@ -130,10 +130,10 @@ const model_prices = {
     'claude-opus': {
         price: {
             cents: {
-                input_token:  1500/1000000, // $15.00/mTok
-                output_token: 7500/1000000,
-                cache_write:  1875/1000000,
-                cache_read:    150/1000000
+                input_token:   500/1000000, // $5.00/mTok
+                output_token: 2500/1000000,
+                cache_write:   625/1000000,
+                cache_read:     50/1000000
             }
         }
     },
