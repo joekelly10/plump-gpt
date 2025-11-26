@@ -10,7 +10,11 @@ export const GET = async ({ url }) => {
               query    = url.searchParams.get('query') ?? '',
               mode     = url.searchParams.get('mode') ?? 'insensitive'
 
-        const search_terms = query.split(' ').filter(term => term.trim().length > 0)
+        // extract quoted phrases and individual words
+        const phrases      = [...query.matchAll(/"([^"]+)"/g)].map(m => m[1]),
+              without      = query.replace(/"[^"]*"/g, ''),
+              words        = without.split(' ').filter(term => term.trim().length > 0),
+              search_terms = [...phrases, ...words]
         
         // search messages -> get distinct chat ids
         const matched_messages = await prisma.message.findMany({
