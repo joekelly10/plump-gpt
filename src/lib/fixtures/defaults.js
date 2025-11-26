@@ -1,5 +1,6 @@
 export default {
     model:            'claude-sonnet-4-5',
+    model_family:     'Anthropic',
     temperature:      0.4,
     top_p:            0.9,
     reasoning_effort: 'minimal',

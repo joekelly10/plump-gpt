@@ -24,7 +24,11 @@
     }
 
     const setModel = () => {
-        model.setById(message.model.id)
+        if (message.model.family) {
+            model.setByIdAndFamily(message.model.id, message.model.family)
+        } else {
+            model.setById(message.model.id)
+        }
     }
 </script>
 

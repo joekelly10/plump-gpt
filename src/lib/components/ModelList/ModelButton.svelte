@@ -30,14 +30,15 @@
           input_price_text  = $derived(prices.input  === 0 ? 'Free' : `$${(prices.input * 10000).toFixed(2)}`),
           output_price_text = $derived(prices.output === 0 ? 'Free' : `$${(prices.output * 10000).toFixed(2)}`),
           is_active         = $derived(model.id === $store_model.id),
-          is_default        = $derived(model.id === $config.default_model_id)
+          is_default        = $derived(model.id === $config.default_model_id && model.family === $config.default_model_family)
 
     const pointerDown = () => {
         hold_triggered = false
         clearTimeout(hold_timer)
         hold_timer = setTimeout(() => {
-            hold_triggered = true
-            $config.default_model_id = model.id
+            hold_triggered               = true
+            $config.default_model_id     = model.id
+            $config.default_model_family = model.family
         }, 500)
     }
 
@@ -47,7 +48,7 @@
 
     const clicked = () => {
         if (!hold_triggered) {
-            store_model.setById(model.id)
+            store_model.setByIdAndFamily(model.id, model.family)
             focusInput()
             closeModelList()
         }

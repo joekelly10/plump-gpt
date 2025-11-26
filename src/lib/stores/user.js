@@ -3,10 +3,11 @@ import { browser } from '$app/environment'
 import defaults from '$lib/fixtures/defaults'
 
 export const config = writable({
-    default_model_id: defaults.model,
-    autosave:         defaults.autosave,
-    smooth_output:    defaults.smooth_output,
-    change_favicon:   defaults.change_favicon
+    default_model_id:     defaults.model,
+    default_model_family: defaults.model_family,
+    autosave:             defaults.autosave,
+    smooth_output:        defaults.smooth_output,
+    change_favicon:       defaults.change_favicon
 })
 
 export const avatar_href = writable('/img/default_avatar.png')

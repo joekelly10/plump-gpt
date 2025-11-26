@@ -716,8 +716,14 @@
         addCopyButtons()
 
         if (options.switch_model) {
-            const last_used_model = $active_messages[$active_messages.length - 1].model?.id
-            if (last_used_model) model.setById(last_used_model)
+            const last_used_model = $active_messages[$active_messages.length - 1].model
+            if (last_used_model) {
+                if (last_used_model.family) {
+                    model.setByIdAndFamily(last_used_model.id, last_used_model.family)
+                } else {
+                    model.setById(last_used_model.id)
+                }
+            }
         }
     }
 

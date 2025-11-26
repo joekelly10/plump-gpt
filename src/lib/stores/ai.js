@@ -19,7 +19,7 @@ model.subscribe(new_model => {
 })
 
 function createModel() {
-    const default_index = models.findIndex(m => m.id === defaults.model)
+    const default_index = models.findIndex(m => m.id === defaults.model && m.family === defaults.model_family)
 
     const { subscribe, set, update } = writable(models[default_index])
 
@@ -40,6 +40,10 @@ function createModel() {
         },
         setById: (id) => {
             const model = models.find(m => m.id === id)
+            if (model) set(model)
+        },
+        setByIdAndFamily: (id, family) => {
+            const model = models.find(m => m.id === id && m.family === family)
             if (model) set(model)
         }
     }

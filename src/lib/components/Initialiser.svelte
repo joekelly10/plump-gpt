@@ -96,7 +96,11 @@
             $page.url.searchParams.delete('model')
             window.history.replaceState(null, '', $page.url.toString())
         } else if ($config.default_model_id) {
-            model.setById($config.default_model_id)
+            if ($config.default_model_family) {
+                model.setByIdAndFamily($config.default_model_id, $config.default_model_family)
+            } else {
+                model.setById($config.default_model_id)
+            }
         }
         has_set_model = true
     }
