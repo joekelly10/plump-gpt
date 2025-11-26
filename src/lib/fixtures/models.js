@@ -435,6 +435,20 @@ export default [
     },
     {
         type:           'groq',
+        id:             'openai/gpt-oss-20b',
+        name:           'GPT-OSS 20b',
+        short_name:     'GPT',
+        icon:           'groq-gpt.png',
+        family:         'Groq',
+        hosted_at:      'groq.com',
+        context_window: 128000,
+        is_reasoner:    true,
+        pricing_id:     'groq-gpt-oss-20b',
+        settings:       ['temperature', 'top_p'],
+        tools:          []
+    },
+    {
+        type:           'groq',
         id:             'openai/gpt-oss-120b',
         name:           'GPT-OSS 120b',
         short_name:     'GPT',
