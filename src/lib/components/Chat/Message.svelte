@@ -499,6 +499,9 @@
                     max-width: 100%
                     height:    auto
 
+                table
+                    overflow-wrap: anywhere
+
         :global
             .tool-use
                 display:          flex
