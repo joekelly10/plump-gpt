@@ -1,11 +1,19 @@
 import { json } from '@sveltejs/kit'
 import { prisma } from '$lib/db/prisma'
 import { formatForAPI } from '$lib/db/tools'
+import { contentHash, generateEmbeddings } from '$lib/utils/embeddings'
+import { saveEmbedding } from '$lib/db/embeddings'
 
 export const POST = async ({ request }) => {
     try {
         const { id, messages, forks, active_fork, stars, highlights } = await request.json()
-        
+
+        // Compute content hashes for all messages
+        const messages_with_hashes = messages.map(msg => ({
+            ...msg,
+            content_hash: (msg.role === 'user' || msg.role === 'assistant') ? contentHash(msg.content) : null
+        }))
+
         let record
 
         if (id) {
@@ -26,12 +34,13 @@ export const POST = async ({ request }) => {
             })
 
             await prisma.message.createMany({
-                data: messages.map(msg => ({
+                data: messages_with_hashes.map(msg => ({
                     chatId:                id,
                     chronologicalId:       msg.id,
                     chronologicalParentId: msg.parent_id,
                     role:                  msg.role,
                     content:               msg.content,
+                    contentHash:           msg.content_hash,
                     ...(msg.role === 'system' && {
                         systemPromptId:        msg.system_prompt_id,
                         systemPromptTitle:     msg.system_prompt_title,
@@ -61,11 +70,12 @@ export const POST = async ({ request }) => {
                     stars,
                     highlights,
                     messages: {
-                        create: messages.map(msg => ({
+                        create: messages_with_hashes.map(msg => ({
                             chronologicalId:       msg.id,
                             chronologicalParentId: msg.parent_id,
                             role:                  msg.role,
                             content:               msg.content,
+                            contentHash:           msg.content_hash,
                             ...(msg.role === 'system' && {
                                 systemPromptId:        msg.system_prompt_id,
                                 systemPromptTitle:     msg.system_prompt_title,
@@ -90,7 +100,9 @@ export const POST = async ({ request }) => {
             })
         }
 
-        // fetch the complete chat
+        // Generate embeddings for new content (non-blocking)
+        generateAnyNewEmbeddings(messages_with_hashes)
+
         let saved_chat = await prisma.chat.findUnique({
             where: { id: record.id },
             include: {
@@ -108,5 +120,35 @@ export const POST = async ({ request }) => {
     } catch (error) {
         console.error('Error saving chat:', error)
         return json({ message: 'Failed to save chat' }, { status: 500 })
+    }
+}
+
+const generateAnyNewEmbeddings = async (messages) => {
+    try {
+        const all_hashes = [...new Set(messages.filter(m => !!m.content_hash).map(m => m.content_hash))]
+
+        if (all_hashes.length === 0) return
+
+        const existing = await prisma.embedding.findMany({
+            where: { contentHash: { in: all_hashes } },
+            select: { contentHash: true }
+        })
+        const existing_hashes = new Set(existing.map(e => e.contentHash))
+
+        const new_messages = messages.filter(m => 
+            m.content_hash && !existing_hashes.has(m.content_hash)
+        )
+        if (new_messages.length === 0) return
+
+        const texts      = new_messages.map(m => m.content),
+              embeddings = await generateEmbeddings(texts)
+
+        for (let i = 0; i < new_messages.length; i++) {
+            const embedding = embeddings[i]
+            if (!embedding) continue
+            await saveEmbedding(new_messages[i].content_hash, embedding)
+        }
+    } catch (error) {
+        console.error('🧩–❌ Error generating embeddings:', error)
     }
 }

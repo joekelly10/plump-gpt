@@ -1,16 +1,12 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [vector]
 }
 
 model Chat {
@@ -30,6 +26,7 @@ model Message {
   chronologicalParentId Int?
   role                  String
   content               String    @db.Text
+  contentHash           String?
   reasoningContent      String?   @db.Text
   signature             String?   @db.Text
   model                 Json?
@@ -50,16 +47,25 @@ model Message {
   chatId                String
 
   @@index([chatId, chronologicalId])
+  @@index([contentHash])
 }
 
 model SystemPrompt {
-  id        String    @id @default(cuid())
-  message   String    @db.Text
-  title     String
-  active    Boolean   @default(false)
-  default   Boolean   @default(false)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id          String    @id @default(cuid())
+  message     String    @db.Text
+  contentHash String?
+  title       String
+  active      Boolean   @default(false)
+  default     Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([contentHash])
 }
 
-
+model Embedding {
+  contentHash String                       @id
+  vector      Unsupported("vector(1536)")
+  model       String                       @default("text-embedding-3-small")
+  createdAt   DateTime                     @default(now())
+}

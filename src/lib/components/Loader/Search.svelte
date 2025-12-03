@@ -5,8 +5,7 @@
                  unfocus        = () => search_input.blur(),
                  is_focused     = () => document.activeElement === search_input,
                  scrollIntoView = () => search_input.scrollIntoView({ behavior: 'smooth', block: 'end' }),
-                 clear_timer    = () => clearTimeout(search_timer),
-                 set_searched   = (value) => search_value = value
+                 clear_timer    = () => clearTimeout(search_timer)
 
     let {
         // actions
@@ -17,6 +16,7 @@
 
         // bindable
         filter         = $bindable('all'),
+        semantic_mode  = $bindable(false),
         search_value   = $bindable(''),
         searched_value = $bindable(''),
         active_page    = $bindable(1),
@@ -28,15 +28,13 @@
 
     let search_input,
         search_timer
-    
-    $effect(() => { search_value; whenSearchValueChanges() })
 
     const whenSearchValueChanges = () => {
         clearTimeout(search_timer)
         search_timer = setTimeout(() => {
             active_page = 1
             fetchChats()
-        }, 250)
+        }, semantic_mode ? 1000 : 250)
     }
 
     const clickedAll = () => {
@@ -56,11 +54,19 @@
         active_page = 1
         fetchChats()
     }
+
+    const clickedSemanticSearch = () => {
+        semantic_mode = !semantic_mode
+        if (!!search_value.trim()) {
+            active_page = 1
+            fetchChats()
+        }
+    }
 </script>
 
 <div class='search-header'>
     <div class='search-options'>
-        <div class='search-option-buttons-container'>
+        <div class='filter-buttons-container'>
             <button class='search-option-button all-button' class:active={filter === 'all'} onclick={clickedAll}>
                 All
             </button>
@@ -73,6 +79,11 @@
                 Non-default
             </button>
         </div>
+        <div class='semantic-search-button-container'>
+            <button class='search-option-button semantic-search-button' class:active={semantic_mode === true} onclick={clickedSemanticSearch}>
+                Semantic Search
+            </button>
+        </div>
     </div>
     <div class='search-container'>
         <input
@@ -81,6 +92,7 @@
             placeholder='Search...'
             bind:this={search_input}
             bind:value={search_value}
+            oninput={whenSearchValueChanges}
             tabindex=1
         />
     </div>
@@ -116,27 +128,24 @@
         user-select:      none
 
     .search-options
-        margin:       0 auto space.$default-padding
-        width:        $width
-        box-sizing:   border-box
-        padding-left: 12px
-        color:        $blue-grey
-
-        .search-option-buttons-container
-            display:     flex
-            align-items: center
-            gap:         20px
-
-            .separator
-                width:            1px
-                height:           12px
-                background-color: white(0.2)
+        display:         flex
+        align-items:     center
+        justify-content: space-between
+        margin:          0 auto space.$default-padding
+        width:           $width
+        box-sizing:      border-box
+        padding:         0 12px
+        color:           $blue-grey
 
         .search-option-button
-            padding:       7px 12px
-            border-radius: 6px
-            font-weight:   450
-            cursor:        pointer
+            display:         flex
+            align-items:     center
+            justify-content: center
+            height:          32px
+            padding:         0 16px
+            border-radius:   5px
+            font-weight:     450
+            cursor:          pointer
 
             &:hover
                 color: $off-white
@@ -153,6 +162,21 @@
 
                 &.non-default-button
                     background-color: $blue
+                
+                &.semantic-search-button
+                    background-image: linear-gradient(to right, color.adjust($green, $lightness: -5%), $green)
+                    color:            white
+                    filter:           saturate(1.1)
+        
+        .filter-buttons-container
+            display:     flex
+            align-items: center
+            gap:         20px
+
+            .separator
+                width:            1px
+                height:           12px
+                background-color: white(0.2)
 
     .search-container
         margin:           0 auto

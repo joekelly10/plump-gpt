@@ -19,6 +19,7 @@
         scrolling_div
 
     let filter         = $state('all'),
+        semantic_mode  = $state(false),
         search_value   = $state(''),
         searched_value = $state(''),
         chats          = $state([]),
@@ -72,7 +73,7 @@
 
         if (search_value) {
             console.log('\n📂 + 🔍 Fetching chats w/ search term:', search_value)
-            url = `/api/chats/search?query=${encodeURIComponent(search_value)}&filter=${filter}&page=${active_page}&per_page=10`
+            url = `/api/chats/search?query=${encodeURIComponent(search_value)}&filter=${filter}&page=${active_page}&per_page=10${semantic_mode ? '&mode=semantic' : ''}`
         } else {
             console.log('\n📂 Fetching chats...')
             url = `/api/chats?filter=${filter}&page=${active_page}&per_page=10`
@@ -292,6 +293,7 @@
             bind:search_value={search_value}
             bind:searched_value={searched_value}
             bind:filter={filter}
+            bind:semantic_mode={semantic_mode}
             bind:active_page={active_page}
             total_chats={total_chats}
             total_pages={total_pages}
