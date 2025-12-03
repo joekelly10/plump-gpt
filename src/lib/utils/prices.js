@@ -482,6 +482,14 @@ const model_prices = {
                 output_token: 35/1000000
             }
         }
+    },
+    'intellect-3': {
+        price: {
+            cents: {
+                input_token:   20/1000000, // $0.20/mTok
+                output_token: 110/1000000
+            }
+        }
     }
 }
 
