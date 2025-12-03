@@ -490,7 +490,7 @@
     .content
         transition: filter easing.$quart-out 0.1s
 
-        .message-content:first-child
+        .message-content
             :global
                 .tool-use
                     margin-top: -2px
