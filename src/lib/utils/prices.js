@@ -244,7 +244,7 @@ const model_prices = {
     'llama-4-scout': {
         price: {
             cents: {
-                input_token:  10/1000000, // $0.10/mTok
+                input_token:   8/1000000, // $0.08/mTok
                 output_token: 30/1000000
             }
         }
@@ -252,8 +252,8 @@ const model_prices = {
     'llama-4-maverick': {
         price: {
             cents: {
-                input_token:  20/1000000, // $0.20/mTok
-                output_token: 60/1000000
+                input_token:  136/10000000, // $0.136/mTok
+                output_token: 68/1000000    // $0.68/mTok
             }
         }
     },
