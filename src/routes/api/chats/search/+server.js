@@ -136,7 +136,7 @@ const semanticSearch = async ({ query, filter, page, per_page, threshold }) => {
         filter_where = ''
 
     if (filter === 'starred') {
-        filter_where = `AND (c."stars" != '{}' OR c."highlights" != '[]')`
+        filter_where = `AND (cardinality(c."stars") > 0 OR cardinality(c."highlights") > 0)`
     } else if (filter === 'non-default') {
         filter_join = `
             INNER JOIN "Message" sys ON sys."chatId" = c."id" 
