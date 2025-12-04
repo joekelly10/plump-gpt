@@ -5,15 +5,16 @@ import { generateEmbedding, toPgVector } from '$lib/utils/embeddings'
 
 export const GET = async ({ url }) => {
     try {
-        const filter    = url.searchParams.get('filter'),
-              page      = Number(url.searchParams.get('page') ?? 1),
-              per_page  = Number(url.searchParams.get('per_page') ?? 20),
-              query     = url.searchParams.get('query') ?? '',
-              mode      = url.searchParams.get('mode') ?? 'insensitive',
-              threshold = Number(url.searchParams.get('threshold') ?? 0.3)
+        const filter     = url.searchParams.get('filter'),
+              page       = Number(url.searchParams.get('page') ?? 1),
+              per_page   = Number(url.searchParams.get('per_page') ?? 20),
+              query      = url.searchParams.get('query') ?? '',
+              mode       = url.searchParams.get('mode') ?? 'insensitive',
+              threshold  = Number(url.searchParams.get('threshold') ?? 0.3),
+              multiplier = Number(url.searchParams.get('multiplier') ?? 0.05)
 
         if (mode === 'semantic') {
-            return semanticSearch({ query, filter, page, per_page, threshold })
+            return semanticSearch({ query, filter, page, per_page, threshold, multiplier })
         } else {
             return regularSearch({ query, filter, page, per_page, mode })
         }
@@ -115,7 +116,7 @@ const regularSearch = async ({ query, filter, page, per_page, mode }) => {
     }, { status: 200 })
 }
 
-const semanticSearch = async ({ query, filter, page, per_page, threshold }) => {
+const semanticSearch = async ({ query, filter, page, per_page, threshold, multiplier }) => {
     const embedding = await generateEmbedding(query)
     
     if (!embedding) {
@@ -146,7 +147,6 @@ const semanticSearch = async ({ query, filter, page, per_page, threshold }) => {
         `
     }
 
-    // Count chats with at least one message above threshold
     const count_result = await prisma.$queryRawUnsafe(`
         SELECT COUNT(DISTINCT m."chatId") as count
         FROM "Message" m
@@ -169,14 +169,19 @@ const semanticSearch = async ({ query, filter, page, per_page, threshold }) => {
             total_pages: 0
         }, { status: 200 })
     }
-
+    //
     // Get paginated chat IDs ordered by composite score
-    // Score = best_match + LN(hit_count + 1) * 0.05
-    // This rewards both quality (best match) and quantity (multiple relevant messages)
-    const matched_chats = await prisma.$queryRawUnsafe(`
+    //
+    // Score = best_match + LN(hit_count + 1) * multiplier
+    //     - This rewards both quality (best match for a single message) and
+    //           quantity (multiple relevant messages (log = diminishing returns))
+    //     - higher multiplier = more weight on quantity
+    //
+    const chat_scores = await prisma.$queryRawUnsafe(`
         WITH message_similarities AS (
             SELECT 
                 m."chatId",
+                m."chronologicalId",
                 1 - (e."vector" <=> $1::vector) as similarity
             FROM "Message" m
             INNER JOIN "Embedding" e ON e."contentHash" = m."contentHash"
@@ -191,17 +196,27 @@ const semanticSearch = async ({ query, filter, page, per_page, threshold }) => {
                 "chatId",
                 MAX(similarity) as best_match,
                 COUNT(*) as hit_count,
-                MAX(similarity) + LN(COUNT(*) + 1) * 0.05 as score
+                MAX(similarity) + LN(COUNT(*) + 1) * $3 as score,
+                ARRAY_AGG(similarity ORDER BY "chronologicalId") as similarities
             FROM message_similarities
             GROUP BY "chatId"
         )
-        SELECT "chatId", score, best_match, hit_count
+        SELECT "chatId", best_match, hit_count, score, similarities
         FROM chat_scores
         ORDER BY score DESC
-        LIMIT $3 OFFSET $4
-    `, vector, threshold, per_page, offset)
+        LIMIT $4 OFFSET $5
+    `, vector, threshold, multiplier, per_page, offset)
 
-    const chat_ids = matched_chats.map(c => c.chatId)
+    const chat_ids = chat_scores.map(c => c.chatId)
+
+    const semantic_fields_map = new Map(
+        chat_scores.map(c => [c.chatId, {
+            similarities: c.similarities,
+            best_match:   Number(c.best_match),
+            hit_count:    Number(c.hit_count),
+            score:        Number(c.score)
+        }])
+    )
 
     if (chat_ids.length === 0) {
         return json({
@@ -226,10 +241,24 @@ const semanticSearch = async ({ query, filter, page, per_page, threshold }) => {
         }
     })
 
-    // Restore order of chats based on score
+    // restore order of chats by score
     const id_order = new Map(chat_ids.map((id, idx) => [id, idx]))
     items.sort((a, b) => id_order.get(a.id) - id_order.get(b.id))
-    items = items.map(chat => formatForAPI(chat))
+
+    // add semantic fields
+    items = items.map(chat => {
+        let formatted_chat = formatForAPI(chat)
+
+        formatted_chat.semantic_search = {
+            similarities: semantic_fields_map.get(chat.id)?.similarities ?? [],
+            best_match:   semantic_fields_map.get(chat.id)?.best_match ?? 0,
+            hit_count:    semantic_fields_map.get(chat.id)?.hit_count ?? 0,
+            score:        semantic_fields_map.get(chat.id)?.score ?? 0
+        }
+
+        return formatted_chat
+    })
+
 
     return json({
         items,
