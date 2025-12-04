@@ -57,6 +57,7 @@
 
     const getDisplayValue = (string) => {
         switch (string) {
+            case 'none':    return 'none'
             case 'minimal': return 'min'
             case 'low':     return 'low'
             case 'medium':  return 'med'
@@ -184,6 +185,8 @@
                 mask-position:    center
                 background-color: $background-200
                 transition:       background-color easing.$quart-out 0.1s
+                &.none
+                    mask-image: url('/img/icons/reasoning-effort-minimal.png')
                 &.low
                     mask-image: url('/img/icons/reasoning-effort-low.png')
                 &.medium

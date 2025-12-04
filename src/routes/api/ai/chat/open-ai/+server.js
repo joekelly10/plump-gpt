@@ -49,6 +49,11 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
         delete body.temperature
         delete body.top_p
 
+        // nano and mini models don't support 'none'
+        if (options.reasoning_effort === 'none' && options.model.id !== 'gpt-5') {
+            options.reasoning_effort = 'minimal'
+        }
+
         body.reasoning = {
             effort:  options.reasoning_effort ?? 'minimal',
             summary: options.reasoning_summary ?? 'detailed'

@@ -127,11 +127,13 @@ function createReasoningEffort() {
                 if (value === 'medium') return 'high'
                 if (value === 'low') return 'medium'
                 if (value === 'minimal') return 'low'
+                if (value === 'none') return 'minimal'
             })
         },
         decrement: () => {
             update(value => {
-                if (value === 'minimal') return value
+                if (value === 'none') return value
+                if (value === 'minimal') return 'none'
                 if (value === 'low') return 'minimal'
                 if (value === 'medium') return 'low'
                 if (value === 'high') return 'medium'

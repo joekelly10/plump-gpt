@@ -46,12 +46,14 @@
             margin-right:     12px
             width:            18px
             height:           18px
-            mask-image:       url('/img/icons/reasoning-effort-minimal.png')
+            mask-image:       url('/img/icons/reasoning-effort-none.png')
             mask-size:        contain
             mask-repeat:      no-repeat
             mask-position:    center
             background-color: $blue-grey
             transition:       background-color easing.$quart-out 0.1s
+            &.minimal
+                mask-image: url('/img/icons/reasoning-effort-minimal.png')
             &.low
                 mask-image: url('/img/icons/reasoning-effort-low.png')
             &.medium
