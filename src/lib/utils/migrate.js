@@ -4,6 +4,8 @@ const icon_mappings = {
     'claude-3-haiku.png':    'claude-haiku.png',
     'claude-3-opus.png':     'claude-opus.png',
     'grok-mini.png':         'grok-fast.png',
+    'gpt-4o.png':            'gpt-5-mini.png',
+    'llama-3-medium':        'llama-medium.png'
 }
 
 export const migrateIfNeeded = (chats) => {
