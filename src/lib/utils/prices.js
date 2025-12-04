@@ -403,6 +403,14 @@ const model_prices = {
             }
         }
     },
+    'minimax-m2': {
+        price: {
+            cents: {
+                input_token:  255/10000000, // $0.255/mTok
+                output_token: 102/1000000   // $1.02/mTok
+            }
+        }
+    },
     'inception-mercury': {
         price: {
             cents: {

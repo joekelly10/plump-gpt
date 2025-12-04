@@ -11,7 +11,8 @@ const icon_mappings = {
     'gpt-4.1.png':           'gpt-5.png',
     'llama-3-light.png':     'llama-light.png',
     'llama-3-medium.png':    'llama-medium.png',
-    'llama-3-heavy.png':     'llama-heavy.png'
+    'llama-3-heavy.png':     'llama-heavy.png',
+    'minimax-m1.png':        'minimax-m-series.png'
 }
 
 export const migrateIfNeeded = (chats) => {
