@@ -4,8 +4,14 @@ const icon_mappings = {
     'claude-3-haiku.png':    'claude-haiku.png',
     'claude-3-opus.png':     'claude-opus.png',
     'grok-mini.png':         'grok-fast.png',
+    'gpt-4o-mini.png':       'gpt-5-nano.png',
     'gpt-4o.png':            'gpt-5-mini.png',
-    'llama-3-medium':        'llama-medium.png'
+    'gpt-4.1-nano.png':      'gpt-5-nano.png',
+    'gpt-4.1-mini.png':      'gpt-5-mini.png',
+    'gpt-4.1.png':           'gpt-5.png',
+    'llama-3-light.png':     'llama-light.png',
+    'llama-3-medium.png':    'llama-medium.png',
+    'llama-3-heavy.png':     'llama-heavy.png'
 }
 
 export const migrateIfNeeded = (chats) => {
