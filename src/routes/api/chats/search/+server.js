@@ -197,7 +197,12 @@ const semanticSearch = async ({ query, filter, page, per_page, threshold, multip
                 MAX(similarity) as best_match,
                 COUNT(*) as hit_count,
                 MAX(similarity) + LN(COUNT(*) + 1) * $3 as score,
-                ARRAY_AGG(similarity ORDER BY "chronologicalId") as similarities
+                JSON_AGG(
+                    JSON_BUILD_OBJECT(
+                        'chronologicalId', "chronologicalId",
+                        'similarity', "similarity"
+                    ) ORDER BY "chronologicalId"
+                ) as similarities
             FROM message_similarities
             GROUP BY "chatId"
         )
@@ -211,7 +216,7 @@ const semanticSearch = async ({ query, filter, page, per_page, threshold, multip
 
     const semantic_fields_map = new Map(
         chat_scores.map(c => [c.chatId, {
-            similarities: c.similarities,
+            similarities: c.similarities.map(s => ({ id: s.chronologicalId, similarity: s.similarity })),
             best_match:   Number(c.best_match),
             hit_count:    Number(c.hit_count),
             score:        Number(c.score)
@@ -250,10 +255,12 @@ const semanticSearch = async ({ query, filter, page, per_page, threshold, multip
         let formatted_chat = formatForAPI(chat)
 
         formatted_chat.semantic_search = {
-            similarities: semantic_fields_map.get(chat.id)?.similarities ?? [],
-            best_match:   semantic_fields_map.get(chat.id)?.best_match ?? 0,
-            hit_count:    semantic_fields_map.get(chat.id)?.hit_count ?? 0,
-            score:        semantic_fields_map.get(chat.id)?.score ?? 0
+            ...(semantic_fields_map.get(chat.id)),
+            query: {
+                search_phrase: query,
+                threshold:     threshold,
+                multiplier:    multiplier
+            }
         }
 
         return formatted_chat
