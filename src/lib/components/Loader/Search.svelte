@@ -219,15 +219,17 @@
         align-items:     center
         margin:          0 auto
         width:           $width
+        height:          74px
         box-sizing:      border-box
         padding-top:     12px
         padding-left:    12px
-        line-height:     64px
+        line-height:     1.5
 
         .total-chats
             font-weight: 600
 
         .page-controls-container
+            flex-shrink:  0
             margin-right: -12px
     
     .close-button
