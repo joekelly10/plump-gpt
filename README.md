@@ -42,7 +42,7 @@ It runs in your browser on `localhost:1337`.
 - <img alt='Llama 3.1 405b' src='./static/img/icons/models/llama-heavy.png' width='21' height='21' valign='middle'>&nbsp; Llama 3.1 405b
 
 **Amazon**
-- <img alt='Nova Lite' src='./static/img/icons/models/nova-lite.png' width='21' height='21' valign='middle'>&nbsp; Nova Lite 1.0
+- <img alt='Nova Lite' src='./static/img/icons/models/nova-lite.png' width='21' height='21' valign='middle'>&nbsp; Nova 2 Lite
 - <img alt='Nova Pro' src='./static/img/icons/models/nova-pro.png' width='21' height='21' valign='middle'>&nbsp; Nova Pro 1.0
 - <img alt='Nova Premier' src='./static/img/icons/models/nova-premier.png' width='21' height='21' valign='middle'>&nbsp; Nova Premier 1.0
 

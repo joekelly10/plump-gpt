@@ -204,8 +204,8 @@ const model_prices = {
     'nova-lite': {
         price: {
             cents: {
-                input_token:   6/1000000, // $0.06/mTok
-                output_token: 24/1000000
+                input_token:   30/1000000, // $0.30/mTok
+                output_token: 250/1000000
             }
         }
     },
