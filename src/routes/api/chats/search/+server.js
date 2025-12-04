@@ -11,7 +11,7 @@ export const GET = async ({ url }) => {
               query      = url.searchParams.get('query') ?? '',
               mode       = url.searchParams.get('mode') ?? 'insensitive',
               threshold  = Number(url.searchParams.get('threshold') ?? 0.3),
-              multiplier = Number(url.searchParams.get('multiplier') ?? 0.05)
+              multiplier = Number(url.searchParams.get('multiplier') ?? 0.5)
 
         if (mode === 'semantic') {
             return semanticSearch({ query, filter, page, per_page, threshold, multiplier })
@@ -172,10 +172,12 @@ const semanticSearch = async ({ query, filter, page, per_page, threshold, multip
     //
     // Get paginated chat IDs ordered by composite score
     //
-    // Score = best_match + LN(hit_count + 1) * multiplier
-    //     - This rewards both quality (best match for a single message) and
-    //           quantity (multiple relevant messages (log = diminishing returns))
-    //     - higher multiplier = more weight on quantity
+    // Score = best_match + LN(1 + SUM(excess_similarity)) * multiplier
+    //     - this algorithm rewards both 
+    //         - quality: best match for a single message
+    //         - quantity: multiple relevant messages (log = diminishing returns)
+    //     - log scaling prevents over-rewarding many low-quality matches
+    //     - higher multiplier = more weight on additional matches
     //
     const chat_scores = await prisma.$queryRawUnsafe(`
         WITH message_similarities AS (
@@ -196,7 +198,7 @@ const semanticSearch = async ({ query, filter, page, per_page, threshold, multip
                 "chatId",
                 MAX(similarity) as best_match,
                 COUNT(*) as hit_count,
-                MAX(similarity) + LN(COUNT(*) + 1) * $3 as score,
+                MAX(similarity) + LN(1 + SUM(similarity - $2)) * $3 as score,
                 JSON_AGG(
                     JSON_BUILD_OBJECT(
                         'chronologicalId', "chronologicalId",

@@ -99,6 +99,7 @@
             await tick()
             hljs.highlightAll()
             console.log(`📂–✅ Fetched ${json.items.length} items.`)
+            console.log(json.items)
         } else {
             console.log(`📂–❌ Fetch chats failed: ${response.status} ${response.statusText}`)
             const json = await response.json()
