@@ -9,9 +9,11 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
     // strip all properties except `role` + `content` else you get a 400
     messages = messages.map(({ role, content }) => ({ role, content }))
 
+    const api_key = (options.model.id.includes(':free') && env.OPENROUTER_FREE_API_KEY) ? env.OPENROUTER_FREE_API_KEY : env.OPENROUTER_API_KEY
+
     const headers = new Headers({
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + env.OPENROUTER_API_KEY
+        Authorization: 'Bearer ' + api_key
     })
 
     const body = JSON.stringify({
