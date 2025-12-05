@@ -502,6 +502,9 @@
                 table
                     overflow-wrap: anywhere
 
+                    td
+                        overflow-wrap: break-word
+
         :global
             .tool-use
                 display:          flex
