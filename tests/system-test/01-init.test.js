@@ -39,18 +39,16 @@ test.describe('Init', () => {
         await expect(no_chats_message).toBeVisible()
     })
 
-    test('model, temperature, and top_p should be set to the default values', async ({ page }) => {
+    test('model and temperature should be set to the default values', async ({ page }) => {
         await page.goto('/')
 
         const model_button       = page.locator('.active-model-button'),
               temperature_button = page.locator('.temperature-button'),
-              top_p_button       = page.locator('.top_p-button'),
               default_model      = models.find(m => m.id === defaults.model),
               icon               = model_button.locator('.icon')
 
         await expect(icon).toHaveAttribute('src', `/img/icons/models/${default_model.icon}`)
         await expect(temperature_button).toContainText(String(defaults.temperature))
-        await expect(top_p_button).toContainText(String(defaults.top_p))
     })
 
     test('we should be automatically focused on the primary input field', async ({ page }) => {

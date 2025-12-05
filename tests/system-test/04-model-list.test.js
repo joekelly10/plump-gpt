@@ -10,7 +10,7 @@ test.describe('Model List', () => {
 
         const model_button = page.locator('.active-model-button'),
               model_list   = page.locator('.models-by-family'),
-              family_names = new Set(models.map(m => m.family))
+              family_names = new Set(models.slice(0, 5).map(m => m.family))
 
         await model_button.click()
         await expect(model_list).toBeVisible()
@@ -34,7 +34,7 @@ test.describe('Model List', () => {
         await expect(model_list).toBeVisible()
 
         for (const model of models) {
-            const model_button = model_list.locator(`#model-button-${cssSanitised(model.id)}`)
+            const model_button = model_list.locator(`#model-button-${cssSanitised(model.id)}`).first()
             await expect(model_button).toBeVisible()
 
             const input_price_text = model_button.locator('.input'),

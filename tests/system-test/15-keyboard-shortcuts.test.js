@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { sleep } from '../helpers/tools'
+import { switchModel } from '../helpers/actions'
 import { basic_prompt, basic_reply } from '../mock/prompts/basic_reply'
 import { short_reply_prompt, short_reply } from '../mock/prompts/messages'
 import { scroll_prompt_2, scroll_reply_2 } from '../mock/prompts/autoscroll'
@@ -169,11 +170,12 @@ test.describe('Keyboard Shortcuts', () => {
     test('we should be able to use the keyboard to change model and settings', async ({ page }) => {
         await page.goto('/')
 
-        const default_model      = models.find(m => m.id === defaults.model),
-              model_button       = page.locator('.active-model-button'),
-              model_icon         = model_button.locator('.icon'),
-              temperature_button = page.locator('.temperature-button'),
-              top_p_button       = page.locator('.top_p-button')
+        const default_model        = models.find(m => m.id === defaults.model),
+              temp_and_top_p_model = models.find(m => m.settings.includes('temperature') && m.settings.includes('top_p')),
+              model_button         = page.locator('.active-model-button'),
+              model_icon           = model_button.locator('.icon'),
+              temperature_button   = page.locator('.temperature-button'),
+              top_p_button         = page.locator('.top_p-button')
 
         await expect(model_icon).toHaveAttribute('src', `/img/icons/models/${default_model.icon}`)
 
@@ -188,6 +190,11 @@ test.describe('Keyboard Shortcuts', () => {
         // cmd+shift+m (previous model)
         await page.keyboard.press('Meta+Shift+m')
         await expect(model_icon).toHaveAttribute('src', `/img/icons/models/${default_model.icon}`)
+
+        if (!default_model.settings.includes('temperature') || !default_model.settings.includes('top_p')) {
+            await switchModel(page, temp_and_top_p_model)
+            await sleep(200)
+        }
 
         // ctrl+t (temperature)
         await page.keyboard.press('Control+t')

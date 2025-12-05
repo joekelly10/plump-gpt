@@ -1,4 +1,7 @@
 import { test, expect } from '@playwright/test'
+import { switchModel } from '../helpers/actions'
+import { sleep } from '../helpers/tools'
+import models from '../../src/lib/fixtures/models'
 import defaults from '../../src/lib/fixtures/defaults'
 import encoded_avatar from '../fixtures/encoded_avatar'
 
@@ -7,9 +10,16 @@ test.describe('Settings', () => {
     test('top_p controls should work', async ({ page }) => {
         await page.goto('/')
 
-        const _default     = defaults.top_p,
+        const default_model = models.find(m => m.id === defaults.model),
+              top_p_model   = models.find(m => m.settings.includes('top_p')),
+              _default     = defaults.top_p,
               min          = 0.05,
               stringFormat = (value) => value.toFixed((value * 10 % 1 === 0) ? 1 : 2)
+        
+        if (!default_model.settings.includes('top_p')) {
+            await switchModel(page, top_p_model)
+            await sleep(200)
+        }
 
         // default value
         const top_p_button = page.locator('.top_p-button')
@@ -50,14 +60,26 @@ test.describe('Settings', () => {
 
         // check persistence
         await page.reload()
+
+        if (!default_model.settings.includes('top_p')) {
+            await switchModel(page, top_p_model)
+            await sleep(200)
+        }
+
         await expect(top_p_button).toContainText(stringFormat(1))
     })
 
     test('temperature controls should work', async ({ page }) => {
         await page.goto('/')
 
-        const _default = defaults.temperature,
-              max      = 1.2
+        const default_model = models.find(m => m.id === defaults.model),
+              _default      = defaults.temperature,
+              max           = 1.2
+
+        if (!default_model.settings.includes('temperature')) {
+            const temperature_model = models.find(m => m.settings.includes('temperature'))
+            await switchModel(page, temperature_model)
+        }
 
         // default value
         const temperature_button = page.locator('.temperature-button')

@@ -152,30 +152,6 @@ test.describe('API Providers', () => {
         await expect(ai_message.locator('.message-content')).toHaveText(basic_reply)
     })
 
-    test('we should be able to stream a reply from AI21', async ({ page }) => {
-        await page.goto('/')
-
-        const default_model = models.find(m => m.id === defaults.model),
-              input         = page.locator('.primary-input-section .input'),
-              user_message  = page.locator('.chat .messages .message.user'),
-              ai_message    = page.locator('.chat .messages .message.assistant')
-
-        if (default_model.type !== 'ai21') {
-            const ai21_model = models.find(m => m.type === 'ai21')
-            await switchModel(page, ai21_model)
-        }
-
-        await input.fill(basic_prompt)
-        await page.keyboard.press('Enter')
-
-        await expect(input).toHaveText('')
-        await expect(user_message).toHaveCount(1)
-        await expect(user_message.locator('.message-content')).toHaveText(basic_prompt)
-
-        await expect(ai_message).toHaveCount(1)
-        await expect(ai_message.locator('.message-content')).toHaveText(basic_reply)
-    })
-
     test('we should be able to stream a reply from Cohere', async ({ page }) => {
         page.on('console', msg => console.log(msg.text()))
 

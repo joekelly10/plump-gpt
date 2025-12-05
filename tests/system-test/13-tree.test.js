@@ -207,7 +207,7 @@ test.describe('Tree', () => {
         await expect(reply_fork_buttons.nth(2)).toContainClass('provisional')
 
         // add message to fork #3
-        const fourth_model = models.find(m => ![default_model.id, second_model.id, third_model.id].includes(m.id))
+        const fourth_model = models.find(m => m.family === 'Google')
         await switchModel(page, fourth_model)
 
         await input.fill(medium_reply_prompt)
@@ -416,7 +416,7 @@ test.describe('Tree', () => {
         await sleep(50)
 
         // add 3 messages to fork #2
-        const second_model = models.find(m => m.id !== default_model.id)
+        const second_model = models.find(m => m.family === 'Google')
         await switchModel(page, second_model)
 
         for (let i = 0; i < 3; i++) {
