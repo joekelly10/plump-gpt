@@ -1,4 +1,5 @@
 import { json } from '@sveltejs/kit'
+import { env } from '$env/dynamic/private'
 import { prisma } from '$lib/db/prisma'
 import { formatForAPI } from '$lib/db/tools'
 import { contentHash, generateEmbeddings } from '$lib/utils/embeddings'
@@ -124,6 +125,8 @@ export const POST = async ({ request }) => {
 }
 
 const generateAnyNewEmbeddings = async (messages) => {
+    if (env.NODE_ENV === 'test') return
+
     try {
         const all_hashes = [...new Set(messages.filter(m => !!m.content_hash).map(m => m.content_hash))]
 
