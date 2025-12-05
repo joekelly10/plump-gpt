@@ -164,6 +164,9 @@
 
             &:last-child
                 margin-bottom: 0
+        
+        :global(img)
+            max-width: 100%
 
     .reasoning-summary
         display:     flex
