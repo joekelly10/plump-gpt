@@ -98,12 +98,6 @@ It runs in your browser on `localhost:1337`.
 - <img alt='GPT-OSS 20b' src='./static/img/icons/models/gpt-oss-20b.png' width='21' height='21' valign='middle'>&nbsp; GPT-OSS 20b
 - <img alt='GPT-OSS 120b' src='./static/img/icons/models/gpt-oss-120b.png' width='21' height='21' valign='middle'>&nbsp; GPT-OSS 120b
 
-**Deep Cogito**
-- <img alt='Cogito v2' src='./static/img/icons/models/cogito-v2.png' width='21' height='21' valign='middle'>&nbsp; Cogito v2
-
-**Inclusion AI**
-- <img alt='Ling-1T' src='./static/img/icons/models/ling.png' width='21' height='21' valign='middle'>&nbsp; Ling-1T
-
 
 # Features
 
