@@ -59,8 +59,8 @@
                 height:        $button-size + 1px
                 box-sizing:    border-box
                 border-radius: 99px
-                border-bottom: 1px solid $off-white
-                border-left:   2px solid transparent
+                border-bottom: 2px solid $off-white
+                border-left:   4px solid transparent
                 animation:     streaming 750ms linear infinite
 
     @keyframes streaming
