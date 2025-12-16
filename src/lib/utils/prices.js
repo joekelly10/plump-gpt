@@ -23,6 +23,14 @@ const model_prices = {
             }
         }
     },
+    'gpt-5.2': {
+        price: {
+            cents: {
+                input_token:   175/1000000, // $1.75/mTok
+                output_token: 1400/1000000
+            }
+        }
+    },
     'gpt-4.1-nano': {
         price: {
             cents: {
