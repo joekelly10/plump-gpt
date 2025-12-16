@@ -248,9 +248,10 @@
     box-sizing:       border-box
     padding:          space.$default-padding
     border-radius:    8px
-    box-shadow:       2px 2px 1.5px 0 color.adjust($background-700, $alpha: -0.2)
+    box-shadow:       2px 2px 2px 0 color.adjust($background-700, $alpha: -0.5)
     border:           1px solid $background-700
-    background-color: $background-300
+    background-color: color.adjust(color.mix($blue, $background-700, 19.5%), $alpha: -0.1)
+    backdrop-filter:  blur(8px)
     font-size:        14px
     font-weight:      500
     line-height:      font.$line-height-14px
