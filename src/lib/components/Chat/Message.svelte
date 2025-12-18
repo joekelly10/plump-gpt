@@ -60,7 +60,7 @@
         temp_highlight          = $state(false),
         mount_delay_has_elapsed = $state(false)
     
-    const message_content        = $derived(DOMPurify.sanitize(marked(expandPlaceholders(message.content)))),
+    const message_content        = $derived(DOMPurify.sanitize(marked(escapeNonHtmlSquareBrackets(expandPlaceholders(message.content))))),
           no_message             = $derived(!message.content && !message.reasoning_content),
           has_finished_reasoning = $derived(message.content.length > 0),
           is_starred             = $derived($stars.includes(message.id)),
@@ -98,6 +98,17 @@
         return content.replace(/{{TOOL_USE:(\w+)}}/g, (match, tool_use_id) => {
             const tool_use = message.tool_uses.find(tool_use => tool_use.id === tool_use_id)
             return tool_use ? getToolUseHTML(tool_use) : match
+        })
+    }
+
+    const escapeNonHtmlSquareBrackets = (text) => {
+        const allowed_html_tags = /^\/?(?:a|abbr|b|blockquote|br|code|del|div|em|h[1-6]|hr|i|img|li|ol|p|pre|s|span|strong|sub|sup|table|tbody|td|th|thead|tr|u|ul)(?:\s|>|\/|$)/i
+        
+        return text.replace(/<([^>]*)>/g, (match, inside) => {
+            if (inside.startsWith('!--')) return match
+            if (allowed_html_tags.test(inside)) return match
+            // escape everything else
+            return `&lt;${inside}&gt;`
         })
     }
 
