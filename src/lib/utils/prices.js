@@ -177,6 +177,14 @@ const model_prices = {
             }
         }
     },
+    'gemini-3-flash': {
+        price: {
+            cents: {
+                input_token:   50/1000000, // $0.50/mTok
+                output_token: 300/1000000
+            }
+        }
+    },
     'gemini-3-pro': {
         price: {
             cents: {

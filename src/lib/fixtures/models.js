@@ -127,15 +127,15 @@ export default [
     },
     {
         type:           'google',
-        id:             'gemini-2.5-flash',
-        name:           'Gemini 2.5 Flash',
+        id:             'gemini-3-flash-preview',
+        name:           'Gemini 3 Flash',
         short_name:     'Gemini',
         icon:           'gemini-flash.png',
         family:         'Google',
         hosted_at:      'googleapis.com',
         context_window: 1000000,
         is_reasoner:    true,
-        pricing_id:     'gemini-2.5-flash',
+        pricing_id:     'gemini-3-flash',
         settings:       ['temperature', 'top_p'],
         tools:          ['google_search']
     },
