@@ -82,7 +82,7 @@ It runs in your browser on `localhost:1337`.
 
 **MiniMax**
 - <img alt='MiniMax 01' src='./static/img/icons/models/minimax-01.png' width='21' height='21' valign='middle'>&nbsp; MiniMax 01
-- <img alt='MiniMax M2' src='./static/img/icons/models/minimax-m-series.png' width='21' height='21' valign='middle'>&nbsp; MiniMax M2
+- <img alt='MiniMax M2.1' src='./static/img/icons/models/minimax-m-series.png' width='21' height='21' valign='middle'>&nbsp; MiniMax M2.1
 
 **Inception Labs** (Diffusion)
 - <img alt='Mercury' src='./static/img/icons/models/mercury.png' width='21' height='21' valign='middle'>&nbsp; Mercury
@@ -92,7 +92,7 @@ It runs in your browser on `localhost:1337`.
 - <img alt='Jamba Large' src='./static/img/icons/models/jamba-large.png' width='21' height='21' valign='middle'>&nbsp; Jamba 1.7 Large
 
 **Z.AI**
-- <img alt='GLM 4.6' src='./static/img/icons/models/glm-4.5.png' width='21' height='21' valign='middle'>&nbsp; GLM 4.6
+- <img alt='GLM 4.7' src='./static/img/icons/models/glm-4.png' width='21' height='21' valign='middle'>&nbsp; GLM 4.7
 
 **Open AI OSS**
 - <img alt='GPT-OSS 20b' src='./static/img/icons/models/gpt-oss-20b.png' width='21' height='21' valign='middle'>&nbsp; GPT-OSS 20b

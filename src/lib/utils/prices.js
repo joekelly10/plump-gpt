@@ -31,6 +31,14 @@ const model_prices = {
             }
         }
     },
+    'gpt-5.2-pro': {
+        price: {
+            cents: {
+                input_token:   2100/1000000, // $21.00/mTok
+                output_token: 16800/1000000 // $168.00/mTok
+            }
+        }
+    },
     'gpt-4.1-nano': {
         price: {
             cents: {
@@ -414,16 +422,24 @@ const model_prices = {
     'minimax-m1': {
         price: {
             cents: {
-                input_token:   30/1000000, // $0.30/mTok
-                output_token: 165/1000000
+                input_token:   40/1000000, // $0.40/mTok
+                output_token: 220/1000000
             }
         }
     },
     'minimax-m2': {
         price: {
             cents: {
-                input_token:  255/10000000, // $0.255/mTok
-                output_token: 102/1000000   // $1.02/mTok
+                input_token:   20/1000000, // $0.255/mTok
+                output_token: 100/1000000  // $1.00/mTok
+            }
+        }
+    },
+    'minimax-m2.1': {
+        price: {
+            cents: {
+                input_token:   30/1000000, // $0.30/mTok
+                output_token: 120/1000000  // $1.20/mTok
             }
         }
     },
