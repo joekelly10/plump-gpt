@@ -78,7 +78,7 @@ export default [
         family:         'Anthropic',
         hosted_at:      'anthropic.com',
         context_window: 200000,
-        is_reasoner:    false,
+        is_reasoner:    true,
         pricing_id:     'claude-haiku',
         settings:       ['temperature'],
         tools:          ['thinking_budget', 'web_search', 'exa_search']
