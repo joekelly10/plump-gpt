@@ -68,7 +68,6 @@
             font-weight: 600
             color:       $off-white
             transition:  font-size easing.$quart-out 0.25s, color easing.$quart-out 0.1s
-            white-space: nowrap
 
             &.highlight
                 font-size: 1.25em
