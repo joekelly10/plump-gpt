@@ -10,7 +10,7 @@
     {#if show_text}
         <div class='padding' transition:slide={{ axis: 'x', duration: 125, easing: quartOut }}></div>
         <div class='text' in:slide={{ axis: 'x', duration: 250, easing: quartOut }} out:slide={{ axis: 'x', duration: 150, easing: quartOut }}>
-            Fattens your thoughts
+            Thought Fattener
         </div>
     {/if}
 </div>
