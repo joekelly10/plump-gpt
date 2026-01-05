@@ -530,6 +530,22 @@ const model_prices = {
                 output_token: 110/1000000
             }
         }
+    },
+    'seed-1.6': {
+        price: {
+            cents: {
+                input_token:   25/1000000, // $0.25/mTok
+                output_token: 200/1000000  // $2.00/mTok
+            }
+        }
+    },
+    'seed-1.6-flash': {
+        price: {
+            cents: {
+                input_token:  75/10000000, // $0.075/mTok
+                output_token: 30/1000000   // $0.30/mTok
+            }
+        }
     }
 }
 
