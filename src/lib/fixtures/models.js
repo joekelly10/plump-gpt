@@ -765,7 +765,7 @@ export default [
         family:         'Free (OpenRouter)',
         hosted_at:      'openrouter.ai',
         context_window: 256000,
-        is_reasoner:    false,
+        is_reasoner:    true,
         pricing_id:     'free',
         settings:       ['temperature', 'top_p'],
         tools:          []
