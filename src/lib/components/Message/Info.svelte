@@ -104,7 +104,13 @@
                 {@html message.timestamp ? formatDate(message.timestamp) : ''}
             </div>
             <div class='usage'>
-                {message.usage.input_tokens.toLocaleString()} input / {message.usage.output_tokens.toLocaleString()} output
+                {message.usage.input_tokens.toLocaleString()} input
+                /
+                {#if message.usage.reasoning_tokens > 0}
+                    {message.usage.reasoning_tokens.toLocaleString()}
+                    +
+                {/if}
+                {message.usage.output_tokens.toLocaleString()} output
                 {#if message.usage.cache_read_tokens > 0 || message.usage.cache_write_tokens > 0}
                     <br>
                     {message.usage.cache_read_tokens.toLocaleString()} read / {message.usage.cache_write_tokens.toLocaleString()} write

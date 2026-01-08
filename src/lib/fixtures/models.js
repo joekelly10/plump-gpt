@@ -137,7 +137,7 @@ export default [
         is_reasoner:    true,
         pricing_id:     'gemini-3-flash',
         settings:       ['temperature', 'top_p'],
-        tools:          ['google_search']
+        tools:          ['google_search', 'context_cache']
     },
     {
         type:           'google',
@@ -151,7 +151,7 @@ export default [
         is_reasoner:    true,
         pricing_id:     'gemini-3-pro',
         settings:       ['temperature', 'top_p'],
-        tools:          ['google_search']
+        tools:          ['google_search', 'context_cache']
     },
     {
         type:           'x',

@@ -1,10 +1,14 @@
 <script>
+    import { onDestroy } from 'svelte'
     import { slide, fade } from 'svelte/transition'
     import { quartOut } from 'svelte/easing'
-    import { usage, forks } from '$lib/stores/chat'
-    import { messages } from '$lib/stores/chat'
+    import { usage, forks, messages, active_context_cache } from '$lib/stores/chat'
+    import { model } from '$lib/stores/ai'
 
     const { tree_view = false } = $props()
+
+    let cache_timeleft = $state(''),
+        timer          = $state(null)
 
     const unique_models = $derived.by(() => {
         let models = new Set()
@@ -19,7 +23,36 @@
     const cache_used       = $derived($usage.cache_read_tokens > 0 || $usage.cache_write_tokens > 0),
           cost_string      = $derived('$' + ($usage.total_cost / 100).toFixed(5)),
           savings_string   = $derived('$' + ($usage.total_savings / 100).toFixed(5)),
-          negative_savings = $derived($usage.total_savings < 0)
+          negative_savings = $derived($usage.total_savings < 0),
+          show_cache_timer = $derived($active_context_cache.expires_at !== null && $active_context_cache.model_id === $model.id)
+    
+    $effect(() => {
+        if (show_cache_timer) startTimer()
+    })
+
+    onDestroy(() => {
+        clearInterval(timer)
+    })
+
+    const startTimer = () => {
+        updateTimeleft()
+        timer = setInterval(updateTimeleft, 1000)
+    }
+
+    const updateTimeleft = () => {
+        const now       = new Date(),
+              timestamp = new Date($active_context_cache.expires_at),
+              diff      = timestamp.getTime() - now.getTime()
+
+        if (diff > 0) {
+            const minutes = Math.floor(diff / 60000),
+                  seconds = Math.floor((diff % 60000) / 1000)
+            cache_timeleft = `${minutes}:${seconds.toString().padStart(2, '0')}`
+        } else {
+            cache_timeleft = 'Expired'
+            clearInterval(timer)
+        }
+    }
 </script>
 
 <div
@@ -54,6 +87,11 @@
         <div class='input'>
             {$usage.input_tokens.toLocaleString()} input
         </div>
+        {#if $usage.reasoning_tokens > 0}
+            <div class='reasoning'>
+                {$usage.reasoning_tokens.toLocaleString()} thinking
+            </div>
+        {/if}
         <div class='output'>
             {$usage.output_tokens.toLocaleString()} output
         </div>
@@ -69,6 +107,11 @@
             {#if $usage.cache_write_tokens > 0}
                 <div class='write'>
                     {$usage.cache_write_tokens.toLocaleString()} write
+                </div>
+            {/if}
+            {#if show_cache_timer}
+                <div class='timer' class:is-expired={cache_timeleft === 'Expired'}>
+                    {cache_timeleft}
                 </div>
             {/if}
         </div>
@@ -108,6 +151,15 @@
     
     .stat
         margin-bottom: space.$default-padding
+
+        &.cache
+            .timer
+                font-size:   12px
+                font-weight: 600
+                color:       $yellow
+
+                &.is-expired
+                    color: $coral
 
     .label
         font-size:      12px

@@ -13,6 +13,7 @@ export const verbosity        = createVerbosity()
 export const thinking_budget  = createThinkingBudget()
 export const web_search       = createWebSearch()
 export const x_search         = createXSearch()
+export const context_cache    = createContextCache()
 
 model.subscribe(new_model => {
     active_tools.update(value => value.filter(tool => new_model.tools.includes(tool)))
@@ -367,6 +368,53 @@ function createXSearch() {
                 return {
                     ...value,
                     post_favorite_count: new_count
+                }
+            })
+        }
+    }
+}
+
+function createContextCache() {
+    const { subscribe, set, update } = writable({ ttl_mins: 1 })
+
+    return {
+        subscribe,
+        set,
+        increment_ttl_mins: () => {
+            update(value => {
+                if (value.ttl_mins === 60) return value
+                let new_ttl
+                switch (value.ttl_mins) {
+                    case 0:   new_ttl = 1;  break
+                    case 1:   new_ttl = 2;  break
+                    case 2:   new_ttl = 5;  break
+                    case 5:   new_ttl = 10; break
+                    case 10:  new_ttl = 15; break
+                    case 15:  new_ttl = 30; break
+                    case 30:  new_ttl = 60; break
+                }
+                return {
+                    ...value,
+                    ttl_mins: new_ttl
+                }
+            })
+        },
+        decrement_ttl_mins: () => {
+            update(value => {
+                if (value.ttl_mins === 0) return value
+                let new_ttl
+                switch (value.ttl_mins) {
+                    case 1:  new_ttl = 0;  break
+                    case 2:  new_ttl = 1;  break
+                    case 5:  new_ttl = 2;  break
+                    case 10: new_ttl = 5;  break
+                    case 15: new_ttl = 10; break
+                    case 30: new_ttl = 15; break
+                    case 60: new_ttl = 30; break
+                }
+                return {
+                    ...value,
+                    ttl_mins: new_ttl
                 }
             })
         }

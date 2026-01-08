@@ -3,12 +3,12 @@
     import { page } from '$app/stores'
     import { screen_width } from '$lib/stores/screen'
     import { is_initialising, main_menu_active, loader_active, model_list_active, tool_list_active, input_expanded } from '$lib/stores/app'
-    import { chat_id, messages, forks, active_fork, active_messages, stars, highlights } from '$lib/stores/chat'
+    import { chat_id, messages, forks, active_fork, active_messages, stars, highlights, active_context_cache } from '$lib/stores/chat'
     import { is_hovering, is_adding_reply, is_deleting, is_scrolled_to_bottom, is_provisionally_forking } from '$lib/stores/chat/interactions'
-    import { model, temperature, top_p, active_tools, reasoning_effort, verbosity, thinking_budget, web_search, x_search } from '$lib/stores/ai'
+    import { model, temperature, top_p, active_tools, reasoning_effort, verbosity, thinking_budget, web_search, x_search, context_cache } from '$lib/stores/ai'
     import { api_state, is_idle } from '$lib/stores/api'
     import { config } from '$lib/stores/user'
-    import { addCopyButtons, sleep } from '$lib/utils/helpers'
+    import { addCopyButtons, sleep, replaceHandlebars } from '$lib/utils/helpers'
     import breakpoints from '$lib/fixtures/breakpoints'
     import hljs from 'highlight.js'
 
@@ -122,6 +122,14 @@
             options.thinking_budget = $thinking_budget
         }
 
+        if ($model.type === 'google' && $active_tools.includes('context_cache')) {
+            if ($active_context_cache.id && new Date($active_context_cache.expires_at) > new Date()) {
+                options.cache_id = $active_context_cache.id
+            } else if ($active_messages.length === 2) {
+                options.cache_id = await createContextCache()
+            }
+        }
+
         if ($model.is_diffuser) {
             options.diffusing = true
         }
@@ -157,6 +165,7 @@
             usage:              {
                 cache_write_tokens: 0,
                 cache_read_tokens:  0,
+                cache_ttl_mins:     0,
                 input_tokens:       0,
                 reasoning_tokens:   0,
                 output_tokens:      0
@@ -169,6 +178,13 @@
             gpt_message.top_p            = 1
             gpt_message.reasoning_effort = $reasoning_effort
             gpt_message.verbosity        = $model.id.includes('gpt-5') ? $verbosity : null
+        }
+
+        if ($model.type === 'google' && $active_tools.includes('context_cache')) {
+            if ($active_messages.length === 2 && $active_context_cache.token_count > 0) {
+                gpt_message.usage.cache_write_tokens = $active_context_cache.token_count
+                gpt_message.usage.cache_ttl_mins     = $context_cache.ttl_mins ?? 0
+            }
         }
 
         api_state.startStreaming()
@@ -212,6 +228,39 @@
         scrollChatToBottom({ context: 'streaming_finished' })
 
         if ($config.autosave) saveChat()
+    }
+
+    const createContextCache = async () => {
+        console.log('🗄️ Creating new context cache...')
+
+        const templated_system_prompt = replaceHandlebars($active_messages[0])
+
+        const cache_response = await fetch('/api/ai/cache/google', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({
+                system_prompt: templated_system_prompt.content,
+                user_message:  $active_messages[1].content,
+                model_id:      $model.id,
+                ttl_mins:      $context_cache.ttl_mins
+            })
+        })
+
+        if (cache_response.ok) {
+            const cache = await cache_response.json()
+            console.log('🗄️–✅ Cache created:', cache)
+            $active_context_cache = {
+                id:          cache.name,
+                expires_at:  cache.expireTime,
+                token_count: cache.usageMetadata.totalTokenCount,
+                model_id:    $model.id
+            }
+            return $active_context_cache.id
+        } else {
+            const json = await cache_response.json()
+            console.log('🗄️–❌ Cache creation failed:', json)
+            return null
+        }
     }
 
     const streamGPTResponse = async (reader, gpt_message) => {
@@ -416,7 +465,10 @@
             const part = data.candidates[0].content.parts[0]
             await append(gpt_message, part.text, { is_reasoning: part.thought, speed_limit: 8 })
             if (data.usageMetadata.promptTokenCount) {
-                gpt_message.usage.input_tokens = data.usageMetadata.promptTokenCount
+                gpt_message.usage.input_tokens = data.usageMetadata.promptTokenCount - (data.usageMetadata.cachedContentTokenCount ?? 0)
+            }
+            if (data.usageMetadata.cachedContentTokenCount) {
+                gpt_message.usage.cache_read_tokens = data.usageMetadata.cachedContentTokenCount
             }
             if (data.usageMetadata.thoughtsTokenCount) {
                 gpt_message.usage.reasoning_tokens = data.usageMetadata.thoughtsTokenCount
@@ -700,6 +752,7 @@
         $stars                 = []
         $highlights            = []
         $chat_id               = null
+        $active_context_cache  = { id: null, expires_at: null, token_count: 0, model_id: null }
         $loader_active         = false
         $main_menu_active      = false
         $is_scrolled_to_bottom = true

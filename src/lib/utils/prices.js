@@ -189,7 +189,10 @@ const model_prices = {
         price: {
             cents: {
                 input_token:   50/1000000, // $0.50/mTok
-                output_token: 300/1000000
+                output_token: 300/1000000,
+                cache_write:   50/1000000,
+                cache_read:     5/1000000,
+                ttl_hour:     100/1000000  // $1.00/mTok/hour
             }
         }
     },
@@ -197,7 +200,10 @@ const model_prices = {
         price: {
             cents: {
                 input_token:   200/1000000, // $2.00/mTok
-                output_token: 1200/1000000
+                output_token: 1200/1000000,
+                cache_write:   200/1000000,
+                cache_read:     20/1000000,
+                ttl_hour:      450/1000000  // $4.00/mTok/hour
             }
         }
     },
@@ -588,6 +594,13 @@ export const getCost = (model, usage) => {
             cache_savings    -= usage.cache_write_tokens * (price.cents.cache_write - price.cents.input_token)
             break
         
+        case 'google':
+            cache_write_cost += usage.cache_write_tokens * price.cents.cache_write
+            cache_write_cost += usage.cache_ttl_mins / 60 * price.cents.ttl_hour * usage.cache_write_tokens
+            cache_read_cost  = usage.cache_read_tokens * price.cents.cache_read
+            cache_savings    = usage.cache_read_tokens * (price.cents.input_token - price.cents.cache_read) - cache_write_cost
+            break
+
         case 'deepseek':
             cache_read_cost = usage.cache_read_tokens * price.cents.cache_read
             cache_savings   = usage.cache_read_tokens * (price.cents.input_token - price.cents.cache_read)
@@ -600,7 +613,7 @@ export const getCost = (model, usage) => {
     }
 
     input_cost  = usage.input_tokens * price.cents.input_token
-    output_cost = usage.output_tokens * price.cents.output_token
+    output_cost = (usage.reasoning_tokens + usage.output_tokens) * price.cents.output_token
 
     return {
         input:         input_cost,

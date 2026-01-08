@@ -7,6 +7,7 @@
     import ThinkingBudgetButton from '$lib/components/Input/Toolbar/ThinkingBudgetButton.svelte'
     import WebSearchButton from '$lib/components/Input/Toolbar/WebSearchButton.svelte'
     import GoogleSearchButton from '$lib/components/Input/Toolbar/GoogleSearchButton.svelte'
+    import ContextCacheButton from '$lib/components/Input/Toolbar/ContextCacheButton.svelte'
     import XSearchButton from '$lib/components/Input/Toolbar/XSearchButton.svelte'
     import ExaSearchButton from '$lib/components/Input/Toolbar/ExaSearchButton.svelte'
 
@@ -38,6 +39,8 @@
             <WebSearchButton/>
         {:else if tool === 'google_search'}
             <GoogleSearchButton/>
+        {:else if tool === 'context_cache'}
+            <ContextCacheButton/>
         {:else if tool === 'x_search'}
             <XSearchButton/>
         {:else if tool === 'exa_search'}

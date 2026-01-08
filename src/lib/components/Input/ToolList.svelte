@@ -9,6 +9,7 @@
     import ThinkingBudgetButton from '$lib/components/ToolList/ToggleThinkingBudgetButton.svelte'
     import WebSearchButton from '$lib/components/ToolList/ToggleWebSearchButton.svelte'
     import GoogleSearchButton from '$lib/components/ToolList/ToggleGoogleSearchButton.svelte'
+    import ContextCacheButton from '$lib/components/ToolList/ToggleContextCacheButton.svelte'
     import XSearchButton from '$lib/components/ToolList/ToggleXSearchButton.svelte'
     import ExaSearchButton from '$lib/components/ToolList/ToggleExaSearchButton.svelte'
 
@@ -56,6 +57,9 @@
                     {/if}
                     {#if $model.tools.includes('google_search')}
                         <GoogleSearchButton/>
+                    {/if}
+                    {#if $model.tools.includes('context_cache')}
+                        <ContextCacheButton/>
                     {/if}
                     {#if $model.tools.includes('x_search')}
                         <XSearchButton/>

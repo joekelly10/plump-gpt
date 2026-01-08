@@ -1,12 +1,13 @@
 import { writable, derived } from 'svelte/store'
 import { getCost } from '$lib/utils/prices'
 
-export const chat_id     = writable(null)
-export const messages    = writable([{ id: 0, role: 'system', content: 'You are a helpful assistant.' }])  // replaced on launch
-export const forks       = writable([{ message_ids: [0], forked_at: [], provisional: false }])
-export const active_fork = writable(0)
-export const stars       = writable([])
-export const highlights  = writable([])
+export const chat_id              = writable(null)
+export const messages             = writable([{ id: 0, role: 'system', content: 'You are a helpful assistant.' }])  // replaced on launch
+export const forks                = writable([{ message_ids: [0], forked_at: [], provisional: false }])
+export const active_fork          = writable(0)
+export const stars                = writable([])
+export const highlights           = writable([])
+export const active_context_cache = writable({ id: null, expires_at: null, token_count: 0, model_id: null })
 
 export const fork_points = derived(forks, ($forks) => {
     if ($forks.length === 1) return []
@@ -97,6 +98,7 @@ export const usage = derived(messages, ($messages) => {
     const total_responses = filtered.length
 
     let input_tokens       = 0,
+        reasoning_tokens   = 0,
         output_tokens      = 0,
         cache_write_tokens = 0,
         cache_read_tokens  = 0,
@@ -106,6 +108,7 @@ export const usage = derived(messages, ($messages) => {
     filtered.forEach(message => {
         const cost = getCost(message.model, message.usage)
         input_tokens       += message.usage.input_tokens
+        reasoning_tokens   += message.usage.reasoning_tokens
         output_tokens      += message.usage.output_tokens
         cache_write_tokens += message.usage.cache_write_tokens
         cache_read_tokens  += message.usage.cache_read_tokens
@@ -113,5 +116,5 @@ export const usage = derived(messages, ($messages) => {
         total_savings      += cost.cache_savings
     })
 
-    return { total_responses, input_tokens, output_tokens, cache_write_tokens, cache_read_tokens, total_cost, total_savings }
+    return { total_responses, input_tokens, reasoning_tokens, output_tokens, cache_write_tokens, cache_read_tokens, total_cost, total_savings }
 })
