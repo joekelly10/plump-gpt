@@ -128,10 +128,15 @@
 
         options.tools = createToolsArray()
 
+        const templated_system_prompt = replaceHandlebars($active_messages[0])
+
         const response = await fetch(`/api/ai/chat/${$model.type}`, {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ messages: $active_messages, options })
+            body:    JSON.stringify({
+                messages: [ templated_system_prompt, ...$active_messages.slice(1) ],
+                options
+            })
         })
 
         console.log(`🤖-⏳ ${$model.short_name} is replying...`)

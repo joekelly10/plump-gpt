@@ -168,3 +168,11 @@ export const cssSanitised = (string) => {
 
     return sanitised_string
 }
+
+export const replaceHandlebars = (message) => {
+    let content = message.content
+
+    content = content.replace(/{{TODAYS_DATE}}/g, `Today's date is ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}.`)
+
+    return { ...message, content }
+}
