@@ -11,6 +11,7 @@ export const active_tools     = createActiveTools()
 export const reasoning_effort = createReasoningEffort()
 export const verbosity        = createVerbosity()
 export const thinking_budget  = createThinkingBudget()
+export const thinking_level   = createThinkingLevel()
 export const web_search       = createWebSearch()
 export const x_search         = createXSearch()
 export const context_cache    = createContextCache()
@@ -188,6 +189,20 @@ function createThinkingBudget() {
                 return value - 4000
             })
         }
+    }
+}
+
+function createThinkingLevel() {
+    const { subscribe, set } = writable(defaults.thinking_level)
+
+    //  increment and decrement functions for the thinking level
+    //  are handled in the frontend component, because of complex
+    //  custom rules (Pro has only low and high levels, Flash has
+    //  minimal, low, medium, and high levels)
+
+    return {
+        subscribe,
+        set
     }
 }
 
@@ -426,17 +441,20 @@ if (browser) {
           stored_top_p            = localStorage.getItem('top_p'),
           stored_thinking_budget  = localStorage.getItem('thinking_budget'),
           stored_reasoning_effort = localStorage.getItem('reasoning_effort'),
-          stored_verbosity        = localStorage.getItem('verbosity')
+          stored_verbosity        = localStorage.getItem('verbosity'),
+          stored_thinking_level   = localStorage.getItem('thinking_level')
 
     if (stored_temperature)      temperature.set(Number(stored_temperature))
     if (stored_top_p)            top_p.set(Number(stored_top_p))
     if (stored_thinking_budget)  thinking_budget.set(Number(stored_thinking_budget))
     if (stored_reasoning_effort) reasoning_effort.set(stored_reasoning_effort)
     if (stored_verbosity)        verbosity.set(stored_verbosity)
+    if (stored_thinking_level)   thinking_level.set(stored_thinking_level)
 
     temperature.subscribe(value => localStorage.setItem('temperature', value))
     top_p.subscribe(value => localStorage.setItem('top_p', value))
     thinking_budget.subscribe(value => localStorage.setItem('thinking_budget', value))
     reasoning_effort.subscribe(value => localStorage.setItem('reasoning_effort', value))
     verbosity.subscribe(value => localStorage.setItem('verbosity', value))
+    thinking_level.subscribe(value => localStorage.setItem('thinking_level', value))
 }

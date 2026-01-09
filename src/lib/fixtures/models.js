@@ -136,8 +136,14 @@ export default [
         context_window: 1000000,
         is_reasoner:    true,
         pricing_id:     'gemini-3-flash',
-        settings:       ['temperature', 'top_p'],
-        tools:          ['google_search', 'context_cache']
+        settings:       ['thinking_level'],
+        tools:          ['google_search', 'context_cache'],
+        custom:         {
+            thinking_level: {
+                levels: ['minimal', 'low', 'medium', 'high'],
+                default: 'high'
+            }
+        }
     },
     {
         type:           'google',
@@ -150,8 +156,14 @@ export default [
         context_window: 1000000,
         is_reasoner:    true,
         pricing_id:     'gemini-3-pro',
-        settings:       ['temperature', 'top_p'],
-        tools:          ['google_search', 'context_cache']
+        settings:       ['thinking_level'],
+        tools:          ['google_search', 'context_cache'],
+        custom:         {
+            thinking_level: {
+                levels: ['low', 'high'],
+                default: 'high'
+            }
+        }
     },
     {
         type:           'x',

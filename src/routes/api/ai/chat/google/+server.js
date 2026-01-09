@@ -35,7 +35,8 @@ export const POST = async ({ request, fetch: internal_fetch }) => {
     let body = {
         generationConfig: {
             thinkingConfig: {
-                includeThoughts: true
+                includeThoughts: true,
+                thinkingLevel:   options.thinking_level
             },
             temperature: options.temperature,
             topP:        options.top_p

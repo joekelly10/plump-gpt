@@ -5,7 +5,7 @@
     import { is_initialising, main_menu_active, loader_active, model_list_active, tool_list_active, input_expanded } from '$lib/stores/app'
     import { chat_id, messages, forks, active_fork, active_messages, stars, highlights, active_context_cache } from '$lib/stores/chat'
     import { is_hovering, is_adding_reply, is_deleting, is_scrolled_to_bottom, is_provisionally_forking } from '$lib/stores/chat/interactions'
-    import { model, temperature, top_p, active_tools, reasoning_effort, verbosity, thinking_budget, web_search, x_search, context_cache } from '$lib/stores/ai'
+    import { model, temperature, top_p, active_tools, reasoning_effort, verbosity, thinking_budget, thinking_level, web_search, x_search, context_cache } from '$lib/stores/ai'
     import { api_state, is_idle } from '$lib/stores/api'
     import { config } from '$lib/stores/user'
     import { addCopyButtons, sleep, replaceHandlebars } from '$lib/utils/helpers'
@@ -122,11 +122,16 @@
             options.thinking_budget = $thinking_budget
         }
 
-        if ($model.type === 'google' && $active_tools.includes('context_cache')) {
-            if ($active_context_cache.id && new Date($active_context_cache.expires_at) > new Date()) {
-                options.cache_id = $active_context_cache.id
-            } else if ($active_messages.length === 2) {
-                options.cache_id = await createContextCache()
+        if ($model.type === 'google') {
+            if ($model.settings.includes('thinking_level')) {
+                options.thinking_level = $thinking_level
+            }
+            if ($active_tools.includes('context_cache')) {
+                if ($active_context_cache.id && new Date($active_context_cache.expires_at) > new Date()) {
+                    options.cache_id = $active_context_cache.id
+                } else if ($active_messages.length === 2) {
+                    options.cache_id = await createContextCache()
+                }
             }
         }
 
