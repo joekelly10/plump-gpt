@@ -9,7 +9,9 @@
 		"test": "playwright test",
 		"test:unit": "vitest",
 		"test:headed": "playwright test --headed",
-		"db:seed": "node prisma/seed.js"
+		"db:seed": "tsx prisma/seed.js",
+		"db:migrate": "prisma migrate dev",
+		"db:generate": "prisma generate"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
@@ -17,20 +19,24 @@
 		"@sveltejs/kit": "^2.21.1",
 		"@sveltejs/vite-plugin-svelte": "^6.1.1",
 		"autoprefixer": "^10.4.14",
+		"dotenv": "^17.2.3",
+		"prisma": "^7.2.0",
 		"sass": "^1.79.4",
 		"svelte": "^5.0.0",
 		"svelte-preprocess": "^6.0.3",
+		"tsx": "^4.21.0",
 		"vite": "^7.1.1",
 		"vitest": "^3.1.4"
 	},
 	"type": "module",
 	"dependencies": {
-		"@prisma/client": "^6.7.0",
+		"@prisma/adapter-pg": "^7.2.0",
+		"@prisma/client": "^7.2.0",
 		"@sveltejs/adapter-vercel": "^5.9.1",
 		"dompurify": "^3.2.6",
 		"highlight.js": "^11.8.0",
 		"marked": "^16.1.2",
-		"prisma": "^6.7.0",
+		"pg": "^8.16.3",
 		"tiktoken": "^1.0.10"
 	}
 }

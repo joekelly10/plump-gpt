@@ -1,8 +1,12 @@
-import { PrismaClient } from '@prisma/client'
-import crypto from 'crypto'
 import 'dotenv/config'
+import { PrismaClient } from '../src/generated/prisma-client/client.ts'
+import { PrismaPg } from '@prisma/adapter-pg'
+import pg from 'pg'
+import crypto from 'crypto'
 
-const prisma = new PrismaClient()
+const pool    = new pg.Pool({ connectionString: process.env.DATABASE_URL }),
+      adapter = new PrismaPg(pool),
+      prisma  = new PrismaClient({ adapter })
 
 const EMBEDDING_MODEL      = 'text-embedding-3-small',
       EMBEDDING_DIMENSIONS = 1536,

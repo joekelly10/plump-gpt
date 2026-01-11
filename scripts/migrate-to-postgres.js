@@ -1,7 +1,12 @@
-import { PrismaClient } from '@prisma/client'
+import 'dotenv/config'
+import { PrismaClient } from '../src/generated/prisma-client/client.ts'
+import { PrismaPg } from '@prisma/adapter-pg'
+import pg from 'pg'
 import PocketBase from 'pocketbase'
 
-const prisma = new PrismaClient()
+const pool    = new pg.Pool({ connectionString: process.env.DATABASE_URL }),
+      adapter = new PrismaPg(pool),
+      prisma  = new PrismaClient({ adapter })
 const pb = new PocketBase('http://127.0.0.1:1336')
 
 async function migrate() {

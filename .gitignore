@@ -15,3 +15,4 @@ go.log
 test-containers.log
 test-containers-build.log
 .vercel
+/src/generated/prisma-client
