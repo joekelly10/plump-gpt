@@ -364,8 +364,8 @@
                 ...gpt_message.usage,
                 input_tokens:      usage.input_tokens - usage.input_tokens_details.cached_tokens,
                 cache_read_tokens: usage.input_tokens_details.cached_tokens,
-                output_tokens:     usage.output_tokens,
-                reasoning_tokens:  usage.output_tokens_details.reasoning_tokens
+                reasoning_tokens:  usage.output_tokens_details.reasoning_tokens,
+                output_tokens:     usage.output_tokens - usage.output_tokens_details.reasoning_tokens
             }
             gpt_message.raw.open_ai = {
                 response: data.response
@@ -400,7 +400,8 @@
             gpt_message.usage.output_tokens     = data.usage.completion_tokens
             const reasoning_tokens = data.usage.completion_tokens_details?.reasoning_tokens
             if (reasoning_tokens) {
-                gpt_message.usage.reasoning_tokens = reasoning_tokens
+                gpt_message.usage.reasoning_tokens  = reasoning_tokens
+                gpt_message.usage.output_tokens    -= reasoning_tokens
             }
         }
     }
@@ -513,7 +514,8 @@
             gpt_message.usage.output_tokens     = data.usage.completion_tokens
             const reasoning_tokens = data.usage.completion_tokens_details?.reasoning_tokens
             if (reasoning_tokens) {
-                gpt_message.usage.reasoning_tokens = reasoning_tokens
+                gpt_message.usage.reasoning_tokens  = reasoning_tokens
+                gpt_message.usage.output_tokens    -= reasoning_tokens
             }
             if (data.usage.num_sources_used) {
                 const tool_use_id = `x_search_${Date.now()}`
@@ -545,7 +547,8 @@
             gpt_message.usage.output_tokens     = data.usage.completion_tokens
             const reasoning_tokens = data.usage.completion_tokens_details?.reasoning_tokens
             if (reasoning_tokens) {
-                gpt_message.usage.reasoning_tokens = reasoning_tokens
+                gpt_message.usage.reasoning_tokens  = reasoning_tokens
+                gpt_message.usage.output_tokens    -= reasoning_tokens
             }
         }
     }
@@ -561,7 +564,7 @@
             gpt_message.usage.cache_read_tokens = cache_read_tokens
             gpt_message.usage.input_tokens      = data.usage.prompt_tokens - cache_read_tokens
             gpt_message.usage.reasoning_tokens  = reasoning_tokens
-            gpt_message.usage.output_tokens     = data.usage.completion_tokens
+            gpt_message.usage.output_tokens     = data.usage.completion_tokens - reasoning_tokens
         }
     }
 
@@ -584,6 +587,7 @@
             gpt_message.usage.cache_read_tokens = cache_read_tokens
             gpt_message.usage.input_tokens      = data.usage.prompt_tokens - cache_read_tokens
             gpt_message.usage.output_tokens     = data.usage.completion_tokens
+            // TODO: reasoning_tokens
         }
     }
 
@@ -611,7 +615,8 @@
             gpt_message.usage.output_tokens     = data.usage.completion_tokens
             const reasoning_tokens = data.usage.completion_tokens_details?.reasoning_tokens
             if (reasoning_tokens) {
-                gpt_message.usage.reasoning_tokens = reasoning_tokens
+                gpt_message.usage.reasoning_tokens  = reasoning_tokens
+                gpt_message.usage.output_tokens    -= reasoning_tokens
             }
         }
     }
@@ -628,9 +633,6 @@
             for (const word of words) {
                 if (is_reasoning) {
                     gpt_message.reasoning_content += word
-                    if (word.trim().length > 0) {
-                        gpt_message.usage.reasoning_tokens = (gpt_message.usage?.reasoning_tokens || 0) + 1
-                    }
                 } else {
                     gpt_message.content += word
                 }
@@ -646,9 +648,6 @@
         } else {
             if (is_reasoning) {
                 gpt_message.reasoning_content += new_text
-                if (new_text.trim().length > 0) {
-                    gpt_message.usage.reasoning_tokens = (gpt_message.usage?.reasoning_tokens || 0) + 1
-                }
             } else {
                 gpt_message.content += new_text
             }
