@@ -511,12 +511,8 @@
             const cache_read_tokens = data.usage.prompt_tokens_details?.cached_tokens ?? 0
             gpt_message.usage.cache_read_tokens = cache_read_tokens
             gpt_message.usage.input_tokens      = data.usage.prompt_tokens - cache_read_tokens
+            gpt_message.usage.reasoning_tokens  = data.usage.completion_tokens_details?.reasoning_tokens ?? 0
             gpt_message.usage.output_tokens     = data.usage.completion_tokens
-            const reasoning_tokens = data.usage.completion_tokens_details?.reasoning_tokens
-            if (reasoning_tokens) {
-                gpt_message.usage.reasoning_tokens  = reasoning_tokens
-                gpt_message.usage.output_tokens    -= reasoning_tokens
-            }
             if (data.usage.num_sources_used) {
                 const tool_use_id = `x_search_${Date.now()}`
                 gpt_message.content += `\n\n{{TOOL_USE:${tool_use_id}}}\n\n`
