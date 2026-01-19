@@ -658,6 +658,20 @@ export default [
     },
     {
         type:           'openrouter',
+        id:             'z-ai/glm-4.7-flash',
+        name:           'GLM 4.7 Flash',
+        short_name:     'GLM',
+        icon:           'glm-4-flash.png',
+        family:         'Z.AI',
+        hosted_at:      'openrouter.ai',
+        context_window: 200000,
+        is_reasoner:    true,
+        pricing_id:     'glm-4-flash',
+        settings:       ['temperature', 'top_p'],
+        tools:          []
+    },
+    {
+        type:           'openrouter',
         id:             'z-ai/glm-4.7',
         name:           'GLM 4.7',
         short_name:     'GLM',

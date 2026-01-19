@@ -489,6 +489,14 @@ const model_prices = {
             }
         }
     },
+    'glm-4-flash': {
+        price: {
+            cents: {
+                input_token:   7/1000000, // $0.07/mTok
+                output_token: 40/1000000
+            }
+        }
+    },
     'cogito-v2': {
         price: {
             cents: {

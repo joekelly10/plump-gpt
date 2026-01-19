@@ -92,6 +92,7 @@ It runs in your browser on `localhost:1337`.
 - <img alt='Jamba Large' src='./static/img/icons/models/jamba-large.png' width='21' height='21' valign='middle'>&nbsp; Jamba 1.7 Large
 
 **Z.AI**
+- <img alt='GLM 4.7 Flash' src='./static/img/icons/models/glm-4-flash.png' width='21' height='21' valign='middle'>&nbsp; GLM 4.7 Flash
 - <img alt='GLM 4.7' src='./static/img/icons/models/glm-4.png' width='21' height='21' valign='middle'>&nbsp; GLM 4.7
 
 **Open AI OSS**
