@@ -595,10 +595,10 @@ export const getCost = (model, usage) => {
             break
         
         case 'google':
-            cache_write_cost += usage.cache_write_tokens * price.cents.cache_write
-            cache_write_cost += usage.cache_ttl_mins / 60 * price.cents.ttl_hour * usage.cache_write_tokens
-            cache_read_cost  = usage.cache_read_tokens * price.cents.cache_read
-            cache_savings    = usage.cache_read_tokens * (price.cents.input_token - price.cents.cache_read) - cache_write_cost
+            cache_write_cost += (usage.cache_write_tokens ?? 0) * (price.cents.cache_write ?? 0)
+            cache_write_cost += (usage.cache_ttl_mins ?? 0) / 60 * (price.cents.ttl_hour ?? 0) * (usage.cache_write_tokens ?? 0)
+            cache_read_cost   = (usage.cache_read_tokens ?? 0) * (price.cents.cache_read ?? 0)
+            cache_savings     = (usage.cache_read_tokens ?? 0) * (price.cents.input_token - (price.cents.cache_read ?? 0)) - cache_write_cost
             break
 
         case 'deepseek':
