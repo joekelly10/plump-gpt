@@ -770,20 +770,6 @@ export default [
     },
     {
         type:           'openrouter',
-        id:             'nex-agi/deepseek-v3.1-nex-n1:free',
-        name:           'DeepSeek v3.1 Nex N1',
-        short_name:     'N1',
-        icon:           'free-nex.png',
-        family:         'Free (OpenRouter)',
-        hosted_at:      'openrouter.ai',
-        context_window: 131000,
-        is_reasoner:    true,
-        pricing_id:     'free',
-        settings:       ['temperature', 'top_p'],
-        tools:          []
-    },
-    {
-        type:           'openrouter',
         id:             'tngtech/deepseek-r1t2-chimera:free',
         name:           'DeepSeek R1T2 Chimera',
         short_name:     'R1T2',
