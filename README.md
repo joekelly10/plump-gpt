@@ -95,6 +95,9 @@ It runs in your browser on `localhost:1337`.
 - <img alt='GLM 4.7 Flash' src='./static/img/icons/models/glm-4-flash.png' width='21' height='21' valign='middle'>&nbsp; GLM 4.7 Flash
 - <img alt='GLM 4.7' src='./static/img/icons/models/glm-4.png' width='21' height='21' valign='middle'>&nbsp; GLM 4.7
 
+**Writer**
+- <img alt='Palmyra X5' src='./static/img/icons/models/palmyra-x5.png' width='21' height='21' valign='middle'>&nbsp; Palmyra X5
+
 **Open AI OSS**
 - <img alt='GPT-OSS 20b' src='./static/img/icons/models/gpt-oss-20b.png' width='21' height='21' valign='middle'>&nbsp; GPT-OSS 20b
 - <img alt='GPT-OSS 120b' src='./static/img/icons/models/gpt-oss-120b.png' width='21' height='21' valign='middle'>&nbsp; GPT-OSS 120b

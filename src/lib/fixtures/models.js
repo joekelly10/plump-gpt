@@ -728,6 +728,20 @@ export default [
     },
     {
         type:           'openrouter',
+        id:             'writer/palmyra-x5',
+        name:           'Palmyra X5',
+        short_name:     'Palmyra',
+        icon:           'palmyra-x5.png',
+        family:         'Writer',
+        hosted_at:      'openrouter.ai',
+        context_window: 1000000,
+        is_reasoner:    true,
+        pricing_id:     'palmyra-x5',
+        settings:       ['temperature', 'top_p'],
+        tools:          []
+    },
+    {
+        type:           'openrouter',
         id:             'openai/gpt-oss-20b:free',
         name:           'GPT-OSS 20b',
         short_name:     'GPT',

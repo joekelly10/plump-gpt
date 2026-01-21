@@ -560,6 +560,14 @@ const model_prices = {
                 output_token: 30/1000000   // $0.30/mTok
             }
         }
+    },
+    'palmyra-x5': {
+        price: {
+            cents: {
+                input_token:   60/1000000, // $0.60/mTok
+                output_token: 600/1000000
+            }
+        }
     }
 }
 
