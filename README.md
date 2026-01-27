@@ -57,8 +57,7 @@ It runs in your browser on `localhost:1337`.
 
 **Moonshot AI**
 - <img alt='Kimi Linear 48B A3B' src='./static/img/icons/models/kimi-linear.png' width='21' height='21' valign='middle'>&nbsp; Kimi Linear 48b a3b
-- <img alt='Kimi K2' src='./static/img/icons/models/kimi-k2.png' width='21' height='21' valign='middle'>&nbsp; Kimi K2
-- <img alt='Kimi K2 Thinking' src='./static/img/icons/models/kimi-k2-thinking.png' width='21' height='21' valign='middle'>&nbsp; Kimi K2 Thinking
+- <img alt='Kimi K2.5' src='./static/img/icons/models/kimi-k2.png' width='21' height='21' valign='middle'>&nbsp; Kimi K2.5
 
 **Mistral**
 - <img alt='Mistral Small' src='./static/img/icons/models/mistral-small.png' width='21' height='21' valign='middle'>&nbsp; Mistral Small

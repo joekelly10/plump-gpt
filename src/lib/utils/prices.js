@@ -481,6 +481,14 @@ const model_prices = {
             }
         }
     },
+    'kimi-k2.5': {
+        price: {
+            cents: {
+                input_token:   60/1000000, // $0.60/mTok
+                output_token: 300/1000000  // $3.00/mTok
+            }
+        }
+    },
     'glm-4.6': {
         price: {
             cents: {
